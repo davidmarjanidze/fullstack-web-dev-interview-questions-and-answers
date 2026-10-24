@@ -11,6 +11,7 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 ### AI Engineering
 
 - [AI Workflow and Developer Experience](ai-engineering/ai-workflow-and-developer-experience.md)
+- [Chrome Built-in AI APIs](ai-engineering/chrome-built-in-ai-apis.md)
 - [Claude API](ai-engineering/claude-api.md)
 - [Claude Code](ai-engineering/claude-code.md)
 - [OpenAI API](ai-engineering/openai-api.md)
