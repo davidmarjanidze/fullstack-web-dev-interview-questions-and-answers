@@ -21,6 +21,7 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 
 - [AWS](back-end/aws.md)
 - [Docker](back-end/docker.md)
+- [Express.js](back-end/express-js.md)
 - [GitHub Actions](back-end/github-actions.md)
 - [GraphQL](back-end/graphql.md)
 - [Kubernetes](back-end/kubernetes.md)
@@ -50,6 +51,8 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 - [React Testing](front-end/react-testing.md)
 - [Redux Toolkit](front-end/redux-toolkit.md)
 - [Security](front-end/security.md)
+- [SEO (Search Engine Optimization)](front-end/seo.md)
+- [Storybook](front-end/storybook.md)
 - [Tailwind CSS](front-end/tailwindcss.md)
 - [TypeScript](front-end/typescript.md)
 - [Zustand](front-end/zustand.md)
