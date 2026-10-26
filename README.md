@@ -54,7 +54,10 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 - [SEO (Search Engine Optimization)](front-end/seo.md)
 - [Storybook](front-end/storybook.md)
 - [Tailwind CSS](front-end/tailwindcss.md)
+- [Three.js](front-end/three-js.md)
 - [TypeScript](front-end/typescript.md)
+- [Web Vitals](front-end/web-vitals.md)
+- [WebAssembly (WASM)](front-end/web-assembly.md)
 - [Zustand](front-end/zustand.md)
 
 ### Mix
