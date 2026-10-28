@@ -500,10 +500,10 @@ Mongoose ships its own TypeScript types, so you do not need `@types/mongoose`. M
 Call `mongoose.connect()` with a connection string. It returns a promise.
 
 ```javascript
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-await mongoose.connect('mongodb://127.0.0.1:27017/shop');
-console.log('Connected');
+await mongoose.connect("mongodb://127.0.0.1:27017/shop");
+console.log("Connected");
 ```
 
 Use `127.0.0.1` instead of `localhost` for local servers. On some systems `localhost` resolves to the IPv6 address `::1`, and MongoDB is often only listening on IPv4.
@@ -538,9 +538,11 @@ console.log(mongoose.connection.name); // database name
 `mongoose.connection` is an event emitter. Common events are `connected`, `open`, `disconnected`, `reconnected`, `error` and `close`.
 
 ```javascript
-mongoose.connection.on('connected', () => console.log('MongoDB connected'));
-mongoose.connection.on('disconnected', () => console.log('MongoDB disconnected'));
-mongoose.connection.on('error', (err) => console.error('MongoDB error', err));
+mongoose.connection.on("connected", () => console.log("MongoDB connected"));
+mongoose.connection.on("disconnected", () =>
+  console.log("MongoDB disconnected"),
+);
+mongoose.connection.on("error", (err) => console.error("MongoDB error", err));
 
 await mongoose.connect(process.env.MONGO_URI);
 ```
@@ -550,7 +552,7 @@ Register the listeners before calling `connect()` if you want to catch the first
 ### 9: How do you close a Mongoose connection?
 
 ```javascript
-await mongoose.disconnect();       // closes all connections
+await mongoose.disconnect(); // closes all connections
 // or
 await mongoose.connection.close(); // closes only the default connection
 ```
@@ -562,13 +564,13 @@ You usually do this in tests and when the app shuts down.
 A schema describes the shape of the documents in a collection: which fields exist, their types, default values and validation rules. It can also hold methods, virtuals, indexes and middleware.
 
 ```javascript
-import { Schema } from 'mongoose';
+import { Schema } from "mongoose";
 
 const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, lowercase: true },
   age: Number,
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
 });
 ```
 
@@ -579,11 +581,11 @@ MongoDB itself does not need a schema. The schema lives only in your Node.js cod
 A model is a class built from a schema. You use it to create, read, update and delete documents in one collection.
 
 ```javascript
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
-const user = await User.create({ name: 'Anna', email: 'anna@example.com' });
+const user = await User.create({ name: "Anna", email: "anna@example.com" });
 const users = await User.find({ age: { $gte: 18 } });
 ```
 
@@ -594,8 +596,8 @@ The first argument is the model name. Mongoose uses it to work out the collectio
 A document is an instance of a model. It represents one record in the collection. It has the schema fields plus helper methods like `save()`, `validate()`, `toObject()` and `isModified()`.
 
 ```javascript
-const user = new User({ name: 'Anna', email: 'anna@example.com' });
-user instanceof User;              // true
+const user = new User({ name: "Anna", email: "anna@example.com" });
+user instanceof User; // true
 user instanceof mongoose.Document; // true
 await user.save();
 ```
@@ -608,10 +610,10 @@ You can set the name yourself in three ways:
 
 ```javascript
 // schema option
-const logSchema = new Schema({ message: String }, { collection: 'app_logs' });
+const logSchema = new Schema({ message: String }, { collection: "app_logs" });
 
 // third argument of model()
-const Log = mongoose.model('Log', logSchema, 'app_logs');
+const Log = mongoose.model("Log", logSchema, "app_logs");
 
 // turn off pluralization for all models
 mongoose.pluralize(null);
@@ -645,8 +647,8 @@ The short way only gives the type. The long way uses an object with a `type` key
 
 ```javascript
 const schema = new Schema({
-  title: String,                                  // short
-  price: { type: Number, required: true, min: 0 } // long
+  title: String, // short
+  price: { type: Number, required: true, min: 0 }, // long
 });
 ```
 
@@ -664,8 +666,14 @@ Common ones:
 
 ```javascript
 const schema = new Schema({
-  username: { type: String, trim: true, lowercase: true, minLength: 3, maxLength: 30 },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' }
+  username: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    minLength: 3,
+    maxLength: 30,
+  },
+  role: { type: String, enum: ["user", "admin"], default: "user" },
 });
 ```
 
@@ -677,7 +685,7 @@ const schema = new Schema({
 ```javascript
 const productSchema = new Schema({
   price: { type: Number, min: 0, required: true },
-  rating: { type: Number, min: 1, max: 5 }
+  rating: { type: Number, min: 1, max: 5 },
 });
 ```
 
@@ -689,11 +697,11 @@ A `Date` field stores a JavaScript `Date`. Mongoose casts strings and numbers (m
 
 ```javascript
 const eventSchema = new Schema({
-  startsAt: { type: Date, required: true, min: '2020-01-01' },
-  createdAt: { type: Date, default: Date.now }
+  startsAt: { type: Date, required: true, min: "2020-01-01" },
+  createdAt: { type: Date, default: Date.now },
 });
 
-await Event.create({ startsAt: '2026-11-01T10:00:00Z' }); // string cast to Date
+await Event.create({ startsAt: "2026-11-01T10:00:00Z" }); // string cast to Date
 ```
 
 MongoDB stores dates in UTC.
@@ -705,8 +713,8 @@ By default these values become `true`: `true`, `'true'`, `1`, `'1'`, `'yes'`. Th
 You can change the lists:
 
 ```javascript
-mongoose.Schema.Types.Boolean.convertToTrue.add('on');
-mongoose.Schema.Types.Boolean.convertToFalse.add('off');
+mongoose.Schema.Types.Boolean.convertToTrue.add("on");
+mongoose.Schema.Types.Boolean.convertToFalse.add("off");
 ```
 
 ### 20: What is the ObjectId type used for?
@@ -716,7 +724,7 @@ mongoose.Schema.Types.Boolean.convertToFalse.add('off');
 ```javascript
 const postSchema = new Schema({
   title: String,
-  author: { type: Schema.Types.ObjectId, ref: 'User' }
+  author: { type: Schema.Types.ObjectId, ref: "User" },
 });
 ```
 
@@ -730,7 +738,7 @@ Put the type inside square brackets.
 const schema = new Schema({
   tags: [String],
   scores: [{ type: Number, min: 0 }],
-  comments: [{ text: String, createdAt: Date }]
+  comments: [{ text: String, createdAt: Date }],
 });
 ```
 
@@ -743,7 +751,7 @@ Array fields default to an empty array `[]`. You can turn that off with `default
 ```javascript
 const schema = new Schema({
   settings: Schema.Types.Mixed,
-  other: {} // an empty object also means Mixed
+  other: {}, // an empty object also means Mixed
 });
 ```
 
@@ -755,12 +763,12 @@ A `Map` stores keys you do not know ahead of time, while still casting the value
 
 ```javascript
 const userSchema = new Schema({
-  socialLinks: { type: Map, of: String }
+  socialLinks: { type: Map, of: String },
 });
 
-const user = new User({ socialLinks: { github: 'https://github.com/anna' } });
-user.socialLinks.get('github');
-user.socialLinks.set('x', 'https://x.com/anna');
+const user = new User({ socialLinks: { github: "https://github.com/anna" } });
+user.socialLinks.get("github");
+user.socialLinks.set("x", "https://x.com/anna");
 await user.save();
 ```
 
@@ -780,10 +788,10 @@ const fileSchema = new Schema({ name: String, data: Buffer, mimeType: String });
 
 ```javascript
 const orderSchema = new Schema({
-  total: { type: Schema.Types.Decimal128, required: true }
+  total: { type: Schema.Types.Decimal128, required: true },
 });
 
-const order = await Order.create({ total: '19.99' });
+const order = await Order.create({ total: "19.99" });
 order.total.toString(); // '19.99'
 ```
 
@@ -806,7 +814,7 @@ The `UUID` type stores UUIDs as binary data (subtype 4), which is smaller than s
 
 ```javascript
 const sessionSchema = new Schema({
-  token: { type: 'UUID', default: () => crypto.randomUUID() }
+  token: { type: "UUID", default: () => crypto.randomUUID() },
 });
 ```
 
@@ -817,7 +825,7 @@ In Mongoose 9, reading the field gives you a `bson.UUID` object. In Mongoose 8 i
 They were added in Mongoose 8.x. `Int32` stores a 32-bit integer and `Double` forces the value to be stored as a BSON double. By default a `Number` field may be stored as int or double depending on the value. These types are useful when another system reads the data and expects an exact BSON type.
 
 ```javascript
-const schema = new Schema({ quantity: 'Int32', weight: 'Double' });
+const schema = new Schema({ quantity: "Int32", weight: "Double" });
 ```
 
 ### 29: How do you define nested objects in a schema?
@@ -830,8 +838,8 @@ const userSchema = new Schema({
   address: {
     street: String,
     city: String,
-    zip: String
-  }
+    zip: String,
+  },
 });
 ```
 
@@ -846,8 +854,8 @@ const addressSchema = new Schema({ city: String, zip: String });
 
 const userSchema = new Schema({
   name: String,
-  address: addressSchema,       // single nested subdocument
-  pastAddresses: [addressSchema] // array of subdocuments
+  address: addressSchema, // single nested subdocument
+  pastAddresses: [addressSchema], // array of subdocuments
 });
 ```
 
@@ -858,7 +866,7 @@ Subdocuments are saved together with the parent. You cannot save them on their o
 Create an instance of the model and call `save()`.
 
 ```javascript
-const user = new User({ name: 'Anna', email: 'anna@example.com' });
+const user = new User({ name: "Anna", email: "anna@example.com" });
 await user.save();
 console.log(user._id);
 ```
@@ -870,8 +878,8 @@ console.log(user._id);
 `create()` is a shortcut for `new Model(data).save()`. It accepts one object or an array.
 
 ```javascript
-const user = await User.create({ name: 'Anna', email: 'anna@example.com' });
-const users = await User.create([{ name: 'Ben' }, { name: 'Cara' }]);
+const user = await User.create({ name: "Anna", email: "anna@example.com" });
+const users = await User.create([{ name: "Ben" }, { name: "Cara" }]);
 ```
 
 With an array, it calls `save()` for each item, so it runs `save` middleware for each one. For many documents, `insertMany()` is faster.
@@ -882,8 +890,8 @@ With an array, it calls `save()` for each item, so it runs `save` middleware for
 
 ```javascript
 await Product.insertMany([
-  { name: 'Pen', price: 1 },
-  { name: 'Book', price: 12 }
+  { name: "Pen", price: 1 },
+  { name: "Book", price: 12 },
 ]);
 ```
 
@@ -894,7 +902,7 @@ Use `insertMany()` for imports and seeding. Use `create()` when you need `save` 
 `insertOne()` was added in Mongoose 8.x. It inserts a single document, runs validation and returns the saved document. It behaves like `create()` with one object, but it is a clearer name and does not accept an array.
 
 ```javascript
-const product = await Product.insertOne({ name: 'Pen', price: 1 });
+const product = await Product.insertOne({ name: "Pen", price: 1 });
 ```
 
 ### 35: How do you find documents?
@@ -903,8 +911,8 @@ Use `find()`. It returns an array, which is empty if nothing matches.
 
 ```javascript
 const all = await User.find();
-const admins = await User.find({ role: 'admin' });
-const adults = await User.find({ age: { $gte: 18 } }, 'name email'); // with projection
+const admins = await User.find({ role: "admin" });
+const adults = await User.find({ age: { $gte: 18 } }, "name email"); // with projection
 ```
 
 ### 36: What is the difference between find() and findOne()?
@@ -912,7 +920,7 @@ const adults = await User.find({ age: { $gte: 18 } }, 'name email'); // with pro
 `find()` returns an array of all matching documents. `findOne()` returns the first match or `null`.
 
 ```javascript
-const user = await User.findOne({ email: 'anna@example.com' });
+const user = await User.findOne({ email: "anna@example.com" });
 if (!user) {
   // not found
 }
@@ -937,8 +945,8 @@ You use the same operators as in MongoDB: `$eq`, `$ne`, `$gt`, `$gte`, `$lt`, `$
 ```javascript
 const products = await Product.find({
   price: { $gte: 10, $lte: 50 },
-  category: { $in: ['books', 'toys'] },
-  $or: [{ stock: { $gt: 0 } }, { preorder: true }]
+  category: { $in: ["books", "toys"] },
+  $or: [{ stock: { $gt: 0 } }, { preorder: true }],
 });
 ```
 
@@ -949,9 +957,9 @@ Mongoose casts the values inside operators too. `{ price: { $gte: '10' } }` beco
 Use `select()` or pass a projection as the second argument.
 
 ```javascript
-await User.find().select('name email');      // include
-await User.find().select('-password -__v');  // exclude
-await User.find({}, { name: 1, email: 1 });  // object form
+await User.find().select("name email"); // include
+await User.find().select("-password -__v"); // exclude
+await User.find({}, { name: 1, email: 1 }); // object form
 ```
 
 You cannot mix including and excluding in one projection, except for `_id`, which you can always exclude.
@@ -959,9 +967,9 @@ You cannot mix including and excluding in one projection, except for `_id`, whic
 ### 40: How do you sort results?
 
 ```javascript
-await Product.find().sort({ price: 1 });         // ascending
-await Product.find().sort({ price: -1 });        // descending
-await Product.find().sort('-createdAt name');    // string form
+await Product.find().sort({ price: 1 }); // ascending
+await Product.find().sort({ price: -1 }); // descending
+await Product.find().sort("-createdAt name"); // string form
 ```
 
 In the string form, a `-` in front of the field means descending.
@@ -994,8 +1002,8 @@ const total = await User.estimatedDocumentCount();
 ### 43: How do you get distinct values of a field?
 
 ```javascript
-const categories = await Product.distinct('category');
-const activeCities = await User.distinct('address.city', { active: true });
+const categories = await Product.distinct("category");
+const activeCities = await User.distinct("address.city", { active: true });
 ```
 
 It returns an array of unique values.
@@ -1005,9 +1013,9 @@ It returns an array of unique values.
 Use `exists()`. It returns `{ _id }` if a match is found, or `null`.
 
 ```javascript
-const taken = await User.exists({ email: 'anna@example.com' });
+const taken = await User.exists({ email: "anna@example.com" });
 if (taken) {
-  throw new Error('Email already used');
+  throw new Error("Email already used");
 }
 ```
 
@@ -1019,8 +1027,8 @@ Use `updateOne()`. It does not return the document, it returns a result object.
 
 ```javascript
 const result = await User.updateOne(
-  { email: 'anna@example.com' },
-  { $set: { active: false } }
+  { email: "anna@example.com" },
+  { $set: { active: false } },
 );
 console.log(result.matchedCount, result.modifiedCount);
 ```
@@ -1030,10 +1038,7 @@ If you pass an object without operators, like `{ active: false }`, Mongoose wrap
 ### 46: How do you update many documents?
 
 ```javascript
-await Product.updateMany(
-  { category: 'books' },
-  { $inc: { price: 1 } }
-);
+await Product.updateMany({ category: "books" }, { $inc: { price: 1 } });
 ```
 
 The filter `{}` updates every document in the collection, so be careful with it.
@@ -1044,9 +1049,9 @@ It finds one document, updates it and returns it. By default it returns the docu
 
 ```javascript
 const user = await User.findOneAndUpdate(
-  { email: 'anna@example.com' },
-  { $set: { name: 'Anna Smith' } },
-  { returnDocument: 'after' }
+  { email: "anna@example.com" },
+  { $set: { name: "Anna Smith" } },
+  { returnDocument: "after" },
 );
 ```
 
@@ -1060,7 +1065,7 @@ It is `findOneAndUpdate({ _id: id }, ...)` in short form.
 const product = await Product.findByIdAndUpdate(
   id,
   { price: 25 },
-  { returnDocument: 'after', runValidators: true }
+  { returnDocument: "after", runValidators: true },
 );
 ```
 
@@ -1071,13 +1076,13 @@ It returns `null` if no document has that id.
 `updateOne()` changes only the fields you give it. `replaceOne()` replaces the whole document (except `_id`) with the new object. Any field not in the new object is gone.
 
 ```javascript
-await User.replaceOne({ _id: id }, { name: 'Anna', email: 'anna@example.com' });
+await User.replaceOne({ _id: id }, { name: "Anna", email: "anna@example.com" });
 ```
 
 ### 50: How do you delete documents?
 
 ```javascript
-await User.deleteOne({ email: 'anna@example.com' });
+await User.deleteOne({ email: "anna@example.com" });
 await User.deleteMany({ active: false });
 ```
 
@@ -1112,7 +1117,7 @@ This runs document middleware for `deleteOne` if you registered it with `{ docum
 Every MongoDB document has an `_id`, and it must be unique in the collection. Mongoose adds `_id` of type `ObjectId` to every schema by default and creates it when you create a document, even before saving.
 
 ```javascript
-const user = new User({ name: 'Anna' });
+const user = new User({ name: "Anna" });
 console.log(user._id); // already set
 ```
 
@@ -1124,7 +1129,7 @@ Mongoose adds an `id` virtual to each schema. It returns `_id` as a string.
 
 ```javascript
 user._id; // ObjectId('66f1...')
-user.id;  // '66f1...'
+user.id; // '66f1...'
 ```
 
 It is not saved in the database. You can turn it off with the schema option `id: false`. By default `id` is not included in `toJSON()` output unless you set `toJSON: { virtuals: true }`.
@@ -1136,7 +1141,7 @@ It is not saved in the database. You can turn it off with the schema option `id:
 You can rename it or remove it:
 
 ```javascript
-new Schema({ name: String }, { versionKey: '_version' });
+new Schema({ name: String }, { versionKey: "_version" });
 new Schema({ name: String }, { versionKey: false });
 ```
 
@@ -1160,7 +1165,7 @@ const postSchema = new Schema({ title: String }, { timestamps: true });
 
 ```javascript
 const schema = new Schema({
-  email: { type: String, required: [true, 'Email is required'] }
+  email: { type: String, required: [true, "Email is required"] },
 });
 ```
 
@@ -1172,7 +1177,7 @@ Use `min` and `max`.
 
 ```javascript
 const schema = new Schema({
-  age: { type: Number, min: [0, 'Age cannot be negative'], max: 130 }
+  age: { type: Number, min: [0, "Age cannot be negative"], max: 130 },
 });
 ```
 
@@ -1182,7 +1187,7 @@ Use `minLength` and `maxLength`.
 
 ```javascript
 const schema = new Schema({
-  password: { type: String, minLength: 8, maxLength: 128 }
+  password: { type: String, minLength: 8, maxLength: 128 },
 });
 ```
 
@@ -1197,11 +1202,11 @@ const orderSchema = new Schema({
   status: {
     type: String,
     enum: {
-      values: ['pending', 'paid', 'shipped', 'cancelled'],
-      message: '{VALUE} is not a valid status'
+      values: ["pending", "paid", "shipped", "cancelled"],
+      message: "{VALUE} is not a valid status",
     },
-    default: 'pending'
-  }
+    default: "pending",
+  },
 });
 ```
 
@@ -1213,7 +1218,7 @@ Use `match`.
 
 ```javascript
 const schema = new Schema({
-  phone: { type: String, match: [/^\+?[0-9]{7,15}$/, 'Invalid phone number'] }
+  phone: { type: String, match: [/^\+?[0-9]{7,15}$/, "Invalid phone number"] },
 });
 ```
 
@@ -1227,9 +1232,9 @@ const schema = new Schema({
     type: [String],
     validate: {
       validator: (value) => value.length <= 5,
-      message: 'A post can have at most 5 tags'
-    }
-  }
+      message: "A post can have at most 5 tags",
+    },
+  },
 });
 ```
 
@@ -1251,7 +1256,7 @@ A `ValidationError`. Its `errors` property has one entry per failed path.
 
 ```javascript
 try {
-  await User.create({ email: '' });
+  await User.create({ email: "" });
 } catch (err) {
   if (err instanceof mongoose.Error.ValidationError) {
     for (const [path, e] of Object.entries(err.errors)) {
@@ -1277,9 +1282,9 @@ Use the `default` option. It can be a value or a function.
 
 ```javascript
 const schema = new Schema({
-  role: { type: String, default: 'user' },
+  role: { type: String, default: "user" },
   createdAt: { type: Date, default: Date.now },
-  code: { type: String, default: () => Math.random().toString(36).slice(2, 8) }
+  code: { type: String, default: () => Math.random().toString(36).slice(2, 8) },
 });
 ```
 
@@ -1297,10 +1302,10 @@ They are setters for strings. They change the value before it is stored.
 
 ```javascript
 const schema = new Schema({
-  email: { type: String, lowercase: true, trim: true }
+  email: { type: String, lowercase: true, trim: true },
 });
 
-const user = new User({ email: '  Anna@Example.COM ' });
+const user = new User({ email: "  Anna@Example.COM " });
 user.email; // 'anna@example.com'
 ```
 
@@ -1311,10 +1316,10 @@ They also run on query filters for that field, so `User.findOne({ email: 'ANNA@e
 Casting means converting a value to the type in the schema. Mongoose does it when you create documents, set values and build queries.
 
 ```javascript
-const product = new Product({ price: '19' });
+const product = new Product({ price: "19" });
 typeof product.price; // 'number'
 
-await Product.find({ _id: '66f1c2a8e4b0a1b2c3d4e5f6' }); // string cast to ObjectId
+await Product.find({ _id: "66f1c2a8e4b0a1b2c3d4e5f6" }); // string cast to ObjectId
 ```
 
 If the value cannot be converted, Mongoose throws a `CastError`.
@@ -1325,9 +1330,9 @@ A `CastError` happens when Mongoose cannot convert a value to the schema type. T
 
 ```javascript
 try {
-  await User.findById('not-an-id');
+  await User.findById("not-an-id");
 } catch (err) {
-  if (err.name === 'CastError') {
+  if (err.name === "CastError") {
     // err.path === '_id', err.value === 'not-an-id'
   }
 }
@@ -1340,7 +1345,7 @@ In an API you usually turn this into a 400 or 404 response.
 With `strict: true` (the default), fields that are not in the schema are ignored when you create or update a document. They are not saved.
 
 ```javascript
-const user = new User({ name: 'Anna', isAdmin: true }); // isAdmin not in schema
+const user = new User({ name: "Anna", isAdmin: true }); // isAdmin not in schema
 await user.save(); // isAdmin is not stored
 ```
 
@@ -1351,7 +1356,7 @@ Set `strict: 'throw'` to get an error instead, or `strict: false` to save everyt
 `strictQuery` controls what happens to filter fields that are not in the schema. Since Mongoose 7 the default is `false`, which means unknown fields are kept in the filter and sent to MongoDB.
 
 ```javascript
-mongoose.set('strictQuery', true); // drop unknown filter fields
+mongoose.set("strictQuery", true); // drop unknown filter fields
 ```
 
 Be careful with `true`: a typo like `{ emial: 'x' }` turns into an empty filter `{}`, which matches every document.
@@ -1363,7 +1368,7 @@ Not exactly. Methods like `find()` return a `Query` object. A query has a `then(
 ```javascript
 const query = User.find({ active: true }); // nothing sent yet
 query.sort({ name: 1 }).limit(10);
-const users = await query;                  // runs now
+const users = await query; // runs now
 ```
 
 ### 74: What is exec() for?
@@ -1408,11 +1413,11 @@ Declare `_id` in the schema with the type you want. Mongoose then does not creat
 ```javascript
 const countrySchema = new Schema({
   _id: { type: String, uppercase: true }, // ISO code like 'DE'
-  name: String
+  name: String,
 });
 
-const Country = mongoose.model('Country', countrySchema);
-await Country.create({ _id: 'de', name: 'Germany' }); // stored as 'DE'
+const Country = mongoose.model("Country", countrySchema);
+await Country.create({ _id: "de", name: "Germany" }); // stored as 'DE'
 ```
 
 Saving without an `_id` fails with an error saying the document must have an `_id` before saving.
@@ -1439,7 +1444,7 @@ userSchema.statics.findByEmail = function (email) {
   return this.findOne({ email: email.toLowerCase() });
 };
 
-const user = await User.findByEmail('Anna@example.com');
+const user = await User.findByEmail("Anna@example.com");
 ```
 
 Statics are for logic that is about the collection, not about one document.
@@ -1449,7 +1454,7 @@ Statics are for logic that is about the collection, not about one document.
 A virtual is a property that is not stored in MongoDB. It is computed from other fields when you read it.
 
 ```javascript
-userSchema.virtual('fullName').get(function () {
+userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 
@@ -1463,17 +1468,18 @@ You cannot query or sort by a virtual, because it does not exist in the database
 Yes. A virtual setter lets you set several real fields from one value.
 
 ```javascript
-userSchema.virtual('fullName')
+userSchema
+  .virtual("fullName")
   .get(function () {
     return `${this.firstName} ${this.lastName}`;
   })
   .set(function (value) {
-    const [firstName, ...rest] = value.split(' ');
+    const [firstName, ...rest] = value.split(" ");
     this.firstName = firstName;
-    this.lastName = rest.join(' ');
+    this.lastName = rest.join(" ");
   });
 
-const user = new User({ fullName: 'Anna Smith' });
+const user = new User({ fullName: "Anna Smith" });
 user.firstName; // 'Anna'
 ```
 
@@ -1484,7 +1490,7 @@ By default, `toJSON()` and `toObject()` do not include virtuals. `res.json(doc)`
 ```javascript
 const userSchema = new Schema(
   { firstName: String, lastName: String },
-  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 ```
 
@@ -1495,9 +1501,12 @@ Also note that `lean()` results never have virtuals.
 A getter changes a value when you read it from a document. The stored value stays the same.
 
 ```javascript
-const productSchema = new Schema({
-  priceCents: { type: Number, get: (v) => (v / 100).toFixed(2) }
-}, { toJSON: { getters: true } });
+const productSchema = new Schema(
+  {
+    priceCents: { type: Number, get: (v) => (v / 100).toFixed(2) },
+  },
+  { toJSON: { getters: true } },
+);
 
 product.priceCents; // '19.99' if stored value is 1999
 ```
@@ -1512,11 +1521,11 @@ A setter changes a value when you assign it, before it is stored. Built-in optio
 const userSchema = new Schema({
   username: {
     type: String,
-    set: (v) => v.replace(/\s+/g, '').toLowerCase()
-  }
+    set: (v) => v.replace(/\s+/g, "").toLowerCase(),
+  },
 });
 
-const user = new User({ username: 'Anna Smith' });
+const user = new User({ username: "Anna Smith" });
 user.username; // 'annasmith'
 ```
 
@@ -1527,7 +1536,7 @@ Setters also run on query filters for that path, unless you turn that off.
 Middleware (also called hooks) are functions that run before (`pre`) or after (`post`) some operation, like `save`, `validate`, `find` or `deleteOne`. You use them for things like hashing passwords, setting fields, logging, or cleaning up related data.
 
 ```javascript
-userSchema.pre('save', async function () {
+userSchema.pre("save", async function () {
   this.email = this.email.toLowerCase();
 });
 ```
@@ -1537,10 +1546,10 @@ Middleware must be added to the schema **before** you call `mongoose.model()`.
 ### 86: How do you write a pre save hook?
 
 ```javascript
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
-userSchema.pre('save', async function () {
-  if (!this.isModified('password')) return;
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 12);
 });
 ```
@@ -1552,12 +1561,12 @@ In Mongoose 9 pre hooks do not get a `next` argument. Use an `async` function or
 A post hook runs after the operation finishes. It receives the result.
 
 ```javascript
-userSchema.post('save', function (doc) {
-  console.log('Saved user', doc._id);
+userSchema.post("save", function (doc) {
+  console.log("Saved user", doc._id);
 });
 
-userSchema.post('find', function (docs) {
-  console.log('Found', docs.length, 'users');
+userSchema.post("find", function (docs) {
+  console.log("Found", docs.length, "users");
 });
 ```
 
@@ -1579,10 +1588,10 @@ Four kinds, based on what `this` refers to:
 ```javascript
 const postSchema = new Schema({
   title: String,
-  author: { type: Schema.Types.ObjectId, ref: 'User' }
+  author: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
-const post = await Post.findById(id).populate('author');
+const post = await Post.findById(id).populate("author");
 post.author.name; // the user's name
 ```
 
@@ -1595,8 +1604,8 @@ Mongoose does this by running a second query on the `users` collection. It is no
 ```javascript
 const commentSchema = new Schema({
   text: String,
-  post: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
-  author: { type: Schema.Types.ObjectId, ref: 'User' }
+  post: { type: Schema.Types.ObjectId, ref: "Post", required: true },
+  author: { type: Schema.Types.ObjectId, ref: "User" },
 });
 ```
 
@@ -1607,9 +1616,9 @@ The value of `ref` is the model name, not the collection name.
 Pass a second argument, or use the object form with `select`.
 
 ```javascript
-await Post.find().populate('author', 'name avatar');
+await Post.find().populate("author", "name avatar");
 
-await Post.find().populate({ path: 'author', select: 'name -_id' });
+await Post.find().populate({ path: "author", select: "name -_id" });
 ```
 
 This keeps responses small and avoids leaking fields like `email` or `password`.
@@ -1617,9 +1626,9 @@ This keeps responses small and avoids leaking fields like `email` or `password`.
 ### 92: How do you populate more than one field?
 
 ```javascript
-await Post.findById(id).populate('author').populate('category');
+await Post.findById(id).populate("author").populate("category");
 // or
-await Post.findById(id).populate(['author', 'category']);
+await Post.findById(id).populate(["author", "category"]);
 ```
 
 Each path is a separate query on the related collection.
@@ -1631,10 +1640,10 @@ Use an array of ObjectIds with `ref`.
 ```javascript
 const userSchema = new Schema({
   name: String,
-  followers: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+  followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
-const user = await User.findById(id).populate('followers', 'name');
+const user = await User.findById(id).populate("followers", "name");
 ```
 
 Be careful with arrays that can grow without limit. A document can be at most 16 MB.
@@ -1646,7 +1655,7 @@ Use `index: true` on the field, or `schema.index()`.
 ```javascript
 const userSchema = new Schema({
   email: { type: String, unique: true },
-  lastName: { type: String, index: true }
+  lastName: { type: String, index: true },
 });
 
 userSchema.index({ lastName: 1, firstName: 1 }); // compound index
@@ -1671,13 +1680,13 @@ Many teams turn it off in production, because building indexes on large collecti
 Turn on debug mode.
 
 ```javascript
-mongoose.set('debug', true);
+mongoose.set("debug", true);
 ```
 
 Mongoose then prints every collection call, like `users.find({ active: true }, { projection: { name: 1 } })`. You can also pass a function to log in your own format:
 
 ```javascript
-mongoose.set('debug', (collection, method, query, doc) => {
+mongoose.set("debug", (collection, method, query, doc) => {
   logger.debug({ collection, method, query });
 });
 ```
@@ -1686,9 +1695,9 @@ mongoose.set('debug', (collection, method, query, doc) => {
 
 ```javascript
 const id = new mongoose.Types.ObjectId();
-const fromString = new mongoose.Types.ObjectId('66f1c2a8e4b0a1b2c3d4e5f6');
+const fromString = new mongoose.Types.ObjectId("66f1c2a8e4b0a1b2c3d4e5f6");
 
-id.toString();     // hex string
+id.toString(); // hex string
 id.getTimestamp(); // Date the id was created
 ```
 
@@ -1697,9 +1706,9 @@ In Mongoose 9, creating an ObjectId from a number throws an error.
 ### 98: How do you check if a string is a valid ObjectId?
 
 ```javascript
-mongoose.isValidObjectId('66f1c2a8e4b0a1b2c3d4e5f6'); // true
-mongoose.isValidObjectId('hello');                    // false
-mongoose.isValidObjectId(6);                          // false in Mongoose 9
+mongoose.isValidObjectId("66f1c2a8e4b0a1b2c3d4e5f6"); // true
+mongoose.isValidObjectId("hello"); // false
+mongoose.isValidObjectId(6); // false in Mongoose 9
 ```
 
 There is also `mongoose.isObjectIdOrHexString()`, which is stricter: it returns `true` only for ObjectId instances and 24 character hex strings. `isValidObjectId()` also accepts any 12 character string.
@@ -1709,15 +1718,18 @@ There is also `mongoose.isObjectIdOrHexString()`, which is stricter: it returns 
 Both turn a document into a plain object. `toJSON()` is called by `JSON.stringify()` and by `res.json()` in Express. You can set different options for each in the schema.
 
 ```javascript
-const userSchema = new Schema({ name: String, password: String }, {
-  toJSON: {
-    virtuals: true,
-    transform(doc, ret) {
-      delete ret.password;
-      return ret;
-    }
-  }
-});
+const userSchema = new Schema(
+  { name: String, password: String },
+  {
+    toJSON: {
+      virtuals: true,
+      transform(doc, ret) {
+        delete ret.password;
+        return ret;
+      },
+    },
+  },
+);
 ```
 
 This is a common way to hide fields in API responses.
@@ -1728,10 +1740,10 @@ It tells you whether a path has changed since the document was loaded or created
 
 ```javascript
 const user = await User.findById(id);
-user.isModified('email'); // false
-user.email = 'new@example.com';
-user.isModified('email'); // true
-user.modifiedPaths();     // ['email']
+user.isModified("email"); // false
+user.email = "new@example.com";
+user.isModified("email"); // true
+user.modifiedPaths(); // ['email']
 ```
 
 It is often used in pre save hooks, for example to hash a password only when it changed.
@@ -1741,7 +1753,7 @@ It is often used in pre save hooks, for example to hash a password only when it 
 `doc.isNew` is `true` when the document has not been saved to the database yet. After `save()` it becomes `false`. Documents loaded with `find()` have `isNew` set to `false`.
 
 ```javascript
-userSchema.pre('save', async function () {
+userSchema.pre("save", async function () {
   if (this.isNew) {
     // first save, send welcome email later
   }
@@ -1753,12 +1765,12 @@ userSchema.pre('save', async function () {
 When you change a value that Mongoose cannot track, like a nested property inside a `Mixed` field or a `Date` changed with a method such as `setMonth()`.
 
 ```javascript
-doc.settings.theme = 'dark'; // settings is Mixed
-doc.markModified('settings');
+doc.settings.theme = "dark"; // settings is Mixed
+doc.markModified("settings");
 await doc.save();
 
 doc.dueDate.setMonth(5);
-doc.markModified('dueDate');
+doc.markModified("dueDate");
 await doc.save();
 ```
 
@@ -1771,10 +1783,10 @@ Use `select: false`. The field is left out of query results unless you ask for i
 ```javascript
 const userSchema = new Schema({
   email: String,
-  password: { type: String, select: false }
+  password: { type: String, select: false },
 });
 
-const user = await User.findOne({ email }).select('+password');
+const user = await User.findOne({ email }).select("+password");
 ```
 
 The `+` prefix adds a field that is hidden by default.
@@ -1785,12 +1797,12 @@ An alias gives a field a second name in your code, while a shorter name is store
 
 ```javascript
 const schema = new Schema({
-  n: { type: String, alias: 'name' }
+  n: { type: String, alias: "name" },
 });
 
-const doc = new Model({ name: 'Anna' });
+const doc = new Model({ name: "Anna" });
 doc.name; // 'Anna'
-doc.n;    // 'Anna', stored as "n"
+doc.n; // 'Anna', stored as "n"
 ```
 
 By default aliases do not work in query filters. You can turn that on with the `translateAliases` option.
@@ -1803,7 +1815,7 @@ By default aliases do not work in query filters. You can turn that on with the `
 const user = await User.findById(id).orFail();
 // throws DocumentNotFoundError if nothing matches
 
-const post = await Post.findById(id).orFail(new Error('Post not found'));
+const post = await Post.findById(id).orFail(new Error("Post not found"));
 ```
 
 It saves you from writing `if (!doc) throw ...` everywhere.
@@ -1813,9 +1825,11 @@ It saves you from writing `if (!doc) throw ...` everywhere.
 Most query methods return the query itself, so you can chain them before running it.
 
 ```javascript
-const products = await Product.find({ category: 'books' })
-  .where('price').gte(10).lte(50)
-  .select('name price')
+const products = await Product.find({ category: "books" })
+  .where("price")
+  .gte(10)
+  .lte(50)
+  .select("name price")
   .sort({ price: 1 })
   .limit(20)
   .lean();
@@ -1826,15 +1840,23 @@ const products = await Product.find({ category: 'books' })
 `where()` lets you build filters with methods instead of an object.
 
 ```javascript
-const users = await User.where('age').gte(18).lte(65)
-  .where('role').in(['user', 'admin'])
-  .where('name').regex(/^a/i);
+const users = await User.where("age")
+  .gte(18)
+  .lte(65)
+  .where("role")
+  .in(["user", "admin"])
+  .where("name")
+  .regex(/^a/i);
 ```
 
 This is the same as:
 
 ```javascript
-await User.find({ age: { $gte: 18, $lte: 65 }, role: { $in: ['user', 'admin'] }, name: /^a/i });
+await User.find({
+  age: { $gte: 18, $lte: 65 },
+  role: { $in: ["user", "admin"] },
+  name: /^a/i,
+});
 ```
 
 ### 108: How do you search with a regular expression?
@@ -1843,7 +1865,7 @@ Pass a regex as the value, or use `$regex`.
 
 ```javascript
 await User.find({ name: /^ann/i });
-await User.find({ name: { $regex: '^ann', $options: 'i' } });
+await User.find({ name: { $regex: "^ann", $options: "i" } });
 ```
 
 If the search text comes from the user, escape special characters first. A regex that does not start with `^` (or uses the `i` flag) cannot use an index well and gets slow on big collections.
@@ -1853,14 +1875,14 @@ If the search text comes from the user, escape special characters first. A regex
 With an update operator:
 
 ```javascript
-await Post.updateOne({ _id: id }, { $push: { tags: 'mongodb' } });
+await Post.updateOne({ _id: id }, { $push: { tags: "mongodb" } });
 ```
 
 Or on a loaded document:
 
 ```javascript
 const post = await Post.findById(id);
-post.tags.push('mongodb');
+post.tags.push("mongodb");
 await post.save();
 ```
 
@@ -1871,8 +1893,8 @@ Mongoose turns `push()` on a document array into a `$push` update.
 `$push` always adds the value. `$addToSet` adds it only if it is not already in the array.
 
 ```javascript
-await User.updateOne({ _id: id }, { $addToSet: { roles: 'editor' } });
-await User.updateOne({ _id: id }, { $pull: { roles: 'editor' } }); // remove
+await User.updateOne({ _id: id }, { $addToSet: { roles: "editor" } });
+await User.updateOne({ _id: id }, { $pull: { roles: "editor" } }); // remove
 ```
 
 On a document you can call `doc.roles.addToSet('editor')` and `doc.roles.pull('editor')`.
@@ -1882,11 +1904,11 @@ On a document you can call `doc.roles.addToSet('editor')` and `doc.roles.pull('e
 You can use normal property access, or `get()` and `set()`, which also accept dotted paths.
 
 ```javascript
-user.name = 'Anna';
-user.set('address.city', 'Berlin');
-user.set({ name: 'Anna', age: 30 });
+user.name = "Anna";
+user.set("address.city", "Berlin");
+user.set({ name: "Anna", age: 30 });
 
-user.get('address.city'); // 'Berlin'
+user.get("address.city"); // 'Berlin'
 ```
 
 ### 112: Does save() insert or update?
@@ -1895,7 +1917,7 @@ Both. If `doc.isNew` is `true`, `save()` inserts the document. Otherwise it send
 
 ```javascript
 const user = await User.findById(id);
-user.name = 'New name';
+user.name = "New name";
 await user.save(); // sends { $set: { name: 'New name' } }
 ```
 
@@ -1930,7 +1952,7 @@ You get it when you call `mongoose.model('User', schema)` twice with the same na
 A common fix:
 
 ```javascript
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 export default User;
 ```
 
@@ -1940,11 +1962,14 @@ A common setup is one file per model in a `models/` folder. Each file defines th
 
 ```javascript
 // models/user.js
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
-const userSchema = new Schema({ name: String, email: String }, { timestamps: true });
+const userSchema = new Schema(
+  { name: String, email: String },
+  { timestamps: true },
+);
 
-export const User = model('User', userSchema);
+export const User = model("User", userSchema);
 ```
 
 The connection is opened once in a separate file (for example `db.js`) when the app starts.
@@ -1955,10 +1980,10 @@ Both work.
 
 ```javascript
 // ES modules
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from "mongoose";
 
 // CommonJS
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 ```
 
@@ -1986,7 +2011,10 @@ Use a `.env` file locally (not committed to git) and your host's secret settings
 - `optimisticConcurrency`: version check on every save
 
 ```javascript
-new Schema({ name: String }, { timestamps: true, versionKey: false, collection: 'people' });
+new Schema(
+  { name: String },
+  { timestamps: true, versionKey: false, collection: "people" },
+);
 ```
 
 ### 120: How do you turn off _id for subdocuments?
@@ -1998,7 +2026,7 @@ const pointSchema = new Schema({ lat: Number, lng: Number }, { _id: false });
 
 const placeSchema = new Schema({
   name: String,
-  location: pointSchema
+  location: pointSchema,
 });
 ```
 
@@ -2010,7 +2038,7 @@ With `minimize: true` (the default), Mongoose removes empty objects when saving.
 
 ```javascript
 const schema = new Schema({ name: String, settings: {} });
-const doc = await Model.create({ name: 'x', settings: {} });
+const doc = await Model.create({ name: "x", settings: {} });
 // "settings" is not saved
 ```
 
@@ -2026,9 +2054,9 @@ const schema = new Schema({
     type: [String],
     validate: {
       validator: (v) => Array.isArray(v) && v.length > 0,
-      message: 'At least one tag is required'
-    }
-  }
+      message: "At least one tag is required",
+    },
+  },
 });
 ```
 
@@ -2054,8 +2082,8 @@ Store the parent's id on the child. This scales better than keeping a big array 
 
 ```javascript
 const commentSchema = new Schema({
-  post: { type: Schema.Types.ObjectId, ref: 'Post', index: true },
-  text: String
+  post: { type: Schema.Types.ObjectId, ref: "Post", index: true },
+  text: String,
 });
 
 const comments = await Comment.find({ post: postId }).sort({ createdAt: -1 });
@@ -2070,7 +2098,7 @@ Common options:
 ```javascript
 const studentSchema = new Schema({
   name: String,
-  courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }]
+  courses: [{ type: Schema.Types.ObjectId, ref: "Course" }],
 });
 ```
 
@@ -2092,7 +2120,7 @@ const plain2 = await User.findById(id).lean();
 ```javascript
 await Product.find().sort({ category: 1, price: -1 });
 // or
-await Product.find().sort('category -price');
+await Product.find().sort("category -price");
 ```
 
 Results are sorted by `category` first, then by `price` within each category.
@@ -2102,17 +2130,21 @@ Results are sorted by `category` first, then by `price` within each category.
 Run the page query and the count together.
 
 ```javascript
-const filter = { category: 'books' };
+const filter = { category: "books" };
 const [items, total] = await Promise.all([
   Product.find(filter).sort({ _id: 1 }).skip(40).limit(20).lean(),
-  Product.countDocuments(filter)
+  Product.countDocuments(filter),
 ]);
 ```
 
 Mongoose 9.10 added `Model.findAndCount()`, which does this for you:
 
 ```javascript
-const [items, total] = await Product.findAndCount(filter, null, { sort: { _id: 1 }, skip: 40, limit: 20 });
+const [items, total] = await Product.findAndCount(filter, null, {
+  sort: { _id: 1 },
+  skip: 40,
+  limit: 20,
+});
 ```
 
 ### 129: What are the main Mongoose error types?
@@ -2133,11 +2165,11 @@ Check for code `11000`.
 
 ```javascript
 try {
-  await User.create({ email: 'anna@example.com' });
+  await User.create({ email: "anna@example.com" });
 } catch (err) {
   if (err.code === 11000) {
     // err.keyValue => { email: 'anna@example.com' }
-    return res.status(409).json({ message: 'Email already in use' });
+    return res.status(409).json({ message: "Email already in use" });
   }
   throw err;
 }
@@ -2154,7 +2186,7 @@ This keeps the collection and its indexes. To remove the collection itself, use 
 ### 132: How do you drop a collection or a database?
 
 ```javascript
-await User.collection.drop();          // one collection
+await User.collection.drop(); // one collection
 await mongoose.connection.dropDatabase(); // the whole database
 ```
 
@@ -2165,7 +2197,7 @@ await mongoose.connection.dropDatabase(); // the whole database
 Do not use `===`, because they are objects. Use `equals()` or compare strings.
 
 ```javascript
-post.author.equals(req.user._id);                 // true or false
+post.author.equals(req.user._id); // true or false
 post.author.toString() === req.user._id.toString(); // also works
 ```
 
@@ -2176,11 +2208,11 @@ For documents, `doc1.equals(doc2)` compares their `_id`.
 Use `doc.populated(path)`. It returns the original id(s) if the path was populated, or `undefined` if not.
 
 ```javascript
-const post = await Post.findById(id).populate('author');
-post.populated('author'); // ObjectId of the author
+const post = await Post.findById(id).populate("author");
+post.populated("author"); // ObjectId of the author
 
 const post2 = await Post.findById(id);
-post2.populated('author'); // undefined
+post2.populated("author"); // undefined
 ```
 
 ### 135: Does Mongoose support TypeScript?
@@ -2188,15 +2220,15 @@ post2.populated('author'); // undefined
 Yes. Mongoose ships its own types. It can infer the document type from the schema, so you often do not need a separate interface.
 
 ```typescript
-import { Schema, model, InferSchemaType } from 'mongoose';
+import { Schema, model, InferSchemaType } from "mongoose";
 
 const userSchema = new Schema({
   name: { type: String, required: true },
-  age: Number
+  age: Number,
 });
 
 type User = InferSchemaType<typeof userSchema>;
-const UserModel = model('User', userSchema);
+const UserModel = model("User", userSchema);
 ```
 
 ### 136: What is the current version of Mongoose and what does it need?
@@ -2208,13 +2240,13 @@ The current major version is Mongoose 9 (9.0 came out in November 2025, the late
 A discriminator lets you store different types of documents in one collection, with a shared base schema and extra fields per type.
 
 ```javascript
-const eventSchema = new Schema({ time: Date }, { discriminatorKey: 'kind' });
-const Event = mongoose.model('Event', eventSchema);
+const eventSchema = new Schema({ time: Date }, { discriminatorKey: "kind" });
+const Event = mongoose.model("Event", eventSchema);
 
-const ClickEvent = Event.discriminator('Click', new Schema({ url: String }));
-const SignupEvent = Event.discriminator('Signup', new Schema({ plan: String }));
+const ClickEvent = Event.discriminator("Click", new Schema({ url: String }));
+const SignupEvent = Event.discriminator("Signup", new Schema({ plan: String }));
 
-await ClickEvent.create({ time: new Date(), url: '/home' }); // kind: 'Click'
+await ClickEvent.create({ time: new Date(), url: "/home" }); // kind: 'Click'
 ```
 
 `ClickEvent.find()` returns only clicks. `Event.find()` returns all events.
@@ -2225,7 +2257,7 @@ A plugin is a function that adds reusable features to a schema, like fields, met
 
 ```javascript
 function timestampsByUser(schema) {
-  schema.add({ createdBy: { type: Schema.Types.ObjectId, ref: 'User' } });
+  schema.add({ createdBy: { type: Schema.Types.ObjectId, ref: "User" } });
 }
 
 postSchema.plugin(timestampsByUser);
@@ -2238,19 +2270,19 @@ You can apply a plugin to all schemas with `mongoose.plugin(fn)`, as long as you
 Connect once at startup, then use models in route handlers.
 
 ```javascript
-import express from 'express';
-import mongoose from 'mongoose';
-import { Product } from './models/product.js';
+import express from "express";
+import mongoose from "mongoose";
+import { Product } from "./models/product.js";
 
 const app = express();
 app.use(express.json());
 
-app.get('/products/:id', async (req, res) => {
+app.get("/products/:id", async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
-    return res.status(400).json({ message: 'Invalid id' });
+    return res.status(400).json({ message: "Invalid id" });
   }
   const product = await Product.findById(req.params.id).lean();
-  if (!product) return res.status(404).json({ message: 'Not found' });
+  if (!product) return res.status(404).json({ message: "Not found" });
   res.json(product);
 });
 
@@ -2263,7 +2295,7 @@ app.listen(3000);
 Listen for shutdown signals, stop the HTTP server, then disconnect.
 
 ```javascript
-process.on('SIGTERM', async () => {
+process.on("SIGTERM", async () => {
   server.close();
   await mongoose.disconnect();
   process.exit(0);
@@ -2281,8 +2313,8 @@ An empty array `[]`, not `null`. `findOne()` and `findById()` return `null` when
 Use dot notation in quotes.
 
 ```javascript
-await User.find({ 'address.city': 'Berlin' });
-await Order.find({ 'items.productId': productId }); // inside an array of subdocuments
+await User.find({ "address.city": "Berlin" });
+await Order.find({ "items.productId": productId }); // inside an array of subdocuments
 ```
 
 ### 143: How do you update a nested field?
@@ -2290,7 +2322,7 @@ await Order.find({ 'items.productId': productId }); // inside an array of subdoc
 Use dot notation with `$set`, so you do not overwrite the whole object.
 
 ```javascript
-await User.updateOne({ _id: id }, { $set: { 'address.city': 'Munich' } });
+await User.updateOne({ _id: id }, { $set: { "address.city": "Munich" } });
 ```
 
 If you write `{ $set: { address: { city: 'Munich' } } }`, the whole `address` object is replaced and `street` and `zip` are lost.
@@ -2312,9 +2344,9 @@ With `upsert: true`, if no document matches, MongoDB creates one from the filter
 
 ```javascript
 const setting = await Setting.findOneAndUpdate(
-  { key: 'theme' },
-  { $set: { value: 'dark' } },
-  { upsert: true, returnDocument: 'after' }
+  { key: "theme" },
+  { $set: { value: "dark" } },
+  { upsert: true, returnDocument: "after" },
 );
 ```
 
@@ -2326,7 +2358,7 @@ Use `Model.collection`. It is a thin wrapper around the driver's collection. Cal
 
 ```javascript
 await User.collection.createIndex({ email: 1 }, { unique: true });
-const raw = await User.collection.findOne({ email: 'anna@example.com' });
+const raw = await User.collection.findOne({ email: "anna@example.com" });
 ```
 
 You can get the driver's `Db` object from `mongoose.connection.db`.
@@ -2338,7 +2370,7 @@ A field with `immutable: true` cannot be changed after the document is created. 
 ```javascript
 const userSchema = new Schema({
   username: { type: String, immutable: true },
-  createdAt: { type: Date, immutable: true, default: Date.now }
+  createdAt: { type: Date, immutable: true, default: Date.now },
 });
 ```
 
@@ -2350,13 +2382,13 @@ Yes. `required` can be a function. `this` is the document.
 
 ```javascript
 const paymentSchema = new Schema({
-  method: { type: String, enum: ['card', 'bank'] },
+  method: { type: String, enum: ["card", "bank"] },
   iban: {
     type: String,
     required: function () {
-      return this.method === 'bank';
-    }
-  }
+      return this.method === "bank";
+    },
+  },
 });
 ```
 
@@ -2365,14 +2397,14 @@ const paymentSchema = new Schema({
 Write a script that connects, clears the collections and inserts data.
 
 ```javascript
-import mongoose from 'mongoose';
-import { Product } from './models/product.js';
+import mongoose from "mongoose";
+import { Product } from "./models/product.js";
 
 await mongoose.connect(process.env.MONGODB_URI);
 await Product.deleteMany({});
 await Product.insertMany([
-  { name: 'Pen', price: 1 },
-  { name: 'Notebook', price: 4 }
+  { name: "Pen", price: 1 },
+  { name: "Notebook", price: 4 },
 ]);
 await mongoose.disconnect();
 ```
@@ -2394,12 +2426,12 @@ await mongoose.disconnect();
 
 ```javascript
 await mongoose.connect(process.env.MONGODB_URI, {
-  maxPoolSize: 20,                 // max open sockets (default 100)
+  maxPoolSize: 20, // max open sockets (default 100)
   minPoolSize: 2,
-  serverSelectionTimeoutMS: 5000,  // how long to look for a server (default 30000)
-  socketTimeoutMS: 45000,          // close idle sockets after this
-  appName: 'orders-api',           // shows up in MongoDB logs
-  autoIndex: false
+  serverSelectionTimeoutMS: 5000, // how long to look for a server (default 30000)
+  socketTimeoutMS: 45000, // close idle sockets after this
+  appName: "orders-api", // shows up in MongoDB logs
+  autoIndex: false,
 });
 ```
 
@@ -2413,8 +2445,8 @@ Use `mongoose.createConnection()`. Each connection has its own models.
 const mainDb = mongoose.createConnection(process.env.MAIN_URI);
 const logsDb = mongoose.createConnection(process.env.LOGS_URI);
 
-const User = mainDb.model('User', userSchema);
-const AuditLog = logsDb.model('AuditLog', auditSchema);
+const User = mainDb.model("User", userSchema);
+const AuditLog = logsDb.model("AuditLog", auditSchema);
 
 await Promise.all([mainDb.asPromise(), logsDb.asPromise()]);
 ```
@@ -2426,8 +2458,10 @@ Models created with `mongoose.model()` always use the default connection, so wit
 `useDb()` gives you a connection object for another database on the same cluster, using the same connection pool.
 
 ```javascript
-const tenantDb = mongoose.connection.useDb(`tenant_${tenantId}`, { useCache: true });
-const Invoice = tenantDb.model('Invoice', invoiceSchema);
+const tenantDb = mongoose.connection.useDb(`tenant_${tenantId}`, {
+  useCache: true,
+});
+const Invoice = tenantDb.model("Invoice", invoiceSchema);
 ```
 
 `useCache: true` makes Mongoose reuse the same connection object for the same name instead of making a new one each time. This is a common pattern for database-per-tenant apps.
@@ -2446,7 +2480,9 @@ A pool that is too small makes requests wait. A pool that is too large with many
 async function connectWithRetry(retries = 5) {
   for (let i = 1; i <= retries; i++) {
     try {
-      await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
+      await mongoose.connect(process.env.MONGODB_URI, {
+        serverSelectionTimeoutMS: 5000,
+      });
       return;
     } catch (err) {
       console.error(`Connect attempt ${i} failed`, err.message);
@@ -2465,13 +2501,13 @@ Pre middleware no longer gets a `next()` callback. You write `async` functions o
 
 ```javascript
 // Mongoose 8 and older
-schema.pre('save', function (next) {
+schema.pre("save", function (next) {
   this.slug = slugify(this.title);
   next();
 });
 
 // Mongoose 9
-schema.pre('save', async function () {
+schema.pre("save", async function () {
   this.slug = slugify(this.title);
 });
 ```
@@ -2483,9 +2519,9 @@ The old `isAsync` style, `function (next, done)`, is also gone.
 Throw an error. The operation is not run and the error is returned to the caller.
 
 ```javascript
-orderSchema.pre('save', async function () {
+orderSchema.pre("save", async function () {
   if (this.items.length === 0) {
-    throw new Error('Order must have at least one item');
+    throw new Error("Order must have at least one item");
   }
 });
 ```
@@ -2495,12 +2531,12 @@ orderSchema.pre('save', async function () {
 `this` is the `Query` object, not a document. You can read and change the filter, update and options.
 
 ```javascript
-userSchema.pre('find', function () {
+userSchema.pre("find", function () {
   this.where({ deletedAt: null });
   console.log(this.getFilter());
 });
 
-userSchema.pre('findOneAndUpdate', function () {
+userSchema.pre("findOneAndUpdate", function () {
   this.set({ updatedBy: this.getOptions().userId });
 });
 ```
@@ -2512,7 +2548,7 @@ Use `this.getFilter()`, `this.getUpdate()`, `this.getOptions()` and `this.setUpd
 Because `save` middleware is document middleware and `findOneAndUpdate()` does not load a document, it sends the update straight to MongoDB. For updates you need query middleware.
 
 ```javascript
-userSchema.pre('findOneAndUpdate', async function () {
+userSchema.pre("findOneAndUpdate", async function () {
   const update = this.getUpdate();
   if (update.password) {
     update.password = await bcrypt.hash(update.password, 12);
@@ -2528,14 +2564,22 @@ This is why many teams update users with `findById()` + `save()` when hooks matt
 
 ```javascript
 // runs for doc.deleteOne()
-postSchema.pre('deleteOne', { document: true, query: false }, async function () {
-  await Comment.deleteMany({ post: this._id });
-});
+postSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function () {
+    await Comment.deleteMany({ post: this._id });
+  },
+);
 
 // runs for Post.deleteOne(filter)
-postSchema.pre('deleteOne', { document: false, query: true }, async function () {
-  console.log('Deleting', this.getFilter());
-});
+postSchema.pre(
+  "deleteOne",
+  { document: false, query: true },
+  async function () {
+    console.log("Deleting", this.getFilter());
+  },
+);
 ```
 
 The same applies to `updateOne`.
@@ -2545,9 +2589,9 @@ The same applies to `updateOne`.
 A post hook with three arguments `(error, res, next)` runs only when the operation fails. You can turn low level errors into nicer ones.
 
 ```javascript
-userSchema.post('save', function (error, doc, next) {
-  if (error.name === 'MongoServerError' && error.code === 11000) {
-    next(new Error('Email already exists'));
+userSchema.post("save", function (error, doc, next) {
+  if (error.name === "MongoServerError" && error.code === 11000) {
+    next(new Error("Email already exists"));
   } else {
     next(error);
   }
@@ -2561,7 +2605,7 @@ Error handling post middleware still uses `next` in Mongoose 9. Only pre middlew
 `this` is the aggregation object. You can add stages to the pipeline.
 
 ```javascript
-productSchema.pre('aggregate', function () {
+productSchema.pre("aggregate", function () {
   this.pipeline().unshift({ $match: { deletedAt: null } });
 });
 ```
@@ -2588,7 +2632,7 @@ Pass `runValidators: true`.
 await Product.findByIdAndUpdate(
   id,
   { price: -10 },
-  { runValidators: true, returnDocument: 'after' }
+  { runValidators: true, returnDocument: "after" },
 ); // throws ValidationError
 ```
 
@@ -2610,9 +2654,9 @@ const schema = new Schema({
           return !update.$set?.startDate || value > update.$set.startDate;
         }
         return value > this.startDate;
-      }
-    }
-  }
+      },
+    },
+  },
 });
 ```
 
@@ -2626,12 +2670,15 @@ const userSchema = new Schema({
     type: String,
     validate: {
       validator: async function (value) {
-        const count = await mongoose.models.User.countDocuments({ username: value, _id: { $ne: this._id } });
+        const count = await mongoose.models.User.countDocuments({
+          username: value,
+          _id: { $ne: this._id },
+        });
         return count === 0;
       },
-      message: 'Username already taken'
-    }
-  }
+      message: "Username already taken",
+    },
+  },
 });
 ```
 
@@ -2669,9 +2716,13 @@ You can validate only some paths with `order.validate(['email', 'total'])`. You 
 It marks a path as invalid by hand. The next `validate()` or `save()` fails with that error.
 
 ```javascript
-orderSchema.pre('validate', function () {
+orderSchema.pre("validate", function () {
   if (this.discount > this.total) {
-    this.invalidate('discount', 'Discount cannot be more than total', this.discount);
+    this.invalidate(
+      "discount",
+      "Discount cannot be more than total",
+      this.discount,
+    );
   }
 });
 ```
@@ -2683,15 +2734,15 @@ Map `err.errors` into a simple object.
 ```javascript
 function formatValidationError(err) {
   return Object.fromEntries(
-    Object.entries(err.errors).map(([path, e]) => [path, e.message])
+    Object.entries(err.errors).map(([path, e]) => [path, e.message]),
   );
 }
 
 app.use((err, req, res, next) => {
-  if (err.name === 'ValidationError') {
+  if (err.name === "ValidationError") {
     return res.status(400).json({ errors: formatValidationError(err) });
   }
-  if (err.name === 'CastError') {
+  if (err.name === "CastError") {
     return res.status(400).json({ message: `Invalid ${err.path}` });
   }
   next(err);
@@ -2704,8 +2755,8 @@ Use `populate` inside `populate`.
 
 ```javascript
 const post = await Post.findById(id).populate({
-  path: 'comments',
-  populate: { path: 'author', select: 'name' }
+  path: "comments",
+  populate: { path: "author", select: "name" },
 });
 ```
 
@@ -2725,11 +2776,11 @@ The main ones:
 
 ```javascript
 await User.find().populate({
-  path: 'posts',
+  path: "posts",
   match: { published: true },
-  select: 'title createdAt',
+  select: "title createdAt",
   options: { sort: { createdAt: -1 } },
-  perDocumentLimit: 5
+  perDocumentLimit: 5,
 });
 ```
 
@@ -2744,7 +2795,7 @@ await User.find().populate({
 The path becomes `null` for single refs. For arrays, missing items are removed from the array.
 
 ```javascript
-const post = await Post.findById(id).populate('author');
+const post = await Post.findById(id).populate("author");
 post.author; // null if the user was deleted
 ```
 
@@ -2757,13 +2808,13 @@ Virtual populate lets you populate in the "reverse" direction without storing an
 ```javascript
 const userSchema = new Schema({ name: String }, { toJSON: { virtuals: true } });
 
-userSchema.virtual('posts', {
-  ref: 'Post',
-  localField: '_id',
-  foreignField: 'author'
+userSchema.virtual("posts", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "author",
 });
 
-const user = await User.findById(id).populate('posts');
+const user = await User.findById(id).populate("posts");
 ```
 
 `user.posts` is filled with all posts where `post.author` equals `user._id`. Nothing is stored on the user.
@@ -2773,14 +2824,14 @@ const user = await User.findById(id).populate('posts');
 Add `count: true` to the virtual.
 
 ```javascript
-userSchema.virtual('postCount', {
-  ref: 'Post',
-  localField: '_id',
-  foreignField: 'author',
-  count: true
+userSchema.virtual("postCount", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "author",
+  count: true,
 });
 
-const user = await User.findById(id).populate('postCount');
+const user = await User.findById(id).populate("postCount");
 user.postCount; // number
 ```
 
@@ -2791,11 +2842,15 @@ user.postCount; // number
 ```javascript
 const commentSchema = new Schema({
   text: String,
-  target: { type: Schema.Types.ObjectId, refPath: 'targetModel', required: true },
-  targetModel: { type: String, enum: ['Post', 'Product'], required: true }
+  target: {
+    type: Schema.Types.ObjectId,
+    refPath: "targetModel",
+    required: true,
+  },
+  targetModel: { type: String, enum: ["Post", "Product"], required: true },
 });
 
-const comments = await Comment.find().populate('target');
+const comments = await Comment.find().populate("target");
 ```
 
 ### 178: Does populate() work with lean()?
@@ -2803,7 +2858,7 @@ const comments = await Comment.find().populate('target');
 Yes. The populated fields are also plain objects.
 
 ```javascript
-const posts = await Post.find().populate('author', 'name').lean();
+const posts = await Post.find().populate("author", "name").lean();
 ```
 
 Virtual populate also works with `lean()`, but other virtuals on the results do not.
@@ -2814,8 +2869,8 @@ Call `populate()` on the document.
 
 ```javascript
 const post = await Post.findById(id);
-await post.populate('author');
-await post.populate([{ path: 'category' }, { path: 'tags', select: 'name' }]);
+await post.populate("author");
+await post.populate([{ path: "category" }, { path: "tags", select: "name" }]);
 ```
 
 To undo it, use `post.depopulate('author')`, which puts the ids back.
@@ -2825,10 +2880,10 @@ To undo it, use `post.depopulate('author')`, which puts the ids back.
 Pass the model itself, not just the name, so Mongoose uses the right connection.
 
 ```javascript
-const Post = mainDb.model('Post', postSchema);
-const User = usersDb.model('User', userSchema);
+const Post = mainDb.model("Post", postSchema);
+const User = usersDb.model("User", userSchema);
 
-await Post.find().populate({ path: 'author', model: User });
+await Post.find().populate({ path: "author", model: User });
 ```
 
 ### 181: How do discriminators store the type?
@@ -2836,7 +2891,7 @@ await Post.find().populate({ path: 'author', model: User });
 Mongoose adds a field (default name `__t`) with the discriminator name. Queries on a discriminator model add a filter on that field.
 
 ```javascript
-const ClickEvent = Event.discriminator('Click', clickSchema);
+const ClickEvent = Event.discriminator("Click", clickSchema);
 await ClickEvent.find({});
 // sends: events.find({ __t: 'Click' })
 ```
@@ -2848,14 +2903,21 @@ You can rename it with the `discriminatorKey` schema option, and set a custom va
 Discriminators can be used on arrays of subdocuments too, so one array can hold different shapes.
 
 ```javascript
-const blockSchema = new Schema({}, { discriminatorKey: 'kind', _id: false });
+const blockSchema = new Schema({}, { discriminatorKey: "kind", _id: false });
 const pageSchema = new Schema({ blocks: [blockSchema] });
 
-pageSchema.path('blocks').discriminator('text', new Schema({ body: String }));
-pageSchema.path('blocks').discriminator('image', new Schema({ url: String, alt: String }));
+pageSchema.path("blocks").discriminator("text", new Schema({ body: String }));
+pageSchema
+  .path("blocks")
+  .discriminator("image", new Schema({ url: String, alt: String }));
 
-const Page = mongoose.model('Page', pageSchema);
-await Page.create({ blocks: [{ kind: 'text', body: 'Hi' }, { kind: 'image', url: '/a.png' }] });
+const Page = mongoose.model("Page", pageSchema);
+await Page.create({
+  blocks: [
+    { kind: "text", body: "Hi" },
+    { kind: "image", url: "/a.png" },
+  ],
+});
 ```
 
 Each item is cast and validated with the schema for its `kind`.
@@ -2870,7 +2932,7 @@ const order = await Order.findById(id);
 order.items.push({ product: productId, qty: 2 });
 const item = order.items.id(itemId); // find by _id
 item.qty = 3;
-order.items.pull(otherItemId);       // remove by _id
+order.items.pull(otherItemId); // remove by _id
 await order.save();
 ```
 
@@ -2882,8 +2944,8 @@ Use the positional `$` operator, which points to the first matched array item.
 
 ```javascript
 await Order.updateOne(
-  { _id: orderId, 'items._id': itemId },
-  { $set: { 'items.$.qty': 3 } }
+  { _id: orderId, "items._id": itemId },
+  { $set: { "items.$.qty": 3 } },
 );
 ```
 
@@ -2895,13 +2957,13 @@ Use `$[]` for all items or `$[name]` with `arrayFilters` for matching items.
 
 ```javascript
 // all items
-await Order.updateOne({ _id: id }, { $set: { 'items.$[].shipped': true } });
+await Order.updateOne({ _id: id }, { $set: { "items.$[].shipped": true } });
 
 // only items with qty > 5
 await Order.updateOne(
   { _id: id },
-  { $set: { 'items.$[big].bulk': true } },
-  { arrayFilters: [{ 'big.qty': { $gt: 5 } }] }
+  { $set: { "items.$[big].bulk": true } },
+  { arrayFilters: [{ "big.qty": { $gt: 5 } }] },
 );
 ```
 
@@ -2924,7 +2986,7 @@ A nested path is just part of the parent. It is never `undefined` and has no own
 Yes. Subdocuments support `save` and `validate` middleware, which run when the parent is saved. Subdocument `pre('save')` hooks run after the parent's `pre('validate')` hooks and before the parent's `pre('save')` hooks.
 
 ```javascript
-itemSchema.pre('save', async function () {
+itemSchema.pre("save", async function () {
   this.total = this.price * this.qty;
 });
 ```
@@ -2936,20 +2998,23 @@ Subdocuments do not support query middleware, because you never query them alone
 Use a `toJSON` transform, `select: false`, or both.
 
 ```javascript
-const userSchema = new Schema({
-  email: String,
-  password: { type: String, select: false },
-  resetToken: String
-}, {
-  toJSON: {
-    transform(doc, ret) {
-      delete ret.password;
-      delete ret.resetToken;
-      delete ret.__v;
-      return ret;
-    }
-  }
-});
+const userSchema = new Schema(
+  {
+    email: String,
+    password: { type: String, select: false },
+    resetToken: String,
+  },
+  {
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+        delete ret.resetToken;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  },
+);
 ```
 
 Note that `toJSON` transforms do not run on `lean()` results, so `select: false` is the safer default for secrets.
@@ -2957,10 +3022,10 @@ Note that `toJSON` transforms do not run on `lean()` results, so `select: false`
 ### 189: How do you hash passwords and check them with Mongoose?
 
 ```javascript
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
-userSchema.pre('save', async function () {
-  if (!this.isModified('password')) return;
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 12);
 });
 
@@ -2968,9 +3033,9 @@ userSchema.methods.checkPassword = function (plain) {
   return bcrypt.compare(plain, this.password);
 };
 
-const user = await User.findOne({ email }).select('+password');
+const user = await User.findOne({ email }).select("+password");
 if (!user || !(await user.checkPassword(password))) {
-  throw new Error('Wrong email or password');
+  throw new Error("Wrong email or password");
 }
 ```
 
@@ -2980,10 +3045,16 @@ Use `Model.aggregate()` with a pipeline.
 
 ```javascript
 const stats = await Order.aggregate([
-  { $match: { status: 'paid' } },
-  { $group: { _id: '$customer', total: { $sum: '$amount' }, orders: { $sum: 1 } } },
+  { $match: { status: "paid" } },
+  {
+    $group: {
+      _id: "$customer",
+      total: { $sum: "$amount" },
+      orders: { $sum: 1 },
+    },
+  },
   { $sort: { total: -1 } },
-  { $limit: 10 }
+  { $limit: 10 },
 ]);
 ```
 
@@ -2999,7 +3070,7 @@ await Order.aggregate([{ $match: { customer: req.params.id } }]);
 
 // Right
 await Order.aggregate([
-  { $match: { customer: new mongoose.Types.ObjectId(req.params.id) } }
+  { $match: { customer: new mongoose.Types.ObjectId(req.params.id) } },
 ]);
 ```
 
@@ -3014,14 +3085,14 @@ const posts = await Post.aggregate([
   { $match: { published: true } },
   {
     $lookup: {
-      from: 'users',
-      localField: 'author',
-      foreignField: '_id',
-      as: 'author'
-    }
+      from: "users",
+      localField: "author",
+      foreignField: "_id",
+      as: "author",
+    },
   },
-  { $unwind: '$author' },
-  { $project: { title: 1, 'author.name': 1 } }
+  { $unwind: "$author" },
+  { $project: { title: 1, "author.name": 1 } },
 ]);
 ```
 
@@ -3033,8 +3104,8 @@ You can build a pipeline with methods instead of an array.
 
 ```javascript
 const result = await Order.aggregate()
-  .match({ status: 'paid' })
-  .group({ _id: '$customer', total: { $sum: '$amount' } })
+  .match({ status: "paid" })
+  .group({ _id: "$customer", total: { $sum: "$amount" } })
   .sort({ total: -1 })
   .limit(5)
   .option({ allowDiskUse: true });
@@ -3061,9 +3132,14 @@ Aggregations also have `.cursor()`.
 `eachAsync()` loops over a cursor and waits for your function on each document. You can process several at once with `parallel`.
 
 ```javascript
-await User.find({ active: true }).cursor().eachAsync(async (user) => {
-  await sendEmail(user.email);
-}, { parallel: 10 });
+await User.find({ active: true })
+  .cursor()
+  .eachAsync(
+    async (user) => {
+      await sendEmail(user.email);
+    },
+    { parallel: 10 },
+  );
 ```
 
 There is also `batchSize` to receive arrays of documents.
@@ -3074,9 +3150,9 @@ There is also `batchSize` to receive arrays of documents.
 
 ```javascript
 await Product.bulkWrite([
-  { insertOne: { document: { name: 'Pen', price: 1 } } },
-  { updateOne: { filter: { name: 'Book' }, update: { $inc: { stock: 5 } } } },
-  { deleteOne: { filter: { name: 'Old item' } } }
+  { insertOne: { document: { name: "Pen", price: 1 } } },
+  { updateOne: { filter: { name: "Book" }, update: { $inc: { stock: 5 } } } },
+  { deleteOne: { filter: { name: "Old item" } } },
 ]);
 ```
 
@@ -3087,7 +3163,7 @@ Mongoose casts the filters and updates and validates the documents in `insertOne
 `bulkSave()` takes loaded documents, works out what changed in each one, and sends all changes with one `bulkWrite()`.
 
 ```javascript
-const products = await Product.find({ category: 'books' });
+const products = await Product.find({ category: "books" });
 for (const p of products) {
   p.price = Math.round(p.price * 1.1);
 }
@@ -3103,11 +3179,11 @@ For `findOneAndUpdate()` and similar methods, it returns the full driver result 
 ```javascript
 const res = await User.findOneAndUpdate(
   { email },
-  { $set: { name: 'Anna' } },
-  { upsert: true, returnDocument: 'after', includeResultMetadata: true }
+  { $set: { name: "Anna" } },
+  { upsert: true, returnDocument: "after", includeResultMetadata: true },
 );
 
-res.value;                          // the document
+res.value; // the document
 res.lastErrorObject.updatedExisting; // false if it was created by upsert
 ```
 
@@ -3116,7 +3192,7 @@ res.lastErrorObject.updatedExisting; // false if it was created by upsert
 An `UpdateResult` object:
 
 ```javascript
-const result = await User.updateOne({ _id: id }, { name: 'Anna' });
+const result = await User.updateOne({ _id: id }, { name: "Anna" });
 // {
 //   acknowledged: true,
 //   matchedCount: 1,
@@ -3135,8 +3211,8 @@ An update pipeline is an array of aggregation stages used as the update, so you 
 ```javascript
 await Product.updateMany(
   {},
-  [{ $set: { total: { $multiply: ['$price', '$qty'] } } }],
-  { updatePipeline: true }
+  [{ $set: { total: { $multiply: ["$price", "$qty"] } } }],
+  { updatePipeline: true },
 );
 ```
 
@@ -3149,7 +3225,11 @@ Mongoose adds `$set: { updatedAt }` to `updateOne()`, `updateMany()`, `findOneAn
 You can skip it for one call:
 
 ```javascript
-await Post.updateOne({ _id: id }, { $inc: { views: 1 } }, { timestamps: false });
+await Post.updateOne(
+  { _id: id },
+  { $inc: { views: 1 } },
+  { timestamps: false },
+);
 ```
 
 That is useful for counters, where you do not want `updatedAt` to change on every view.
@@ -3159,9 +3239,12 @@ That is useful for counters, where you do not want `updatedAt` to change on ever
 Use `currentTime` in the timestamps option.
 
 ```javascript
-const schema = new Schema({ name: String }, {
-  timestamps: { currentTime: () => Math.floor(Date.now() / 1000) }
-});
+const schema = new Schema(
+  { name: String },
+  {
+    timestamps: { currentTime: () => Math.floor(Date.now() / 1000) },
+  },
+);
 ```
 
 This is useful if you store Unix seconds, or in tests where you want a fixed time.
@@ -3178,7 +3261,7 @@ await User.findOne({ email: req.body.email, password: req.body.password });
 This matches any user. Mongoose has the `sanitizeFilter` option, which wraps objects that start with `$` in `$eq`, so they are treated as values.
 
 ```javascript
-mongoose.set('sanitizeFilter', true);
+mongoose.set("sanitizeFilter", true);
 // or per query
 await User.findOne(filter).setOptions({ sanitizeFilter: true });
 ```
@@ -3190,11 +3273,11 @@ Validating input types (for example with Zod) is still the main defense.
 When `sanitizeFilter` is on, your own `$` operators would also be wrapped. Use `mongoose.trusted()` to mark the ones you wrote on purpose.
 
 ```javascript
-mongoose.set('sanitizeFilter', true);
+mongoose.set("sanitizeFilter", true);
 
 await Product.find({
   name: req.query.name,
-  price: mongoose.trusted({ $gte: 10 })
+  price: mongoose.trusted({ $gte: 10 }),
 });
 ```
 
@@ -3203,10 +3286,10 @@ await Product.find({
 It lets you use aliases in filters, projections and updates.
 
 ```javascript
-const schema = new Schema({ n: { type: String, alias: 'name' } });
-const Model = mongoose.model('Model', schema);
+const schema = new Schema({ n: { type: String, alias: "name" } });
+const Model = mongoose.model("Model", schema);
 
-await Model.find({ name: 'Anna' }, null, { translateAliases: true });
+await Model.find({ name: "Anna" }, null, { translateAliases: true });
 // sends { n: 'Anna' }
 ```
 
@@ -3241,7 +3324,9 @@ This often happens when someone mixes a callback and `await`, or calls `exec()` 
 Use `explain()`.
 
 ```javascript
-const plan = await User.find({ email: 'anna@example.com' }).explain('executionStats');
+const plan = await User.find({ email: "anna@example.com" }).explain(
+  "executionStats",
+);
 console.log(plan.queryPlanner.winningPlan);
 console.log(plan.executionStats.totalDocsExamined);
 ```
@@ -3253,8 +3338,10 @@ If you see `COLLSCAN`, the query is not using an index.
 Use `hint()`.
 
 ```javascript
-await Order.find({ customer: id, status: 'paid' })
-  .hint({ customer: 1, status: 1 });
+await Order.find({ customer: id, status: "paid" }).hint({
+  customer: 1,
+  status: 1,
+});
 ```
 
 Only do this when you know the planner picks the wrong index. Usually it chooses well.
@@ -3264,13 +3351,13 @@ Only do this when you know the planner picks the wrong index. Usually it chooses
 Collation sets language rules for comparing strings, for example case-insensitive matching.
 
 ```javascript
-await User.find({ name: 'anna' }).collation({ locale: 'en', strength: 2 });
+await User.find({ name: "anna" }).collation({ locale: "en", strength: 2 });
 ```
 
 `strength: 2` ignores case. To use an index for this, the index must have the same collation:
 
 ```javascript
-userSchema.index({ name: 1 }, { collation: { locale: 'en', strength: 2 } });
+userSchema.index({ name: 1 }, { collation: { locale: "en", strength: 2 } });
 ```
 
 ### 211: How do you add text search?
@@ -3278,12 +3365,15 @@ userSchema.index({ name: 1 }, { collation: { locale: 'en', strength: 2 } });
 Create a text index and use `$text`.
 
 ```javascript
-articleSchema.index({ title: 'text', body: 'text' }, { weights: { title: 5, body: 1 } });
+articleSchema.index(
+  { title: "text", body: "text" },
+  { weights: { title: 5, body: 1 } },
+);
 
 const results = await Article.find(
-  { $text: { $search: 'mongoose hooks' } },
-  { score: { $meta: 'textScore' } }
-).sort({ score: { $meta: 'textScore' } });
+  { $text: { $search: "mongoose hooks" } },
+  { score: { $meta: "textScore" } },
+).sort({ score: { $meta: "textScore" } });
 ```
 
 A collection can have only one text index. For better search on Atlas, use Atlas Search with `$search` in an aggregation.
@@ -3296,19 +3386,19 @@ Store GeoJSON points and add a `2dsphere` index.
 const placeSchema = new Schema({
   name: String,
   location: {
-    type: { type: String, enum: ['Point'], required: true },
-    coordinates: { type: [Number], required: true } // [lng, lat]
-  }
+    type: { type: String, enum: ["Point"], required: true },
+    coordinates: { type: [Number], required: true }, // [lng, lat]
+  },
 });
-placeSchema.index({ location: '2dsphere' });
+placeSchema.index({ location: "2dsphere" });
 
 const nearby = await Place.find({
   location: {
     $near: {
-      $geometry: { type: 'Point', coordinates: [13.405, 52.52] },
-      $maxDistance: 2000 // meters
-    }
-  }
+      $geometry: { type: "Point", coordinates: [13.405, 52.52] },
+      $maxDistance: 2000, // meters
+    },
+  },
 });
 ```
 
@@ -3346,9 +3436,12 @@ This matters in tests that check unique constraints: if you insert duplicates be
 Use the `capped` schema option.
 
 ```javascript
-const logSchema = new Schema({ message: String }, {
-  capped: { size: 1024 * 1024 * 10, max: 10000 } // 10 MB or 10k docs
-});
+const logSchema = new Schema(
+  { message: String },
+  {
+    capped: { size: 1024 * 1024 * 10, max: 10000 }, // 10 MB or 10k docs
+  },
+);
 ```
 
 A capped collection keeps only the newest documents and drops the oldest when full. The collection must be created as capped, so this only works if Mongoose creates it.
@@ -3360,7 +3453,7 @@ Use a TTL index, with `expires` on a date field.
 ```javascript
 const sessionSchema = new Schema({
   token: String,
-  createdAt: { type: Date, default: Date.now, expires: '7d' }
+  createdAt: { type: Date, default: Date.now, expires: "7d" },
 });
 ```
 
@@ -3376,8 +3469,12 @@ MongoDB removes expired documents with a background job that runs about every 60
 - `schema.path(name)`: get the SchemaType of a field
 
 ```javascript
-const baseSchema = new Schema({ name: String, email: String, password: String });
-const publicSchema = baseSchema.omit(['password']);
+const baseSchema = new Schema({
+  name: String,
+  email: String,
+  password: String,
+});
+const publicSchema = baseSchema.omit(["password"]);
 ```
 
 ### 219: What does schema.loadClass() do?
@@ -3418,7 +3515,10 @@ function softDelete(schema) {
     this.where({ deletedAt: null });
   };
 
-  schema.pre(['find', 'findOne', 'countDocuments', 'findOneAndUpdate', 'updateMany'], hideDeleted);
+  schema.pre(
+    ["find", "findOne", "countDocuments", "findOneAndUpdate", "updateMany"],
+    hideDeleted,
+  );
 }
 
 postSchema.plugin(softDelete);
@@ -3441,7 +3541,7 @@ productSchema.query.byCategory = function (category) {
   return this.where({ category });
 };
 
-const items = await Product.find().inStock().byCategory('books');
+const items = await Product.find().inStock().byCategory("books");
 ```
 
 You can also use the `query` schema option, and Mongoose 9 added `schema.queryHelper(name, fn)` which is easier to type in TypeScript.
@@ -3451,7 +3551,7 @@ You can also use the `query` schema option, and Mongoose 9 added `schema.queryHe
 Let Mongoose infer it, or pass your own interface.
 
 ```typescript
-import { Schema, model, Types, HydratedDocument } from 'mongoose';
+import { Schema, model, Types, HydratedDocument } from "mongoose";
 
 interface IPost {
   title: string;
@@ -3461,11 +3561,11 @@ interface IPost {
 
 const postSchema = new Schema<IPost>({
   title: { type: String, required: true },
-  author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  tags: [String]
+  author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  tags: [String],
 });
 
-export const Post = model<IPost>('Post', postSchema);
+export const Post = model<IPost>("Post", postSchema);
 export type PostDocument = HydratedDocument<IPost>;
 ```
 
@@ -3495,18 +3595,18 @@ const userSchema = new Schema(
     methods: {
       fullName() {
         return `${this.firstName} ${this.lastName}`;
-      }
+      },
     },
     statics: {
       findByEmail(email: string) {
         return this.findOne({ email });
-      }
-    }
-  }
+      },
+    },
+  },
 );
 
-const User = model('User', userSchema);
-const u = await User.findByEmail('a@b.com');
+const User = model("User", userSchema);
+const u = await User.findByEmail("a@b.com");
 u?.fullName();
 ```
 
@@ -3523,8 +3623,8 @@ Code that passed loosely typed filters through generic helpers may need an `as Q
 A common choice is `mongodb-memory-server`. It downloads a real `mongod` binary and runs it in memory for the tests.
 
 ```javascript
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose from "mongoose";
 
 let mongod;
 
@@ -3551,11 +3651,11 @@ It is closer to production than mocking, because real queries run.
 You can, for code where the database is not what you are testing, like a service that calls `User.findById()`.
 
 ```javascript
-import { vi } from 'vitest';
-import { User } from '../models/user.js';
+import { vi } from "vitest";
+import { User } from "../models/user.js";
 
-vi.spyOn(User, 'findById').mockReturnValue({
-  lean: vi.fn().mockResolvedValue({ _id: '1', name: 'Anna' })
+vi.spyOn(User, "findById").mockReturnValue({
+  lean: vi.fn().mockResolvedValue({ _id: "1", name: "Anna" }),
 });
 ```
 
@@ -3587,8 +3687,12 @@ const session = await mongoose.startSession();
 try {
   await session.withTransaction(async () => {
     await Order.create([{ customer, total }], { session });
-    await Product.updateOne({ _id: productId }, { $inc: { stock: -1 } }, { session });
-    await Log.insertMany([{ msg: 'order' }], { session });
+    await Product.updateOne(
+      { _id: productId },
+      { $inc: { stock: -1 } },
+      { session },
+    );
+    await Log.insertMany([{ msg: "order" }], { session });
   });
 } finally {
   await session.endSession();
@@ -3602,10 +3706,10 @@ Note that `create()` needs an array when you pass options. Queries can also use 
 It is a Mongoose option that uses Node's `AsyncLocalStorage` to pass the session to every operation inside `connection.transaction()` for you. Then you do not have to add `{ session }` to each call.
 
 ```javascript
-mongoose.set('transactionAsyncLocalStorage', true);
+mongoose.set("transactionAsyncLocalStorage", true);
 
 await mongoose.connection.transaction(async () => {
-  await Order.create({ customer, total });                 // in the transaction
+  await Order.create({ customer, total }); // in the transaction
   await Product.updateOne({ _id: productId }, { $inc: { stock: -1 } }); // in the transaction
 });
 ```
@@ -3621,11 +3725,11 @@ Both retry the callback on transient errors. `connection.transaction()` is a Mon
 Set the read preference on the connection, schema or query.
 
 ```javascript
-await Report.find().read('secondaryPreferred');
+await Report.find().read("secondaryPreferred");
 
-new Schema({}, { read: 'secondaryPreferred' });
+new Schema({}, { read: "secondaryPreferred" });
 
-mongoose.connect(uri, { readPreference: 'secondaryPreferred' });
+mongoose.connect(uri, { readPreference: "secondaryPreferred" });
 ```
 
 Reads from secondaries can be a bit behind the primary, so do not use them for data the user just wrote.
@@ -3635,9 +3739,11 @@ Reads from secondaries can be a bit behind the primary, so do not use them for d
 In the connection string, connection options, schema options or per operation.
 
 ```javascript
-await Payment.create([{ amount: 100 }], { writeConcern: { w: 'majority', j: true } });
+await Payment.create([{ amount: 100 }], {
+  writeConcern: { w: "majority", j: true },
+});
 
-new Schema({}, { writeConcern: { w: 'majority' } });
+new Schema({}, { writeConcern: { w: "majority" } });
 ```
 
 `w: 'majority'` waits until most members of the replica set have the write. It is the default in recent MongoDB versions.
@@ -3647,12 +3753,12 @@ new Schema({}, { writeConcern: { w: 'majority' } });
 Use `Model.watch()`. It opens a change stream (needs a replica set).
 
 ```javascript
-const stream = Order.watch([{ $match: { operationType: 'insert' } }], {
-  fullDocument: 'updateLookup'
+const stream = Order.watch([{ $match: { operationType: "insert" } }], {
+  fullDocument: "updateLookup",
 });
 
-stream.on('change', (change) => {
-  console.log('New order', change.fullDocument._id);
+stream.on("change", (change) => {
+  console.log("New order", change.fullDocument._id);
 });
 ```
 
@@ -3663,12 +3769,17 @@ The documents in change events are plain objects. Save the resume token (`change
 With `optimisticConcurrency: true`, every `save()` checks that `__v` in the database still matches the document's `__v`, and increments it. If someone else saved the document in between, you get a `VersionError`.
 
 ```javascript
-const productSchema = new Schema({ name: String, stock: Number }, { optimisticConcurrency: true });
+const productSchema = new Schema(
+  { name: String, stock: Number },
+  { optimisticConcurrency: true },
+);
 
 const a = await Product.findById(id);
 const b = await Product.findById(id);
-a.stock = 5; await a.save();
-b.stock = 7; await b.save(); // VersionError
+a.stock = 5;
+await a.save();
+b.stock = 7;
+await b.save(); // VersionError
 ```
 
 Without this option, Mongoose only checks the version for some array changes.
@@ -3686,7 +3797,10 @@ Use the last seen value instead of `skip()`. It stays fast on large collections.
 ```javascript
 async function getPage(after, limit = 20) {
   const filter = after ? { _id: { $lt: after } } : {};
-  const items = await Post.find(filter).sort({ _id: -1 }).limit(limit + 1).lean();
+  const items = await Post.find(filter)
+    .sort({ _id: -1 })
+    .limit(limit + 1)
+    .lean();
   const hasMore = items.length > limit;
   if (hasMore) items.pop();
   return { items, next: hasMore ? items.at(-1)._id : null };
@@ -3701,10 +3815,17 @@ Add `_id` as a tie breaker, and use both in the cursor.
 
 ```javascript
 const filter = last
-  ? { $or: [{ createdAt: { $lt: last.createdAt } }, { createdAt: last.createdAt, _id: { $lt: last._id } }] }
+  ? {
+      $or: [
+        { createdAt: { $lt: last.createdAt } },
+        { createdAt: last.createdAt, _id: { $lt: last._id } },
+      ],
+    }
   : {};
 
-const items = await Post.find(filter).sort({ createdAt: -1, _id: -1 }).limit(20);
+const items = await Post.find(filter)
+  .sort({ createdAt: -1, _id: -1 })
+  .limit(20);
 ```
 
 Add an index on `{ createdAt: -1, _id: -1 }` too.
@@ -3714,8 +3835,8 @@ Add an index on `{ createdAt: -1, _id: -1 }` too.
 It throws a `StrictModeError` when you set a field that is not in the schema, instead of silently ignoring it.
 
 ```javascript
-const schema = new Schema({ name: String }, { strict: 'throw' });
-new Model({ name: 'a', nmae: 'typo' }); // throws
+const schema = new Schema({ name: String }, { strict: "throw" });
+new Model({ name: "a", nmae: "typo" }); // throws
 ```
 
 It helps catch typos and makes bad API input fail loudly. Some teams prefer to validate input before it reaches Mongoose instead.
@@ -3725,7 +3846,7 @@ It helps catch typos and makes bad API input fail loudly. Some teams prefer to v
 It casts a plain object to the schema types without creating a document or running validation.
 
 ```javascript
-const raw = { price: '12', createdAt: '2026-01-01' };
+const raw = { price: "12", createdAt: "2026-01-01" };
 const casted = Product.castObject(raw);
 // { price: 12, createdAt: Date }
 ```
@@ -3739,7 +3860,7 @@ It is useful when you build data for `bulkWrite()` or for the driver directly.
 ```javascript
 const [raw] = await User.aggregate([{ $match: { _id: id } }]);
 const user = User.hydrate(raw);
-user.name = 'New name';
+user.name = "New name";
 await user.save(); // sends only the change
 ```
 
@@ -3750,11 +3871,11 @@ The object is treated as already in the database (`isNew` is false).
 Use `mongoose.set()` before creating models.
 
 ```javascript
-mongoose.set('strictQuery', true);
-mongoose.set('runValidators', true);
-mongoose.set('sanitizeFilter', true);
-mongoose.set('toJSON', { virtuals: true });
-mongoose.set('returnDocument', 'after');
+mongoose.set("strictQuery", true);
+mongoose.set("runValidators", true);
+mongoose.set("sanitizeFilter", true);
+mongoose.set("toJSON", { virtuals: true });
+mongoose.set("returnDocument", "after");
 ```
 
 `returnDocument` as a global option was added in Mongoose 9.2. Some options (like `toJSON`) only apply to schemas created after you set them.
@@ -3777,8 +3898,8 @@ export const CatSchema = SchemaFactory.createForClass(Cat);
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URI),
-    MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }])
-  ]
+    MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
+  ],
 })
 export class CatsModule {}
 
@@ -3796,13 +3917,16 @@ export class CatsService {
 Cache the connection on `globalThis`, so each warm function call reuses it instead of opening a new pool.
 
 ```javascript
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const cached = globalThis.mongoose ?? (globalThis.mongoose = { conn: null, promise: null });
+const cached =
+  globalThis.mongoose ?? (globalThis.mongoose = { conn: null, promise: null });
 
 export async function connectDb() {
   if (cached.conn) return cached.conn;
-  cached.promise ??= mongoose.connect(process.env.MONGODB_URI, { maxPoolSize: 5 });
+  cached.promise ??= mongoose.connect(process.env.MONGODB_URI, {
+    maxPoolSize: 5,
+  });
   cached.conn = await cached.promise;
   return cached.conn;
 }
@@ -3815,7 +3939,7 @@ Also use `mongoose.models.X || mongoose.model(...)` to avoid `OverwriteModelErro
 Normally, changes to a schema after `mongoose.model()` is called are ignored. `Model.recompileSchema()` applies them, for example when a plugin adds fields after the model is created.
 
 ```javascript
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 userSchema.add({ nickname: String });
 User.recompileSchema();
 ```
@@ -3827,7 +3951,7 @@ It is rarely needed. Usually you just finish the schema before compiling.
 It sets `createdAt` and `updatedAt` on a plain object (including subdocuments) the same way Mongoose would. It is useful when you insert data through the driver or `bulkWrite()` and still want timestamps.
 
 ```javascript
-const obj = { name: 'Pen' };
+const obj = { name: "Pen" };
 Product.applyTimestamps(obj);
 await Product.collection.insertOne(obj);
 ```
@@ -3837,11 +3961,11 @@ await Product.collection.insertOne(obj);
 `$locals` is a place to store temporary data on a document. It is not saved and not included in `toJSON()`. It is useful for passing data from a pre hook to a post hook.
 
 ```javascript
-userSchema.pre('save', function () {
+userSchema.pre("save", function () {
   this.$locals.wasNew = this.isNew;
 });
 
-userSchema.post('save', async function (doc) {
+userSchema.post("save", async function (doc) {
   if (doc.$locals.wasNew) {
     await sendWelcomeEmail(doc.email);
   }
@@ -3853,12 +3977,12 @@ userSchema.post('save', async function (doc) {
 Use `isModified()`, `modifiedPaths()` or `directModifiedPaths()`. For the old value, you need to store it yourself, because Mongoose does not keep it by default.
 
 ```javascript
-userSchema.post('init', function () {
+userSchema.post("init", function () {
   this.$locals.originalEmail = this.email;
 });
 
-userSchema.pre('save', async function () {
-  if (this.isModified('email')) {
+userSchema.pre("save", async function () {
+  if (this.isModified("email")) {
     await logEmailChange(this.$locals.originalEmail, this.email);
   }
 });
@@ -3875,7 +3999,9 @@ class NotFoundError extends Error {
   status = 404;
 }
 
-const user = await User.findById(id).orFail(() => new NotFoundError('User not found'));
+const user = await User.findById(id).orFail(
+  () => new NotFoundError("User not found"),
+);
 ```
 
 Your error middleware can then send `err.status`.
@@ -3890,14 +4016,14 @@ Remove the `next` argument, make the function `async`, and replace `next(err)` w
 
 ```javascript
 // Mongoose 8
-schema.pre('save', function (next) {
-  if (!this.slug) return next(new Error('slug required'));
+schema.pre("save", function (next) {
+  if (!this.slug) return next(new Error("slug required"));
   next();
 });
 
 // Mongoose 9
-schema.pre('save', async function () {
-  if (!this.slug) throw new Error('slug required');
+schema.pre("save", async function () {
+  if (!this.slug) throw new Error("slug required");
 });
 ```
 
@@ -3930,12 +4056,15 @@ Check plugins from npm too. Old plugins that call `next()` break in Mongoose 9.
 Add a getter and turn getters on for `toJSON`.
 
 ```javascript
-const productSchema = new Schema({
-  price: {
-    type: Schema.Types.Decimal128,
-    get: (v) => (v == null ? v : v.toString())
-  }
-}, { toJSON: { getters: true } });
+const productSchema = new Schema(
+  {
+    price: {
+      type: Schema.Types.Decimal128,
+      get: (v) => (v == null ? v : v.toString()),
+    },
+  },
+  { toJSON: { getters: true } },
+);
 ```
 
 Using `parseFloat()` in the getter gives numbers but can lose precision. For money, a string is safer.
@@ -3945,8 +4074,8 @@ Using `parseFloat()` in the getter gives numbers but can lose precision. For mon
 Use `$gte` the start of the day and `$lt` the start of the next day. Be clear about the time zone, because dates are stored in UTC.
 
 ```javascript
-const start = new Date('2026-10-24T00:00:00Z');
-const end = new Date('2026-10-25T00:00:00Z');
+const start = new Date("2026-10-24T00:00:00Z");
+const end = new Date("2026-10-25T00:00:00Z");
 
 const orders = await Order.find({ createdAt: { $gte: start, $lt: end } });
 ```
@@ -3959,11 +4088,13 @@ Escape special regex characters, and limit the input length.
 
 ```javascript
 function escapeRegex(text) {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-const q = String(req.query.q ?? '').slice(0, 50);
-const users = await User.find({ name: new RegExp('^' + escapeRegex(q), 'i') }).limit(20);
+const q = String(req.query.q ?? "").slice(0, 50);
+const users = await User.find({
+  name: new RegExp("^" + escapeRegex(q), "i"),
+}).limit(20);
 ```
 
 Without escaping, a user can send a heavy pattern that makes the query very slow.
@@ -3978,7 +4109,7 @@ Two common ways:
 ```javascript
 userSchema.index(
   { username: 1 },
-  { unique: true, collation: { locale: 'en', strength: 2 } }
+  { unique: true, collation: { locale: "en", strength: 2 } },
 );
 ```
 
@@ -4020,10 +4151,13 @@ Store the expiry time and set `expires: 0`. Each document then expires at its ow
 ```javascript
 const inviteSchema = new Schema({
   email: String,
-  expireAt: { type: Date, required: true, expires: 0 }
+  expireAt: { type: Date, required: true, expires: 0 },
 });
 
-await Invite.create({ email, expireAt: new Date(Date.now() + 48 * 3600 * 1000) });
+await Invite.create({
+  email,
+  expireAt: new Date(Date.now() + 48 * 3600 * 1000),
+});
 ```
 
 ### 262: How do you exclude deleted or private fields from populate()?
@@ -4031,7 +4165,7 @@ await Invite.create({ email, expireAt: new Date(Date.now() + 48 * 3600 * 1000) }
 Use `select` with `-` in populate.
 
 ```javascript
-await Post.find().populate({ path: 'author', select: '-password -email -__v' });
+await Post.find().populate({ path: "author", select: "-password -email -__v" });
 ```
 
 `select: false` fields in the related schema are also excluded from population by default.
@@ -4042,9 +4176,16 @@ You cannot sort the parent query by a populated field, because the population ha
 
 ```javascript
 await Post.aggregate([
-  { $lookup: { from: 'users', localField: 'author', foreignField: '_id', as: 'author' } },
-  { $unwind: '$author' },
-  { $sort: { 'author.name': 1 } }
+  {
+    $lookup: {
+      from: "users",
+      localField: "author",
+      foreignField: "_id",
+      as: "author",
+    },
+  },
+  { $unwind: "$author" },
+  { $sort: { "author.name": 1 } },
 ]);
 ```
 
@@ -4055,7 +4196,7 @@ Same problem as sorting. Options:
 1. Two queries: find the matching ids first, then filter.
 
 ```javascript
-const authorIds = await User.find({ country: 'DE' }).distinct('_id');
+const authorIds = await User.find({ country: "DE" }).distinct("_id");
 const posts = await Post.find({ author: { $in: authorIds } });
 ```
 
@@ -4071,7 +4212,7 @@ Use one aggregation instead of a `countDocuments()` per parent.
 ```javascript
 const counts = await Comment.aggregate([
   { $match: { post: { $in: postIds } } },
-  { $group: { _id: '$post', count: { $sum: 1 } } }
+  { $group: { _id: "$post", count: { $sum: 1 } } },
 ]);
 
 const byPost = new Map(counts.map((c) => [c._id.toString(), c.count]));
@@ -4085,8 +4226,16 @@ Update both sides, ideally in a transaction.
 
 ```javascript
 await mongoose.connection.transaction(async (session) => {
-  await Student.updateOne({ _id: studentId }, { $addToSet: { courses: courseId } }, { session });
-  await Course.updateOne({ _id: courseId }, { $addToSet: { students: studentId } }, { session });
+  await Student.updateOne(
+    { _id: studentId },
+    { $addToSet: { courses: courseId } },
+    { session },
+  );
+  await Course.updateOne(
+    { _id: courseId },
+    { $addToSet: { students: studentId } },
+    { session },
+  );
 });
 ```
 
@@ -4099,7 +4248,7 @@ Use `$rename` in an `updateMany()`, then change the schema.
 ```javascript
 await User.collection.updateMany(
   { fullname: { $exists: true } },
-  { $rename: { fullname: 'fullName' } }
+  { $rename: { fullname: "fullName" } },
 );
 ```
 
@@ -4114,11 +4263,21 @@ Use a migration tool (like `migrate-mongo` or a small script runner) and keep sc
 - keep the script safe to run twice
 
 ```javascript
-await User.find({ displayName: { $exists: false } }).cursor().eachAsync(async (users) => {
-  await User.bulkWrite(users.map((u) => ({
-    updateOne: { filter: { _id: u._id }, update: { $set: { displayName: u.name } } }
-  })));
-}, { batchSize: 500 });
+await User.find({ displayName: { $exists: false } })
+  .cursor()
+  .eachAsync(
+    async (users) => {
+      await User.bulkWrite(
+        users.map((u) => ({
+          updateOne: {
+            filter: { _id: u._id },
+            update: { $set: { displayName: u.name } },
+          },
+        })),
+      );
+    },
+    { batchSize: 500 },
+  );
 ```
 
 ### 269: What is the difference between deleteOne() on a query and on a document?
@@ -4130,12 +4289,16 @@ await User.find({ displayName: { $exists: false } }).cursor().eachAsync(async (u
 Mongoose does not do it for you. Write middleware or do it in your service code.
 
 ```javascript
-postSchema.pre('deleteOne', { document: true, query: false }, async function () {
-  await Comment.deleteMany({ post: this._id });
-});
+postSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function () {
+    await Comment.deleteMany({ post: this._id });
+  },
+);
 
-postSchema.pre('findOneAndDelete', async function () {
-  const post = await this.model.findOne(this.getFilter()).select('_id').lean();
+postSchema.pre("findOneAndDelete", async function () {
+  const post = await this.model.findOne(this.getFilter()).select("_id").lean();
   if (post) await Comment.deleteMany({ post: post._id });
 });
 ```
@@ -4152,9 +4315,9 @@ const userSchema = new Schema({
   slug: {
     type: String,
     default: function () {
-      return this.name?.toLowerCase().replace(/\s+/g, '-');
-    }
-  }
+      return this.name?.toLowerCase().replace(/\s+/g, "-");
+    },
+  },
 });
 ```
 
@@ -4166,7 +4329,10 @@ You can turn on `timestamps` in a subdocument schema. Each subdocument then gets
 
 ```javascript
 const commentSchema = new Schema({ text: String }, { timestamps: true });
-const postSchema = new Schema({ comments: [commentSchema] }, { timestamps: true });
+const postSchema = new Schema(
+  { comments: [commentSchema] },
+  { timestamps: true },
+);
 ```
 
 When you push a new comment and save, only that comment gets new timestamps, plus the post's `updatedAt`.
@@ -4178,7 +4344,7 @@ Use `$each` with `$slice`.
 ```javascript
 await User.updateOne(
   { _id: id },
-  { $push: { recentSearches: { $each: [term], $position: 0, $slice: 10 } } }
+  { $push: { recentSearches: { $each: [term], $position: 0, $slice: 10 } } },
 );
 ```
 
@@ -4191,7 +4357,7 @@ Use the `$elemMatch` projection or the positional `$` projection.
 ```javascript
 await Order.findOne(
   { _id: id },
-  { items: { $elemMatch: { status: 'returned' } } }
+  { items: { $elemMatch: { status: "returned" } } },
 );
 ```
 
@@ -4202,7 +4368,9 @@ Both return only the first matching element. For all matches, use an aggregation
 Use `distinct()` for unique values, or select the field with `lean()`.
 
 ```javascript
-const emails = (await User.find({ active: true }).select('email -_id').lean()).map((u) => u.email);
+const emails = (
+  await User.find({ active: true }).select("email -_id").lean()
+).map((u) => u.email);
 ```
 
 ### 276: How do you run raw MongoDB commands through Mongoose?
@@ -4224,9 +4392,11 @@ Await `mongoose.connect()` before calling `app.listen()`, and fail fast if it re
 
 ```javascript
 try {
-  await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
+  await mongoose.connect(process.env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 5000,
+  });
 } catch (err) {
-  console.error('Database not reachable', err);
+  console.error("Database not reachable", err);
   process.exit(1);
 }
 app.listen(3000);
@@ -4239,7 +4409,7 @@ In Kubernetes, a readiness probe that checks `readyState === 1` keeps traffic aw
 With buffering off, model calls fail right away if there is no connection, instead of waiting up to `bufferTimeoutMS`.
 
 ```javascript
-mongoose.set('bufferCommands', false);
+mongoose.set("bufferCommands", false);
 ```
 
 This is useful in serverless code and APIs where you prefer a quick error over a request that hangs for 10 seconds. You then must make sure you connect before using models.
@@ -4249,9 +4419,12 @@ This is useful in serverless code and APIs where you prefer a quick error over a
 Validate the request body with Zod at the API edge, then pass the clean data to Mongoose. Keep Mongoose validators for rules that protect the data itself (required fields, enums, ranges).
 
 ```javascript
-const CreateUser = z.object({ name: z.string().min(1), email: z.string().email() });
+const CreateUser = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+});
 
-app.post('/users', async (req, res) => {
+app.post("/users", async (req, res) => {
   const data = CreateUser.parse(req.body);
   const user = await User.create(data);
   res.status(201).json(user);
@@ -4275,8 +4448,8 @@ You can use the result for MongoDB `$jsonSchema` validation, or for API docs.
 Mongoose validation only runs in your app. To protect against writes from other tools, add a `$jsonSchema` validator to the collection. You can create it with `createCollection()` options:
 
 ```javascript
-await mongoose.connection.createCollection('users', {
-  validator: { $jsonSchema: userSchema.toJSONSchema() }
+await mongoose.connection.createCollection("users", {
+  validator: { $jsonSchema: userSchema.toJSONSchema() },
 });
 ```
 
@@ -4304,14 +4477,17 @@ It is still a good habit to check input before you build filters for writes.
 A common pattern for sequence numbers:
 
 ```javascript
-const counterSchema = new Schema({ _id: String, seq: { type: Number, default: 0 } });
-const Counter = mongoose.model('Counter', counterSchema);
+const counterSchema = new Schema({
+  _id: String,
+  seq: { type: Number, default: 0 },
+});
+const Counter = mongoose.model("Counter", counterSchema);
 
 async function nextInvoiceNumber() {
   const c = await Counter.findOneAndUpdate(
-    { _id: 'invoice' },
+    { _id: "invoice" },
     { $inc: { seq: 1 } },
-    { upsert: true, returnDocument: 'after' }
+    { upsert: true, returnDocument: "after" },
   );
   return c.seq;
 }
@@ -4324,7 +4500,7 @@ The update is atomic, so two requests never get the same number.
 Mongoose applies defaults only in memory when loading old documents. To store the default, run an update:
 
 ```javascript
-await User.updateMany({ plan: { $exists: false } }, { $set: { plan: 'free' } });
+await User.updateMany({ plan: { $exists: false } }, { $set: { plan: "free" } });
 ```
 
 ### 286: How does Mongoose cast the _id in populate()?
@@ -4337,8 +4513,8 @@ You can pass the same schema to several `model()` calls, but they share hooks an
 
 ```javascript
 const archiveSchema = orderSchema.clone();
-archiveSchema.set('collection', 'orders_archive');
-const OrderArchive = mongoose.model('OrderArchive', archiveSchema);
+archiveSchema.set("collection", "orders_archive");
+const OrderArchive = mongoose.model("OrderArchive", archiveSchema);
 ```
 
 ### 288: How do you set options on a query?
@@ -4366,13 +4542,17 @@ MongoDB stops the operation and returns an error after the time limit. This prot
 ### 290: How do you get the filter, update and options from a query object?
 
 ```javascript
-const q = User.findOneAndUpdate({ email }, { $set: { name } }, { returnDocument: 'after' });
+const q = User.findOneAndUpdate(
+  { email },
+  { $set: { name } },
+  { returnDocument: "after" },
+);
 
-q.getFilter();  // { email: '...' }
-q.getUpdate();  // { $set: { name: '...' } }
+q.getFilter(); // { email: '...' }
+q.getUpdate(); // { $set: { name: '...' } }
 q.getOptions(); // { returnDocument: 'after' }
-q.op;           // 'findOneAndUpdate'
-q.model;        // the model
+q.op; // 'findOneAndUpdate'
+q.model; // the model
 ```
 
 These are mostly used in query middleware.
@@ -4384,8 +4564,8 @@ Use dot notation with the key.
 ```javascript
 const productSchema = new Schema({ attrs: { type: Map, of: String } });
 
-await Product.find({ 'attrs.color': 'red' });
-await Product.updateOne({ _id: id }, { $set: { 'attrs.size': 'L' } });
+await Product.find({ "attrs.color": "red" });
+await Product.updateOne({ _id: id }, { $set: { "attrs.size": "L" } });
 ```
 
 In JSON output, Maps become plain objects (with `flattenMaps`, which is on by default for `toJSON()`).
@@ -4395,7 +4575,7 @@ In JSON output, Maps become plain objects (with `flattenMaps`, which is on by de
 `init` runs when Mongoose loads a document from the database (after `find()` and similar). It is synchronous, so it cannot be `async`.
 
 ```javascript
-schema.post('init', function (doc) {
+schema.post("init", function (doc) {
   doc.$locals.loadedAt = new Date();
 });
 ```
@@ -4408,7 +4588,11 @@ Mongoose 9 added the `middleware` option.
 
 ```javascript
 await doc.save({ middleware: false });
-await User.updateOne({ _id: id }, { $set: { name: 'x' } }, { middleware: false });
+await User.updateOne(
+  { _id: id },
+  { $set: { name: "x" } },
+  { middleware: false },
+);
 ```
 
 You can also skip only pre or only post hooks. Use it for scripts and bulk jobs where the hooks are not needed.
@@ -4430,7 +4614,7 @@ Be careful not to keep using the session after the transaction ends.
 `doc.validate()` validates a document. `Model.validate(obj, paths)` casts and validates a plain object against the schema without creating a document, and returns the cast object.
 
 ```javascript
-const clean = await User.validate({ name: 'Anna', age: '30' });
+const clean = await User.validate({ name: "Anna", age: "30" });
 // clean.age === 30
 ```
 
@@ -4443,16 +4627,19 @@ It removes the `id` virtual. This is useful if your data has its own `id` field 
 Use a `toJSON` transform.
 
 ```javascript
-const schema = new Schema({ name: String }, {
-  toJSON: {
-    virtuals: true,
-    versionKey: false,
-    transform(doc, ret) {
-      delete ret._id;
-      return ret;
-    }
-  }
-});
+const schema = new Schema(
+  { name: String },
+  {
+    toJSON: {
+      virtuals: true,
+      versionKey: false,
+      transform(doc, ret) {
+        delete ret._id;
+        return ret;
+      },
+    },
+  },
+);
 ```
 
 With `virtuals: true`, the `id` virtual is included. Then you remove `_id`.
@@ -4464,10 +4651,13 @@ Two upserts at the same time can both try to insert. With a unique index, one fa
 ```javascript
 async function upsertUser(email, data) {
   try {
-    return await User.findOneAndUpdate({ email }, data, { upsert: true, returnDocument: 'after' });
+    return await User.findOneAndUpdate({ email }, data, {
+      upsert: true,
+      returnDocument: "after",
+    });
   } catch (err) {
     if (err.code !== 11000) throw err;
-    return User.findOneAndUpdate({ email }, data, { returnDocument: 'after' });
+    return User.findOneAndUpdate({ email }, data, { returnDocument: "after" });
   }
 }
 ```
@@ -4480,12 +4670,23 @@ Use post hooks for save and the update/delete queries.
 
 ```javascript
 function audit(schema) {
-  schema.post('save', async function (doc) {
-    await AuditLog.create({ model: doc.constructor.modelName, docId: doc._id, op: 'save' });
+  schema.post("save", async function (doc) {
+    await AuditLog.create({
+      model: doc.constructor.modelName,
+      docId: doc._id,
+      op: "save",
+    });
   });
-  schema.post(['updateOne', 'findOneAndUpdate', 'deleteOne'], async function () {
-    await AuditLog.create({ model: this.model.modelName, filter: this.getFilter(), op: this.op });
-  });
+  schema.post(
+    ["updateOne", "findOneAndUpdate", "deleteOne"],
+    async function () {
+      await AuditLog.create({
+        model: this.model.modelName,
+        filter: this.getFilter(),
+        op: this.op,
+      });
+    },
+  );
 }
 
 mongoose.plugin(audit);
@@ -4511,9 +4712,9 @@ It sends `updateOne({ _id, [versionKey if needed] }, delta)`, where `delta` is b
 
 ```javascript
 const user = await User.findById(id);
-user.name = 'Anna';
-user.tags.push('a', 'b');
-user.address.city = 'Berlin';
+user.name = "Anna";
+user.tags.push("a", "b");
+user.address.city = "Berlin";
 await user.save();
 // users.updateOne(
 //   { _id: ... },
@@ -4533,8 +4734,8 @@ If you mix operations that cannot be combined in one update (like `push()` and t
 
 ```javascript
 const post = await Post.findById(id);
-post.comments[2].text = 'edited'; // fine, subdoc path
-post.tags[1] = 'new';             // $set 'tags.1'
+post.comments[2].text = "edited"; // fine, subdoc path
+post.tags[1] = "new"; // $set 'tags.1'
 await post.save();
 ```
 
@@ -4611,7 +4812,7 @@ for (const post of posts) {
 }
 
 // Good: 2 queries
-const posts2 = await Post.find().populate('author', 'name').lean();
+const posts2 = await Post.find().populate("author", "name").lean();
 ```
 
 `populate()` batches the ids into one query. Also watch for `countDocuments()` or virtual populate inside loops, and use one aggregation with `$group` instead.
@@ -4637,14 +4838,18 @@ const bucketSchema = new Schema({
   sensorId: { type: Schema.Types.ObjectId, index: true },
   start: Date,
   count: { type: Number, default: 0 },
-  readings: [{ _id: false, t: Date, v: Number }]
+  readings: [{ _id: false, t: Date, v: Number }],
 });
 bucketSchema.index({ sensorId: 1, start: 1 });
 
 await Bucket.updateOne(
   { sensorId, count: { $lt: 200 } },
-  { $push: { readings: { t: new Date(), v: 21.5 } }, $inc: { count: 1 }, $setOnInsert: { start: new Date() } },
-  { upsert: true }
+  {
+    $push: { readings: { t: new Date(), v: 21.5 } },
+    $inc: { count: 1 },
+    $setOnInsert: { start: new Date() },
+  },
+  { upsert: true },
 );
 ```
 
@@ -4655,15 +4860,22 @@ This cuts the number of documents and index entries a lot. For new projects, Mon
 Use the `timeseries` schema option. Mongoose creates the collection with those settings.
 
 ```javascript
-const metricSchema = new Schema({
-  timestamp: Date,
-  meta: { host: String, region: String },
-  cpu: Number
-}, {
-  timeseries: { timeField: 'timestamp', metaField: 'meta', granularity: 'minutes' },
-  autoCreate: true,
-  expireAfterSeconds: 60 * 60 * 24 * 30
-});
+const metricSchema = new Schema(
+  {
+    timestamp: Date,
+    meta: { host: String, region: String },
+    cpu: Number,
+  },
+  {
+    timeseries: {
+      timeField: "timestamp",
+      metaField: "meta",
+      granularity: "minutes",
+    },
+    autoCreate: true,
+    expireAfterSeconds: 60 * 60 * 24 * 30,
+  },
+);
 ```
 
 The collection must be created as a time series collection. If it already exists as a normal collection, the option does nothing.
@@ -4676,7 +4888,11 @@ You store a small, often used part of related data inside the parent, and the fu
 await Review.create({ product: productId, text, rating });
 await Product.updateOne(
   { _id: productId },
-  { $push: { recentReviews: { $each: [{ text, rating }], $position: 0, $slice: 10 } } }
+  {
+    $push: {
+      recentReviews: { $each: [{ text, rating }], $position: 0, $slice: 10 },
+    },
+  },
 );
 ```
 
@@ -4692,9 +4908,12 @@ When you copy a field (like the author's name) into other documents, you have to
 - accept short delays and rebuild with a background job
 
 ```javascript
-userSchema.post('findOneAndUpdate', async function (doc) {
+userSchema.post("findOneAndUpdate", async function (doc) {
   if (doc && this.getUpdate().$set?.name) {
-    await Post.updateMany({ 'author._id': doc._id }, { $set: { 'author.name': doc.name } });
+    await Post.updateMany(
+      { "author._id": doc._id },
+      { $set: { "author.name": doc.name } },
+    );
   }
 });
 ```
@@ -4716,19 +4935,34 @@ With option 1, the biggest risk is a query that forgets the tenant filter, so en
 Use `AsyncLocalStorage` to hold the current tenant and a global plugin that adds it.
 
 ```javascript
-import { AsyncLocalStorage } from 'node:async_hooks';
+import { AsyncLocalStorage } from "node:async_hooks";
 export const tenantStore = new AsyncLocalStorage();
 
 function tenantPlugin(schema) {
-  if (!schema.path('tenantId')) return;
+  if (!schema.path("tenantId")) return;
   const addTenant = function () {
     const tenantId = tenantStore.getStore()?.tenantId;
-    if (!tenantId) throw new Error('No tenant in context');
+    if (!tenantId) throw new Error("No tenant in context");
     this.where({ tenantId });
   };
-  schema.pre(['find', 'findOne', 'countDocuments', 'updateOne', 'updateMany', 'deleteOne', 'deleteMany', 'findOneAndUpdate', 'findOneAndDelete'], addTenant);
-  schema.pre('aggregate', function () {
-    this.pipeline().unshift({ $match: { tenantId: tenantStore.getStore()?.tenantId } });
+  schema.pre(
+    [
+      "find",
+      "findOne",
+      "countDocuments",
+      "updateOne",
+      "updateMany",
+      "deleteOne",
+      "deleteMany",
+      "findOneAndUpdate",
+      "findOneAndDelete",
+    ],
+    addTenant,
+  );
+  schema.pre("aggregate", function () {
+    this.pipeline().unshift({
+      $match: { tenantId: tenantStore.getStore()?.tenantId },
+    });
   });
 }
 mongoose.plugin(tenantPlugin);
@@ -4814,7 +5048,9 @@ That operation runs outside the transaction. It is committed right away, even if
 Inside a transaction, all operations share one session, and MongoDB does not allow running several operations in parallel on the same session in a transaction. Mongoose normally populates several paths in parallel. The `ordered: true` populate option (added in 8.x) runs them one after another.
 
 ```javascript
-await Order.findById(id).session(session).populate({ path: 'items.product', ordered: true });
+await Order.findById(id)
+  .session(session)
+  .populate({ path: "items.product", ordered: true });
 ```
 
 ### 329: How do read and write concerns combine for consistent reads?
@@ -4823,8 +5059,15 @@ For "read your own writes" across a replica set, use causal consistency: a sessi
 
 ```javascript
 const session = await mongoose.startSession({ causalConsistency: true });
-await User.updateOne({ _id: id }, { name: 'Anna' }, { session, writeConcern: { w: 'majority' } });
-const user = await User.findById(id).session(session).read('secondary').readConcern('majority');
+await User.updateOne(
+  { _id: id },
+  { name: "Anna" },
+  { session, writeConcern: { w: "majority" } },
+);
+const user = await User.findById(id)
+  .session(session)
+  .read("secondary")
+  .readConcern("majority");
 ```
 
 Without a session, a secondary read may return old data.
@@ -4834,7 +5077,7 @@ Without a session, a secondary read may return old data.
 `readConcern: 'snapshot'` gives you a view of the data from one point in time across several reads. It is the read concern used inside transactions. Outside transactions, MongoDB 5.0+ supports snapshot reads for `find()` and `aggregate()` on a single query, which is useful for reports that must be consistent while data changes.
 
 ```javascript
-await Order.aggregate(pipeline).option({ readConcern: { level: 'snapshot' } });
+await Order.aggregate(pipeline).option({ readConcern: { level: "snapshot" } });
 ```
 
 ### 331: How do you design indexes for Mongoose queries?
@@ -4859,7 +5102,7 @@ A covered query is answered from the index alone, without reading documents. The
 ```javascript
 userSchema.index({ email: 1, name: 1 });
 
-await User.find({ email: 'anna@example.com' }).select('email name -_id').lean();
+await User.find({ email: "anna@example.com" }).select("email name -_id").lean();
 ```
 
 `lean()` does not make a query covered, but without it Mongoose builds documents and may add defaults, which hides the benefit. `explain()` shows `totalDocsExamined: 0` for a covered query.
@@ -4886,9 +5129,12 @@ Use `diffIndexes()` to see the plan first, and apply changes in a reviewed migra
 You usually cannot change an index in place. You create the new one, check queries use it, and then drop the old one.
 
 ```javascript
-await Order.collection.createIndex({ customer: 1, createdAt: -1 }, { name: 'customer_createdAt' });
+await Order.collection.createIndex(
+  { customer: 1, createdAt: -1 },
+  { name: "customer_createdAt" },
+);
 // deploy, check explain()
-await Order.collection.dropIndex('customer_1');
+await Order.collection.dropIndex("customer_1");
 ```
 
 For a safer switch, first hide the old index (`collMod` with `hidden: true`), watch performance, then drop it.
@@ -4913,7 +5159,7 @@ A partial index includes only documents that match a filter, so it is smaller an
 // unique email only for users that are not deleted
 userSchema.index(
   { email: 1 },
-  { unique: true, partialFilterExpression: { isDeleted: false } }
+  { unique: true, partialFilterExpression: { isDeleted: false } },
 );
 ```
 
@@ -4949,7 +5195,7 @@ const user = await User.create({ name, email });
 
 // or protect fields at schema level
 const userSchema = new Schema({
-  role: { type: String, default: 'user', immutable: true }
+  role: { type: String, default: "user", immutable: true },
 });
 ```
 
@@ -4963,10 +5209,13 @@ Options:
 2. **App-level encryption** with setters/getters or hooks using Node's `crypto`. Simple, but you cannot query encrypted values except by exact match with deterministic encryption.
 
 ```javascript
-const patientSchema = new Schema({
-  name: String,
-  ssn: { type: String, encrypt: { keyId: [keyId], queries: 'equality' } }
-}, { encryptionType: 'queryableEncryption' });
+const patientSchema = new Schema(
+  {
+    name: String,
+    ssn: { type: String, encrypt: { keyId: [keyId], queries: "equality" } },
+  },
+  { encryptionType: "queryableEncryption" },
+);
 ```
 
 Key management (KMS) is the hard part in both cases.
@@ -4987,8 +5236,8 @@ Mongoose has no built-in roles, so you do it in code:
 
 ```javascript
 const fieldsByRole = {
-  admin: '',
-  user: '-email -lastLoginIp -internalNotes'
+  admin: "",
+  user: "-email -lastLoginIp -internalNotes",
 };
 
 const users = await User.find().select(fieldsByRole[req.user.role]).lean();
@@ -5007,7 +5256,7 @@ You extend `mongoose.SchemaType` and implement `cast()`. Then register it on `mo
 ```javascript
 class Email extends mongoose.SchemaType {
   constructor(key, options) {
-    super(key, options, 'Email');
+    super(key, options, "Email");
   }
   cast(val) {
     const s = String(val).trim().toLowerCase();
@@ -5030,7 +5279,7 @@ Each schema type has a static `cast()` you can replace. For example, to stop Mon
 
 ```javascript
 mongoose.Schema.Types.String.cast((v) => {
-  if (typeof v !== 'string') throw new Error('Must be a string');
+  if (typeof v !== "string") throw new Error("Must be a string");
   return v;
 });
 
@@ -5046,7 +5295,7 @@ Use the static `get()` or `set()` on the type.
 
 ```javascript
 // trim all strings
-mongoose.Schema.Types.String.set((v) => (typeof v === 'string' ? v.trim() : v));
+mongoose.Schema.Types.String.set((v) => (typeof v === "string" ? v.trim() : v));
 
 // return ObjectIds as strings everywhere
 mongoose.Schema.Types.ObjectId.get((v) => (v == null ? v : v.toString()));
@@ -5075,8 +5324,8 @@ Mongoose does not let you just change `__t` with a normal update, because the up
 ```javascript
 await Event.updateOne(
   { _id: id },
-  { __t: 'Signup', plan: 'pro' },
-  { overwriteDiscriminatorKey: true }
+  { __t: "Signup", plan: "pro" },
+  { overwriteDiscriminatorKey: true },
 );
 ```
 
@@ -5099,9 +5348,12 @@ Use a `schemaVersion` field and upgrade in a post `init` hook or a helper, then 
 ```javascript
 const CURRENT = 2;
 
-userSchema.post('init', function (doc) {
+userSchema.post("init", function (doc) {
   if ((doc.schemaVersion ?? 1) < 2) {
-    doc.set('fullName', `${doc.get('firstName', String)} ${doc.get('lastName', String)}`);
+    doc.set(
+      "fullName",
+      `${doc.get("firstName", String)} ${doc.get("lastName", String)}`,
+    );
     doc.schemaVersion = CURRENT;
     doc.$locals.needsSave = true;
   }
@@ -5115,7 +5367,7 @@ The upgraded data is saved the next time the document is saved. It keeps reads f
 `strictRead` controls what happens to fields in stored documents that are not in the schema when Mongoose loads them. With `true` they are removed from the hydrated document, with `'throw'` loading fails. The default is `false`, which keeps them in the raw data. It helps find old fields that should have been migrated.
 
 ```javascript
-new Schema({ name: String }, { strictRead: 'throw' });
+new Schema({ name: String }, { strictRead: "throw" });
 ```
 
 ### 354: How do you handle the 16 MB document limit?
@@ -5127,9 +5379,9 @@ new Schema({ name: String }, { strictRead: 'throw' });
 
 ```javascript
 await Post.aggregate([
-  { $project: { size: { $bsonSize: '$$ROOT' } } },
+  { $project: { size: { $bsonSize: "$$ROOT" } } },
   { $sort: { size: -1 } },
-  { $limit: 5 }
+  { $limit: 5 },
 ]);
 ```
 
@@ -5138,14 +5390,19 @@ await Post.aggregate([
 Mongoose does not wrap GridFS, but you can use the driver's `GridFSBucket` with Mongoose's connection.
 
 ```javascript
-import { GridFSBucket } from 'mongodb';
-import { pipeline } from 'node:stream/promises';
-import fs from 'node:fs';
+import { GridFSBucket } from "mongodb";
+import { pipeline } from "node:stream/promises";
+import fs from "node:fs";
 
-const bucket = new GridFSBucket(mongoose.connection.db, { bucketName: 'uploads' });
+const bucket = new GridFSBucket(mongoose.connection.db, {
+  bucketName: "uploads",
+});
 
-await pipeline(fs.createReadStream('./report.pdf'), bucket.openUploadStream('report.pdf'));
-bucket.openDownloadStreamByName('report.pdf').pipe(res);
+await pipeline(
+  fs.createReadStream("./report.pdf"),
+  bucket.openUploadStream("report.pdf"),
+);
+bucket.openDownloadStreamByName("report.pdf").pipe(res);
 ```
 
 Store the file id on your Mongoose document if you need a link.
@@ -5155,19 +5412,21 @@ Store the file id on your Mongoose document if you need a link.
 Stream with a lean cursor and write as you go.
 
 ```javascript
-import { Transform } from 'node:stream';
-import { pipeline } from 'node:stream/promises';
+import { Transform } from "node:stream";
+import { pipeline } from "node:stream/promises";
 
-const cursor = Order.find({ status: 'paid' }).lean().cursor({ batchSize: 1000 });
+const cursor = Order.find({ status: "paid" })
+  .lean()
+  .cursor({ batchSize: 1000 });
 
 const toCsv = new Transform({
   objectMode: true,
   transform(doc, _, cb) {
     cb(null, `${doc._id},${doc.total},${doc.createdAt.toISOString()}\n`);
-  }
+  },
 });
 
-res.setHeader('Content-Type', 'text/csv');
+res.setHeader("Content-Type", "text/csv");
 await pipeline(cursor, toCsv, res);
 ```
 
@@ -5189,12 +5448,21 @@ Iterate by `_id` ranges and write in `bulkWrite()` batches. This is restartable 
 let lastId = await getCheckpoint();
 while (true) {
   const docs = await User.find(lastId ? { _id: { $gt: lastId } } : {})
-    .sort({ _id: 1 }).limit(1000).select('email').lean();
+    .sort({ _id: 1 })
+    .limit(1000)
+    .select("email")
+    .lean();
   if (docs.length === 0) break;
 
-  await User.bulkWrite(docs.map((d) => ({
-    updateOne: { filter: { _id: d._id }, update: { $set: { emailLower: d.email.toLowerCase() } } }
-  })), { ordered: false });
+  await User.bulkWrite(
+    docs.map((d) => ({
+      updateOne: {
+        filter: { _id: d._id },
+        update: { $set: { emailLower: d.email.toLowerCase() } },
+      },
+    })),
+    { ordered: false },
+  );
 
   lastId = docs.at(-1)._id;
   await saveCheckpoint(lastId);
@@ -5211,7 +5479,10 @@ It tries all operations and collects errors. If any fail, it throws a `MongoBulk
 try {
   await Product.bulkWrite(ops, { ordered: false });
 } catch (err) {
-  console.log(err.result.insertedCount, err.writeErrors.map((e) => e.index));
+  console.log(
+    err.result.insertedCount,
+    err.writeErrors.map((e) => e.index),
+  );
 }
 ```
 
@@ -5222,7 +5493,10 @@ Mongoose casting or validation errors (when `throwOnValidationError` is set) com
 With `ordered: false`, invalid documents are skipped by default and the valid ones are inserted without throwing. That can hide bad data. `throwOnValidationError: true` makes Mongoose throw a `MongooseBulkWriteError` after the valid writes finish, listing the validation errors.
 
 ```javascript
-await Product.insertMany(rows, { ordered: false, throwOnValidationError: true });
+await Product.insertMany(rows, {
+  ordered: false,
+  throwOnValidationError: true,
+});
 ```
 
 ### 361: How do you make insertMany() faster for big imports?
@@ -5267,8 +5541,9 @@ Check in this order:
 
 ```javascript
 await mongoose.connect(uri, { monitorCommands: true });
-mongoose.connection.on('commandSucceeded', (e) => {
-  if (e.duration > 200) logger.warn({ cmd: e.commandName, ms: e.duration }, 'slow mongo command');
+mongoose.connection.on("commandSucceeded", (e) => {
+  if (e.duration > 200)
+    logger.warn({ cmd: e.commandName, ms: e.duration }, "slow mongo command");
 });
 ```
 
@@ -5314,7 +5589,7 @@ Options:
 ```javascript
 const res = await Doc.updateOne(
   { _id: id, updatedAt: clientUpdatedAt },
-  { $set: { body } }
+  { $set: { body } },
 );
 if (res.matchedCount === 0) throw new ConflictError();
 ```
@@ -5327,16 +5602,16 @@ Use a collection with a unique key and an expiry.
 const lockSchema = new Schema({
   _id: String,
   owner: String,
-  expiresAt: { type: Date, expires: 0 }
+  expiresAt: { type: Date, expires: 0 },
 });
-const Lock = mongoose.model('Lock', lockSchema);
+const Lock = mongoose.model("Lock", lockSchema);
 
 async function acquire(name, owner, ttlMs) {
   try {
     await Lock.findOneAndUpdate(
       { _id: name, $or: [{ expiresAt: { $lt: new Date() } }, { owner }] },
       { owner, expiresAt: new Date(Date.now() + ttlMs) },
-      { upsert: true }
+      { upsert: true },
     );
     return true;
   } catch (err) {
@@ -5355,9 +5630,9 @@ Use `findOneAndUpdate()` to claim one job atomically.
 ```javascript
 async function claimJob(workerId) {
   return Job.findOneAndUpdate(
-    { status: 'queued', runAt: { $lte: new Date() } },
-    { $set: { status: 'running', workerId, startedAt: new Date() } },
-    { sort: { priority: -1, runAt: 1 }, returnDocument: 'after' }
+    { status: "queued", runAt: { $lte: new Date() } },
+    { $set: { status: "running", workerId, startedAt: new Date() } },
+    { sort: { priority: -1, runAt: 1 }, returnDocument: "after" },
   );
 }
 ```
@@ -5372,7 +5647,7 @@ Store an idempotency key with a unique index, and insert it before doing the wor
 const requestSchema = new Schema({
   _id: String, // idempotency key from the client
   response: Schema.Types.Mixed,
-  createdAt: { type: Date, default: Date.now, expires: '24h' }
+  createdAt: { type: Date, default: Date.now, expires: "24h" },
 });
 
 try {
@@ -5400,10 +5675,18 @@ A real version also handles the case where the first request is still running.
 
 ```javascript
 await Order.aggregate([
-  { $group: {
-    _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'Europe/Berlin' } },
-    total: { $sum: '$amount' }
-  } }
+  {
+    $group: {
+      _id: {
+        $dateToString: {
+          format: "%Y-%m-%d",
+          date: "$createdAt",
+          timezone: "Europe/Berlin",
+        },
+      },
+      total: { $sum: "$amount" },
+    },
+  },
 ]);
 ```
 
@@ -5414,7 +5697,7 @@ Use integer minor units (cents) in a `Number` or `Int32`/`BigInt` field, or `Dec
 ```javascript
 const invoiceSchema = new Schema({
   amountCents: { type: Number, required: true, validate: Number.isInteger },
-  currency: { type: String, enum: ['EUR', 'USD'], required: true }
+  currency: { type: String, enum: ["EUR", "USD"], required: true },
 });
 ```
 
@@ -5425,16 +5708,23 @@ Integer cents are easy to sum in aggregations. `Decimal128` is better for prices
 Use `InferRawDocType` with a schema definition, or `InferSchemaType` with a schema. For the hydrated type, use `HydratedDocument`.
 
 ```typescript
-import { Schema, model, InferSchemaType, HydratedDocument } from 'mongoose';
+import { Schema, model, InferSchemaType, HydratedDocument } from "mongoose";
 
-const orderSchema = new Schema({
-  total: { type: Number, required: true },
-  status: { type: String, enum: ['pending', 'paid'] as const, default: 'pending' }
-}, { timestamps: true });
+const orderSchema = new Schema(
+  {
+    total: { type: Number, required: true },
+    status: {
+      type: String,
+      enum: ["pending", "paid"] as const,
+      default: "pending",
+    },
+  },
+  { timestamps: true },
+);
 
-type Order = InferSchemaType<typeof orderSchema>;      // plain data
-type OrderDoc = HydratedDocument<Order>;               // with methods
-const OrderModel = model('Order', orderSchema);
+type Order = InferSchemaType<typeof orderSchema>; // plain data
+type OrderDoc = HydratedDocument<Order>; // with methods
+const OrderModel = model("Order", orderSchema);
 ```
 
 Fields without `required: true` and without a default are typed as optional or `null | undefined`.
@@ -5446,9 +5736,9 @@ Fields without `required: true` and without a default are typed as optional or `
 ```typescript
 const userSchema = Schema.create({
   name: { type: String, required: true },
-  tags: [String]
+  tags: [String],
 });
-const User = model('User', userSchema);
+const User = model("User", userSchema);
 ```
 
 Behavior at runtime is the same as `new Schema()`.
@@ -5458,8 +5748,10 @@ Behavior at runtime is the same as `new Schema()`.
 Mongoose infers lean types from the model. You can also pass a type to `lean<T>()`.
 
 ```typescript
-const users = await User.find().lean();          // inferred plain types
-const names = await User.find().select('name').lean<{ _id: Types.ObjectId; name: string }[]>();
+const users = await User.find().lean(); // inferred plain types
+const names = await User.find()
+  .select("name")
+  .lean<{ _id: Types.ObjectId; name: string }[]>();
 ```
 
 When you use `select()`, Mongoose does not narrow the type for you, so passing your own type to `lean<T>()` is a common way to keep types honest.
@@ -5469,11 +5761,16 @@ When you use `select()`, Mongoose does not narrow the type for you, so passing y
 Pass the populated shape as a generic to `populate()`.
 
 ```typescript
-interface IPost { title: string; author: Types.ObjectId }
-interface IUser { name: string }
+interface IPost {
+  title: string;
+  author: Types.ObjectId;
+}
+interface IUser {
+  name: string;
+}
 
 const post = await Post.findById(id)
-  .populate<{ author: Pick<IUser, 'name'> }>('author', 'name')
+  .populate<{ author: Pick<IUser, "name"> }>("author", "name")
   .orFail();
 
 post.author.name; // string
@@ -5493,15 +5790,15 @@ const userSchema = new Schema(
       fullName: {
         get() {
           return `${this.firstName} ${this.lastName}`;
-        }
-      }
+        },
+      },
     },
     query: {
       byFirstName(name: string) {
         return this.where({ firstName: name });
-      }
-    }
-  }
+      },
+    },
+  },
 );
 ```
 
@@ -5512,18 +5809,21 @@ Mongoose 9 also added `schema.queryHelper()`, which is easier to type when you a
 Type the plugin as a function that takes a `Schema` and options.
 
 ```typescript
-import { Schema } from 'mongoose';
+import { Schema } from "mongoose";
 
 export function slugPlugin(schema: Schema, opts: { from: string }) {
   schema.add({ slug: { type: String, index: true } });
-  schema.pre('save', async function () {
+  schema.pre("save", async function () {
     if (this.isModified(opts.from)) {
-      this.set('slug', String(this.get(opts.from)).toLowerCase().replace(/\s+/g, '-'));
+      this.set(
+        "slug",
+        String(this.get(opts.from)).toLowerCase().replace(/\s+/g, "-"),
+      );
     }
   });
 }
 
-postSchema.plugin(slugPlugin, { from: 'title' });
+postSchema.plugin(slugPlugin, { from: "title" });
 ```
 
 The added fields are not in your schema type automatically. Add them to your interface if you need them typed.
@@ -5533,9 +5833,11 @@ The added fields are not in your schema type automatically. Add them to your int
 Transactions need a replica set, so a plain `MongoMemoryServer` is not enough. Use `MongoMemoryReplSet`.
 
 ```javascript
-import { MongoMemoryReplSet } from 'mongodb-memory-server';
+import { MongoMemoryReplSet } from "mongodb-memory-server";
 
-const replSet = await MongoMemoryReplSet.create({ replSet: { count: 1, storageEngine: 'wiredTiger' } });
+const replSet = await MongoMemoryReplSet.create({
+  replSet: { count: 1, storageEngine: "wiredTiger" },
+});
 await mongoose.connect(replSet.getUri());
 ```
 
@@ -5550,9 +5852,11 @@ beforeAll(async () => {
   await User.init(); // waits for indexes
 });
 
-it('rejects duplicate emails', async () => {
-  await User.create({ email: 'a@b.com' });
-  await expect(User.create({ email: 'a@b.com' })).rejects.toMatchObject({ code: 11000 });
+it("rejects duplicate emails", async () => {
+  await User.create({ email: "a@b.com" });
+  await expect(User.create({ email: "a@b.com" })).rejects.toMatchObject({
+    code: 11000,
+  });
 });
 ```
 
@@ -5581,7 +5885,7 @@ Each worker process has its own Mongoose instance, connection and pool. With 8 w
 4. Exit.
 
 ```javascript
-process.on('SIGTERM', () => {
+process.on("SIGTERM", () => {
   server.close(async () => {
     await mongoose.disconnect();
     process.exit(0);
@@ -5607,10 +5911,13 @@ async function getProduct(id) {
   return product;
 }
 
-productSchema.post(['save', 'findOneAndUpdate', 'deleteOne'], async function (res) {
-  const id = res?._id ?? this.getFilter?.()._id;
-  if (id) await redis.del(`product:${id}`);
-});
+productSchema.post(
+  ["save", "findOneAndUpdate", "deleteOne"],
+  async function (res) {
+    const id = res?._id ?? this.getFilter?.()._id;
+    if (id) await redis.del(`product:${id}`);
+  },
+);
 ```
 
 After `JSON.parse`, ObjectIds and dates are strings. Cast them again if you compare them.
@@ -5620,7 +5927,7 @@ After `JSON.parse`, ObjectIds and dates are strings. Cast them again if you comp
 Use DataLoader to batch `findById` calls made by resolvers in one request.
 
 ```javascript
-import DataLoader from 'dataloader';
+import DataLoader from "dataloader";
 
 function createLoaders() {
   return {
@@ -5628,12 +5935,12 @@ function createLoaders() {
       const users = await User.find({ _id: { $in: ids } }).lean();
       const byId = new Map(users.map((u) => [u._id.toString(), u]));
       return ids.map((id) => byId.get(id.toString()) ?? null);
-    })
+    }),
   };
 }
 
 const resolvers = {
-  Post: { author: (post, _, ctx) => ctx.loaders.user.load(post.author) }
+  Post: { author: (post, _, ctx) => ctx.loaders.user.load(post.author) },
 };
 ```
 
@@ -5646,14 +5953,17 @@ When you save data and also need to publish an event (to Kafka, RabbitMQ), you c
 ```javascript
 await mongoose.connection.transaction(async (session) => {
   const [order] = await Order.create([{ customer, total }], { session });
-  await Outbox.create([{ type: 'order.created', payload: { orderId: order._id } }], { session });
+  await Outbox.create(
+    [{ type: "order.created", payload: { orderId: order._id } }],
+    { session },
+  );
 });
 
 // worker
 const event = await Outbox.findOneAndUpdate(
   { publishedAt: null },
   { $set: { publishedAt: new Date() } },
-  { sort: { _id: 1 } }
+  { sort: { _id: 1 } },
 );
 ```
 
@@ -5664,13 +5974,20 @@ A change stream on `outbox` can replace polling.
 Save the resume token from each event and pass it as `resumeAfter` (or `startAfter`) when opening the stream again.
 
 ```javascript
-const last = await Checkpoint.findById('orders-stream').lean();
+const last = await Checkpoint.findById("orders-stream").lean();
 
-const stream = Order.watch([], { resumeAfter: last?.token, fullDocument: 'updateLookup' });
+const stream = Order.watch([], {
+  resumeAfter: last?.token,
+  fullDocument: "updateLookup",
+});
 
-stream.on('change', async (change) => {
+stream.on("change", async (change) => {
   await handle(change);
-  await Checkpoint.updateOne({ _id: 'orders-stream' }, { token: change._id }, { upsert: true });
+  await Checkpoint.updateOne(
+    { _id: "orders-stream" },
+    { token: change._id },
+    { upsert: true },
+  );
 });
 ```
 
@@ -5681,9 +5998,12 @@ The token must still be in the oplog. If the app was down longer than the oplog 
 Sharding is set up on the cluster (`sh.shardCollection()`), but Mongoose has a `shardKey` schema option. It makes `save()` include the shard key fields in the update filter, which MongoDB needs to route the write.
 
 ```javascript
-const eventSchema = new Schema({ tenantId: String, createdAt: Date }, {
-  shardKey: { tenantId: 1, createdAt: 1 }
-});
+const eventSchema = new Schema(
+  { tenantId: String, createdAt: Date },
+  {
+    shardKey: { tenantId: 1, createdAt: 1 },
+  },
+);
 ```
 
 Also include the shard key in your common queries. Queries without it go to all shards (scatter-gather).
@@ -5704,16 +6024,26 @@ Define the search index (Mongoose 8 added helpers) and use `$search` in an aggre
 
 ```javascript
 productSchema.searchIndex({
-  name: 'products_search',
-  definition: { mappings: { dynamic: false, fields: { name: { type: 'string' }, description: { type: 'string' } } } }
+  name: "products_search",
+  definition: {
+    mappings: {
+      dynamic: false,
+      fields: { name: { type: "string" }, description: { type: "string" } },
+    },
+  },
 });
 
 await Product.createSearchIndexes();
 
 const results = await Product.aggregate([
-  { $search: { index: 'products_search', text: { query: 'red shoe', path: ['name', 'description'], fuzzy: {} } } },
+  {
+    $search: {
+      index: "products_search",
+      text: { query: "red shoe", path: ["name", "description"], fuzzy: {} },
+    },
+  },
   { $limit: 20 },
-  { $project: { name: 1, score: { $meta: 'searchScore' } } }
+  { $project: { name: 1, score: { $meta: "searchScore" } } },
 ]);
 ```
 
@@ -5729,14 +6059,14 @@ const docSchema = new Schema({ text: String, embedding: [Number] });
 const hits = await Doc.aggregate([
   {
     $vectorSearch: {
-      index: 'embedding_index',
-      path: 'embedding',
-      queryVector: await embed('how do I reset my password?'),
+      index: "embedding_index",
+      path: "embedding",
+      queryVector: await embed("how do I reset my password?"),
       numCandidates: 200,
-      limit: 5
-    }
+      limit: 5,
+    },
   },
-  { $project: { text: 1, score: { $meta: 'vectorSearchScore' } } }
+  { $project: { text: 1, score: { $meta: "vectorSearchScore" } } },
 ]);
 ```
 
@@ -5772,7 +6102,7 @@ Use heap snapshots to find which objects grow. Mongoose objects show up as `mode
 
 ```javascript
 const order = await Order.findById(id);
-order.status = 'shipped';
+order.status = "shipped";
 await order.save({ validateModifiedOnly: true });
 ```
 
@@ -5784,7 +6114,7 @@ Both help with legacy data, but hide data problems, so use them on purpose.
 
 ```javascript
 const schema = new Schema({
-  nickname: { type: String, allowNull: false }
+  nickname: { type: String, allowNull: false },
 });
 ```
 
@@ -5813,8 +6143,8 @@ Use `doc.$getChanges()` (Mongoose 9 renamed `getChanges()` to this and deprecate
 
 ```javascript
 const user = await User.findById(id);
-user.name = 'Anna';
-user.tags.push('x');
+user.name = "Anna";
+user.tags.push("x");
 user.$getChanges();
 // { $set: { name: 'Anna' }, $push: { tags: { $each: ['x'] } } }
 ```
@@ -5827,7 +6157,10 @@ Use `parent()` for the direct parent and `ownerDocument()` for the top-level doc
 
 ```javascript
 itemSchema.methods.orderTotal = function () {
-  return this.ownerDocument().items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  return this.ownerDocument().items.reduce(
+    (sum, i) => sum + i.price * i.qty,
+    0,
+  );
 };
 ```
 
@@ -5838,7 +6171,7 @@ In a subdocument validator, `this.parent()` lets you compare against fields of t
 By default, calling `populate()` on a path that is already populated runs the query again. The `forceRepopulate` option (added in Mongoose 8.x) changes this. With `forceRepopulate: false`, Mongoose skips paths that are already populated, which saves queries when you populate in several places.
 
 ```javascript
-await post.populate({ path: 'author', forceRepopulate: false });
+await post.populate({ path: "author", forceRepopulate: false });
 ```
 
 ### 404: How do you transform populated documents?
@@ -5847,9 +6180,10 @@ Use the `transform` option of `populate()`. It runs for each populated document.
 
 ```javascript
 await Post.find().populate({
-  path: 'author',
-  select: 'name avatar',
-  transform: (doc, id) => (doc == null ? { _id: id, name: 'Deleted user' } : doc)
+  path: "author",
+  select: "name avatar",
+  transform: (doc, id) =>
+    doc == null ? { _id: id, name: "Deleted user" } : doc,
 });
 ```
 
@@ -5893,21 +6227,26 @@ For most apps, creating the model on the right connection from the start is clea
 Keep the cart as one document per user with an embedded array of items, because it is always read and updated as a whole and stays small.
 
 ```javascript
-const cartSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User', unique: true },
-  items: [{
-    _id: false,
-    product: { type: Schema.Types.ObjectId, ref: 'Product' },
-    qty: { type: Number, min: 1 },
-    priceAtAdd: Number
-  }],
-  expiresAt: { type: Date, expires: 0 }
-}, { timestamps: true });
+const cartSchema = new Schema(
+  {
+    user: { type: Schema.Types.ObjectId, ref: "User", unique: true },
+    items: [
+      {
+        _id: false,
+        product: { type: Schema.Types.ObjectId, ref: "Product" },
+        qty: { type: Number, min: 1 },
+        priceAtAdd: Number,
+      },
+    ],
+    expiresAt: { type: Date, expires: 0 },
+  },
+  { timestamps: true },
+);
 
 await Cart.updateOne(
-  { user: userId, 'items.product': { $ne: productId } },
+  { user: userId, "items.product": { $ne: productId } },
   { $push: { items: { product: productId, qty: 1, priceAtAdd: price } } },
-  { upsert: true }
+  { upsert: true },
 );
 ```
 
@@ -5918,11 +6257,18 @@ Use a separate `Order` collection at checkout, and copy the prices into it, beca
 Messages go in their own collection, never in an array on the conversation.
 
 ```javascript
-const messageSchema = new Schema({
-  conversation: { type: Schema.Types.ObjectId, ref: 'Conversation', required: true },
-  sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  body: String
-}, { timestamps: { createdAt: true, updatedAt: false } });
+const messageSchema = new Schema(
+  {
+    conversation: {
+      type: Schema.Types.ObjectId,
+      ref: "Conversation",
+      required: true,
+    },
+    sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    body: String,
+  },
+  { timestamps: { createdAt: true, updatedAt: false } },
+);
 
 messageSchema.index({ conversation: 1, _id: -1 });
 ```
@@ -5934,12 +6280,15 @@ Load history with cursor pagination on `_id`. Keep a `lastMessage` subset on the
 Store each comment as its own document with `parent` and a materialized path or `ancestors` array, so you can fetch a whole thread with one query.
 
 ```javascript
-const commentSchema = new Schema({
-  post: { type: Schema.Types.ObjectId, index: true },
-  parent: { type: Schema.Types.ObjectId, default: null },
-  ancestors: [{ type: Schema.Types.ObjectId, index: true }],
-  text: String
-}, { timestamps: true });
+const commentSchema = new Schema(
+  {
+    post: { type: Schema.Types.ObjectId, index: true },
+    parent: { type: Schema.Types.ObjectId, default: null },
+    ancestors: [{ type: Schema.Types.ObjectId, index: true }],
+    text: String,
+  },
+  { timestamps: true },
+);
 
 // all replies under one comment, any depth
 await Comment.find({ ancestors: commentId }).sort({ createdAt: 1 });
@@ -5954,12 +6303,20 @@ Store scores with an index on the score, and use `$inc` for updates.
 ```javascript
 const scoreSchema = new Schema({
   user: { type: Schema.Types.ObjectId, unique: true },
-  points: { type: Number, default: 0, index: true }
+  points: { type: Number, default: 0, index: true },
 });
 
-await Score.updateOne({ user: userId }, { $inc: { points: 10 } }, { upsert: true });
-const top = await Score.find().sort({ points: -1 }).limit(10).populate('user', 'name').lean();
-const rank = await Score.countDocuments({ points: { $gt: myPoints } }) + 1;
+await Score.updateOne(
+  { user: userId },
+  { $inc: { points: 10 } },
+  { upsert: true },
+);
+const top = await Score.find()
+  .sort({ points: -1 })
+  .limit(10)
+  .populate("user", "name")
+  .lean();
+const rank = (await Score.countDocuments({ points: { $gt: myPoints } })) + 1;
 ```
 
 For huge leaderboards with real-time ranks, Redis sorted sets are a better fit, with MongoDB as the source of truth.
@@ -6004,10 +6361,9 @@ orderSchema.index({ cartId: 1 }, { unique: true });
 2. Run a migration that converts the values in batches:
 
 ```javascript
-await Post.collection.updateMany(
-  { author: { $type: 'string' } },
-  [{ $set: { author: { $toObjectId: '$author' } } }]
-);
+await Post.collection.updateMany({ author: { $type: "string" } }, [
+  { $set: { author: { $toObjectId: "$author" } } },
+]);
 ```
 
 3. Rebuild indexes on that field if needed.
@@ -6036,7 +6392,11 @@ Each step is deployable on its own, so you can roll back.
 ```javascript
 await mongoose.connection.transaction(async (session) => {
   await User.deleteOne({ _id: userId }, { session });
-  await Comment.updateMany({ author: userId }, { $set: { author: null, authorName: 'Deleted user' } }, { session });
+  await Comment.updateMany(
+    { author: userId },
+    { $set: { author: null, authorName: "Deleted user" } },
+    { session },
+  );
 });
 ```
 
@@ -6050,7 +6410,7 @@ Yes. Mongoose keeps unknown options on the schema type, so plugins can read them
 const userSchema = new Schema({
   email: { type: String, pii: true },
   name: { type: String, pii: true },
-  plan: String
+  plan: String,
 });
 
 const piiPaths = Object.entries(userSchema.paths)
@@ -6068,7 +6428,7 @@ Move old documents to an archive collection (or cheaper storage) in batches, the
 const cutoff = new Date(Date.now() - 365 * 24 * 3600 * 1000);
 await Order.aggregate([
   { $match: { createdAt: { $lt: cutoff } } },
-  { $merge: { into: 'orders_archive', whenMatched: 'keepExisting' } }
+  { $merge: { into: "orders_archive", whenMatched: "keepExisting" } },
 ]);
 await Order.deleteMany({ createdAt: { $lt: cutoff } });
 ```
@@ -6101,12 +6461,12 @@ const SHARDS = 20;
 await PageViews.updateOne(
   { page: pageId, shard: Math.floor(Math.random() * SHARDS) },
   { $inc: { count: 1 } },
-  { upsert: true }
+  { upsert: true },
 );
 
 const [{ total } = { total: 0 }] = await PageViews.aggregate([
   { $match: { page: pageId } },
-  { $group: { _id: null, total: { $sum: '$count' } } }
+  { $group: { _id: null, total: { $sum: "$count" } } },
 ]);
 ```
 
@@ -6115,10 +6475,13 @@ const [{ total } = { total: 0 }] = await PageViews.aggregate([
 Use the schema options. Every query and write on that model then uses them unless overridden.
 
 ```javascript
-const paymentSchema = new Schema({ amount: Number }, {
-  readConcern: { level: 'majority' },
-  writeConcern: { w: 'majority', j: true }
-});
+const paymentSchema = new Schema(
+  { amount: Number },
+  {
+    readConcern: { level: "majority" },
+    writeConcern: { w: "majority", j: true },
+  },
+);
 ```
 
 This is useful for critical models in an app where the default is weaker.
@@ -6155,19 +6518,22 @@ export const requestContext = new AsyncLocalStorage();
 
 function auditFields(schema) {
   schema.add({
-    createdBy: { type: Schema.Types.ObjectId, ref: 'User', immutable: true },
-    updatedBy: { type: Schema.Types.ObjectId, ref: 'User' }
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", immutable: true },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "User" },
   });
 
-  schema.pre('save', async function () {
+  schema.pre("save", async function () {
     const userId = requestContext.getStore()?.userId;
     if (this.isNew) this.createdBy = userId;
     this.updatedBy = userId;
   });
 
-  schema.pre(['updateOne', 'updateMany', 'findOneAndUpdate'], async function () {
-    this.set({ updatedBy: requestContext.getStore()?.userId });
-  });
+  schema.pre(
+    ["updateOne", "updateMany", "findOneAndUpdate"],
+    async function () {
+      this.set({ updatedBy: requestContext.getStore()?.userId });
+    },
+  );
 }
 ```
 
@@ -6179,8 +6545,13 @@ Mongoose 8.x added a connection-level `bulkWrite()` that uses the MongoDB 8.0 cl
 
 ```javascript
 await mongoose.connection.bulkWrite([
-  { model: 'User', name: 'updateOne', filter: { _id: userId }, update: { $inc: { orders: 1 } } },
-  { model: 'Order', name: 'insertOne', document: { user: userId, total: 50 } }
+  {
+    model: "User",
+    name: "updateOne",
+    filter: { _id: userId },
+    update: { $inc: { orders: 1 } },
+  },
+  { model: "Order", name: "insertOne", document: { user: userId, total: 50 } },
 ]);
 ```
 
@@ -6194,7 +6565,7 @@ Use `Promise.all()` for independent reads. They run on different pool connection
 const [user, orders, unread] = await Promise.all([
   User.findById(id).lean(),
   Order.find({ user: id }).sort({ _id: -1 }).limit(5).lean(),
-  Notification.countDocuments({ user: id, read: false })
+  Notification.countDocuments({ user: id, read: false }),
 ]);
 ```
 
@@ -6219,10 +6590,12 @@ ObjectIds contain the creation time in seconds, so you can build an ObjectId fro
 
 ```javascript
 function objectIdFromDate(date) {
-  return mongoose.Types.ObjectId.createFromTime(Math.floor(date.getTime() / 1000));
+  return mongoose.Types.ObjectId.createFromTime(
+    Math.floor(date.getTime() / 1000),
+  );
 }
 
-await Log.find({ _id: { $gte: objectIdFromDate(new Date('2026-10-01')) } });
+await Log.find({ _id: { $gte: objectIdFromDate(new Date("2026-10-01")) } });
 ```
 
 This uses the `_id` index, so no extra index is needed. It only works when ids are generated at insert time.
@@ -6238,8 +6611,8 @@ You can use nested `arrayFilters`.
 ```javascript
 await Course.updateOne(
   { _id: courseId },
-  { $set: { 'modules.$[m].lessons.$[l].done': true } },
-  { arrayFilters: [{ 'm._id': moduleId }, { 'l._id': lessonId }] }
+  { $set: { "modules.$[m].lessons.$[l].done": true } },
+  { arrayFilters: [{ "m._id": moduleId }, { "l._id": lessonId }] },
 );
 ```
 
@@ -6251,8 +6624,8 @@ A unique index does not stop duplicates inside one document's array; it only wor
 
 ```javascript
 await User.updateOne(
-  { _id: userId, 'emails.address': { $ne: email } },
-  { $push: { emails: { address: email } } }
+  { _id: userId, "emails.address": { $ne: email } },
+  { $push: { emails: { address: email } } },
 );
 ```
 
@@ -6271,22 +6644,35 @@ Virtuals run every time they are read and on every `toJSON()`. If a virtual is c
 ```javascript
 app.use((err, req, res, next) => {
   if (err instanceof mongoose.Error.ValidationError) {
-    return res.status(400).json({ errors: Object.fromEntries(Object.entries(err.errors).map(([k, v]) => [k, v.message])) });
+    return res
+      .status(400)
+      .json({
+        errors: Object.fromEntries(
+          Object.entries(err.errors).map(([k, v]) => [k, v.message]),
+        ),
+      });
   }
   if (err instanceof mongoose.Error.CastError) {
     return res.status(400).json({ message: `Invalid value for ${err.path}` });
   }
   if (err instanceof mongoose.Error.DocumentNotFoundError) {
-    return res.status(404).json({ message: 'Not found' });
+    return res.status(404).json({ message: "Not found" });
   }
   if (err instanceof mongoose.Error.VersionError) {
-    return res.status(409).json({ message: 'Document was changed by someone else' });
+    return res
+      .status(409)
+      .json({ message: "Document was changed by someone else" });
   }
   if (err.code === 11000) {
-    return res.status(409).json({ message: 'Already exists', fields: Object.keys(err.keyValue ?? {}) });
+    return res
+      .status(409)
+      .json({
+        message: "Already exists",
+        fields: Object.keys(err.keyValue ?? {}),
+      });
   }
-  if (err.name === 'MongooseServerSelectionError') {
-    return res.status(503).json({ message: 'Database unavailable' });
+  if (err.name === "MongooseServerSelectionError") {
+    return res.status(503).json({ message: "Database unavailable" });
   }
   next(err);
 });
@@ -6326,12 +6712,14 @@ Most of this is driver configuration you pass through Mongoose.
 // X.509
 await mongoose.connect(uri, {
   tls: true,
-  tlsCertificateKeyFile: '/etc/certs/client.pem',
-  authMechanism: 'MONGODB-X509'
+  tlsCertificateKeyFile: "/etc/certs/client.pem",
+  authMechanism: "MONGODB-X509",
 });
 
 // AWS IAM on Atlas
-await mongoose.connect('mongodb+srv://cluster0.example.mongodb.net/app?authMechanism=MONGODB-AWS&authSource=$external');
+await mongoose.connect(
+  "mongodb+srv://cluster0.example.mongodb.net/app?authMechanism=MONGODB-AWS&authSource=$external",
+);
 ```
 
 IAM uses the credentials from the environment (role on EC2, ECS or Lambda), so no password is stored in the app.
@@ -6382,9 +6770,9 @@ Create a database user with the `read` role on the needed database, and use a se
 
 ```javascript
 const reports = mongoose.createConnection(process.env.REPORTS_RO_URI, {
-  readPreference: 'secondaryPreferred',
+  readPreference: "secondaryPreferred",
   autoIndex: false,
-  autoCreate: false
+  autoCreate: false,
 });
 ```
 

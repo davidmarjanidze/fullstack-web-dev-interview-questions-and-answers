@@ -557,12 +557,12 @@ It prints an array or object as a table, which is much easier to read than a nes
 
 ```js
 const users = [
-  { id: 1, name: 'Ana', role: 'admin' },
-  { id: 2, name: 'Luka', role: 'editor' },
+  { id: 1, name: "Ana", role: "admin" },
+  { id: 2, name: "Luka", role: "editor" },
 ];
 
 console.table(users);
-console.table(users, ['name']);
+console.table(users, ["name"]);
 ```
 
 ### 20: How do you clear the Console?
@@ -714,8 +714,8 @@ Open Settings (`F1` or the gear icon), go to **Preferences > Appearance**, and s
 They are shortcuts that only work in the DevTools Console. `$(selector)` is the same as `document.querySelector(selector)` and returns the first match. `$$(selector)` returns all matches as a real array, not a `NodeList`, so you can call `map` and `filter` on it directly.
 
 ```js
-$$('a').map((a) => a.href);
-$('#login-form');
+$$("a").map((a) => a.href);
+$("#login-form");
 ```
 
 If the page itself defines a `$` (for example jQuery), the page's version wins.
@@ -730,7 +730,7 @@ If the page itself defines a `$` (for example jQuery), the page's version wins.
 
 ```js
 copy($0.outerHTML);
-copy(JSON.parse(localStorage.getItem('settings')));
+copy(JSON.parse(localStorage.getItem("settings")));
 ```
 
 ### 55: What does `console.dir` do and how is it different from `console.log`?
@@ -750,9 +750,9 @@ Right-click any object in the Console output, or a node in the Elements panel, a
 `console.group(label)` starts an indented, collapsible group in the Console, and `console.groupEnd()` closes it. Every log between them goes inside the group. `console.groupCollapsed()` starts the group closed. Groups help when one action logs many lines.
 
 ```js
-console.group('Checkout');
-console.log('Items:', cart.items.length);
-console.log('Total:', cart.total);
+console.group("Checkout");
+console.log("Items:", cart.items.length);
+console.log("Total:", cart.total);
 console.groupEnd();
 ```
 
@@ -761,9 +761,9 @@ console.groupEnd();
 Use `console.time(label)` before the code and `console.timeEnd(label)` after it. The Console prints the elapsed time in milliseconds. `console.timeLog(label)` prints the time so far without stopping the timer.
 
 ```js
-console.time('load users');
-const users = await fetch('/api/users').then((r) => r.json());
-console.timeEnd('load users'); // load users: 182.4 ms
+console.time("load users");
+const users = await fetch("/api/users").then((r) => r.json());
+console.timeEnd("load users"); // load users: 182.4 ms
 ```
 
 ### 60: What does `console.count` do?
@@ -775,7 +775,7 @@ console.timeEnd('load users'); // load users: 182.4 ms
 `console.assert(condition, ...data)` logs an error only when the condition is false. If the condition is true, nothing is printed. It does not throw and does not stop the code.
 
 ```js
-console.assert(items.length > 0, 'Cart is empty', items);
+console.assert(items.length > 0, "Cart is empty", items);
 ```
 
 ### 62: What does `console.trace` do?
@@ -787,7 +787,11 @@ It prints a stack trace at the point where it is called, so you can see which ch
 Put `%c` in the message and pass a CSS string as the next argument. The styles apply to the text after `%c`.
 
 ```js
-console.log('%cWarning:%c check your input', 'color: red; font-weight: bold', '');
+console.log(
+  "%cWarning:%c check your input",
+  "color: red; font-weight: bold",
+  "",
+);
 ```
 
 Other format specifiers are `%s` (string), `%d` or `%i` (integer), `%f` (float), `%o` (expandable object) and `%O` (object shown as JavaScript object).
@@ -1199,9 +1203,9 @@ Call `debug(functionName)` in the Console. The next time that function runs, Dev
 `monitorEvents(element, types)` logs the events fired on an element to the Console. You can pass a single event, an array, or a group like `'mouse'` or `'key'`. `unmonitorEvents(element)` stops it.
 
 ```js
-monitorEvents(window, 'resize');
-monitorEvents($0, ['focus', 'blur']);
-monitorEvents(document.body, 'key');
+monitorEvents(window, "resize");
+monitorEvents($0, ["focus", "blur"]);
+monitorEvents(document.body, "key");
 ```
 
 ### 160: What does `getEventListeners()` return?
@@ -1882,11 +1886,13 @@ curl http://localhost:9222/json/version
 
 ```js
 // Node 22+ has a global WebSocket
-const { webSocketDebuggerUrl } = await fetch('http://localhost:9222/json/version').then((r) => r.json());
+const { webSocketDebuggerUrl } = await fetch(
+  "http://localhost:9222/json/version",
+).then((r) => r.json());
 const ws = new WebSocket(webSocketDebuggerUrl);
 
 ws.onopen = () => {
-  ws.send(JSON.stringify({ id: 1, method: 'Target.getTargets' }));
+  ws.send(JSON.stringify({ id: 1, method: "Target.getTargets" }));
 };
 ws.onmessage = (event) => console.log(JSON.parse(event.data));
 ```
@@ -1907,8 +1913,8 @@ Puppeteer starts or connects to Chrome and opens a CDP session for each page. It
 
 ```js
 const client = await page.createCDPSession();
-await client.send('Network.enable');
-await client.send('Network.emulateNetworkConditions', {
+await client.send("Network.enable");
+await client.send("Network.emulateNetworkConditions", {
   offline: false,
   latency: 150,
   downloadThroughput: (1.6 * 1024 * 1024) / 8,
@@ -1925,13 +1931,13 @@ WebDriver BiDi is a W3C standard protocol for browser automation that works acro
 With Puppeteer you can call `page.tracing.start()` and `page.tracing.stop()`. The result is the same trace JSON the Performance panel uses, so you can open it in DevTools.
 
 ```js
-import puppeteer from 'puppeteer';
+import puppeteer from "puppeteer";
 
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
 
-await page.tracing.start({ path: 'trace.json', screenshots: true });
-await page.goto('https://example.com', { waitUntil: 'networkidle0' });
+await page.tracing.start({ path: "trace.json", screenshots: true });
+await page.goto("https://example.com", { waitUntil: "networkidle0" });
 await page.tracing.stop();
 
 await browser.close();
@@ -1966,17 +1972,17 @@ The simplest way is the User Timing API. `performance.mark()` and `performance.m
 const start = performance.now();
 renderProductList(products);
 
-performance.measure('Render product list', {
+performance.measure("Render product list", {
   start,
   end: performance.now(),
   detail: {
     devtools: {
-      dataType: 'track-entry',
-      track: 'Rendering',
-      trackGroup: 'My app',
-      color: 'tertiary-dark',
-      properties: [['items', String(products.length)]],
-      tooltipText: 'Rendered product grid',
+      dataType: "track-entry",
+      track: "Rendering",
+      trackGroup: "My app",
+      color: "tertiary-dark",
+      properties: [["items", String(products.length)]],
+      tooltipText: "Rendered product grid",
     },
   },
 });
@@ -2034,7 +2040,7 @@ A closure keeps the variables it uses from outer scopes alive as long as the clo
 function setup(bigData) {
   const used = bigData.summary;
   const unused = () => bigData; // shares the context with the listener below
-  window.addEventListener('resize', () => console.log(used));
+  window.addEventListener("resize", () => console.log(used));
 }
 ```
 
@@ -2052,7 +2058,7 @@ Use the Performance monitor to watch **JS event listeners** while repeating the 
 
 ```js
 const controller = new AbortController();
-window.addEventListener('resize', onResize, { signal: controller.signal });
+window.addEventListener("resize", onResize, { signal: controller.signal });
 // on cleanup
 controller.abort();
 ```
@@ -2088,7 +2094,7 @@ A Chrome extension declares a `devtools_page` in its manifest. That page runs ev
 
 ```js
 // devtools.js, loaded from devtools.html
-chrome.devtools.panels.create('My Panel', '', 'panel.html');
+chrome.devtools.panels.create("My Panel", "", "panel.html");
 ```
 
 ### 334: How do framework DevTools extensions get component data from the page?
@@ -2124,10 +2130,10 @@ DevTools groups URLs by entity. It uses a list of known third-party entities (fr
 Use the `Emulation` and `Network` domains through Puppeteer or Playwright: `Emulation.setCPUThrottlingRate` with a rate like 4, `Network.emulateNetworkConditions` for latency and bandwidth, and `Emulation.setDeviceMetricsOverride` for screen size and DPR. Puppeteer has helpers like `page.emulateCPUThrottling()` and `page.emulateNetworkConditions()`. Running performance tests this way in CI gives more stable comparisons between builds.
 
 ```js
-import { PredefinedNetworkConditions } from 'puppeteer';
+import { PredefinedNetworkConditions } from "puppeteer";
 
 await page.emulateCPUThrottling(4);
-await page.emulateNetworkConditions(PredefinedNetworkConditions['Slow 4G']);
+await page.emulateNetworkConditions(PredefinedNetworkConditions["Slow 4G"]);
 ```
 
 ### 342: How can you intercept and modify requests with CDP?
@@ -2136,12 +2142,12 @@ The `Fetch` domain lets you pause requests that match patterns and then continue
 
 ```js
 await page.setRequestInterception(true);
-page.on('request', (request) => {
-  if (request.url().endsWith('/api/user')) {
+page.on("request", (request) => {
+  if (request.url().endsWith("/api/user")) {
     request.respond({
       status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({ name: 'Test user' }),
+      contentType: "application/json",
+      body: JSON.stringify({ name: "Test user" }),
     });
   } else {
     request.continue();
@@ -2201,7 +2207,7 @@ Split the work into smaller pieces and give the main thread back to the browser 
 async function processItems(items) {
   for (const item of items) {
     processItem(item);
-    if ('scheduler' in window && 'yield' in scheduler) {
+    if ("scheduler" in window && "yield" in scheduler) {
       await scheduler.yield();
     } else {
       await new Promise((resolve) => setTimeout(resolve, 0));
@@ -2357,7 +2363,7 @@ Before the page loads, define a setter on `window` for that property that stops 
 
 ```js
 let value;
-Object.defineProperty(window, 'someGlobal', {
+Object.defineProperty(window, "someGlobal", {
   configurable: true,
   get() {
     return value;
@@ -2388,7 +2394,7 @@ function watch(obj, key) {
   });
 }
 
-watch(store.state, 'user');
+watch(store.state, "user");
 ```
 
 ### 384: How would you investigate high CPU usage on an idle page?
@@ -2539,7 +2545,10 @@ Check that DevTools is attached to the right process (child processes and worker
 In Device Mode, scroll right to see where the overflow is. In the Console, list elements wider than the viewport:
 
 ```js
-$$('*').filter((el) => el.getBoundingClientRect().right > document.documentElement.clientWidth);
+$$("*").filter(
+  (el) =>
+    el.getBoundingClientRect().right > document.documentElement.clientWidth,
+);
 ```
 
 Then inspect those elements in the Elements panel. Common causes are fixed widths, `100vw` (which includes the scrollbar), long words or URLs without wrapping, images without `max-width: 100%`, and negative margins.

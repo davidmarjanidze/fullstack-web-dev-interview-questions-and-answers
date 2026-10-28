@@ -863,7 +863,9 @@ It returns an array of plain objects. If there are no rows, you get an empty arr
 `findFirst` finds the first record that matches any filter. You can use any fields and also `orderBy`.
 
 ```ts
-const user = await prisma.user.findUnique({ where: { email: "ann@example.com" } });
+const user = await prisma.user.findUnique({
+  where: { email: "ann@example.com" },
+});
 
 const latest = await prisma.post.findFirst({
   where: { published: true },
@@ -902,10 +904,7 @@ Use `createMany`. It inserts all rows in one query and returns a count.
 
 ```ts
 const result = await prisma.user.createMany({
-  data: [
-    { email: "a@example.com" },
-    { email: "b@example.com" },
-  ],
+  data: [{ email: "a@example.com" }, { email: "b@example.com" }],
   skipDuplicates: true,
 });
 console.log(result.count);
@@ -2013,7 +2012,10 @@ There is no `exists` method. The common ways are:
 const exists = (await prisma.user.count({ where: { email } })) > 0;
 
 // or, often a bit cheaper
-const found = await prisma.user.findFirst({ where: { email }, select: { id: true } });
+const found = await prisma.user.findFirst({
+  where: { email },
+  select: { id: true },
+});
 const exists2 = found !== null;
 ```
 
@@ -2102,9 +2104,7 @@ With Prisma you write queries in TypeScript, get typed results and simple migrat
 It lets you go from a record to its relations by chaining calls.
 
 ```ts
-const posts = await prisma.user
-  .findUnique({ where: { id: 1 } })
-  .posts();
+const posts = await prisma.user.findUnique({ where: { id: 1 } }).posts();
 ```
 
 This returns the posts of user 1. If the user does not exist, it returns `null`.
@@ -2373,9 +2373,14 @@ import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
   constructor() {
-    super({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }) });
+    super({
+      adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+    });
   }
 
   async onModuleInit() {
@@ -2403,7 +2408,9 @@ app.use(express.json());
 
 app.get("/users/:id", async (req, res, next) => {
   try {
-    const user = await prisma.user.findUnique({ where: { id: Number(req.params.id) } });
+    const user = await prisma.user.findUnique({
+      where: { id: Number(req.params.id) },
+    });
     if (!user) return res.status(404).json({ error: "Not found" });
     res.json(user);
   } catch (e) {
@@ -2639,7 +2646,9 @@ const xprisma = prisma.$extends({
       async $allOperations({ model, operation, args, query }) {
         const start = performance.now();
         const result = await query(args);
-        console.log(`${model}.${operation} took ${performance.now() - start} ms`);
+        console.log(
+          `${model}.${operation} took ${performance.now() - start} ms`,
+        );
         return result;
       },
     },
@@ -2682,7 +2691,13 @@ import { Prisma } from "./generated/prisma/client";
 
 const logging = Prisma.defineExtension({
   name: "logging",
-  query: { $allModels: { async $allOperations({ args, query }) { return query(args); } } },
+  query: {
+    $allModels: {
+      async $allOperations({ args, query }) {
+        return query(args);
+      },
+    },
+  },
 });
 
 const xprisma = prisma.$extends(logging).$extends(softDelete);
@@ -2715,7 +2730,10 @@ const xprisma = prisma.$extends({
   model: {
     post: {
       async softDelete(id: number) {
-        return prisma.post.update({ where: { id }, data: { deletedAt: new Date() } });
+        return prisma.post.update({
+          where: { id },
+          data: { deletedAt: new Date() },
+        });
       },
     },
   },
@@ -2801,9 +2819,12 @@ import { Prisma } from "./generated/prisma/client";
 export function prismaErrorToHttp(e: unknown) {
   if (e instanceof Prisma.PrismaClientKnownRequestError) {
     switch (e.code) {
-      case "P2002": return { status: 409, message: "Already exists" };
-      case "P2025": return { status: 404, message: "Not found" };
-      case "P2003": return { status: 400, message: "Related record does not exist" };
+      case "P2002":
+        return { status: 409, message: "Already exists" };
+      case "P2025":
+        return { status: 404, message: "Not found" };
+      case "P2003":
+        return { status: 400, message: "Related record does not exist" };
     }
   }
   return { status: 500, message: "Internal error" };
@@ -2934,7 +2955,10 @@ A nullable `Json` field can hold two kinds of null: a database `NULL` or a JSON 
 - `Prisma.AnyNull`: either one (only for filtering)
 
 ```ts
-await prisma.event.update({ where: { id: 1 }, data: { payload: Prisma.DbNull } });
+await prisma.event.update({
+  where: { id: 1 },
+  data: { payload: Prisma.DbNull },
+});
 await prisma.event.findMany({ where: { payload: { equals: Prisma.AnyNull } } });
 ```
 
@@ -3079,7 +3103,11 @@ import type { PrismaClient } from "../generated/prisma/client";
 
 const prismaMock = mockDeep<PrismaClient>();
 
-prismaMock.user.findUnique.mockResolvedValue({ id: 1, email: "a@example.com", name: null });
+prismaMock.user.findUnique.mockResolvedValue({
+  id: 1,
+  email: "a@example.com",
+  name: null,
+});
 
 const user = await getUser(prismaMock, 1);
 expect(user.email).toBe("a@example.com");
@@ -3323,7 +3351,9 @@ model Membership {
 ```
 
 ```ts
-await prisma.membership.findUnique({ where: { member: { userId: 1, teamId: 2 } } });
+await prisma.membership.findUnique({
+  where: { member: { userId: 1, teamId: 2 } },
+});
 ```
 
 ## 227: What are field references?
@@ -3430,7 +3460,10 @@ Otherwise Prisma does a select first and then an insert or update. That version 
 ```ts
 await prisma.$transaction(
   items.map((item) =>
-    prisma.product.update({ where: { id: item.id }, data: { price: item.price } }),
+    prisma.product.update({
+      where: { id: item.id },
+      data: { price: item.price },
+    }),
   ),
 );
 ```
@@ -3781,7 +3814,10 @@ async function createOrder(db: Prisma.TransactionClient, input: OrderInput) {
 
 await prisma.$transaction(async (tx) => {
   const order = await createOrder(tx, input);
-  await tx.stock.update({ where: { id: input.productId }, data: { quantity: { decrement: 1 } } });
+  await tx.stock.update({
+    where: { id: input.productId },
+    data: { quantity: { decrement: 1 } },
+  });
 });
 ```
 
@@ -3801,14 +3837,20 @@ async function withRetry<T>(fn: () => Promise<T>, retries = 3): Promise<T> {
     try {
       return await fn();
     } catch (e) {
-      const conflict = e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2034";
+      const conflict =
+        e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2034";
       if (!conflict || i >= retries) throw e;
     }
   }
 }
 
 await withRetry(() =>
-  prisma.$transaction(async (tx) => { /* ... */ }, { isolationLevel: "Serializable" }),
+  prisma.$transaction(
+    async (tx) => {
+      /* ... */
+    },
+    { isolationLevel: "Serializable" },
+  ),
 );
 ```
 
@@ -3880,10 +3922,13 @@ Prisma has no random order option. Options:
 ```ts
 // small tables: count and skip
 const count = await prisma.quote.count();
-const quote = await prisma.quote.findFirst({ skip: Math.floor(Math.random() * count) });
+const quote = await prisma.quote.findFirst({
+  skip: Math.floor(Math.random() * count),
+});
 
 // raw SQL on PostgreSQL
-const [q] = await prisma.$queryRaw`SELECT * FROM "Quote" ORDER BY random() LIMIT 1`;
+const [q] =
+  await prisma.$queryRaw`SELECT * FROM "Quote" ORDER BY random() LIMIT 1`;
 ```
 
 `ORDER BY random()` scans the whole table, so for big tables use a smarter method like picking a random id range.
@@ -4435,7 +4480,15 @@ export function forTenant(tenantId: string) {
     query: {
       $allModels: {
         async $allOperations({ args, query, operation }) {
-          if (["findMany", "findFirst", "count", "updateMany", "deleteMany"].includes(operation)) {
+          if (
+            [
+              "findMany",
+              "findFirst",
+              "count",
+              "updateMany",
+              "deleteMany",
+            ].includes(operation)
+          ) {
             (args as any).where = { ...(args as any).where, tenantId };
           }
           if (operation === "create") {
@@ -4690,9 +4743,15 @@ It is hard to type well because each model has different argument types. Common 
 const xprisma = prisma.$extends({
   model: {
     $allModels: {
-      async exists<T>(this: T, where: Prisma.Args<T, "findFirst">["where"]): Promise<boolean> {
+      async exists<T>(
+        this: T,
+        where: Prisma.Args<T, "findFirst">["where"],
+      ): Promise<boolean> {
         const context = Prisma.getExtensionContext(this);
-        const result = await (context as any).findFirst({ where, select: { id: true } });
+        const result = await (context as any).findFirst({
+          where,
+          select: { id: true },
+        });
         return result !== null;
       },
     },
@@ -4936,7 +4995,9 @@ For comments, an adjacency list plus a recursive CTE for loading full threads is
 ## 364: How do you load a full tree with a recursive query?
 
 ```ts
-const rows = await prisma.$queryRaw<{ id: number; parentId: number | null; body: string }[]>`
+const rows = await prisma.$queryRaw<
+  { id: number; parentId: number | null; body: string }[]
+>`
   WITH RECURSIVE thread AS (
     SELECT id, "parentId", body FROM "Comment" WHERE id = ${rootId}
     UNION ALL
@@ -5330,7 +5391,10 @@ const jobs = await prisma.$transaction(async (tx) => {
     FOR UPDATE SKIP LOCKED
   `;
   const ids = rows.map((r) => r.id);
-  await tx.job.updateMany({ where: { id: { in: ids } }, data: { status: "RUNNING" } });
+  await tx.job.updateMany({
+    where: { id: { in: ids } },
+    data: { status: "RUNNING" },
+  });
   return ids;
 });
 ```
@@ -5556,7 +5620,10 @@ Never pass user input straight into `orderBy` or `where`. Build them from an all
 const sortable = { createdAt: true, title: true } as const;
 type SortField = keyof typeof sortable;
 
-function buildOrderBy(field: string, dir: string): Prisma.PostOrderByWithRelationInput {
+function buildOrderBy(
+  field: string,
+  dir: string,
+): Prisma.PostOrderByWithRelationInput {
   const f: SortField = field in sortable ? (field as SortField) : "createdAt";
   return { [f]: dir === "asc" ? "asc" : "desc" };
 }
@@ -5670,8 +5737,17 @@ Call Prisma directly in server components and server actions, never in client co
 import { prisma } from "@/lib/prisma";
 
 export default async function Page() {
-  const posts = await prisma.post.findMany({ select: { id: true, title: true }, take: 20 });
-  return <ul>{posts.map((p) => <li key={p.id}>{p.title}</li>)}</ul>;
+  const posts = await prisma.post.findMany({
+    select: { id: true, title: true },
+    take: 20,
+  });
+  return (
+    <ul>
+      {posts.map((p) => (
+        <li key={p.id}>{p.title}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 

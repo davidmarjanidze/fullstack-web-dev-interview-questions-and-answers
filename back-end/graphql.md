@@ -501,7 +501,9 @@ query {
     name
     posts {
       title
-      comments { text }
+      comments {
+        text
+      }
     }
   }
 }
@@ -573,7 +575,9 @@ subscription OnMessage {
   messageAdded(roomId: "42") {
     id
     text
-    author { name }
+    author {
+      name
+    }
   }
 }
 ```
@@ -587,7 +591,7 @@ const resolvers = {
   Query: {
     user: (parent, args, context) => context.db.users.findById(args.id),
   },
-}
+};
 ```
 
 ### 13: What arguments does a resolver receive?
@@ -605,7 +609,7 @@ const resolvers = {
     posts: (parent, args, context, info) =>
       context.db.posts.findByAuthor(parent.id, { limit: args.first }),
   },
-}
+};
 ```
 
 ### 14: What are the built-in scalar types?
@@ -814,8 +818,12 @@ fragment UserCard on User {
 }
 
 query {
-  me { ...UserCard }
-  user(id: "2") { ...UserCard }
+  me {
+    ...UserCard
+  }
+  user(id: "2") {
+    ...UserCard
+  }
 }
 ```
 
@@ -827,8 +835,13 @@ An inline fragment is a fragment without a name, written directly in the query. 
 query {
   search(text: "graphql") {
     __typename
-    ... on User { name }
-    ... on Product { title price }
+    ... on User {
+      name
+    }
+    ... on Product {
+      title
+      price
+    }
   }
 }
 ```
@@ -872,7 +885,8 @@ type User {
 It is used on custom scalars to point to a document that describes how the scalar works. It doesn't change anything at runtime, but tools and developers can see what format to expect.
 
 ```graphql
-scalar DateTime @specifiedBy(url: "https://scalars.graphql.org/andimarek/date-time")
+scalar DateTime
+  @specifiedBy(url: "https://scalars.graphql.org/andimarek/date-time")
 ```
 
 ### 40: What is introspection?
@@ -889,7 +903,10 @@ query {
     name
     fields {
       name
-      type { name kind }
+      type {
+        name
+        kind
+      }
     }
   }
 }
@@ -954,16 +971,16 @@ A JSON object with `query`, and optionally `variables`, `operationName` and `ext
 You don't need a library for a simple request. Send a `POST` with a JSON body.
 
 ```js
-const res = await fetch('/graphql', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const res = await fetch("/graphql", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    query: 'query GetUser($id: ID!) { user(id: $id) { name } }',
-    variables: { id: '1' },
+    query: "query GetUser($id: ID!) { user(id: $id) { name } }",
+    variables: { id: "1" },
   }),
-})
+});
 
-const { data, errors } = await res.json()
+const { data, errors } = await res.json();
 ```
 
 ### 49: Why does a GraphQL API usually have one endpoint?
@@ -996,24 +1013,24 @@ Apollo Server is a popular open-source GraphQL server for Node.js, made by Apoll
 ### 55: How do you create a simple server with Apollo Server?
 
 ```js
-import { ApolloServer } from '@apollo/server'
-import { startStandaloneServer } from '@apollo/server/standalone'
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
 const typeDefs = `#graphql
   type Query {
     hello(name: String): String!
   }
-`
+`;
 
 const resolvers = {
   Query: {
-    hello: (_, { name }) => `Hello, ${name ?? 'world'}!`,
+    hello: (_, { name }) => `Hello, ${name ?? "world"}!`,
   },
-}
+};
 
-const server = new ApolloServer({ typeDefs, resolvers })
-const { url } = await startStandaloneServer(server, { listen: { port: 4000 } })
-console.log(`Server ready at ${url}`)
+const server = new ApolloServer({ typeDefs, resolvers });
+const { url } = await startStandaloneServer(server, { listen: { port: 4000 } });
+console.log(`Server ready at ${url}`);
 ```
 
 `startStandaloneServer` is the quickest way to start. In Apollo Server 5 it runs on Node's built-in HTTP server. For Express or other frameworks you use an integration package instead.
@@ -1023,17 +1040,17 @@ console.log(`Server ready at ${url}`)
 GraphQL Yoga is a GraphQL server from The Guild. It is built on the Fetch API (`Request` and `Response`), so the same code runs on Node.js, Bun, Deno, Cloudflare Workers and serverless platforms. It supports subscriptions over Server-Sent Events out of the box and uses the Envelop plugin system.
 
 ```js
-import { createServer } from 'node:http'
-import { createSchema, createYoga } from 'graphql-yoga'
+import { createServer } from "node:http";
+import { createSchema, createYoga } from "graphql-yoga";
 
 const yoga = createYoga({
   schema: createSchema({
     typeDefs: `type Query { hello: String! }`,
-    resolvers: { Query: { hello: () => 'Hello from Yoga' } },
+    resolvers: { Query: { hello: () => "Hello from Yoga" } },
   }),
-})
+});
 
-createServer(yoga).listen(4000)
+createServer(yoga).listen(4000);
 ```
 
 ### 57: What is graphql-js?
@@ -1061,7 +1078,7 @@ await startStandaloneServer(server, {
     user: await getUserFromToken(req.headers.authorization),
     db,
   }),
-})
+});
 ```
 
 ### 61: What is the `parent` argument in a resolver?
@@ -1072,7 +1089,7 @@ It's the value returned by the resolver of the parent field. For a root field li
 const resolvers = {
   Query: { user: (_, { id }, { db }) => db.users.findById(id) },
   User: { posts: (user, _, { db }) => db.posts.findByAuthor(user.id) },
-}
+};
 ```
 
 ### 62: What is the `info` argument used for?
@@ -1091,11 +1108,11 @@ Yes. A resolver can return a plain value or a promise. The server waits for the 
 const resolvers = {
   Query: {
     weather: async (_, { city }) => {
-      const res = await fetch(`https://api.example.com/weather?city=${city}`)
-      return res.json()
+      const res = await fetch(`https://api.example.com/weather?city=${city}`);
+      return res.json();
     },
   },
-}
+};
 ```
 
 ### 65: What is a resolver map?
@@ -1113,7 +1130,7 @@ const resolvers = {
   Book: {
     author: (book, _, { db }) => db.authors.findById(book.authorId),
   },
-}
+};
 ```
 
 ### 66: What is the difference between schema-first and code-first?
@@ -1161,9 +1178,17 @@ Yes, and that's one of the main reasons to use GraphQL. One query can load unrel
 
 ```graphql
 query HomePage {
-  me { name }
-  featuredProducts(first: 4) { id title }
-  notifications(unreadOnly: true) { id text }
+  me {
+    name
+  }
+  featuredProducts(first: 4) {
+    id
+    title
+  }
+  notifications(unreadOnly: true) {
+    id
+    text
+  }
 }
 ```
 
@@ -1173,9 +1198,12 @@ A selection set is the list of fields inside curly braces. Every field that retu
 
 ```graphql
 {
-  user(id: "1") {   # selection set of Query
-    name            # selection set of User
-    address { city }
+  user(id: "1") {
+    # selection set of Query
+    name # selection set of User
+    address {
+      city
+    }
   }
 }
 ```
@@ -1191,7 +1219,9 @@ Use `#`. Everything after it on the same line is ignored by the parser.
 ```graphql
 query GetUser {
   # only load what the header needs
-  me { name }
+  me {
+    name
+  }
 }
 ```
 
@@ -1223,7 +1253,9 @@ If a document has only one query, with no name and no variables, you can drop th
 
 ```graphql
 {
-  me { name }
+  me {
+    name
+  }
 }
 ```
 
@@ -1285,10 +1317,10 @@ The parse and validate results can be cached for the same query text, so repeate
 AST stands for Abstract Syntax Tree. It's an object tree that represents the query, with nodes for operations, fields, arguments, fragments and so on. graphql-js creates it with `parse()`. Tools work on the AST instead of the raw text, for example to validate a query, add `__typename` or count its depth.
 
 ```js
-import { parse } from 'graphql'
+import { parse } from "graphql";
 
-const ast = parse('{ me { name } }')
-console.log(ast.definitions[0].kind) // "OperationDefinition"
+const ast = parse("{ me { name } }");
+console.log(ast.definitions[0].kind); // "OperationDefinition"
 ```
 
 ### 90: What is the `gql` tag?
@@ -1296,13 +1328,15 @@ console.log(ast.definitions[0].kind) // "OperationDefinition"
 `gql` is a template literal tag that parses a GraphQL string into an AST (a `DocumentNode`). Apollo Client and graphql-tag export it. It also tells editor plugins and code generators that the string contains GraphQL.
 
 ```js
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 const GET_USER = gql`
   query GetUser($id: ID!) {
-    user(id: $id) { name }
+    user(id: $id) {
+      name
+    }
   }
-`
+`;
 ```
 
 ### 91: Why would you keep queries in `.graphql` files?
@@ -1352,7 +1386,12 @@ type PageInfo {
 }
 
 type Query {
-  products(first: Int, after: String, last: Int, before: String): ProductConnection!
+  products(
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): ProductConnection!
 }
 ```
 
@@ -1376,7 +1415,11 @@ enum ProductSort {
 }
 
 type Query {
-  products(filter: ProductFilter, sort: ProductSort = NEWEST, first: Int = 20): [Product!]!
+  products(
+    filter: ProductFilter
+    sort: ProductSort = NEWEST
+    first: Int = 20
+  ): [Product!]!
 }
 ```
 
@@ -1422,7 +1465,7 @@ const resolvers = {
   Post: {
     author: (post, _, { db }) => db.users.findById(post.authorId),
   },
-}
+};
 ```
 
 ### 106: What is DataLoader?
@@ -1430,18 +1473,18 @@ const resolvers = {
 DataLoader is a small library that fixes the N+1 problem. It collects all the `load(id)` calls made in the same tick of the event loop and calls your batch function once with all the IDs. It also caches results for the lifetime of the loader, so the same ID isn't loaded twice in one request.
 
 ```js
-import DataLoader from 'dataloader'
+import DataLoader from "dataloader";
 
 const userLoader = new DataLoader(async (ids) => {
-  const users = await db.users.findByIds(ids)
-  return ids.map((id) => users.find((u) => u.id === id) ?? null)
-})
+  const users = await db.users.findByIds(ids);
+  return ids.map((id) => users.find((u) => u.id === id) ?? null);
+});
 
 const resolvers = {
   Post: {
     author: (post, _, { loaders }) => loaders.user.load(post.authorId),
   },
-}
+};
 ```
 
 ### 107: What is `InMemoryCache` in Apollo Client?
@@ -1455,26 +1498,31 @@ A normalized cache splits responses into separate objects and stores each one un
 ### 109: How do you use `useQuery` in Apollo Client?
 
 ```jsx
-import { gql } from '@apollo/client'
-import { useQuery } from '@apollo/client/react'
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 const GET_DOGS = gql`
   query GetDogs {
-    dogs { id breed }
+    dogs {
+      id
+      breed
+    }
   }
-`
+`;
 
 function Dogs() {
-  const { data, loading, error } = useQuery(GET_DOGS)
+  const { data, loading, error } = useQuery(GET_DOGS);
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error: {error.message}</p>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <ul>
-      {data.dogs.map((dog) => <li key={dog.id}>{dog.breed}</li>)}
+      {data.dogs.map((dog) => (
+        <li key={dog.id}>{dog.breed}</li>
+      ))}
     </ul>
-  )
+  );
 }
 ```
 
@@ -1485,23 +1533,30 @@ The query runs when the component mounts, and the result is saved in the cache.
 `useMutation` returns a function to run the mutation and an object with its state. The mutation doesn't run until you call the function.
 
 ```jsx
-import { gql } from '@apollo/client'
-import { useMutation } from '@apollo/client/react'
+import { gql } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 
 const ADD_TODO = gql`
   mutation AddTodo($text: String!) {
-    addTodo(text: $text) { id text done }
+    addTodo(text: $text) {
+      id
+      text
+      done
+    }
   }
-`
+`;
 
 function AddTodo() {
-  const [addTodo, { loading, error }] = useMutation(ADD_TODO)
+  const [addTodo, { loading, error }] = useMutation(ADD_TODO);
 
   return (
-    <button disabled={loading} onClick={() => addTodo({ variables: { text: 'Buy milk' } })}>
+    <button
+      disabled={loading}
+      onClick={() => addTodo({ variables: { text: "Buy milk" } })}
+    >
       Add
     </button>
-  )
+  );
 }
 ```
 
@@ -1513,10 +1568,10 @@ Use the `variables` option. When a variable changes, Apollo runs the query again
 function DogPhoto({ breed }) {
   const { data, loading } = useQuery(GET_DOG_PHOTO, {
     variables: { breed },
-  })
+  });
 
-  if (loading) return null
-  return <img src={data.dog.displayImage} alt={breed} />
+  if (loading) return null;
+  return <img src={data.dog.displayImage} alt={breed} />;
 }
 ```
 
@@ -1541,21 +1596,21 @@ A fetch policy tells Apollo Client whether to use the cache, the network or both
 Throw an error. The server catches it, sets the field to `null` and adds an entry to the `errors` array. Throwing a `GraphQLError` lets you add an error code and other details.
 
 ```js
-import { GraphQLError } from 'graphql'
+import { GraphQLError } from "graphql";
 
 const resolvers = {
   Query: {
     user: async (_, { id }, { db }) => {
-      const user = await db.users.findById(id)
+      const user = await db.users.findById(id);
       if (!user) {
-        throw new GraphQLError('User not found', {
-          extensions: { code: 'NOT_FOUND' },
-        })
+        throw new GraphQLError("User not found", {
+          extensions: { code: "NOT_FOUND" },
+        });
       }
-      return user
+      return user;
     },
   },
-}
+};
 ```
 
 ### 115: What is `GraphQLError`?
@@ -1577,11 +1632,11 @@ The usual way is the same as for REST: the client sends a token in the `Authoriz
 ```js
 await startStandaloneServer(server, {
   context: async ({ req }) => {
-    const token = req.headers.authorization?.replace('Bearer ', '')
-    const user = token ? await verifyToken(token) : null
-    return { user }
+    const token = req.headers.authorization?.replace("Bearer ", "");
+    const user = token ? await verifyToken(token) : null;
+    return { user };
   },
-})
+});
 ```
 
 ### 119: Where should authorization checks go?
@@ -1599,7 +1654,10 @@ Add the `@deprecated` directive with a reason that says what to use instead.
 ```graphql
 type Product {
   price: Money!
-  priceInCents: Int @deprecated(reason: "Use `price` instead. Will be removed after 2027-01-01.")
+  priceInCents: Int
+    @deprecated(
+      reason: "Use `price` instead. Will be removed after 2027-01-01."
+    )
 }
 ```
 
@@ -1611,7 +1669,10 @@ Yes. Since the October 2021 spec, `@deprecated` also works on arguments and inpu
 
 ```graphql
 type Query {
-  products(sortBy: String @deprecated(reason: "Use `sort`."), sort: ProductSort): [Product!]!
+  products(
+    sortBy: String @deprecated(reason: "Use `sort`.")
+    sort: ProductSort
+  ): [Product!]!
 }
 ```
 
@@ -1655,12 +1716,12 @@ Yes, this is very common. The resolvers just call the REST endpoints and return 
 const resolvers = {
   Query: {
     user: async (_, { id }) => {
-      const res = await fetch(`https://api.example.com/users/${id}`)
-      if (!res.ok) throw new Error('Failed to load user')
-      return res.json()
+      const res = await fetch(`https://api.example.com/users/${id}`);
+      if (!res.ok) throw new Error("Failed to load user");
+      return res.json();
     },
   },
-}
+};
 ```
 
 ### 129: When is REST a better choice than GraphQL?
@@ -1680,15 +1741,15 @@ gRPC uses Protocol Buffers over HTTP/2, has fixed request and response messages,
 It turns an SDL string into a `GraphQLSchema` object. It doesn't take resolvers, so it's mostly used for tests, tools or very simple servers with a root value.
 
 ```js
-import { buildSchema, graphql } from 'graphql'
+import { buildSchema, graphql } from "graphql";
 
-const schema = buildSchema(`type Query { hello: String }`)
+const schema = buildSchema(`type Query { hello: String }`);
 const result = await graphql({
   schema,
-  source: '{ hello }',
-  rootValue: { hello: () => 'world' },
-})
-console.log(result) // { data: { hello: 'world' } }
+  source: "{ hello }",
+  rootValue: { hello: () => "world" },
+});
+console.log(result); // { data: { hello: 'world' } }
 ```
 
 ### 132: What does `printSchema` do?
@@ -1696,10 +1757,10 @@ console.log(result) // { data: { hello: 'world' } }
 `printSchema` takes a `GraphQLSchema` object and returns it as SDL text. It's useful with code-first libraries when you want to save the schema to a file, review changes in pull requests or give it to code generators.
 
 ```js
-import { printSchema } from 'graphql'
-import { writeFileSync } from 'node:fs'
+import { printSchema } from "graphql";
+import { writeFileSync } from "node:fs";
 
-writeFileSync('schema.graphql', printSchema(schema))
+writeFileSync("schema.graphql", printSchema(schema));
 ```
 
 ### 133: What is `makeExecutableSchema`?
@@ -1707,9 +1768,9 @@ writeFileSync('schema.graphql', printSchema(schema))
 It's a function from `@graphql-tools/schema` that takes SDL type definitions and a resolver map and returns an executable `GraphQLSchema`. Apollo Server does this for you when you pass `typeDefs` and `resolvers`, but you need it when you want to work with the schema directly, for example to apply schema directives or use it with another server.
 
 ```js
-import { makeExecutableSchema } from '@graphql-tools/schema'
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
-const schema = makeExecutableSchema({ typeDefs, resolvers })
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 ```
 
 ### 134: How do you mock a GraphQL schema?
@@ -1717,13 +1778,13 @@ const schema = makeExecutableSchema({ typeDefs, resolvers })
 `@graphql-tools/mock` can add fake resolvers to a schema, returning random or custom values for every type. Front-end developers can then work against the schema before the real resolvers exist.
 
 ```js
-import { makeExecutableSchema } from '@graphql-tools/schema'
-import { addMocksToSchema } from '@graphql-tools/mock'
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { addMocksToSchema } from "@graphql-tools/mock";
 
 const schema = addMocksToSchema({
   schema: makeExecutableSchema({ typeDefs }),
-  mocks: { String: () => 'Hello', Int: () => 42 },
-})
+  mocks: { String: () => "Hello", Int: () => 42 },
+});
 ```
 
 ### 135: How do you test a simple resolver?
@@ -1731,14 +1792,14 @@ const schema = addMocksToSchema({
 A resolver is just a function, so you can call it directly with fake arguments.
 
 ```js
-import { test, expect } from 'vitest'
-import { resolvers } from './resolvers'
+import { test, expect } from "vitest";
+import { resolvers } from "./resolvers";
 
-test('Query.user returns the user', async () => {
-  const db = { users: { findById: async (id) => ({ id, name: 'Ana' }) } }
-  const user = await resolvers.Query.user({}, { id: '1' }, { db })
-  expect(user.name).toBe('Ana')
-})
+test("Query.user returns the user", async () => {
+  const db = { users: { findById: async (id) => ({ id, name: "Ana" }) } };
+  const user = await resolvers.Query.user({}, { id: "1" }, { db });
+  expect(user.name).toBe("Ana");
+});
 ```
 
 ### 136: What is `executeOperation` in Apollo Server?
@@ -1747,12 +1808,15 @@ It runs an operation against the server without starting an HTTP server. It goes
 
 ```js
 const response = await server.executeOperation(
-  { query: 'query GetUser($id: ID!) { user(id: $id) { name } }', variables: { id: '1' } },
+  {
+    query: "query GetUser($id: ID!) { user(id: $id) { name } }",
+    variables: { id: "1" },
+  },
   { contextValue: { user: testUser, db } },
-)
+);
 
-expect(response.body.kind).toBe('single')
-expect(response.body.singleResult.data?.user.name).toBe('Ana')
+expect(response.body.kind).toBe("single");
+expect(response.body.singleResult.data?.user.name).toBe("Ana");
 ```
 
 ### 137: Can a field return a list of union or interface types?
@@ -1821,7 +1885,10 @@ It's an optional object in the request body for anything outside the normal quer
 {
   "variables": { "id": "1" },
   "extensions": {
-    "persistedQuery": { "version": 1, "sha256Hash": "ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38" }
+    "persistedQuery": {
+      "version": 1,
+      "sha256Hash": "ecf4edb46db40b5132295c0291d62fb65d6759a9eedfa4d5d612dd5ec54a6b38"
+    }
   }
 }
 ```
@@ -1858,7 +1925,10 @@ Declare the argument as a list type, and send a JSON array as the variable value
 
 ```graphql
 query GetUsers($ids: [ID!]!) {
-  users(ids: $ids) { id name }
+  users(ids: $ids) {
+    id
+    name
+  }
 }
 ```
 
@@ -1901,16 +1971,16 @@ DataLoader caches every key it loads. If you share one loader across all request
 ```js
 await startStandaloneServer(server, {
   context: async ({ req }) => {
-    const user = await getUser(req)
+    const user = await getUser(req);
     return {
       user,
       loaders: {
         user: new DataLoader((ids) => batchUsers(ids)),
         postsByAuthor: new DataLoader((ids) => batchPostsByAuthor(ids)),
       },
-    }
+    };
   },
-})
+});
 ```
 
 ### 152: What rules must a DataLoader batch function follow?
@@ -1922,14 +1992,14 @@ It gets an array of keys and must return a promise of an array with the same len
 Load all the rows with one `IN` (or `ANY`) query, put them in a map by ID, then map the keys back to rows in order.
 
 ```js
-import DataLoader from 'dataloader'
+import DataLoader from "dataloader";
 
 export function createUserLoader(sql) {
   return new DataLoader(async (ids) => {
-    const rows = await sql`SELECT * FROM users WHERE id = ANY(${ids})`
-    const byId = new Map(rows.map((row) => [String(row.id), row]))
-    return ids.map((id) => byId.get(String(id)) ?? null)
-  })
+    const rows = await sql`SELECT * FROM users WHERE id = ANY(${ids})`;
+    const byId = new Map(rows.map((row) => [String(row.id), row]));
+    return ids.map((id) => byId.get(String(id)) ?? null);
+  });
 }
 ```
 
@@ -1940,8 +2010,8 @@ For one-to-many relations, like posts by author, group the rows into arrays and 
 Clear a key with `loader.clear(id)` after a mutation changes that object, so later fields in the same request don't read the old value. Prime the cache with `loader.prime(id, value)` when you already loaded an object some other way, like a list query, so a later `load(id)` doesn't hit the database again. Since loaders are per request, this only matters inside one request.
 
 ```js
-const updated = await db.users.update(id, input)
-loaders.user.clear(id).prime(id, updated)
+const updated = await db.users.update(id, input);
+loaders.user.clear(id).prime(id, updated);
 ```
 
 ### 155: How do you implement cursor pagination with a SQL database?
@@ -1950,15 +2020,15 @@ Sort by a unique, stable column (or a pair like `created_at, id`), and use the c
 
 ```js
 async function productsConnection({ first = 20, after }, sql) {
-  const afterId = after ? decodeCursor(after) : 0
+  const afterId = after ? decodeCursor(after) : 0;
   const rows = await sql`
     SELECT * FROM products
     WHERE id > ${afterId}
     ORDER BY id
     LIMIT ${first + 1}
-  `
-  const hasNextPage = rows.length > first
-  const nodes = rows.slice(0, first)
+  `;
+  const hasNextPage = rows.length > first;
+  const nodes = rows.slice(0, first);
 
   return {
     edges: nodes.map((node) => ({ node, cursor: encodeCursor(node.id) })),
@@ -1968,7 +2038,7 @@ async function productsConnection({ first = 20, after }, sql) {
       startCursor: nodes.length ? encodeCursor(nodes[0].id) : null,
       endCursor: nodes.length ? encodeCursor(nodes.at(-1).id) : null,
     },
-  }
+  };
 }
 ```
 
@@ -1979,8 +2049,9 @@ Strictly, the Relay spec allows `hasPreviousPage` to be `false` when paging forw
 Cursors should be opaque to clients, so they don't build them by hand or depend on their format. A common approach is base64 of a small string or JSON, like `base64("product:42")` or `base64('{"createdAt":"...","id":42}')`. Base64 isn't security, so the server must still validate the decoded value. If the cursor contains anything sensitive, sign or encrypt it.
 
 ```js
-const encodeCursor = (id) => Buffer.from(`cursor:${id}`).toString('base64url')
-const decodeCursor = (cursor) => Number(Buffer.from(cursor, 'base64url').toString().split(':')[1])
+const encodeCursor = (id) => Buffer.from(`cursor:${id}`).toString("base64url");
+const decodeCursor = (cursor) =>
+  Number(Buffer.from(cursor, "base64url").toString().split(":")[1]);
 ```
 
 ### 157: Should a connection include `totalCount`?
@@ -2052,13 +2123,16 @@ const resolvers = {
   Mutation: {
     createPost: async (_, { input }, { services }) => {
       if (input.title.trim().length === 0) {
-        return { post: null, errors: [{ message: 'Title is required', field: ['title'] }] }
+        return {
+          post: null,
+          errors: [{ message: "Title is required", field: ["title"] }],
+        };
       }
-      const post = await services.posts.create(input)
-      return { post, errors: [] }
+      const post = await services.posts.create(input);
+      return { post, errors: [] };
     },
   },
-}
+};
 ```
 
 Shopify uses this pattern with a `userErrors` field on every mutation payload.
@@ -2087,9 +2161,16 @@ type Query {
 ```graphql
 query {
   user(id: "1") {
-    ... on User { name }
-    ... on NotFoundError { message }
-    ... on PermissionError { message requiredRole }
+    ... on User {
+      name
+    }
+    ... on NotFoundError {
+      message
+    }
+    ... on PermissionError {
+      message
+      requiredRole
+    }
   }
 }
 ```
@@ -2105,19 +2186,22 @@ Throw for unexpected problems the user can't fix: a database is down, a bug, a t
 Unexpected errors can leak database messages, file paths or stack traces. In Apollo Server, stack traces are only included when `NODE_ENV` isn't `production`, and you can use `formatError` to replace messages for errors you didn't create on purpose.
 
 ```js
-import { unwrapResolverError } from '@apollo/server/errors'
-import { GraphQLError } from 'graphql'
+import { unwrapResolverError } from "@apollo/server/errors";
+import { GraphQLError } from "graphql";
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   formatError: (formattedError, error) => {
-    const original = unwrapResolverError(error)
-    if (original instanceof GraphQLError) return formattedError
-    logger.error(original)
-    return { message: 'Internal server error', extensions: { code: 'INTERNAL_SERVER_ERROR' } }
+    const original = unwrapResolverError(error);
+    if (original instanceof GraphQLError) return formattedError;
+    logger.error(original);
+    return {
+      message: "Internal server error",
+      extensions: { code: "INTERNAL_SERVER_ERROR" },
+    };
   },
-})
+});
 ```
 
 GraphQL Yoga does this by default with its `maskedErrors` option: any error that isn't a `GraphQLError` is shown as "Unexpected error."
@@ -2127,17 +2211,19 @@ GraphQL Yoga does this by default with its `maskedErrors` option: any error that
 Extend `GraphQLError` and set a fixed code in `extensions`. Resolvers then throw meaningful errors, and clients get consistent codes.
 
 ```js
-import { GraphQLError } from 'graphql'
+import { GraphQLError } from "graphql";
 
 export class UnauthenticatedError extends GraphQLError {
-  constructor(message = 'You must be logged in') {
-    super(message, { extensions: { code: 'UNAUTHENTICATED', http: { status: 401 } } })
+  constructor(message = "You must be logged in") {
+    super(message, {
+      extensions: { code: "UNAUTHENTICATED", http: { status: 401 } },
+    });
   }
 }
 
 export class ForbiddenError extends GraphQLError {
-  constructor(message = 'Not allowed') {
-    super(message, { extensions: { code: 'FORBIDDEN' } })
+  constructor(message = "Not allowed") {
+    super(message, { extensions: { code: "FORBIDDEN" } });
   }
 }
 ```
@@ -2153,33 +2239,35 @@ In Apollo Server, `extensions.http.status` sets the HTTP status code, and the `h
 Install `@as-integrations/express5` (or `express4` for older apps) and mount `expressMiddleware`. You need to start the server first and add JSON body parsing.
 
 ```js
-import express from 'express'
-import cors from 'cors'
-import http from 'node:http'
-import { ApolloServer } from '@apollo/server'
-import { expressMiddleware } from '@as-integrations/express5'
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import express from "express";
+import cors from "cors";
+import http from "node:http";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@as-integrations/express5";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
-const app = express()
-const httpServer = http.createServer(app)
+const app = express();
+const httpServer = http.createServer(app);
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-})
-await server.start()
+});
+await server.start();
 
 app.use(
-  '/graphql',
-  cors({ origin: ['https://app.example.com'] }),
+  "/graphql",
+  cors({ origin: ["https://app.example.com"] }),
   express.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ user: await getUser(req.headers.authorization) }),
+    context: async ({ req }) => ({
+      user: await getUser(req.headers.authorization),
+    }),
   }),
-)
+);
 
-httpServer.listen(4000)
+httpServer.listen(4000);
 ```
 
 In Apollo Server 4 the Express integration lived inside `@apollo/server/express4`. In version 5 it's a separate package.
@@ -2190,31 +2278,31 @@ Browsers can't set custom headers on a WebSocket, so the token is usually sent i
 
 ```js
 // client
-import { createClient } from 'graphql-ws'
+import { createClient } from "graphql-ws";
 
 const wsClient = createClient({
-  url: 'wss://api.example.com/graphql',
+  url: "wss://api.example.com/graphql",
   connectionParams: () => ({ authorization: `Bearer ${getToken()}` }),
-})
+});
 ```
 
 ```js
 // server
-import { useServer } from 'graphql-ws/use/ws'
+import { useServer } from "graphql-ws/use/ws";
 
 useServer(
   {
     schema,
     onConnect: async (ctx) => {
-      const user = await verifyToken(ctx.connectionParams?.authorization)
-      if (!user) return false // closes the connection
+      const user = await verifyToken(ctx.connectionParams?.authorization);
+      if (!user) return false; // closes the connection
     },
     context: async (ctx) => ({
       user: await verifyToken(ctx.connectionParams?.authorization),
     }),
   },
   wsServer,
-)
+);
 ```
 
 Cookies also work, since the browser sends them with the WebSocket handshake. In graphql-ws v5 the import path was `graphql-ws/lib/use/ws`.
@@ -2226,7 +2314,10 @@ Declare the directive in the schema, then use `mapSchema` from `@graphql-tools/u
 ```graphql
 directive @auth(requires: Role = USER) on FIELD_DEFINITION
 
-enum Role { USER ADMIN }
+enum Role {
+  USER
+  ADMIN
+}
 
 type Query {
   me: User @auth
@@ -2235,28 +2326,32 @@ type Query {
 ```
 
 ```js
-import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils'
-import { defaultFieldResolver, GraphQLError } from 'graphql'
+import { mapSchema, getDirective, MapperKind } from "@graphql-tools/utils";
+import { defaultFieldResolver, GraphQLError } from "graphql";
 
 export function authDirective(schema) {
   return mapSchema(schema, {
     [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
-      const auth = getDirective(schema, fieldConfig, 'auth')?.[0]
-      if (!auth) return fieldConfig
+      const auth = getDirective(schema, fieldConfig, "auth")?.[0];
+      if (!auth) return fieldConfig;
 
-      const resolve = fieldConfig.resolve ?? defaultFieldResolver
+      const resolve = fieldConfig.resolve ?? defaultFieldResolver;
       fieldConfig.resolve = (source, args, context, info) => {
         if (!context.user) {
-          throw new GraphQLError('Not authenticated', { extensions: { code: 'UNAUTHENTICATED' } })
+          throw new GraphQLError("Not authenticated", {
+            extensions: { code: "UNAUTHENTICATED" },
+          });
         }
-        if (auth.requires === 'ADMIN' && context.user.role !== 'ADMIN') {
-          throw new GraphQLError('Forbidden', { extensions: { code: 'FORBIDDEN' } })
+        if (auth.requires === "ADMIN" && context.user.role !== "ADMIN") {
+          throw new GraphQLError("Forbidden", {
+            extensions: { code: "FORBIDDEN" },
+          });
         }
-        return resolve(source, args, context, info)
-      }
-      return fieldConfig
+        return resolve(source, args, context, info);
+      };
+      return fieldConfig;
     },
-  })
+  });
 }
 ```
 
@@ -2268,12 +2363,12 @@ Check the permission in the field's resolver (or the service it calls) and eithe
 const resolvers = {
   User: {
     email: (user, _, { user: viewer }) => {
-      if (!viewer) return null
-      if (viewer.id === user.id || viewer.role === 'ADMIN') return user.email
-      return null
+      if (!viewer) return null;
+      if (viewer.id === user.id || viewer.role === "ADMIN") return user.email;
+      return null;
     },
   },
-}
+};
 ```
 
 Returning `null` quietly is friendlier for UIs. Throwing makes it clear that access was denied. Pick one approach and use it everywhere.
@@ -2287,19 +2382,24 @@ Plugins are objects with hooks that run at points in the server and request life
 ```js
 const loggingPlugin = {
   async requestDidStart({ request }) {
-    const start = Date.now()
+    const start = Date.now();
     return {
       async didEncounterErrors({ errors }) {
-        for (const err of errors) logger.warn({ op: request.operationName, err: err.message })
+        for (const err of errors)
+          logger.warn({ op: request.operationName, err: err.message });
       },
       async willSendResponse() {
-        logger.info({ op: request.operationName, ms: Date.now() - start })
+        logger.info({ op: request.operationName, ms: Date.now() - start });
       },
-    }
+    };
   },
-}
+};
 
-const server = new ApolloServer({ typeDefs, resolvers, plugins: [loggingPlugin] })
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [loggingPlugin],
+});
 ```
 
 ### 172: How do you configure CORS for a GraphQL server?
@@ -2307,7 +2407,12 @@ const server = new ApolloServer({ typeDefs, resolvers, plugins: [loggingPlugin] 
 It's the same as any HTTP server: allow your front-end origins and the headers you use. With `startStandaloneServer` in Apollo Server, CORS is open to all origins by default. With Express, use the `cors` middleware. If you use cookies, set `credentials: true` and a specific origin list, because `*` doesn't work with credentials.
 
 ```js
-app.use('/graphql', cors({ origin: ['https://app.example.com'], credentials: true }), express.json(), expressMiddleware(server))
+app.use(
+  "/graphql",
+  cors({ origin: ["https://app.example.com"], credentials: true }),
+  express.json(),
+  expressMiddleware(server),
+);
 ```
 
 GraphQL Yoga has a `cors` option in `createYoga`.
@@ -2319,17 +2424,21 @@ Put the response object, or a helper, into the context, and use it in the resolv
 ```js
 expressMiddleware(server, {
   context: async ({ req, res }) => ({ req, res }),
-})
+});
 
 const resolvers = {
   Mutation: {
     login: async (_, { email, password }, { res, services }) => {
-      const session = await services.auth.login(email, password)
-      res.cookie('sid', session.id, { httpOnly: true, secure: true, sameSite: 'lax' })
-      return session.user
+      const session = await services.auth.login(email, password);
+      res.cookie("sid", session.id, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+      });
+      return session.user;
     },
   },
-}
+};
 ```
 
 In Apollo Server plugins you can also set headers with `requestContext.response.http.headers.set(...)`.
@@ -2369,15 +2478,19 @@ Then merge all type definitions and resolvers into one schema. GraphQL Modules f
 Use `@graphql-tools/load-files` to find the files and `@graphql-tools/merge` to combine them.
 
 ```js
-import path from 'node:path'
-import { loadFilesSync } from '@graphql-tools/load-files'
-import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge'
-import { makeExecutableSchema } from '@graphql-tools/schema'
+import path from "node:path";
+import { loadFilesSync } from "@graphql-tools/load-files";
+import { mergeTypeDefs, mergeResolvers } from "@graphql-tools/merge";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
-const typeDefs = mergeTypeDefs(loadFilesSync(path.join(import.meta.dirname, 'modules/**/*.graphql')))
-const resolvers = mergeResolvers(loadFilesSync(path.join(import.meta.dirname, 'modules/**/*.resolvers.*')))
+const typeDefs = mergeTypeDefs(
+  loadFilesSync(path.join(import.meta.dirname, "modules/**/*.graphql")),
+);
+const resolvers = mergeResolvers(
+  loadFilesSync(path.join(import.meta.dirname, "modules/**/*.resolvers.*")),
+);
 
-export const schema = makeExecutableSchema({ typeDefs, resolvers })
+export const schema = makeExecutableSchema({ typeDefs, resolvers });
 ```
 
 `mergeTypeDefs` also merges repeated type definitions, so two files can both define `type Query`.
@@ -2385,18 +2498,18 @@ export const schema = makeExecutableSchema({ typeDefs, resolvers })
 ### 179: How do you build a schema code-first with Pothos?
 
 ```ts
-import SchemaBuilder from '@pothos/core'
+import SchemaBuilder from "@pothos/core";
 
-const builder = new SchemaBuilder<{ Context: { userId?: string } }>({})
+const builder = new SchemaBuilder<{ Context: { userId?: string } }>({});
 
-const User = builder.objectRef<{ id: string; name: string }>('User')
+const User = builder.objectRef<{ id: string; name: string }>("User");
 
 User.implement({
   fields: (t) => ({
-    id: t.exposeID('id'),
-    name: t.exposeString('name'),
+    id: t.exposeID("id"),
+    name: t.exposeString("name"),
   }),
-})
+});
 
 builder.queryType({
   fields: (t) => ({
@@ -2407,9 +2520,9 @@ builder.queryType({
       resolve: (_, { id }) => findUser(String(id)),
     }),
   }),
-})
+});
 
-export const schema = builder.toSchema()
+export const schema = builder.toSchema();
 ```
 
 Pothos infers TypeScript types from the definitions, so resolver arguments and return values are checked without code generation.
@@ -2419,15 +2532,15 @@ Pothos infers TypeScript types from the definitions, so resolver arguments and r
 NestJS has the `@nestjs/graphql` package with Apollo or Mercurius drivers. In code-first mode, you write classes with decorators and Nest generates the schema.
 
 ```ts
-import { Field, ID, ObjectType, Resolver, Query, Args } from '@nestjs/graphql'
+import { Field, ID, ObjectType, Resolver, Query, Args } from "@nestjs/graphql";
 
 @ObjectType()
 export class Recipe {
   @Field(() => ID)
-  id: string
+  id: string;
 
   @Field()
-  title: string
+  title: string;
 }
 
 @Resolver(() => Recipe)
@@ -2435,8 +2548,8 @@ export class RecipesResolver {
   constructor(private readonly recipes: RecipesService) {}
 
   @Query(() => Recipe, { nullable: true })
-  recipe(@Args('id') id: string) {
-    return this.recipes.findById(id)
+  recipe(@Args("id") id: string) {
+    return this.recipes.findById(id);
   }
 }
 ```
@@ -2449,31 +2562,34 @@ The `client` preset is the recommended setup. It generates a typed `graphql()` f
 
 ```ts
 // codegen.ts
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: 'http://localhost:4000/graphql',
-  documents: ['src/**/*.{ts,tsx}'],
+  schema: "http://localhost:4000/graphql",
+  documents: ["src/**/*.{ts,tsx}"],
   ignoreNoDocuments: true,
   generates: {
-    './src/gql/': { preset: 'client' },
+    "./src/gql/": { preset: "client" },
   },
-}
+};
 
-export default config
+export default config;
 ```
 
 ```tsx
-import { graphql } from './gql'
-import { useQuery } from '@apollo/client/react'
+import { graphql } from "./gql";
+import { useQuery } from "@apollo/client/react";
 
 const GetUser = graphql(`
   query GetUser($id: ID!) {
-    user(id: $id) { id name }
+    user(id: $id) {
+      id
+      name
+    }
   }
-`)
+`);
 
-const { data } = useQuery(GetUser, { variables: { id: '1' } }) // data is typed
+const { data } = useQuery(GetUser, { variables: { id: "1" } }); // data is typed
 ```
 
 Run `graphql-codegen --watch` during development so types update as you edit queries.
@@ -2484,28 +2600,28 @@ Use the `typescript` and `typescript-resolvers` plugins, and set `mappers` so pa
 
 ```ts
 const config: CodegenConfig = {
-  schema: 'src/**/*.graphql',
+  schema: "src/**/*.graphql",
   generates: {
-    'src/generated/resolvers-types.ts': {
-      plugins: ['typescript', 'typescript-resolvers'],
+    "src/generated/resolvers-types.ts": {
+      plugins: ["typescript", "typescript-resolvers"],
       config: {
-        contextType: '../context#Context',
-        mappers: { User: '../models#UserModel' },
+        contextType: "../context#Context",
+        mappers: { User: "../models#UserModel" },
       },
     },
   },
-}
+};
 ```
 
 ```ts
-import type { Resolvers } from './generated/resolvers-types'
+import type { Resolvers } from "./generated/resolvers-types";
 
 export const resolvers: Resolvers = {
   User: {
     // parent is UserModel, return type must match [Post!]!
     posts: (user, _, { loaders }) => loaders.postsByAuthor.load(user.id),
   },
-}
+};
 ```
 
 The Guild's newer Server Preset (`@eddeee888/gcg-typescript-resolver-files`) generates resolver files and types per module for bigger projects.
@@ -2520,7 +2636,7 @@ export const UserAvatarFragment = graphql(`
     name
     avatarUrl
   }
-`)
+`);
 
 const ProfilePageQuery = graphql(`
   query ProfilePage($id: ID!) {
@@ -2529,7 +2645,7 @@ const ProfilePageQuery = graphql(`
       ...UserAvatar
     }
   }
-`)
+`);
 ```
 
 This is the core idea in Relay, and Apollo Client and the codegen client preset support it too.
@@ -2539,11 +2655,11 @@ This is the core idea in Relay, and Apollo Client and the codegen client preset 
 With fragment masking, a component can only read the fields from its own fragment, even if the parent query loaded more. The parent passes a masked reference, and the child "unmasks" it with a helper. It stops components from depending on fields they didn't ask for, which would break silently when someone else edits a query.
 
 ```tsx
-import { FragmentType, useFragment } from './gql'
+import { FragmentType, useFragment } from "./gql";
 
 function UserAvatar(props: { user: FragmentType<typeof UserAvatarFragment> }) {
-  const user = useFragment(UserAvatarFragment, props.user)
-  return <img src={user.avatarUrl} alt={user.name} />
+  const user = useFragment(UserAvatarFragment, props.user);
+  return <img src={user.avatarUrl} alt={user.name} />;
 }
 ```
 
@@ -2552,19 +2668,19 @@ Relay always masks data, the codegen client preset does it with `useFragment` (a
 ### 185: How do you set up Apollo Client 4 in a React app?
 
 ```tsx
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-import { ApolloProvider } from '@apollo/client/react'
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: 'https://api.example.com/graphql' }),
+  link: new HttpLink({ uri: "https://api.example.com/graphql" }),
   cache: new InMemoryCache(),
-})
+});
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <ApolloProvider client={client}>
     <App />
   </ApolloProvider>,
-)
+);
 ```
 
 In Apollo Client 4 you pass a link explicitly, the React parts come from `@apollo/client/react`, and RxJS is a peer dependency. Apollo Client 3 code often passes `uri` directly to the constructor and imports everything from `@apollo/client`.
@@ -2576,11 +2692,11 @@ By default it uses `__typename` plus `id` (or `_id`), like `Product:42`. If an o
 ```js
 const cache = new InMemoryCache({
   typePolicies: {
-    Product: { keyFields: ['sku'] },
-    Book: { keyFields: ['isbn', 'edition'] },
+    Product: { keyFields: ["sku"] },
+    Book: { keyFields: ["isbn", "edition"] },
     UserSettings: { keyFields: false }, // never normalize, keep inside parent
   },
-})
+});
 ```
 
 Always request the ID fields in your queries, or the cache can't normalize the objects.
@@ -2596,13 +2712,13 @@ const cache = new InMemoryCache({
       fields: {
         displayPrice: {
           read(_, { readField }) {
-            return `$${(readField('priceInCents') / 100).toFixed(2)}`
+            return `$${(readField("priceInCents") / 100).toFixed(2)}`;
           },
         },
       },
     },
   },
-})
+});
 ```
 
 Field policies are used for pagination, local-only fields, computed values and cache redirects.
@@ -2623,14 +2739,20 @@ const [addTodo] = useMutation(ADD_TODO, {
         todos(existing = []) {
           const ref = cache.writeFragment({
             data: data.addTodo,
-            fragment: gql`fragment NewTodo on Todo { id text done }`,
-          })
-          return [...existing, ref]
+            fragment: gql`
+              fragment NewTodo on Todo {
+                id
+                text
+                done
+              }
+            `,
+          });
+          return [...existing, ref];
         },
       },
-    })
+    });
   },
-})
+});
 ```
 
 ### 189: What is the difference between `cache.modify`, `cache.writeQuery` and `cache.updateQuery`?
@@ -2640,7 +2762,7 @@ const [addTodo] = useMutation(ADD_TODO, {
 ```js
 cache.updateQuery({ query: GET_TODOS }, (data) => ({
   todos: data.todos.filter((t) => t.id !== deletedId),
-}))
+}));
 ```
 
 To remove an object completely, use `cache.evict({ id: cache.identify(obj) })` and then `cache.gc()`.
@@ -2653,9 +2775,9 @@ Pass an `optimisticResponse` that looks like the expected server result. Apollo 
 toggleTodo({
   variables: { id: todo.id },
   optimisticResponse: {
-    toggleTodo: { __typename: 'Todo', id: todo.id, done: !todo.done },
+    toggleTodo: { __typename: "Todo", id: todo.id, done: !todo.done },
   },
-})
+});
 ```
 
 The optimistic object needs the `__typename` and `id`, so Apollo knows which cache entry to update.
@@ -2674,18 +2796,22 @@ The optimistic object needs the `__typename` and `id`, so Apollo knows which cac
 Use `useLazyQuery`. It returns a function that runs the query and the result state.
 
 ```jsx
-import { useLazyQuery } from '@apollo/client/react'
+import { useLazyQuery } from "@apollo/client/react";
 
 function Search() {
-  const [search, { data, loading }] = useLazyQuery(SEARCH_PRODUCTS)
+  const [search, { data, loading }] = useLazyQuery(SEARCH_PRODUCTS);
 
   return (
     <>
-      <button onClick={() => search({ variables: { text: 'shoes' } })}>Search</button>
+      <button onClick={() => search({ variables: { text: "shoes" } })}>
+        Search
+      </button>
       {loading && <p>Searching...</p>}
-      {data?.search.map((p) => <p key={p.id}>{p.title}</p>)}
+      {data?.search.map((p) => (
+        <p key={p.id}>{p.title}</p>
+      ))}
     </>
-  )
+  );
 }
 ```
 
@@ -2696,21 +2822,23 @@ You can also use `client.query()` directly from an event handler if you don't ne
 Use `fetchMore` from `useQuery` to load the next page, and a field policy that merges pages together. For Relay-style connections there's a ready helper.
 
 ```js
-import { InMemoryCache } from '@apollo/client'
-import { relayStylePagination } from '@apollo/client/utilities'
+import { InMemoryCache } from "@apollo/client";
+import { relayStylePagination } from "@apollo/client/utilities";
 
 const cache = new InMemoryCache({
   typePolicies: {
-    Query: { fields: { products: relayStylePagination(['filter']) } },
+    Query: { fields: { products: relayStylePagination(["filter"]) } },
   },
-})
+});
 ```
 
 ```jsx
-const { data, fetchMore } = useQuery(GET_PRODUCTS, { variables: { first: 20 } })
+const { data, fetchMore } = useQuery(GET_PRODUCTS, {
+  variables: { first: 20 },
+});
 
 const loadMore = () =>
-  fetchMore({ variables: { after: data.products.pageInfo.endCursor } })
+  fetchMore({ variables: { after: data.products.pageInfo.endCursor } });
 ```
 
 The argument to `relayStylePagination` is the list of `keyArgs`: arguments that create separate lists in the cache. `offsetLimitPagination` is the helper for offset pagination.
@@ -2723,7 +2851,7 @@ Set `pollInterval` in milliseconds. You can also start and stop polling with the
 const { data, startPolling, stopPolling } = useQuery(GET_ORDER_STATUS, {
   variables: { id },
   pollInterval: 5000,
-})
+});
 ```
 
 Polling is easy and works through any proxy, so it's often good enough instead of subscriptions for data that changes every few seconds.
@@ -2737,7 +2865,7 @@ It controls what happens when the response has GraphQL errors.
 - `ignore`: errors are ignored, and you get whatever `data` came back.
 
 ```js
-const { data, error } = useQuery(GET_DASHBOARD, { errorPolicy: 'all' })
+const { data, error } = useQuery(GET_DASHBOARD, { errorPolicy: "all" });
 ```
 
 Use `all` for pages built from many independent fields, where one failing widget shouldn't blank the whole page.
@@ -2747,12 +2875,22 @@ Use `all` for pages built from many independent fields, where one failing widget
 Apollo Link is the request pipeline of Apollo Client. Each link can change the operation, add headers, log, retry, or send it over the network. You chain them with `ApolloLink.from`, and the last link in the chain, usually `HttpLink`, sends the request.
 
 ```js
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client'
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 
 const client = new ApolloClient({
-  link: ApolloLink.from([errorLink, authLink, retryLink, new HttpLink({ uri: '/graphql' })]),
+  link: ApolloLink.from([
+    errorLink,
+    authLink,
+    retryLink,
+    new HttpLink({ uri: "/graphql" }),
+  ]),
   cache: new InMemoryCache(),
-})
+});
 ```
 
 ### 197: How do you add an auth header to every request in Apollo Client?
@@ -2760,17 +2898,17 @@ const client = new ApolloClient({
 Use a link that sets headers on the operation context. In Apollo Client 4 it's the `SetContextLink` class.
 
 ```js
-import { SetContextLink } from '@apollo/client/link/context'
+import { SetContextLink } from "@apollo/client/link/context";
 
 const authLink = new SetContextLink((prevContext) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token");
   return {
     headers: {
       ...prevContext.headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
-  }
-})
+  };
+});
 ```
 
 Apollo Client 3 code uses the `setContext((operation, prevContext) => ...)` function from the same package. Note that the order of the arguments is different between the two.
@@ -2780,18 +2918,18 @@ Apollo Client 3 code uses the `setContext((operation, prevContext) => ...)` func
 Add an error link at the start of the chain. In Apollo Client 4 the error is one object, and you check its type with helper classes.
 
 ```js
-import { CombinedGraphQLErrors } from '@apollo/client'
-import { ErrorLink } from '@apollo/client/link/error'
+import { CombinedGraphQLErrors } from "@apollo/client";
+import { ErrorLink } from "@apollo/client/link/error";
 
 const errorLink = new ErrorLink(({ error, operation }) => {
   if (CombinedGraphQLErrors.is(error)) {
     for (const err of error.errors) {
-      if (err.extensions?.code === 'UNAUTHENTICATED') redirectToLogin()
+      if (err.extensions?.code === "UNAUTHENTICATED") redirectToLogin();
     }
   } else {
-    console.error(`Network error in ${operation.operationName}:`, error)
+    console.error(`Network error in ${operation.operationName}:`, error);
   }
-})
+});
 ```
 
 In Apollo Client 3 you used `onError(({ graphQLErrors, networkError }) => ...)`, and query errors had `graphQLErrors` and `networkError` properties. Apollo Client 4 replaced those with error classes like `CombinedGraphQLErrors` and `ServerError`.
@@ -2801,12 +2939,12 @@ In Apollo Client 3 you used `onError(({ graphQLErrors, networkError }) => ...)`,
 Use `RetryLink`. By default it retries network errors a few times with exponential backoff and jitter. It doesn't retry GraphQL errors, because those usually aren't temporary.
 
 ```js
-import { RetryLink } from '@apollo/client/link/retry'
+import { RetryLink } from "@apollo/client/link/retry";
 
 const retryLink = new RetryLink({
   delay: { initial: 300, max: 5000, jitter: true },
   attempts: { max: 3, retryIf: (error, operation) => !!error },
-})
+});
 ```
 
 Be careful with retrying mutations. If the first request reached the server but the response was lost, a retry can create a duplicate.
@@ -2816,24 +2954,33 @@ Be careful with retrying mutations. If the first request reached the server but 
 Add a `GraphQLWsLink` and split the traffic so subscriptions go over WebSockets and everything else over HTTP.
 
 ```js
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client'
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
-import { getMainDefinition } from '@apollo/client/utilities'
-import { createClient } from 'graphql-ws'
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { createClient } from "graphql-ws";
 
-const httpLink = new HttpLink({ uri: '/graphql' })
-const wsLink = new GraphQLWsLink(createClient({ url: 'wss://api.example.com/graphql' }))
+const httpLink = new HttpLink({ uri: "/graphql" });
+const wsLink = new GraphQLWsLink(
+  createClient({ url: "wss://api.example.com/graphql" }),
+);
 
 const link = ApolloLink.split(
   ({ query }) => {
-    const def = getMainDefinition(query)
-    return def.kind === 'OperationDefinition' && def.operation === 'subscription'
+    const def = getMainDefinition(query);
+    return (
+      def.kind === "OperationDefinition" && def.operation === "subscription"
+    );
   },
   wsLink,
   httpLink,
-)
+);
 
-const client = new ApolloClient({ link, cache: new InMemoryCache() })
+const client = new ApolloClient({ link, cache: new InMemoryCache() });
 ```
 
 Then use `useSubscription(MESSAGE_ADDED, { variables: { roomId } })` in a component, or `subscribeToMore` to add events to an existing query's result.
@@ -2843,21 +2990,21 @@ Then use `useSubscription(MESSAGE_ADDED, { variables: { roomId } })` in a compon
 Apollo Server handles HTTP only, so you run a `graphql-ws` server on the same HTTP server and give both the same schema.
 
 ```js
-import http from 'node:http'
-import express from 'express'
-import { WebSocketServer } from 'ws'
-import { useServer } from 'graphql-ws/use/ws'
-import { makeExecutableSchema } from '@graphql-tools/schema'
-import { ApolloServer } from '@apollo/server'
-import { expressMiddleware } from '@as-integrations/express5'
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import http from "node:http";
+import express from "express";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/use/ws";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@as-integrations/express5";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
-const schema = makeExecutableSchema({ typeDefs, resolvers })
-const app = express()
-const httpServer = http.createServer(app)
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+const app = express();
+const httpServer = http.createServer(app);
 
-const wsServer = new WebSocketServer({ server: httpServer, path: '/graphql' })
-const wsCleanup = useServer({ schema }, wsServer)
+const wsServer = new WebSocketServer({ server: httpServer, path: "/graphql" });
+const wsCleanup = useServer({ schema }, wsServer);
 
 const server = new ApolloServer({
   schema,
@@ -2865,15 +3012,19 @@ const server = new ApolloServer({
     ApolloServerPluginDrainHttpServer({ httpServer }),
     {
       async serverWillStart() {
-        return { async drainServer() { await wsCleanup.dispose() } }
+        return {
+          async drainServer() {
+            await wsCleanup.dispose();
+          },
+        };
       },
     },
   ],
-})
-await server.start()
+});
+await server.start();
 
-app.use('/graphql', express.json(), expressMiddleware(server))
-httpServer.listen(4000)
+app.use("/graphql", express.json(), expressMiddleware(server));
+httpServer.listen(4000);
 ```
 
 ### 202: What is PubSub, and why shouldn't you use the in-memory one in production?
@@ -2881,22 +3032,24 @@ httpServer.listen(4000)
 PubSub is the mechanism that connects "something happened" to subscription resolvers. Mutations publish events, and subscription resolvers listen to them.
 
 ```js
-import { PubSub } from 'graphql-subscriptions'
+import { PubSub } from "graphql-subscriptions";
 
-const pubsub = new PubSub()
+const pubsub = new PubSub();
 
 const resolvers = {
   Mutation: {
     addPost: async (_, { input }, { db }) => {
-      const post = await db.posts.create(input)
-      await pubsub.publish('POST_ADDED', { postAdded: post })
-      return post
+      const post = await db.posts.create(input);
+      await pubsub.publish("POST_ADDED", { postAdded: post });
+      return post;
     },
   },
   Subscription: {
-    postAdded: { subscribe: () => pubsub.asyncIterableIterator(['POST_ADDED']) },
+    postAdded: {
+      subscribe: () => pubsub.asyncIterableIterator(["POST_ADDED"]),
+    },
   },
-}
+};
 ```
 
 The built-in `PubSub` keeps events in the memory of one process. If you run two server instances, a mutation handled by instance A never reaches subscribers connected to instance B. In production use a shared broker, like Redis (`graphql-redis-subscriptions`), Kafka, NATS or Postgres `LISTEN/NOTIFY`. In graphql-subscriptions v2 the method was called `asyncIterator`.
@@ -2906,20 +3059,20 @@ The built-in `PubSub` keeps events in the memory of one process. If you run two 
 Use `withFilter`, which runs a function for each event and only sends it to clients where the function returns `true`.
 
 ```js
-import { withFilter } from 'graphql-subscriptions'
+import { withFilter } from "graphql-subscriptions";
 
 const resolvers = {
   Subscription: {
     messageAdded: {
       subscribe: withFilter(
-        () => pubsub.asyncIterableIterator(['MESSAGE_ADDED']),
+        () => pubsub.asyncIterableIterator(["MESSAGE_ADDED"]),
         (payload, variables, context) =>
           payload.messageAdded.roomId === variables.roomId &&
           context.user.rooms.includes(variables.roomId),
       ),
     },
   },
-}
+};
 ```
 
 For high traffic, it's better to publish to a topic per room, like `MESSAGE_ADDED.42`, so the server doesn't run the filter for every event and every subscriber.
@@ -2963,7 +3116,10 @@ Trusted documents, also called persisted operations or an operation allowlist, m
 You mark types and fields with a `@cacheControl` directive (or set hints in resolvers). Apollo works out the policy for the whole response, using the smallest `maxAge` of all fields and `PRIVATE` if any field is private, and sets the `Cache-Control` header.
 
 ```graphql
-enum CacheControlScope { PUBLIC PRIVATE }
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
 
 directive @cacheControl(
   maxAge: Int
@@ -2986,11 +3142,11 @@ type Query {
 const resolvers = {
   Query: {
     product: (_, { id }, ctx, info) => {
-      info.cacheControl.setCacheHint({ maxAge: 60 })
-      return ctx.db.products.findById(id)
+      info.cacheControl.setCacheHint({ maxAge: 60 });
+      return ctx.db.products.findById(id);
     },
   },
-}
+};
 ```
 
 Root fields and object fields without a hint default to `maxAge: 0`, which means not cacheable.
@@ -3004,13 +3160,13 @@ Apollo has `@apollo/server-plugin-response-cache`, which uses the cache hints to
 Add a validation rule that rejects queries nested deeper than a limit. It stops queries like `user { friends { friends { friends { ... } } } }` from asking for millions of objects.
 
 ```js
-import depthLimit from 'graphql-depth-limit'
+import depthLimit from "graphql-depth-limit";
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   validationRules: [depthLimit(10)],
-})
+});
 ```
 
 GraphQL Armor (`@escape.tech/graphql-armor`) bundles depth, cost, alias and token limits for Apollo Server, Yoga and Envelop.
@@ -3031,8 +3187,8 @@ For a private API used only by your own apps, many teams turn it off so attacker
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  introspection: process.env.NODE_ENV !== 'production',
-})
+  introspection: process.env.NODE_ENV !== "production",
+});
 ```
 
 ### 216: What are field suggestions, and why can they be a problem?
@@ -3051,14 +3207,17 @@ Set timeouts on the things resolvers call, like HTTP requests and database queri
 const resolvers = {
   Product: {
     reviews: async (product) => {
-      const res = await fetch(`https://reviews.internal/products/${product.id}`, {
-        signal: AbortSignal.timeout(2000),
-      })
-      if (!res.ok) throw new Error('Reviews service failed')
-      return res.json()
+      const res = await fetch(
+        `https://reviews.internal/products/${product.id}`,
+        {
+          signal: AbortSignal.timeout(2000),
+        },
+      );
+      if (!res.ok) throw new Error("Reviews service failed");
+      return res.json();
     },
   },
-}
+};
 ```
 
 If `reviews` is nullable, a timeout only empties that one field and the rest of the product still loads. Also set an overall request timeout on the HTTP server or load balancer.
@@ -3076,32 +3235,32 @@ Use tracing that records how long each resolver takes. Apollo GraphOS collects f
 Start the server in the test (or use `executeOperation`), point it at a real test database, and send real operations. Check the `data` and `errors` of the response, and the state of the database after mutations.
 
 ```js
-import { beforeAll, afterAll, test, expect } from 'vitest'
+import { beforeAll, afterAll, test, expect } from "vitest";
 
-let server
+let server;
 
 beforeAll(async () => {
-  await resetTestDatabase()
-  server = new ApolloServer({ typeDefs, resolvers })
-})
+  await resetTestDatabase();
+  server = new ApolloServer({ typeDefs, resolvers });
+});
 
-afterAll(() => server.stop())
+afterAll(() => server.stop());
 
-test('createPost saves the post', async () => {
+test("createPost saves the post", async () => {
   const res = await server.executeOperation(
     {
       query: `mutation ($input: CreatePostInput!) {
         createPost(input: $input) { post { id title } errors { message } }
       }`,
-      variables: { input: { title: 'Hi', body: 'First post' } },
+      variables: { input: { title: "Hi", body: "First post" } },
     },
-    { contextValue: buildTestContext({ userId: 'u1' }) },
-  )
+    { contextValue: buildTestContext({ userId: "u1" }) },
+  );
 
-  expect(res.body.kind).toBe('single')
-  expect(res.body.singleResult.errors).toBeUndefined()
-  expect(await db.posts.count()).toBe(1)
-})
+  expect(res.body.kind).toBe("single");
+  expect(res.body.singleResult.errors).toBeUndefined();
+  expect(await db.posts.count()).toBe(1);
+});
 ```
 
 For HTTP-level tests, like headers, CORS or cookies, use `supertest` against the real Express app.
@@ -3111,17 +3270,19 @@ For HTTP-level tests, like headers, CORS or cookies, use `supertest` against the
 Mock Service Worker (MSW) intercepts requests and lets you answer them by operation name. Your app uses its real GraphQL client, so the test is close to production.
 
 ```js
-import { graphql, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
+import { graphql, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
-  graphql.query('GetUser', ({ variables }) =>
-    HttpResponse.json({ data: { user: { __typename: 'User', id: variables.id, name: 'Ana' } } }),
+  graphql.query("GetUser", ({ variables }) =>
+    HttpResponse.json({
+      data: { user: { __typename: "User", id: variables.id, name: "Ana" } },
+    }),
   ),
-  graphql.mutation('UpdateUser', () =>
-    HttpResponse.json({ errors: [{ message: 'Not allowed' }] }),
+  graphql.mutation("UpdateUser", () =>
+    HttpResponse.json({ errors: [{ message: "Not allowed" }] }),
   ),
-)
+);
 ```
 
 ### 223: How do you test React components that use Apollo Client?
@@ -3129,24 +3290,28 @@ const server = setupServer(
 Wrap them in `MockedProvider` with a list of expected requests and their responses. In Apollo Client 4 it's imported from `@apollo/client/testing/react`.
 
 ```jsx
-import { render, screen } from '@testing-library/react'
-import { MockedProvider } from '@apollo/client/testing/react'
+import { render, screen } from "@testing-library/react";
+import { MockedProvider } from "@apollo/client/testing/react";
 
 const mocks = [
   {
-    request: { query: GET_DOG, variables: { name: 'Buck' } },
-    result: { data: { dog: { __typename: 'Dog', id: '1', name: 'Buck', breed: 'bulldog' } } },
+    request: { query: GET_DOG, variables: { name: "Buck" } },
+    result: {
+      data: {
+        dog: { __typename: "Dog", id: "1", name: "Buck", breed: "bulldog" },
+      },
+    },
   },
-]
+];
 
-test('shows the dog', async () => {
+test("shows the dog", async () => {
   render(
     <MockedProvider mocks={mocks}>
       <Dog name="Buck" />
     </MockedProvider>,
-  )
-  expect(await screen.findByText('Buck is a bulldog')).toBeInTheDocument()
-})
+  );
+  expect(await screen.findByText("Buck is a bulldog")).toBeInTheDocument();
+});
 ```
 
 The query and variables in the mock must match exactly, or the test gets a "no more mocked responses" error. Many teams prefer MSW because it doesn't need exact matching.
@@ -3176,27 +3341,30 @@ Ask whether the field can ever be missing or fail on its own. IDs and fields sto
 GraphQL already checks types, required fields and enum values. For everything else, like string length, email format, ranges or business rules, you have a few options: custom scalars for formats (`EmailAddress`), validation libraries like Zod in the resolver or service layer, or validation directives. Return problems as user errors in the payload for things the user can fix.
 
 ```js
-import { z } from 'zod'
+import { z } from "zod";
 
 const CreateUser = z.object({
   name: z.string().min(1).max(100),
   email: z.email(),
-})
+});
 
 const resolvers = {
   Mutation: {
     createUser: async (_, { input }, { services }) => {
-      const parsed = CreateUser.safeParse(input)
+      const parsed = CreateUser.safeParse(input);
       if (!parsed.success) {
         return {
           user: null,
-          errors: parsed.error.issues.map((i) => ({ message: i.message, field: i.path.map(String) })),
-        }
+          errors: parsed.error.issues.map((i) => ({
+            message: i.message,
+            field: i.path.map(String),
+          })),
+        };
       }
-      return { user: await services.users.create(parsed.data), errors: [] }
+      return { user: await services.users.create(parsed.data), errors: [] };
     },
   },
-}
+};
 ```
 
 ### 230: How do you implement a custom scalar?
@@ -3204,29 +3372,31 @@ const resolvers = {
 Create a `GraphQLScalarType` with three functions: `serialize` turns the server value into JSON for the response, `parseValue` reads the value from variables, and `parseLiteral` reads it when it's written inline in the query.
 
 ```js
-import { GraphQLScalarType, GraphQLError, Kind } from 'graphql'
+import { GraphQLScalarType, GraphQLError, Kind } from "graphql";
 
 export const DateTime = new GraphQLScalarType({
-  name: 'DateTime',
-  description: 'ISO 8601 date-time string',
+  name: "DateTime",
+  description: "ISO 8601 date-time string",
   serialize(value) {
-    if (!(value instanceof Date)) throw new GraphQLError('DateTime must be a Date')
-    return value.toISOString()
+    if (!(value instanceof Date))
+      throw new GraphQLError("DateTime must be a Date");
+    return value.toISOString();
   },
   parseValue(value) {
-    const date = new Date(value)
-    if (typeof value !== 'string' || Number.isNaN(date.getTime())) {
-      throw new GraphQLError('Invalid DateTime')
+    const date = new Date(value);
+    if (typeof value !== "string" || Number.isNaN(date.getTime())) {
+      throw new GraphQLError("Invalid DateTime");
     }
-    return date
+    return date;
   },
   parseLiteral(ast) {
-    if (ast.kind !== Kind.STRING) throw new GraphQLError('DateTime must be a string')
-    return this.parseValue(ast.value)
+    if (ast.kind !== Kind.STRING)
+      throw new GraphQLError("DateTime must be a string");
+    return this.parseValue(ast.value);
   },
-})
+});
 
-const resolvers = { DateTime, Query: { /* ... */ } }
+const resolvers = { DateTime, Query: {/* ... */} };
 ```
 
 This is the graphql-js 16 API. graphql-js 17 renames these methods to `coerceOutputValue`, `coerceInputValue` and `coerceInputLiteral`, and keeps the old names as deprecated aliases.
@@ -3236,7 +3406,11 @@ This is the graphql-js 16 API. graphql-js 17 renames these methods to `coerceOut
 By default, the internal value of an enum is its name as a string. In Apollo Server and graphql-tools you can map them in the resolver map, so resolvers work with your database values while clients see the enum names.
 
 ```graphql
-enum Priority { LOW MEDIUM HIGH }
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
 ```
 
 ```js
@@ -3245,7 +3419,7 @@ const resolvers = {
   Query: {
     tasks: (_, { priority }, { db }) => db.tasks.findAll({ priority }), // priority is 1, 2 or 3
   },
-}
+};
 ```
 
 ### 232: How does the server know which type an interface or union value is?
@@ -3256,12 +3430,12 @@ You tell it with a `__resolveType` function on the abstract type, which returns 
 const resolvers = {
   SearchResult: {
     __resolveType(obj) {
-      if (obj.email) return 'User'
-      if (obj.price !== undefined) return 'Product'
-      return 'Article'
+      if (obj.email) return "User";
+      if (obj.price !== undefined) return "Product";
+      return "Article";
     },
   },
-}
+};
 ```
 
 Checking for fields is fragile. It's safer to return objects with a type tag from your data layer, like `{ __typename: 'User', ... }` or a `kind` property, and read that.
@@ -3305,7 +3479,7 @@ type Comment {
 }
 
 type Post {
-  comments: [Comment!]!   # all comments, flat
+  comments: [Comment!]! # all comments, flat
 }
 ```
 
@@ -3327,22 +3501,29 @@ The spec defines a set of rules that graphql-js exports as `specifiedRules`. Exa
 A validation rule is a function that gets a `ValidationContext` and returns AST visitors. Call `context.reportError` when something is wrong.
 
 ```js
-import { GraphQLError } from 'graphql'
+import { GraphQLError } from "graphql";
 
 export function NoDeprecatedFieldsRule(context) {
   return {
     Field(node) {
-      const field = context.getFieldDef()
+      const field = context.getFieldDef();
       if (field?.deprecationReason) {
         context.reportError(
-          new GraphQLError(`Field "${field.name}" is deprecated: ${field.deprecationReason}`, { nodes: [node] }),
-        )
+          new GraphQLError(
+            `Field "${field.name}" is deprecated: ${field.deprecationReason}`,
+            { nodes: [node] },
+          ),
+        );
       }
     },
-  }
+  };
 }
 
-const server = new ApolloServer({ typeDefs, resolvers, validationRules: [NoDeprecatedFieldsRule] })
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  validationRules: [NoDeprecatedFieldsRule],
+});
 ```
 
 Validation runs on every new query text, so keep rules cheap.
@@ -3353,7 +3534,7 @@ Never use `Float`, because floating point can't store values like 0.1 exactly. U
 
 ```graphql
 type Money {
-  amount: String!      # "19.99", decimal as string
+  amount: String! # "19.99", decimal as string
   currencyCode: CurrencyCode!
 }
 
@@ -3380,7 +3561,7 @@ const resolvers = {
   Post: {
     author: (post, _, { loaders }) => loaders.user.load(post.authorId),
   },
-}
+};
 ```
 
 Prisma also batches some `findUnique` calls on its own when they run in the same tick, which helps with N+1 in simple cases.
@@ -3390,18 +3571,18 @@ Prisma also batches some `findUnique` calls on its own when they run in the same
 Look at the selection set through the `info` argument. A library like `graphql-parse-resolve-info` handles fragments and aliases for you.
 
 ```js
-import { parseResolveInfo } from 'graphql-parse-resolve-info'
+import { parseResolveInfo } from "graphql-parse-resolve-info";
 
 const resolvers = {
   Query: {
     users: (_, args, { sql }, info) => {
-      const parsed = parseResolveInfo(info)
-      const requested = Object.keys(parsed.fieldsByTypeName.User)
-      const columns = requested.filter((f) => USER_COLUMNS.has(f))
-      return sql`SELECT ${sql(['id', ...columns])} FROM users`
+      const parsed = parseResolveInfo(info);
+      const requested = Object.keys(parsed.fieldsByTypeName.User);
+      const columns = requested.filter((f) => USER_COLUMNS.has(f));
+      return sql`SELECT ${sql(["id", ...columns])} FROM users`;
     },
   },
-}
+};
 ```
 
 It saves database work for wide tables, but it couples resolvers to the query shape, so use it only where it matters. Always add the columns that child resolvers need, like foreign keys.
@@ -3411,13 +3592,13 @@ It saves database work for wide tables, but it couples resolvers to the query sh
 It's a class from `@apollo/datasource-rest` for calling REST APIs from resolvers. You extend it with methods for each endpoint. It deduplicates identical `GET` requests within one request and can cache responses based on their HTTP cache headers.
 
 ```js
-import { RESTDataSource } from '@apollo/datasource-rest'
+import { RESTDataSource } from "@apollo/datasource-rest";
 
 class MoviesAPI extends RESTDataSource {
-  baseURL = 'https://movies-api.example.com/'
+  baseURL = "https://movies-api.example.com/";
 
   getMovie(id) {
-    return this.get(`movies/${encodeURIComponent(id)}`)
+    return this.get(`movies/${encodeURIComponent(id)}`);
   }
 }
 
@@ -3425,7 +3606,7 @@ await startStandaloneServer(server, {
   context: async () => ({
     dataSources: { movies: new MoviesAPI({ cache: server.cache }) },
   }),
-})
+});
 ```
 
 Create a new data source per request, just like DataLoaders.
@@ -3441,9 +3622,10 @@ In a service or domain layer, not in resolvers. Resolvers should read arguments,
 ```js
 const resolvers = {
   Mutation: {
-    publishPost: (_, { id }, { services, user }) => services.posts.publish({ id, actor: user }),
+    publishPost: (_, { id }, { services, user }) =>
+      services.posts.publish({ id, actor: user }),
   },
-}
+};
 ```
 
 ### 245: How do you make mutations safe to retry?
@@ -3508,20 +3690,20 @@ On the client, call `cache.evict({ id: cache.identify({ __typename: 'Post', id }
 Validate the page size argument and reject or cap anything over a maximum.
 
 ```js
-const MAX_PAGE_SIZE = 100
+const MAX_PAGE_SIZE = 100;
 
 const resolvers = {
   Query: {
     products: (_, { first = 20, after }, { services }) => {
       if (first < 0 || first > MAX_PAGE_SIZE) {
         throw new GraphQLError(`first must be between 0 and ${MAX_PAGE_SIZE}`, {
-          extensions: { code: 'BAD_USER_INPUT' },
-        })
+          extensions: { code: "BAD_USER_INPUT" },
+        });
       }
-      return services.products.connection({ first, after })
+      return services.products.connection({ first, after });
     },
   },
-}
+};
 ```
 
 GitHub requires `first` or `last` on every connection and limits it to 100. Without a limit, cost analysis can't estimate the size of lists.
@@ -3534,7 +3716,11 @@ Return a union or interface list from one search field, and let the client use f
 union SearchResult = User | Repository | Issue
 
 type Query {
-  search(query: String!, types: [SearchType!], first: Int = 20): [SearchResult!]!
+  search(
+    query: String!
+    types: [SearchType!]
+    first: Int = 20
+  ): [SearchResult!]!
 }
 ```
 
@@ -3547,15 +3733,17 @@ Read the user's language from the `Accept-Language` header (or a user setting) w
 ```js
 await startStandaloneServer(server, {
   context: async ({ req }) => ({
-    locale: pickLocale(req.headers['accept-language'], ['en', 'de', 'ka']) ?? 'en',
+    locale:
+      pickLocale(req.headers["accept-language"], ["en", "de", "ka"]) ?? "en",
   }),
-})
+});
 
 const resolvers = {
   Product: {
-    title: (product, _, { locale }) => product.translations[locale]?.title ?? product.translations.en.title,
+    title: (product, _, { locale }) =>
+      product.translations[locale]?.title ?? product.translations.en.title,
   },
-}
+};
 ```
 
 If you use response caching or a CDN, the locale must be part of the cache key.
@@ -3570,18 +3758,22 @@ GraphQL Yoga works well here because it speaks the Fetch API.
 
 ```ts
 // app/api/graphql/route.ts
-import { createSchema, createYoga } from 'graphql-yoga'
+import { createSchema, createYoga } from "graphql-yoga";
 
 const { handleRequest } = createYoga({
   schema: createSchema({
     typeDefs: `type Query { greeting: String! }`,
-    resolvers: { Query: { greeting: () => 'Hello from Next.js' } },
+    resolvers: { Query: { greeting: () => "Hello from Next.js" } },
   }),
-  graphqlEndpoint: '/api/graphql',
+  graphqlEndpoint: "/api/graphql",
   fetchAPI: { Response },
-})
+});
 
-export { handleRequest as GET, handleRequest as POST, handleRequest as OPTIONS }
+export {
+  handleRequest as GET,
+  handleRequest as POST,
+  handleRequest as OPTIONS,
+};
 ```
 
 Apollo Server can also run in Next.js with the community `@as-integrations/next` package.
@@ -3592,23 +3784,27 @@ Use `@apollo/client-integration-nextjs` (earlier called `@apollo/experimental-ne
 
 ```ts
 // lib/apollo-client.ts
-import { HttpLink } from '@apollo/client'
-import { registerApolloClient, ApolloClient, InMemoryCache } from '@apollo/client-integration-nextjs'
+import { HttpLink } from "@apollo/client";
+import {
+  registerApolloClient,
+  ApolloClient,
+  InMemoryCache,
+} from "@apollo/client-integration-nextjs";
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(
   () =>
     new ApolloClient({
       cache: new InMemoryCache(),
-      link: new HttpLink({ uri: 'https://api.example.com/graphql' }),
+      link: new HttpLink({ uri: "https://api.example.com/graphql" }),
     }),
-)
+);
 ```
 
 ```tsx
 // app/page.tsx (Server Component)
 export default async function Page() {
-  const { data } = await query({ query: GET_PRODUCTS })
-  return <ProductList products={data.products} />
+  const { data } = await query({ query: GET_PRODUCTS });
+  return <ProductList products={data.products} />;
 }
 ```
 
@@ -3619,15 +3815,24 @@ Don't share one client between server requests. It would mix users' data in one 
 urql is a smaller GraphQL client built around "exchanges", which are like Apollo links. Its default cache is a document cache: it caches whole results by query and variables and refetches queries that include a `__typename` returned by a mutation. That's simpler but less precise than Apollo's normalized cache. If you need normalization, you add the Graphcache exchange.
 
 ```jsx
-import { Client, Provider, cacheExchange, fetchExchange, useQuery } from 'urql'
+import { Client, Provider, cacheExchange, fetchExchange, useQuery } from "urql";
 
-const client = new Client({ url: '/graphql', exchanges: [cacheExchange, fetchExchange] })
+const client = new Client({
+  url: "/graphql",
+  exchanges: [cacheExchange, fetchExchange],
+});
 
 function Todos() {
-  const [{ data, fetching, error }] = useQuery({ query: TodosQuery })
-  if (fetching) return <p>Loading...</p>
-  if (error) return <p>{error.message}</p>
-  return <ul>{data.todos.map((t) => <li key={t.id}>{t.text}</li>)}</ul>
+  const [{ data, fetching, error }] = useQuery({ query: TodosQuery });
+  if (fetching) return <p>Loading...</p>;
+  if (error) return <p>{error.message}</p>;
+  return (
+    <ul>
+      {data.todos.map((t) => (
+        <li key={t.id}>{t.text}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -3636,7 +3841,7 @@ function Todos() {
 Relay is Meta's GraphQL client for React. Every component declares its data as a fragment, the Relay compiler checks all GraphQL at build time and generates types and optimized artifacts, and data masking is always on. It expects the server to follow Relay conventions: the `Node` interface with global IDs and connections for pagination. It's very fast and scales to large apps, but it has a steeper learning curve and more rules than Apollo or urql.
 
 ```jsx
-import { graphql, useFragment } from 'react-relay'
+import { graphql, useFragment } from "react-relay";
 
 function UserName({ user }) {
   const data = useFragment(
@@ -3646,8 +3851,8 @@ function UserName({ user }) {
       }
     `,
     user,
-  )
-  return <span>{data.name}</span>
+  );
+  return <span>{data.name}</span>;
 }
 ```
 
@@ -3656,21 +3861,35 @@ function UserName({ user }) {
 Use a small request library like `graphql-request` (or `fetch`) inside `queryFn`. TanStack Query gives you caching, refetching and loading states, but its cache is keyed by query key, not normalized by object ID.
 
 ```tsx
-import { useQuery } from '@tanstack/react-query'
-import { request } from 'graphql-request'
-import { graphql } from './gql'
+import { useQuery } from "@tanstack/react-query";
+import { request } from "graphql-request";
+import { graphql } from "./gql";
 
 const allFilms = graphql(`
-  query AllFilms { allFilms { films { id title } } }
-`)
+  query AllFilms {
+    allFilms {
+      films {
+        id
+        title
+      }
+    }
+  }
+`);
 
 function Films() {
   const { data, isPending } = useQuery({
-    queryKey: ['films'],
-    queryFn: () => request('https://swapi-graphql.netlify.app/graphql', allFilms),
-  })
-  if (isPending) return <p>Loading...</p>
-  return <ul>{data.allFilms.films.map((f) => <li key={f.id}>{f.title}</li>)}</ul>
+    queryKey: ["films"],
+    queryFn: () =>
+      request("https://swapi-graphql.netlify.app/graphql", allFilms),
+  });
+  if (isPending) return <p>Loading...</p>;
+  return (
+    <ul>
+      {data.allFilms.films.map((f) => (
+        <li key={f.id}>{f.title}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -3690,15 +3909,15 @@ Turn on `persistedDocuments` in the client preset. Codegen then writes a JSON fi
 
 ```ts
 const config: CodegenConfig = {
-  schema: './schema.graphql',
-  documents: ['src/**/*.tsx'],
+  schema: "./schema.graphql",
+  documents: ["src/**/*.tsx"],
   generates: {
-    './src/gql/': {
-      preset: 'client',
+    "./src/gql/": {
+      preset: "client",
       presetConfig: { persistedDocuments: true },
     },
   },
-}
+};
 ```
 
 You upload `persisted-documents.json` to your server or registry during deploy, and the client sends only the hash. This is how you set up trusted documents.
@@ -3708,22 +3927,24 @@ You upload `persisted-documents.json` to your server or registry during deploy, 
 Catch the `UNAUTHENTICATED` error in an error link, refresh the token and retry the operation with `forward`. Put the error link before the auth link, so the retry gets the new header.
 
 ```js
-import { from, switchMap } from 'rxjs'
-import { CombinedGraphQLErrors } from '@apollo/client'
-import { ErrorLink } from '@apollo/client/link/error'
+import { from, switchMap } from "rxjs";
+import { CombinedGraphQLErrors } from "@apollo/client";
+import { ErrorLink } from "@apollo/client/link/error";
 
-let refreshing = null
+let refreshing = null;
 
 const errorLink = new ErrorLink(({ error, operation, forward }) => {
   const expired =
     CombinedGraphQLErrors.is(error) &&
-    error.errors.some((e) => e.extensions?.code === 'UNAUTHENTICATED')
+    error.errors.some((e) => e.extensions?.code === "UNAUTHENTICATED");
 
-  if (!expired) return
+  if (!expired) return;
 
-  refreshing ??= refreshAccessToken().finally(() => { refreshing = null })
-  return from(refreshing).pipe(switchMap(() => forward(operation)))
-})
+  refreshing ??= refreshAccessToken().finally(() => {
+    refreshing = null;
+  });
+  return from(refreshing).pipe(switchMap(() => forward(operation)));
+});
 ```
 
 Sharing one `refreshing` promise stops ten failing queries from refreshing the token ten times. If the refresh itself fails, log the user out.
@@ -3737,22 +3958,26 @@ No. Query deduplication is on by default: if an identical query with the same va
 For small client-only values, use reactive variables. They live outside the cache, and any query that reads them updates when they change.
 
 ```js
-import { makeVar, InMemoryCache, gql } from '@apollo/client'
-import { useReactiveVar } from '@apollo/client/react'
+import { makeVar, InMemoryCache, gql } from "@apollo/client";
+import { useReactiveVar } from "@apollo/client/react";
 
-export const cartOpenVar = makeVar(false)
+export const cartOpenVar = makeVar(false);
 
 const cache = new InMemoryCache({
   typePolicies: {
     Query: { fields: { cartOpen: { read: () => cartOpenVar() } } },
   },
-})
+});
 
-const GET_CART_OPEN = gql`query { cartOpen @client }`
+const GET_CART_OPEN = gql`
+  query {
+    cartOpen @client
+  }
+`;
 
 // in a component
-const cartOpen = useReactiveVar(cartOpenVar)
-cartOpenVar(true)
+const cartOpen = useReactiveVar(cartOpenVar);
+cartOpenVar(true);
 ```
 
 Fields with `@client` are resolved locally and never sent to the server. In Apollo Client 4, local resolvers are configured with the `LocalState` class. For most UI state, plain React state or a library like Zustand is simpler than putting it in the Apollo cache.
@@ -3763,9 +3988,9 @@ Call `client.clearStore()` to empty the cache without refetching, or `client.res
 
 ```js
 async function logout() {
-  await api.logout()
-  await client.clearStore()
-  router.push('/login')
+  await api.logout();
+  await client.clearStore();
+  router.push("/login");
 }
 ```
 
@@ -3774,12 +3999,12 @@ async function logout() {
 Use `useSuspenseQuery` instead of `useQuery`. The component suspends while loading, so you show a `<Suspense>` fallback higher up, and errors go to an error boundary. `data` is always defined when the component renders.
 
 ```jsx
-import { Suspense } from 'react'
-import { useSuspenseQuery } from '@apollo/client/react'
+import { Suspense } from "react";
+import { useSuspenseQuery } from "@apollo/client/react";
 
 function Profile({ id }) {
-  const { data } = useSuspenseQuery(GET_USER, { variables: { id } })
-  return <h1>{data.user.name}</h1>
+  const { data } = useSuspenseQuery(GET_USER, { variables: { id } });
+  return <h1>{data.user.name}</h1>;
 }
 
 export function ProfilePage({ id }) {
@@ -3787,7 +4012,7 @@ export function ProfilePage({ id }) {
     <Suspense fallback={<p>Loading profile...</p>}>
       <Profile id={id} />
     </Suspense>
-  )
+  );
 }
 ```
 
@@ -3798,18 +4023,21 @@ To start loading before the component renders, for example in a router loader, u
 By default, Apollo Server shows Apollo Sandbox in development and a simple splash page in production. You change it with landing page plugins.
 
 ```js
-import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default'
-import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled'
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+} from "@apollo/server/plugin/landingPage/default";
+import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === "production"
       ? ApolloServerPluginLandingPageDisabled()
       : ApolloServerPluginLandingPageLocalDefault({ embed: true }),
   ],
-})
+});
 ```
 
 ### 267: How do you add a health check to a GraphQL server?
@@ -3833,12 +4061,12 @@ Envelop is a plugin system for GraphQL execution from The Guild. It wraps parse,
 Mercurius is a GraphQL server plugin for Fastify. It has built-in support for loaders (batching per field), subscriptions, JIT compilation of queries with graphql-jit, caching and federation. It's a good choice if you already use Fastify or care about raw speed. NestJS can use it as a driver instead of Apollo.
 
 ```js
-import Fastify from 'fastify'
-import mercurius from 'mercurius'
+import Fastify from "fastify";
+import mercurius from "mercurius";
 
-const app = Fastify()
-app.register(mercurius, { schema: typeDefs, resolvers, graphiql: true })
-await app.listen({ port: 4000 })
+const app = Fastify();
+app.register(mercurius, { schema: typeDefs, resolvers, graphiql: true });
+await app.listen({ port: 4000 });
 ```
 
 ### 271: How do you choose a GraphQL server library for Node.js?
@@ -3888,9 +4116,12 @@ Assume the server can add new values later. In client code, always have a defaul
 
 ```ts
 switch (order.status) {
-  case 'PAID': return 'Paid'
-  case 'SHIPPED': return 'On the way'
-  default: return 'Processing'
+  case "PAID":
+    return "Paid";
+  case "SHIPPED":
+    return "On the way";
+  default:
+    return "Processing";
 }
 ```
 
@@ -3910,11 +4141,11 @@ type User {
 ```
 
 ```js
-const displayName = (user) => user.display_name
+const displayName = (user) => user.display_name;
 
 const resolvers = {
   User: { displayName, name: displayName },
-}
+};
 ```
 
 Once nobody uses `name`, remove it. Renaming a type is harder, because type names show up in fragments and `__typename` checks, so avoid it unless you really need to.
@@ -3935,9 +4166,9 @@ type Order {
 const resolvers = {
   Order: {
     itemCount: (order) => order.items.length,
-    isOverdue: (order) => order.status !== 'PAID' && order.dueDate < new Date(),
+    isOverdue: (order) => order.status !== "PAID" && order.dueDate < new Date(),
   },
-}
+};
 ```
 
 If a computed field is expensive, it only runs when a query asks for it, which is a nice side effect of field resolvers.
@@ -3962,13 +4193,13 @@ In a patch-style update, `{ bio: null }` means "clear the bio" and leaving `bio`
 const resolvers = {
   Mutation: {
     updateProfile: (_, { input }, { services, user }) => {
-      const changes = {}
-      if ('bio' in input) changes.bio = input.bio          // may be null, meaning clear it
-      if (input.name !== undefined) changes.name = input.name
-      return services.users.update(user.id, changes)
+      const changes = {};
+      if ("bio" in input) changes.bio = input.bio; // may be null, meaning clear it
+      if (input.name !== undefined) changes.name = input.name;
+      return services.users.update(user.id, changes);
     },
   },
-}
+};
 ```
 
 Don't use `input.bio ?? existing.bio`, because that treats "clear it" as "leave it". Some languages don't keep this difference by default, so check how your server library handles it.
@@ -4000,10 +4231,24 @@ Validation fails with an error that the fields "conflict because they have diffe
 
 ```graphql
 # invalid
-{ user(id: "1") { name } user(id: "2") { name } }
+{
+  user(id: "1") {
+    name
+  }
+  user(id: "2") {
+    name
+  }
+}
 
 # valid
-{ first: user(id: "1") { name } second: user(id: "2") { name } }
+{
+  first: user(id: "1") {
+    name
+  }
+  second: user(id: "2") {
+    name
+  }
+}
 ```
 
 The same rule applies when the conflict comes from fragments spread in the same place.
@@ -4024,16 +4269,16 @@ Cache the data the resolver loads, not the GraphQL response, using a key that in
 const resolvers = {
   Product: {
     reviewSummary: async (product, _, { redis, services }) => {
-      const key = `review-summary:${product.id}`
-      const cached = await redis.get(key)
-      if (cached) return JSON.parse(cached)
+      const key = `review-summary:${product.id}`;
+      const cached = await redis.get(key);
+      if (cached) return JSON.parse(cached);
 
-      const summary = await services.reviews.summary(product.id)
-      await redis.set(key, JSON.stringify(summary), 'EX', 300)
-      return summary
+      const summary = await services.reviews.summary(product.id);
+      await redis.set(key, JSON.stringify(summary), "EX", 300);
+      return summary;
     },
   },
-}
+};
 ```
 
 Clear the key when a new review is added, or accept that the data can be up to five minutes old.
@@ -4047,15 +4292,15 @@ A waterfall happens when a parent component's query finishes, then a child rende
 It reads a fragment's data for one object directly from the cache, without sending a request. The component re-renders only when the fields in that fragment change, which helps performance in big lists. It's how Apollo supports fragment colocation: the parent query loads the data, and each child reads its own part.
 
 ```jsx
-import { useFragment } from '@apollo/client/react'
+import { useFragment } from "@apollo/client/react";
 
 function TodoItem({ id }) {
   const { data, complete } = useFragment({
     fragment: TODO_ITEM_FRAGMENT,
-    from: { __typename: 'Todo', id },
-  })
-  if (!complete) return null
-  return <li>{data.text}</li>
+    from: { __typename: "Todo", id },
+  });
+  if (!complete) return null;
+  return <li>{data.text}</li>;
 }
 ```
 
@@ -4068,16 +4313,19 @@ Status-based alerts miss GraphQL errors, because many responses with errors stil
 Use the `@as-integrations/aws-lambda` package, which turns the server into a Lambda handler.
 
 ```js
-import { ApolloServer } from '@apollo/server'
-import { startServerAndCreateLambdaHandler, handlers } from '@as-integrations/aws-lambda'
+import { ApolloServer } from "@apollo/server";
+import {
+  startServerAndCreateLambdaHandler,
+  handlers,
+} from "@as-integrations/aws-lambda";
 
-const server = new ApolloServer({ typeDefs, resolvers })
+const server = new ApolloServer({ typeDefs, resolvers });
 
 export const graphqlHandler = startServerAndCreateLambdaHandler(
   server,
   handlers.createAPIGatewayProxyEventV2RequestHandler(),
   { context: async ({ event }) => ({ token: event.headers.authorization }) },
-)
+);
 ```
 
 Create the server outside the handler, so warm invocations reuse it. Subscriptions don't fit Lambda well, since there are no long-lived connections.
@@ -4108,7 +4356,10 @@ query ProductPage($id: ID!) {
     name
     price
     ... @defer {
-      reviews(first: 10) { text rating }
+      reviews(first: 10) {
+        text
+        rating
+      }
     }
   }
 }
@@ -4120,12 +4371,12 @@ Clients send their name and version in headers, like `apollographql-client-name:
 
 ```js
 const link = new HttpLink({
-  uri: '/graphql',
+  uri: "/graphql",
   headers: {
-    'apollographql-client-name': 'web',
-    'apollographql-client-version': import.meta.env.VITE_APP_VERSION,
+    "apollographql-client-name": "web",
+    "apollographql-client-version": import.meta.env.VITE_APP_VERSION,
   },
-})
+});
 ```
 
 ### 300: How would you debug a slow GraphQL query?
@@ -4191,16 +4442,16 @@ Introspection is part of the schema. Every schema has hidden meta fields on the 
 Send the standard introspection query, then turn the result into a schema with `buildClientSchema`. The result has types but no resolvers, which is enough for validation, code generation and tools.
 
 ```js
-import { getIntrospectionQuery, buildClientSchema, printSchema } from 'graphql'
+import { getIntrospectionQuery, buildClientSchema, printSchema } from "graphql";
 
-const res = await fetch('https://api.example.com/graphql', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const res = await fetch("https://api.example.com/graphql", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ query: getIntrospectionQuery() }),
-})
-const { data } = await res.json()
-const schema = buildClientSchema(data)
-console.log(printSchema(schema))
+});
+const { data } = await res.json();
+const schema = buildClientSchema(data);
+console.log(printSchema(schema));
 ```
 
 Introspection doesn't include custom schema directives on types and fields, so directive-based metadata is lost. That's one reason teams publish the SDL to a registry instead.
@@ -4210,17 +4461,17 @@ Introspection doesn't include custom schema directives on types and fields, so d
 Use `visit` from graphql-js. You pass visitor functions per node kind. Returning a new node replaces it, returning `null` deletes it, and returning `undefined` leaves it unchanged.
 
 ```js
-import { parse, print, visit, Kind } from 'graphql'
+import { parse, print, visit, Kind } from "graphql";
 
-const ast = parse('query { me { name email } }')
+const ast = parse("query { me { name email } }");
 
 const withoutEmail = visit(ast, {
   Field(node) {
-    if (node.name.value === 'email') return null
+    if (node.name.value === "email") return null;
   },
-})
+});
 
-console.log(print(withoutEmail)) // query { me { name } }
+console.log(print(withoutEmail)); // query { me { name } }
 ```
 
 Tools use this to add `__typename`, strip `@client` fields, compute query cost or rewrite queries in gateways.
@@ -4230,19 +4481,19 @@ Tools use this to add `__typename`, strip `@client` fields, compute query cost o
 When you visit a query AST, the nodes don't know their types. `TypeInfo` tracks the current parent type, field definition, argument and input type as you walk, so you can ask "what type is this field?" at any node. Combine it with `visitWithTypeInfo`. Validation rules use the same idea through `ValidationContext`.
 
 ```js
-import { TypeInfo, visit, visitWithTypeInfo } from 'graphql'
+import { TypeInfo, visit, visitWithTypeInfo } from "graphql";
 
-const typeInfo = new TypeInfo(schema)
+const typeInfo = new TypeInfo(schema);
 visit(
   ast,
   visitWithTypeInfo(typeInfo, {
     Field() {
-      const parent = typeInfo.getParentType()
-      const field = typeInfo.getFieldDef()
-      console.log(`${parent?.name}.${field?.name}`)
+      const parent = typeInfo.getParentType();
+      const field = typeInfo.getFieldDef();
+      console.log(`${parent?.name}.${field?.name}`);
     },
   }),
-)
+);
 ```
 
 ### 312: What is the difference between executable directives and type system directives?
@@ -4268,30 +4519,34 @@ Without `repeatable`, using the same directive twice on one element is a validat
 Use `mapSchema` to wrap the resolver of every field that has the directive. Here's a `@lowercase` directive.
 
 ```js
-import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils'
-import { defaultFieldResolver } from 'graphql'
+import { mapSchema, getDirective, MapperKind } from "@graphql-tools/utils";
+import { defaultFieldResolver } from "graphql";
 
 const typeDefs = `
   directive @lowercase on FIELD_DEFINITION
   type Query { hello: String @lowercase }
-`
+`;
 
 function lowercaseDirective(schema) {
   return mapSchema(schema, {
     [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
-      if (!getDirective(schema, fieldConfig, 'lowercase')?.[0]) return fieldConfig
-      const { resolve = defaultFieldResolver } = fieldConfig
+      if (!getDirective(schema, fieldConfig, "lowercase")?.[0])
+        return fieldConfig;
+      const { resolve = defaultFieldResolver } = fieldConfig;
       fieldConfig.resolve = async (...args) => {
-        const result = await resolve(...args)
-        return typeof result === 'string' ? result.toLowerCase() : result
-      }
-      return fieldConfig
+        const result = await resolve(...args);
+        return typeof result === "string" ? result.toLowerCase() : result;
+      };
+      return fieldConfig;
     },
-  })
+  });
 }
 
-let schema = makeExecutableSchema({ typeDefs, resolvers: { Query: { hello: () => 'HELLO' } } })
-schema = lowercaseDirective(schema)
+let schema = makeExecutableSchema({
+  typeDefs,
+  resolvers: { Query: { hello: () => "HELLO" } },
+});
+schema = lowercaseDirective(schema);
 ```
 
 Note that this makes the resolver async, so it adds a promise for every call. For hot fields, keep the sync path when the original result isn't a promise.
@@ -4315,7 +4570,7 @@ interface Owner {
 }
 
 type Person implements Owner {
-  pets: [Dog!]!   # valid if Dog implements Pet
+  pets: [Dog!]! # valid if Dog implements Pet
 }
 ```
 
@@ -4337,11 +4592,17 @@ When a resolver returns a value for a scalar, the server serializes it to the de
 Normally a variable used in a non-null position must be declared non-null. There's one exception: if the variable has a non-null default value, or the argument itself has a default value, a nullable variable is allowed. If the client then sends an explicit `null` for that variable, the server raises an error at execution time.
 
 ```graphql
-type Query { products(first: Int! = 10): [Product!]! }
+type Query {
+  products(first: Int! = 10): [Product!]!
+}
 ```
 
 ```graphql
-query ($first: Int) { products(first: $first) { id } }   # allowed, the argument has a default
+query ($first: Int) {
+  products(first: $first) {
+    id
+  }
+} # allowed, the argument has a default
 ```
 
 ### 320: What denial of service risks are specific to GraphQL?
@@ -4363,9 +4624,15 @@ Rate limiters that count HTTP requests see one request, but the query can contai
 
 ```graphql
 mutation {
-  a1: login(email: "ana@example.com", password: "123456") { token }
-  a2: login(email: "ana@example.com", password: "password") { token }
-  a3: login(email: "ana@example.com", password: "qwerty") { token }
+  a1: login(email: "ana@example.com", password: "123456") {
+    token
+  }
+  a2: login(email: "ana@example.com", password: "password") {
+    token
+  }
+  a3: login(email: "ana@example.com", password: "qwerty") {
+    token
+  }
   # ... 500 more
 }
 ```
@@ -4413,41 +4680,52 @@ With only pre-registered operations allowed, attackers can't send their own quer
 Walk the operation with `TypeInfo`, give each field a base cost, and multiply child costs by the requested list size.
 
 ```js
-import { TypeInfo, visit, visitWithTypeInfo, getNamedType, isListType, getNullableType, isCompositeType } from 'graphql'
+import {
+  TypeInfo,
+  visit,
+  visitWithTypeInfo,
+  getNamedType,
+  isListType,
+  getNullableType,
+  isCompositeType,
+} from "graphql";
 
 export function estimateCost(schema, document, variables, maxCost = 1000) {
-  const typeInfo = new TypeInfo(schema)
-  const multipliers = [1]
-  let cost = 0
+  const typeInfo = new TypeInfo(schema);
+  const multipliers = [1];
+  let cost = 0;
 
   visit(
     document,
     visitWithTypeInfo(typeInfo, {
       Field: {
         enter(node) {
-          const field = typeInfo.getFieldDef()
-          if (!field) return
-          const current = multipliers.at(-1)
-          if (isCompositeType(getNamedType(field.type))) cost += current
+          const field = typeInfo.getFieldDef();
+          if (!field) return;
+          const current = multipliers.at(-1);
+          if (isCompositeType(getNamedType(field.type))) cost += current;
 
-          let size = 1
+          let size = 1;
           if (isListType(getNullableType(field.type))) {
-            const arg = node.arguments?.find((a) => a.name.value === 'first')
-            if (arg?.value.kind === 'Variable') size = variables[arg.value.name.value] ?? 10
-            else if (arg?.value.kind === 'IntValue') size = Number(arg.value.value)
-            else size = 10
+            const arg = node.arguments?.find((a) => a.name.value === "first");
+            if (arg?.value.kind === "Variable")
+              size = variables[arg.value.name.value] ?? 10;
+            else if (arg?.value.kind === "IntValue")
+              size = Number(arg.value.value);
+            else size = 10;
           }
-          multipliers.push(current * size)
+          multipliers.push(current * size);
         },
         leave() {
-          multipliers.pop()
+          multipliers.pop();
         },
       },
     }),
-  )
+  );
 
-  if (cost > maxCost) throw new Error(`Query cost ${cost} is over the limit of ${maxCost}`)
-  return cost
+  if (cost > maxCost)
+    throw new Error(`Query cost ${cost} is over the limit of ${maxCost}`);
+  return cost;
 }
 ```
 
@@ -4459,10 +4737,12 @@ By default, many servers keep running resolvers until the operation finishes, ev
 
 ```js
 context: async ({ req, res }) => {
-  const controller = new AbortController()
-  res.on('close', () => { if (!res.writableEnded) controller.abort() })
-  return { signal: controller.signal }
-}
+  const controller = new AbortController();
+  res.on("close", () => {
+    if (!res.writableEnded) controller.abort();
+  });
+  return { signal: controller.signal };
+};
 ```
 
 ### 333: How do you limit the size of incoming documents?
@@ -4470,9 +4750,9 @@ context: async ({ req, res }) => {
 Limit the HTTP body size (for example `express.json({ limit: '100kb' })`), and limit the number of tokens the parser will accept. graphql-js's `parse` has a `maxTokens` option, and GraphQL Armor has a max tokens plugin for Apollo Server and Yoga. A token limit stops huge documents before validation runs, which is cheaper than depth or cost checks. With trusted documents, you can skip this for known hashes.
 
 ```js
-import { parse } from 'graphql'
+import { parse } from "graphql";
 
-const document = parse(source, { maxTokens: 2000 })
+const document = parse(source, { maxTokens: 2000 });
 ```
 
 ### 334: Explain the architecture of Apollo Federation.
@@ -4489,7 +4769,8 @@ An entity is a type that can be resolved by more than one subgraph. `@key` says 
 
 ```graphql
 # users subgraph
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key"])
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key"])
 
 type User @key(fields: "id") {
   id: ID!
@@ -4499,7 +4780,8 @@ type User @key(fields: "id") {
 
 ```graphql
 # orders subgraph
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key"])
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key"])
 
 type User @key(fields: "id") {
   id: ID!
@@ -4514,17 +4796,19 @@ The router can now query `me { name orders { total } }` by getting `name` from u
 It's the resolver a subgraph uses to load an entity when the router only has its key fields. The router sends a representation like `{ __typename: "User", id: "1" }`, and the subgraph turns it into a full object.
 
 ```js
-import { buildSubgraphSchema } from '@apollo/subgraph'
+import { buildSubgraphSchema } from "@apollo/subgraph";
 
 const resolvers = {
   User: {
     __resolveReference(ref, { loaders }) {
-      return loaders.user.load(ref.id)
+      return loaders.user.load(ref.id);
     },
   },
-}
+};
 
-const server = new ApolloServer({ schema: buildSubgraphSchema({ typeDefs, resolvers }) })
+const server = new ApolloServer({
+  schema: buildSubgraphSchema({ typeDefs, resolvers }),
+});
 ```
 
 The router sends many representations in one `_entities` request, so `__resolveReference` is called once per entity. Use a DataLoader there, or you get N+1 inside the subgraph.
@@ -4608,7 +4892,12 @@ query ($representations: [_Any!]!) {
 ```
 
 ```json
-{ "representations": [ { "__typename": "User", "id": "1" }, { "__typename": "User", "id": "2" } ] }
+{
+  "representations": [
+    { "__typename": "User", "id": "1" },
+    { "__typename": "User", "id": "2" }
+  ]
+}
 ```
 
 So at the router level, entity loading is batched. Inside the subgraph, `__resolveReference` runs once per representation, so you need a DataLoader to turn that into one database query.
@@ -4663,7 +4952,7 @@ const cache = new InMemoryCache({
   typePolicies: {
     Book: { fields: { author: { merge: true } } },
   },
-})
+});
 ```
 
 ### 358: What is a cache redirect in Apollo Client?
@@ -4677,13 +4966,13 @@ const cache = new InMemoryCache({
       fields: {
         book: {
           read(_, { args, toReference }) {
-            return toReference({ __typename: 'Book', id: args.id })
+            return toReference({ __typename: "Book", id: args.id });
           },
         },
       },
     },
   },
-})
+});
 ```
 
 If the cached object doesn't have all the fields the detail query needs, Apollo still goes to the network for the rest.
@@ -4719,7 +5008,14 @@ Tools like Hasura, PostGraphile and Supabase's `pg_graphql` give you a full API 
 Expose the state as an enum, and expose transitions as specific mutations instead of letting clients set the status directly.
 
 ```graphql
-enum OrderStatus { DRAFT PLACED PAID SHIPPED DELIVERED CANCELLED }
+enum OrderStatus {
+  DRAFT
+  PLACED
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
 
 type Order {
   id: ID!
@@ -4727,7 +5023,11 @@ type Order {
   availableActions: [OrderAction!]!
 }
 
-enum OrderAction { PAY CANCEL SHIP }
+enum OrderAction {
+  PAY
+  CANCEL
+  SHIP
+}
 
 type Mutation {
   payOrder(input: PayOrderInput!): PayOrderPayload!
@@ -4748,15 +5048,15 @@ Reverse the sort, fetch `last + 1` rows before the cursor, then reverse the resu
 
 ```js
 async function productsBackward({ last, before }, sql) {
-  const beforeId = decodeCursor(before)
+  const beforeId = decodeCursor(before);
   const rows = await sql`
     SELECT * FROM products
     WHERE id < ${beforeId}
     ORDER BY id DESC
     LIMIT ${last + 1}
-  `
-  const hasPreviousPage = rows.length > last
-  const nodes = rows.slice(0, last).reverse()
+  `;
+  const hasPreviousPage = rows.length > last;
+  const nodes = rows.slice(0, last).reverse();
 
   return {
     edges: nodes.map((node) => ({ node, cursor: encodeCursor(node.id) })),
@@ -4766,7 +5066,7 @@ async function productsBackward({ last, before }, sql) {
       startCursor: nodes.length ? encodeCursor(nodes[0].id) : null,
       endCursor: nodes.length ? encodeCursor(nodes.at(-1).id) : null,
     },
-  }
+  };
 }
 ```
 
@@ -4818,9 +5118,12 @@ type FollowNotification implements Notification {
 ```js
 const resolvers = {
   Notification: {
-    __resolveType: (row) => ({ comment: 'CommentNotification', follow: 'FollowNotification' })[row.kind],
+    __resolveType: (row) =>
+      ({ comment: "CommentNotification", follow: "FollowNotification" })[
+        row.kind
+      ],
   },
-}
+};
 ```
 
 Clients that don't know a new notification type can still show the shared fields through the interface.
@@ -4874,14 +5177,14 @@ Use objects as keys and give DataLoader a `cacheKeyFn` that turns them into stri
 ```js
 const priceLoader = new DataLoader(
   async (keys) => {
-    const rows = await db.prices.findMany(keys) // [{ productId, region, amount }]
-    const map = new Map(rows.map((r) => [`${r.productId}:${r.region}`, r]))
-    return keys.map((k) => map.get(`${k.productId}:${k.region}`) ?? null)
+    const rows = await db.prices.findMany(keys); // [{ productId, region, amount }]
+    const map = new Map(rows.map((r) => [`${r.productId}:${r.region}`, r]));
+    return keys.map((k) => map.get(`${k.productId}:${k.region}`) ?? null);
   },
   { cacheKeyFn: (k) => `${k.productId}:${k.region}` },
-)
+);
 
-priceLoader.load({ productId: '1', region: 'EU' })
+priceLoader.load({ productId: "1", region: "EU" });
 ```
 
 Loaders can also be created per argument combination, like one loader per `region`, if the set of combinations is small.
@@ -4906,7 +5209,7 @@ The loader key must include the page arguments (like `{ authorId, first: 5 }`), 
 A list of 5,000 items can produce a single `IN` query with 5,000 IDs, which some databases handle badly or reject because of parameter limits. Set `maxBatchSize` so DataLoader splits big batches into several queries. Also watch the memory used by the per-request cache in requests that load a lot of objects, and consider `cache: false` for loaders where reuse within one request is rare.
 
 ```js
-const userLoader = new DataLoader(batchUsers, { maxBatchSize: 500 })
+const userLoader = new DataLoader(batchUsers, { maxBatchSize: 500 });
 ```
 
 ### 381: How do database connection pools interact with GraphQL concurrency?
@@ -4918,15 +5221,16 @@ One GraphQL request can run many resolvers in parallel, and each might take a co
 `AsyncLocalStorage` from `node:async_hooks` keeps a value across all async calls that start from one point, like a request. You can store the request ID, the current user or a logger in it, and deep code like a database wrapper or an HTTP client can read it without passing the context down by hand. It's useful for logging and tracing. For things resolvers need, like loaders and the user, passing them in the GraphQL context is still clearer and easier to test.
 
 ```js
-import { AsyncLocalStorage } from 'node:async_hooks'
+import { AsyncLocalStorage } from "node:async_hooks";
 
-export const requestStore = new AsyncLocalStorage()
+export const requestStore = new AsyncLocalStorage();
 
-app.use('/graphql', (req, res, next) => {
-  requestStore.run({ requestId: crypto.randomUUID() }, next)
-})
+app.use("/graphql", (req, res, next) => {
+  requestStore.run({ requestId: crypto.randomUUID() }, next);
+});
 
-export const log = (msg) => console.log(`[${requestStore.getStore()?.requestId}] ${msg}`)
+export const log = (msg) =>
+  console.log(`[${requestStore.getStore()?.requestId}] ${msg}`);
 ```
 
 ### 383: How can Postgres row-level security work together with a GraphQL API?
@@ -4960,12 +5264,12 @@ Validate every client operation against the schema in CI. GraphQL Inspector (`gr
 The test prints the schema with `printSchema` and compares it with a committed `schema.graphql` file. When someone changes resolvers or code-first types, the snapshot changes, and the diff shows up in the pull request. Reviewers see the exact API change instead of having to read code, and accidental changes, like a field becoming nullable because of a type change, are easy to spot.
 
 ```js
-import { printSchema } from 'graphql'
-import { readFileSync } from 'node:fs'
+import { printSchema } from "graphql";
+import { readFileSync } from "node:fs";
 
-test('schema matches the committed SDL', () => {
-  expect(printSchema(schema)).toBe(readFileSync('schema.graphql', 'utf8'))
-})
+test("schema matches the committed SDL", () => {
+  expect(printSchema(schema)).toBe(readFileSync("schema.graphql", "utf8"));
+});
 ```
 
 ### 389: How would you migrate an existing REST API to GraphQL?
@@ -5028,8 +5332,12 @@ fragment UserAvatar($size: Int! = 64) on User {
 }
 
 query {
-  me { ...UserAvatar(size: 128) }
-  friends { ...UserAvatar }
+  me {
+    ...UserAvatar(size: 128)
+  }
+  friends {
+    ...UserAvatar
+  }
 }
 ```
 
@@ -5099,7 +5407,11 @@ type CartUserError {
   code: CartErrorCode!
 }
 
-enum CartErrorCode { OUT_OF_STOCK INVALID_QUANTITY VARIANT_NOT_FOUND }
+enum CartErrorCode {
+  OUT_OF_STOCK
+  INVALID_QUANTITY
+  VARIANT_NOT_FOUND
+}
 
 type CartPayload {
   cart: Cart
@@ -5209,7 +5521,12 @@ type ReportJob {
   error: String
 }
 
-enum JobStatus { QUEUED RUNNING SUCCEEDED FAILED }
+enum JobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
 
 type Mutation {
   generateReport(input: GenerateReportInput!): ReportJob!
@@ -5301,13 +5618,22 @@ type Checkout {
   missingInfo: [CheckoutRequirement!]!
 }
 
-enum CheckoutRequirement { EMAIL SHIPPING_ADDRESS SHIPPING_RATE PAYMENT }
+enum CheckoutRequirement {
+  EMAIL
+  SHIPPING_ADDRESS
+  SHIPPING_RATE
+  PAYMENT
+}
 
 type Mutation {
   checkoutSetEmail(id: ID!, email: String!): CheckoutPayload!
   checkoutSetShippingAddress(id: ID!, address: AddressInput!): CheckoutPayload!
   checkoutSelectShippingRate(id: ID!, rateId: ID!): CheckoutPayload!
-  checkoutComplete(id: ID!, payment: PaymentInput!, idempotencyKey: ID!): CheckoutCompletePayload!
+  checkoutComplete(
+    id: ID!
+    payment: PaymentInput!
+    idempotencyKey: ID!
+  ): CheckoutCompletePayload!
 }
 ```
 

@@ -321,7 +321,7 @@ The answers target React 19 with `createRoot`, React Router 7 and modern build t
 - [301: How does Module Federation work under the hood when a host imports a remote module?](#301-how-does-module-federation-work-under-the-hood-when-a-host-imports-a-remote-module)
 - [302: What do the container's init and get methods do?](#302-what-do-the-containers-init-and-get-methods-do)
 - [303: Why is the remote entry small even when the remote app is big?](#303-why-is-the-remote-entry-small-even-when-the-remote-app-is-big)
-- [304: What is the global __FEDERATION__ object?](#304-what-is-the-global-__federation__-object)
+- [304: What is the global **FEDERATION** object?](#304-what-is-the-global-__federation__-object)
 - [305: How does the share scope handle two versions of a non-singleton package?](#305-how-does-the-share-scope-handle-two-versions-of-a-non-singleton-package)
 - [306: What are the risks of singleton sharing with loose version ranges?](#306-what-are-the-risks-of-singleton-sharing-with-loose-version-ranges)
 - [307: Which app's shared version wins when several provide the same singleton?](#307-which-apps-shared-version-wins-when-several-provide-the-same-singleton)
@@ -546,7 +546,7 @@ Compared to the original webpack plugin it adds a separate runtime you can call 
 It is the build plugin that turns an app into a host, a remote, or both. In plain webpack 5 you import it from webpack itself:
 
 ```js
-const { ModuleFederationPlugin } = require('webpack').container;
+const { ModuleFederationPlugin } = require("webpack").container;
 ```
 
 With Module Federation 2.0 you import it from `@module-federation/enhanced/webpack` (or `/rspack` for Rspack). The options look almost the same.
@@ -633,15 +633,15 @@ You move the real app startup into a separate file and load it with a dynamic im
 
 ```js
 // src/index.js
-import('./bootstrap');
+import("./bootstrap");
 ```
 
 ```jsx
 // src/bootstrap.jsx
-import { createRoot } from 'react-dom/client';
-import App from './App';
+import { createRoot } from "react-dom/client";
+import App from "./App";
 
-createRoot(document.getElementById('root')).render(<App />);
+createRoot(document.getElementById("root")).render(<App />);
 ```
 
 The dynamic import gives Module Federation time to set up shared modules before any code imports React.
@@ -657,9 +657,9 @@ Fix it with the bootstrap pattern (`import('./bootstrap')`). In Module Federatio
 Use `React.lazy` with a dynamic import and wrap it in `Suspense`:
 
 ```jsx
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
 
-const ProductList = lazy(() => import('shop/ProductList'));
+const ProductList = lazy(() => import("shop/ProductList"));
 
 export function ShopPage() {
   return (
@@ -689,13 +689,13 @@ An error boundary around each remote keeps the rest of the page working and lets
 Error boundaries still need a class component. Many teams use the `react-error-boundary` package instead of writing one:
 
 ```jsx
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary } from "react-error-boundary";
 
 <ErrorBoundary fallback={<p>Shop is not available right now.</p>}>
   <Suspense fallback={<p>Loading...</p>}>
     <ProductList />
   </Suspense>
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ## 28: How does TypeScript know the types of a remote module?
@@ -785,10 +785,10 @@ It works with React, Vue, Angular and others, so it is common when different tea
 It is a helper library that turns a React root component into the lifecycle functions single-spa expects:
 
 ```jsx
-import React from 'react';
-import ReactDOMClient from 'react-dom/client';
-import singleSpaReact from 'single-spa-react';
-import Root from './Root';
+import React from "react";
+import ReactDOMClient from "react-dom/client";
+import singleSpaReact from "single-spa-react";
+import Root from "./Root";
 
 const lifecycles = singleSpaReact({
   React,
@@ -817,13 +817,13 @@ In micro frontends, web components are a framework-neutral way to embed one app 
 Create a class that extends `HTMLElement` and render React into it:
 
 ```jsx
-import { createRoot } from 'react-dom/client';
-import ProductCard from './ProductCard';
+import { createRoot } from "react-dom/client";
+import ProductCard from "./ProductCard";
 
 class ProductCardElement extends HTMLElement {
   connectedCallback() {
     this.root = createRoot(this);
-    this.root.render(<ProductCard id={this.getAttribute('product-id')} />);
+    this.root.render(<ProductCard id={this.getAttribute("product-id")} />);
   }
 
   disconnectedCallback() {
@@ -831,7 +831,7 @@ class ProductCardElement extends HTMLElement {
   }
 }
 
-customElements.define('product-card', ProductCardElement);
+customElements.define("product-card", ProductCardElement);
 ```
 
 ## 45: What is server-side composition?
@@ -852,11 +852,11 @@ An import map is a JSON block that tells the browser where to find a module for 
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "@acme/shop": "https://cdn.example.com/shop/1.4.0/main.js"
+  {
+    "imports": {
+      "@acme/shop": "https://cdn.example.com/shop/1.4.0/main.js"
+    }
   }
-}
 </script>
 ```
 
@@ -881,7 +881,7 @@ Yes. The host just needs a way to mount it into a DOM node. Common options are a
 ```jsx
 useEffect(() => {
   let unmount;
-  import('vueApp/mount').then(({ mount }) => {
+  import("vueApp/mount").then(({ mount }) => {
     unmount = mount(ref.current);
   });
   return () => unmount?.();
@@ -899,10 +899,10 @@ This keeps routing ownership clear: the host knows only the entry path of each t
 Use a lazy component as the route element and let the remote handle the rest of the path with a `/*` route:
 
 ```jsx
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route } from "react-router";
 
-const ShopApp = lazy(() => import('shop/App'));
+const ShopApp = lazy(() => import("shop/App"));
 
 export function App() {
   return (
@@ -936,10 +936,10 @@ Give the remote two entry points. The standalone one (`bootstrap.jsx`) adds the 
 
 ```jsx
 // bootstrap.jsx (standalone)
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ShopApp />
-  </BrowserRouter>
+  </BrowserRouter>,
 );
 ```
 
@@ -981,21 +981,21 @@ For remotes it is the usual recommended value.
 ## 60: What does a basic remote webpack config look like?
 
 ```js
-const { ModuleFederationPlugin } = require('webpack').container;
-const deps = require('./package.json').dependencies;
+const { ModuleFederationPlugin } = require("webpack").container;
+const deps = require("./package.json").dependencies;
 
 module.exports = {
-  output: { publicPath: 'auto' },
+  output: { publicPath: "auto" },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'shop',
-      filename: 'remoteEntry.js',
+      name: "shop",
+      filename: "remoteEntry.js",
       exposes: {
-        './ProductList': './src/ProductList.jsx',
+        "./ProductList": "./src/ProductList.jsx",
       },
       shared: {
         react: { singleton: true, requiredVersion: deps.react },
-        'react-dom': { singleton: true, requiredVersion: deps['react-dom'] },
+        "react-dom": { singleton: true, requiredVersion: deps["react-dom"] },
       },
     }),
   ],
@@ -1005,20 +1005,20 @@ module.exports = {
 ## 61: What does a basic host webpack config look like?
 
 ```js
-const { ModuleFederationPlugin } = require('webpack').container;
-const deps = require('./package.json').dependencies;
+const { ModuleFederationPlugin } = require("webpack").container;
+const deps = require("./package.json").dependencies;
 
 module.exports = {
-  output: { publicPath: 'auto' },
+  output: { publicPath: "auto" },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'shell',
+      name: "shell",
       remotes: {
-        shop: 'shop@http://localhost:3001/remoteEntry.js',
+        shop: "shop@http://localhost:3001/remoteEntry.js",
       },
       shared: {
         react: { singleton: true, requiredVersion: deps.react },
-        'react-dom': { singleton: true, requiredVersion: deps['react-dom'] },
+        "react-dom": { singleton: true, requiredVersion: deps["react-dom"] },
       },
     }),
   ],
@@ -1041,19 +1041,19 @@ The older `@originjs/vite-plugin-federation` is still found in many tutorials, b
 
 ```js
 // vite.config.js
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { federation } from '@module-federation/vite';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { federation } from "@module-federation/vite";
 
 export default defineConfig({
   server: { port: 3001 },
   plugins: [
     react(),
     federation({
-      name: 'shop',
-      filename: 'remoteEntry.js',
-      exposes: { './ProductList': './src/ProductList.jsx' },
-      shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
+      name: "shop",
+      filename: "remoteEntry.js",
+      exposes: { "./ProductList": "./src/ProductList.jsx" },
+      shared: { react: { singleton: true }, "react-dom": { singleton: true } },
     }),
   ],
 });
@@ -1070,17 +1070,17 @@ Teams with big webpack-based micro frontend setups often move to Rspack (or Rsbu
 Rsbuild is a build tool on top of Rspack with sensible defaults, similar to how Vite sits on top of Rollup and esbuild. For React you add the React plugin, and for Module Federation you add `@module-federation/rsbuild-plugin`.
 
 ```js
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
-import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
+import { defineConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
+import { pluginModuleFederation } from "@module-federation/rsbuild-plugin";
 
 export default defineConfig({
   plugins: [
     pluginReact(),
     pluginModuleFederation({
-      name: 'shop',
-      exposes: { './ProductList': './src/ProductList.tsx' },
-      shared: ['react', 'react-dom'],
+      name: "shop",
+      exposes: { "./ProductList": "./src/ProductList.tsx" },
+      shared: ["react", "react-dom"],
     }),
   ],
 });
@@ -1109,9 +1109,9 @@ You can call it directly from your code, which lets you load remotes that weren'
 `loadRemote` loads an exposed module from a remote at runtime, using the `remoteName/exposedName` id:
 
 ```js
-import { loadRemote } from '@module-federation/enhanced/runtime';
+import { loadRemote } from "@module-federation/enhanced/runtime";
 
-const mod = await loadRemote('shop/ProductList');
+const mod = await loadRemote("shop/ProductList");
 const ProductList = mod.default;
 ```
 
@@ -1122,13 +1122,16 @@ It returns a promise, so in React you usually wrap it in `lazy`.
 `registerRemotes` adds remotes to the runtime after startup. It is useful when the list of remotes comes from an API or a config file:
 
 ```js
-import { registerRemotes, loadRemote } from '@module-federation/enhanced/runtime';
+import {
+  registerRemotes,
+  loadRemote,
+} from "@module-federation/enhanced/runtime";
 
 registerRemotes([
-  { name: 'shop', entry: 'https://shop.example.com/mf-manifest.json' },
+  { name: "shop", entry: "https://shop.example.com/mf-manifest.json" },
 ]);
 
-const { default: ProductList } = await loadRemote('shop/ProductList');
+const { default: ProductList } = await loadRemote("shop/ProductList");
 ```
 
 ## 71: What is a dynamic remote?
@@ -1172,9 +1175,9 @@ Keep it as small as you can. A lot of shared state is a sign the split is wrong.
 The simplest way is props, like any React component:
 
 ```jsx
-const Cart = lazy(() => import('cart/Cart'));
+const Cart = lazy(() => import("cart/Cart"));
 
-<Cart userId={user.id} onCheckout={() => navigate('/checkout')} />
+<Cart userId={user.id} onCheckout={() => navigate("/checkout")} />;
 ```
 
 This works because the host and the remote share the same React. Treat the props as a public contract and keep them stable and documented.
@@ -1184,7 +1187,7 @@ This works because the host and the remote share the same React. Treat the props
 ```js
 // in the remote
 window.dispatchEvent(
-  new CustomEvent('cart:item-added', { detail: { productId: 42 } })
+  new CustomEvent("cart:item-added", { detail: { productId: 42 } }),
 );
 ```
 
@@ -1192,8 +1195,8 @@ window.dispatchEvent(
 // in the host
 useEffect(() => {
   const handler = (e) => setCount((c) => c + 1);
-  window.addEventListener('cart:item-added', handler);
-  return () => window.removeEventListener('cart:item-added', handler);
+  window.addEventListener("cart:item-added", handler);
+  return () => window.removeEventListener("cart:item-added", handler);
 }, []);
 ```
 
@@ -1285,9 +1288,9 @@ Avoid global selectors like `h1 { }` or `.button { }` inside a micro frontend.
 CSS Modules are CSS files where every class name is local by default. The bundler changes `.title` into something like `ProductCard_title__x7f2a`.
 
 ```jsx
-import styles from './ProductCard.module.css';
+import styles from "./ProductCard.module.css";
 
-<h2 className={styles.title}>{name}</h2>
+<h2 className={styles.title}>{name}</h2>;
 ```
 
 Two micro frontends can both have a `.title` class without affecting each other.
@@ -1426,7 +1429,7 @@ Mixing frameworks is reasonable during a migration or when you integrate a produ
 It is a React component that lives in a remote app and is loaded into the host at runtime. From the host's point of view it is just a lazy component.
 
 ```jsx
-const Reviews = lazy(() => import('reviews/ReviewList'));
+const Reviews = lazy(() => import("reviews/ReviewList"));
 ```
 
 ## 110: What is a shell layout?
@@ -1488,9 +1491,9 @@ For new Next.js projects the Next.js team recommends Multi-Zones. If you need ru
 `createRoot` (from `react-dom/client`) is the React 18+ way to start an app and turns on concurrent features. `ReactDOM.render` was the old API and was removed in React 19.
 
 ```jsx
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
 root.render(<App />);
 ```
 
@@ -1506,8 +1509,8 @@ It is a framework-neutral way to expose a micro frontend: the remote exports a f
 
 ```jsx
 // exposed by the remote
-import { createRoot } from 'react-dom/client';
-import App from './App';
+import { createRoot } from "react-dom/client";
+import App from "./App";
 
 export function mount(el, props) {
   const root = createRoot(el);
@@ -1662,8 +1665,8 @@ Create a `.d.ts` file in the host:
 
 ```ts
 // src/remotes.d.ts
-declare module 'shop/ProductList' {
-  import type { FC } from 'react';
+declare module "shop/ProductList" {
+  import type { FC } from "react";
   const ProductList: FC<{ category?: string }>;
   export default ProductList;
 }
@@ -1687,7 +1690,7 @@ import('ui/Button');
 
 ```jsx
 const ProductList = lazy(() =>
-  import('shop/components').then((m) => ({ default: m.ProductList }))
+  import("shop/components").then((m) => ({ default: m.ProductList })),
 );
 ```
 
@@ -1780,7 +1783,7 @@ With `experiments: { asyncStartup: true }`, the plugin makes the entry start asy
 
 ```js
 new ModuleFederationPlugin({
-  name: 'shell',
+  name: "shell",
   experiments: { asyncStartup: true },
   // ...
 });
@@ -1793,14 +1796,18 @@ You load the script yourself and then use webpack's low-level container API:
 ```js
 async function loadComponent(scope, module, url) {
   await loadScript(url); // adds a <script> tag and waits for onload
-  await __webpack_init_sharing__('default');
+  await __webpack_init_sharing__("default");
   const container = window[scope];
   await container.init(__webpack_share_scopes__.default);
   const factory = await container.get(module);
   return factory();
 }
 
-const Mod = await loadComponent('shop', './ProductList', 'https://shop.example.com/remoteEntry.js');
+const Mod = await loadComponent(
+  "shop",
+  "./ProductList",
+  "https://shop.example.com/remoteEntry.js",
+);
 ```
 
 This is the legacy way. With Module Federation 2.0, `registerRemotes` and `loadRemote` do this for you.
@@ -1808,8 +1815,11 @@ This is the legacy way. With Module Federation 2.0, `registerRemotes` and `loadR
 ## 161: How do you create a React component that loads a remote by URL at runtime?
 
 ```jsx
-import { lazy, Suspense, useMemo } from 'react';
-import { registerRemotes, loadRemote } from '@module-federation/enhanced/runtime';
+import { lazy, Suspense, useMemo } from "react";
+import {
+  registerRemotes,
+  loadRemote,
+} from "@module-federation/enhanced/runtime";
 
 export function RemoteWidget({ name, entry, module, ...props }) {
   const Component = useMemo(() => {
@@ -1838,14 +1848,16 @@ Create lazy components at module level, or memoize them by their inputs.
 `createInstance` creates a separate federation runtime instance with its own name, remotes, shared packages and plugins:
 
 ```js
-import { createInstance } from '@module-federation/enhanced/runtime';
+import { createInstance } from "@module-federation/enhanced/runtime";
 
 const mf = createInstance({
-  name: 'shell',
-  remotes: [{ name: 'shop', entry: 'https://shop.example.com/mf-manifest.json' }],
+  name: "shell",
+  remotes: [
+    { name: "shop", entry: "https://shop.example.com/mf-manifest.json" },
+  ],
 });
 
-const mod = await mf.loadRemote('shop/ProductList');
+const mod = await mf.loadRemote("shop/ProductList");
 ```
 
 It is the newer, recommended API. The older global `init` function is kept for compatibility.
@@ -1862,8 +1874,8 @@ Runtime plugins are objects with hooks that run during the federation lifecycle,
 
 ```js
 new ModuleFederationPlugin({
-  name: 'shell',
-  runtimePlugins: ['./src/mf-plugins/offline-fallback.ts'],
+  name: "shell",
+  runtimePlugins: ["./src/mf-plugins/offline-fallback.ts"],
 });
 ```
 
@@ -1872,11 +1884,11 @@ They are used for retries, fallbacks, logging, auth headers and custom resolutio
 ## 166: How do you write a runtime plugin that shows a fallback when a remote fails?
 
 ```ts
-import type { ModuleFederationRuntimePlugin } from '@module-federation/enhanced/runtime';
+import type { ModuleFederationRuntimePlugin } from "@module-federation/enhanced/runtime";
 
 export default function offlineFallback(): ModuleFederationRuntimePlugin {
   return {
-    name: 'offline-fallback',
+    name: "offline-fallback",
     errorLoadRemote({ id, error }) {
       console.error(`Failed to load ${id}`, error);
       return { default: () => null };
@@ -1902,11 +1914,11 @@ Returning a module from `errorLoadRemote` gives the host something to render ins
 ```ts
 export default function envUrls() {
   return {
-    name: 'env-urls',
+    name: "env-urls",
     beforeRequest(args) {
       args.options.remotes.forEach((remote) => {
-        if ('entry' in remote) {
-          remote.entry = remote.entry.replace('{CDN}', window.__CDN_URL__);
+        if ("entry" in remote) {
+          remote.entry = remote.entry.replace("{CDN}", window.__CDN_URL__);
         }
       });
       return args;
@@ -1922,9 +1934,9 @@ The build uses placeholders, and the real CDN URL is filled in at runtime.
 Module Federation 2.0 has `preloadRemote`, which downloads a remote's entry and the assets of chosen exposes before they are needed:
 
 ```js
-import { preloadRemote } from '@module-federation/enhanced/runtime';
+import { preloadRemote } from "@module-federation/enhanced/runtime";
 
-preloadRemote([{ nameOrAlias: 'shop', exposes: ['ProductList'] }]);
+preloadRemote([{ nameOrAlias: "shop", exposes: ["ProductList"] }]);
 ```
 
 Call it on hover over a link or when the browser is idle, so the route opens instantly.
@@ -1934,10 +1946,12 @@ Call it on hover over a link or when the browser is idle, so the route opens ins
 Keep the import function in one place, use it for `lazy`, and call it on hover:
 
 ```jsx
-const loadShop = () => import('shop/App');
+const loadShop = () => import("shop/App");
 const ShopApp = lazy(loadShop);
 
-<Link to="/shop" onMouseEnter={loadShop}>Shop</Link>
+<Link to="/shop" onMouseEnter={loadShop}>
+  Shop
+</Link>;
 ```
 
 The browser caches the module, so when `ShopApp` renders, it is already there.
@@ -1953,7 +1967,7 @@ The host maps a path prefix to the remote, and the remote defines relative route
 
 ```jsx
 // remote: ShopApp.jsx
-import { Routes, Route } from 'react-router';
+import { Routes, Route } from "react-router";
 
 export default function ShopApp() {
   return (
@@ -2030,19 +2044,23 @@ The host has its own catch-all for unknown top-level paths. Both can reuse a sha
 With `createBrowserRouter`, the route's `lazy` function can load the remote module:
 
 ```jsx
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 const router = createBrowserRouter([
-  { path: '/', element: <Layout />, children: [
-    { index: true, element: <Home /> },
-    {
-      path: 'shop/*',
-      lazy: async () => {
-        const { default: Component } = await import('shop/App');
-        return { Component };
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: "shop/*",
+        lazy: async () => {
+          const { default: Component } = await import("shop/App");
+          return { Component };
+        },
       },
-    },
-  ]},
+    ],
+  },
 ]);
 
 createRoot(root).render(<RouterProvider router={router} />);
@@ -2056,7 +2074,7 @@ Yes. The remote exports an array of route objects and the host adds them to its 
 // remote: routes.jsx
 export const routes = [
   { index: true, element: <ProductList /> },
-  { path: ':id', element: <ProductDetails /> },
+  { path: ":id", element: <ProductDetails /> },
 ];
 ```
 
@@ -2069,9 +2087,9 @@ It is a data router option that lets you add routes lazily when the user navigat
 ```jsx
 const router = createBrowserRouter(baseRoutes, {
   async patchRoutesOnNavigation({ path, patch }) {
-    if (path.startsWith('/shop')) {
-      const { routes } = await import('shop/routes');
-      patch('shop', routes);
+    if (path.startsWith("/shop")) {
+      const { routes } = await import("shop/routes");
+      patch("shop", routes);
     }
   },
 });
@@ -2101,7 +2119,7 @@ Put the context and its hook in a separate package, for example `@acme/session`,
 
 ```jsx
 // @acme/session
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export const SessionContext = createContext(null);
 export const useSession = () => useContext(SessionContext);
@@ -2125,7 +2143,7 @@ Create the store in a shared package with the vanilla API and share the package 
 
 ```js
 // @acme/cart-store
-import { createStore } from 'zustand/vanilla';
+import { createStore } from "zustand/vanilla";
 
 export const cartStore = createStore((set) => ({
   items: [],
@@ -2135,8 +2153,8 @@ export const cartStore = createStore((set) => ({
 
 ```jsx
 // any micro frontend
-import { useStore } from 'zustand';
-import { cartStore } from '@acme/cart-store';
+import { useStore } from "zustand";
+import { cartStore } from "@acme/cart-store";
 
 const count = useStore(cartStore, (s) => s.items.length);
 ```
@@ -2152,12 +2170,12 @@ Either way, keep the shared store small. It is a contract between teams.
 `BroadcastChannel` sends messages between tabs, windows and iframes from the same origin:
 
 ```js
-const channel = new BroadcastChannel('auth');
+const channel = new BroadcastChannel("auth");
 
-channel.postMessage({ type: 'logout' });
+channel.postMessage({ type: "logout" });
 
 channel.onmessage = (e) => {
-  if (e.data.type === 'logout') window.location.assign('/login');
+  if (e.data.type === "logout") window.location.assign("/login");
 };
 ```
 
@@ -2169,12 +2187,15 @@ Use `postMessage` and always check the origin:
 
 ```js
 // host
-iframe.contentWindow.postMessage({ type: 'theme', value: 'dark' }, 'https://shop.example.com');
+iframe.contentWindow.postMessage(
+  { type: "theme", value: "dark" },
+  "https://shop.example.com",
+);
 
 // inside the iframe
-window.addEventListener('message', (e) => {
-  if (e.origin !== 'https://app.example.com') return;
-  if (e.data.type === 'theme') setTheme(e.data.value);
+window.addEventListener("message", (e) => {
+  if (e.origin !== "https://app.example.com") return;
+  if (e.data.type === "theme") setTheme(e.data.value);
 });
 ```
 
@@ -2182,15 +2203,18 @@ window.addEventListener('message', (e) => {
 
 ```ts
 type Events = {
-  'cart:item-added': { productId: string; quantity: number };
-  'auth:logout': undefined;
+  "cart:item-added": { productId: string; quantity: number };
+  "auth:logout": undefined;
 };
 
 export function emit<K extends keyof Events>(type: K, detail: Events[K]) {
   window.dispatchEvent(new CustomEvent(type, { detail }));
 }
 
-export function on<K extends keyof Events>(type: K, fn: (d: Events[K]) => void) {
+export function on<K extends keyof Events>(
+  type: K,
+  fn: (d: Events[K]) => void,
+) {
   const handler = (e: Event) => fn((e as CustomEvent<Events[K]>).detail);
   window.addEventListener(type, handler);
   return () => window.removeEventListener(type, handler);
@@ -2204,7 +2228,7 @@ Publish it as a shared package so all teams use the same event types.
 Subscribe in `useEffect` and return the unsubscribe function, so the listener is removed on unmount:
 
 ```jsx
-useEffect(() => on('cart:item-added', () => setCount((c) => c + 1)), []);
+useEffect(() => on("cart:item-added", () => setCount((c) => c + 1)), []);
 ```
 
 Forgetting cleanup is a common source of duplicated handlers when a remote mounts and unmounts.
@@ -2214,14 +2238,17 @@ Forgetting cleanup is a common source of duplicated handlers when a remote mount
 Use React Router's `useSearchParams`:
 
 ```jsx
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from "react-router";
 
 function Filters() {
   const [params, setParams] = useSearchParams();
-  const category = params.get('category') ?? 'all';
+  const category = params.get("category") ?? "all";
 
   return (
-    <select value={category} onChange={(e) => setParams({ category: e.target.value })}>
+    <select
+      value={category}
+      onChange={(e) => setParams({ category: e.target.value })}
+    >
       <option value="all">All</option>
       <option value="shoes">Shoes</option>
     </select>
@@ -2314,18 +2341,18 @@ Agree on one portal target (for example a `#modal-root` from the host) and a sha
 In single-spa there is usually no React host. The "root config" is a small plain JavaScript file that registers the apps and starts single-spa:
 
 ```js
-import { registerApplication, start } from 'single-spa';
+import { registerApplication, start } from "single-spa";
 
 registerApplication({
-  name: '@acme/navbar',
-  app: () => import('@acme/navbar'),
-  activeWhen: ['/'],
+  name: "@acme/navbar",
+  app: () => import("@acme/navbar"),
+  activeWhen: ["/"],
 });
 
 registerApplication({
-  name: '@acme/shop',
-  app: () => import('@acme/shop'),
-  activeWhen: ['/shop'],
+  name: "@acme/shop",
+  app: () => import("@acme/shop"),
+  activeWhen: ["/shop"],
 });
 
 start();
@@ -2349,10 +2376,10 @@ When the URL changes, single-spa checks all apps, unmounts the ones that are no 
 
 ```js
 registerApplication({
-  name: '@acme/shop',
-  app: () => import('@acme/shop'),
-  activeWhen: '/shop',
-  customProps: { authToken: getToken, apiUrl: 'https://api.example.com' },
+  name: "@acme/shop",
+  app: () => import("@acme/shop"),
+  activeWhen: "/shop",
+  customProps: { authToken: getToken, apiUrl: "https://api.example.com" },
 });
 ```
 
@@ -2384,12 +2411,12 @@ Mark React as external in each app's build and load it once through the import m
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "react": "https://cdn.jsdelivr.net/npm/react@19.2.0/+esm",
-    "react-dom/client": "https://cdn.jsdelivr.net/npm/react-dom@19.2.0/client/+esm"
+  {
+    "imports": {
+      "react": "https://cdn.jsdelivr.net/npm/react@19.2.0/+esm",
+      "react-dom/client": "https://cdn.jsdelivr.net/npm/react-dom@19.2.0/client/+esm"
+    }
   }
-}
 </script>
 ```
 
@@ -2404,11 +2431,11 @@ When all apps use React and you mostly want to share components and libraries, M
 ## 210: How do you create a React custom element that reacts to attribute changes?
 
 ```jsx
-import { createRoot } from 'react-dom/client';
-import PriceTag from './PriceTag';
+import { createRoot } from "react-dom/client";
+import PriceTag from "./PriceTag";
 
 class PriceTagElement extends HTMLElement {
-  static observedAttributes = ['amount', 'currency'];
+  static observedAttributes = ["amount", "currency"];
 
   connectedCallback() {
     this.root = createRoot(this);
@@ -2427,14 +2454,14 @@ class PriceTagElement extends HTMLElement {
   render() {
     this.root.render(
       <PriceTag
-        amount={Number(this.getAttribute('amount'))}
-        currency={this.getAttribute('currency')}
-      />
+        amount={Number(this.getAttribute("amount"))}
+        currency={this.getAttribute("currency")}
+      />,
     );
   }
 }
 
-customElements.define('price-tag', PriceTagElement);
+customElements.define("price-tag", PriceTagElement);
 ```
 
 ## 211: How does a React custom element send events to the page around it?
@@ -2443,7 +2470,11 @@ Dispatch a `CustomEvent` from the element itself:
 
 ```js
 this.dispatchEvent(
-  new CustomEvent('add-to-cart', { detail: { id }, bubbles: true, composed: true })
+  new CustomEvent("add-to-cart", {
+    detail: { id },
+    bubbles: true,
+    composed: true,
+  }),
 );
 ```
 
@@ -2465,9 +2496,9 @@ function Page() {
 
   useEffect(() => {
     const el = ref.current;
-    const handler = (e) => console.log('added', e.detail.id);
-    el.addEventListener('add-to-cart', handler);
-    return () => el.removeEventListener('add-to-cart', handler);
+    const handler = (e) => console.log("added", e.detail.id);
+    el.addEventListener("add-to-cart", handler);
+    return () => el.removeEventListener("add-to-cart", handler);
   }, []);
 
   return <product-card ref={ref} product-id="42" />;
@@ -2481,8 +2512,8 @@ Attach a shadow root and render into a container inside it:
 ```jsx
 class ShopWidget extends HTMLElement {
   connectedCallback() {
-    const shadow = this.attachShadow({ mode: 'open' });
-    const container = document.createElement('div');
+    const shadow = this.attachShadow({ mode: "open" });
+    const container = document.createElement("div");
     shadow.appendChild(container);
     this.root = createRoot(container);
     this.root.render(<ShopApp />);
@@ -2543,14 +2574,17 @@ The child measures its height and tells the parent:
 ```js
 // inside the iframe
 new ResizeObserver(() => {
-  parent.postMessage({ type: 'resize', height: document.body.scrollHeight }, 'https://app.example.com');
+  parent.postMessage(
+    { type: "resize", height: document.body.scrollHeight },
+    "https://app.example.com",
+  );
 }).observe(document.body);
 ```
 
 ```js
 // in the host
-window.addEventListener('message', (e) => {
-  if (e.origin === 'https://shop.example.com' && e.data.type === 'resize') {
+window.addEventListener("message", (e) => {
+  if (e.origin === "https://shop.example.com" && e.data.type === "resize") {
     iframe.style.height = `${e.data.height}px`;
   }
 });
@@ -2571,7 +2605,7 @@ npm i @acme/shop@2.3.0
 ```
 
 ```jsx
-import { ShopApp } from '@acme/shop';
+import { ShopApp } from "@acme/shop";
 ```
 
 It is simple, gives full type checking and one optimized bundle. The downside is that every remote release needs a host release, so there's no independent deployment.
@@ -2660,17 +2694,17 @@ If errors go up, you switch everyone back. If not, you increase the share.
 Test it like any React component with Vitest or Jest and React Testing Library. Provide what the host normally provides (router, providers, props):
 
 ```jsx
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
-import ProductList from './ProductList';
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
+import ProductList from "./ProductList";
 
-test('shows products', async () => {
+test("shows products", async () => {
   render(
     <MemoryRouter>
       <ProductList category="shoes" />
-    </MemoryRouter>
+    </MemoryRouter>,
   );
-  expect(await screen.findByText('Running shoe')).toBeInTheDocument();
+  expect(await screen.findByText("Running shoe")).toBeInTheDocument();
 });
 ```
 
@@ -2680,7 +2714,7 @@ In unit tests, the remote isn't available, so mock the import:
 
 ```js
 // vitest
-vi.mock('shop/ProductList', () => ({
+vi.mock("shop/ProductList", () => ({
   default: () => <div>Mock product list</div>,
 }));
 ```
@@ -2702,10 +2736,10 @@ They catch breaking changes before deployment, which unit tests in each repo can
 Build the remote, load its exposed modules and check their shape:
 
 ```js
-import * as ProductList from '../src/ProductList';
+import * as ProductList from "../src/ProductList";
 
-test('ProductList contract', () => {
-  expect(typeof ProductList.default).toBe('function');
+test("ProductList contract", () => {
+  expect(typeof ProductList.default).toBe("function");
 });
 ```
 
@@ -2749,7 +2783,7 @@ The host loads `config.json` at startup and passes the values down, or puts them
 // @acme/config
 let config;
 export async function loadConfig() {
-  config = await fetch('/config.json').then((r) => r.json());
+  config = await fetch("/config.json").then((r) => r.json());
 }
 export const getConfig = () => config;
 ```
@@ -2799,11 +2833,13 @@ A practical setup: work on the remote in standalone mode with fast refresh, and 
 function withTimeout(promise, ms) {
   return Promise.race([
     promise,
-    new Promise((_, reject) => setTimeout(() => reject(new Error('Remote timeout')), ms)),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Remote timeout")), ms),
+    ),
   ]);
 }
 
-const Reviews = lazy(() => withTimeout(import('reviews/ReviewList'), 8000));
+const Reviews = lazy(() => withTimeout(import("reviews/ReviewList"), 8000));
 ```
 
 The error boundary around `Reviews` shows the fallback if the timeout hits.
@@ -2823,7 +2859,7 @@ async function retry(fn, times = 2, delay = 1000) {
   }
 }
 
-const Reviews = lazy(() => retry(() => import('reviews/ReviewList')));
+const Reviews = lazy(() => retry(() => import("reviews/ReviewList")));
 ```
 
 Note that some browsers cache a failed dynamic import of the same URL, so with plain ES modules a retry may need a cache-busting URL. Module Federation's runtime or a runtime plugin can also handle retries.
@@ -2948,8 +2984,8 @@ The shared package is more explicit and works with any integration method.
 
 ```js
 new ModuleFederationPlugin({
-  name: 'shop',
-  exposes: { './ProductList': './src/ProductList.tsx' },
+  name: "shop",
+  exposes: { "./ProductList": "./src/ProductList.tsx" },
   dts: {
     generateTypes: true,
     consumeTypes: true,
@@ -2976,16 +3012,16 @@ Share the i18n library (for example `i18next` and `react-i18next`) as a singleto
 Use namespaces per remote:
 
 ```js
-import i18n from 'i18next';
+import i18n from "i18next";
 
 export async function loadShopTranslations(lang) {
   const res = await fetch(`https://cdn.example.com/shop/locales/${lang}.json`);
-  i18n.addResourceBundle(lang, 'shop', await res.json(), true, true);
+  i18n.addResourceBundle(lang, "shop", await res.json(), true, true);
 }
 ```
 
 ```jsx
-const { t } = useTranslation('shop');
+const { t } = useTranslation("shop");
 ```
 
 Namespaces keep keys from different teams from clashing.
@@ -3037,7 +3073,7 @@ If you want teams fully isolated, give each remote its own `QueryClient` and pro
 Prefix keys by domain or remote:
 
 ```js
-useQuery({ queryKey: ['shop', 'products', category], queryFn: fetchProducts });
+useQuery({ queryKey: ["shop", "products", category], queryFn: fetchProducts });
 ```
 
 Treat any keys that are shared on purpose (like `['session', 'user']`) as part of the contract.
@@ -3047,7 +3083,7 @@ Treat any keys that are shared on purpose (like `['session', 'user']`) as part o
 `use` reads a promise inside a component and suspends until it resolves. The promise must be created outside the render (or cached), not inside the component:
 
 ```jsx
-import { use } from 'react';
+import { use } from "react";
 
 function Reviews({ reviewsPromise }) {
   const reviews = use(reviewsPromise);
@@ -3074,9 +3110,9 @@ In stable React you control reveal order by how you nest and group `Suspense` bo
 Wrap the navigation in `startTransition` (React Router does this for its navigations). Then React keeps showing the old page while the new remote loads, instead of showing a fallback right away.
 
 ```jsx
-import { startTransition } from 'react';
+import { startTransition } from "react";
 
-startTransition(() => setSection('shop'));
+startTransition(() => setSection("shop"));
 ```
 
 Use `useTransition` to get an `isPending` flag for a small loading indicator.
@@ -3092,11 +3128,12 @@ Also use flags at the host level to pick which remote or version to load.
 The host or an edge function assigns the user to a group and loads a different remote URL or exposed module for each group:
 
 ```js
-const entry = user.group === 'B'
-  ? 'https://cdn.example.com/shop/2.0.0/mf-manifest.json'
-  : 'https://cdn.example.com/shop/1.9.0/mf-manifest.json';
+const entry =
+  user.group === "B"
+    ? "https://cdn.example.com/shop/2.0.0/mf-manifest.json"
+    : "https://cdn.example.com/shop/1.9.0/mf-manifest.json";
 
-registerRemotes([{ name: 'shop', entry }]);
+registerRemotes([{ name: "shop", entry }]);
 ```
 
 Track the group in analytics so you can compare results.
@@ -3119,7 +3156,14 @@ function RequireAuth({ children }) {
   return children;
 }
 
-<Route path="/account/*" element={<RequireAuth><AccountApp /></RequireAuth>} />
+<Route
+  path="/account/*"
+  element={
+    <RequireAuth>
+      <AccountApp />
+    </RequireAuth>
+  }
+/>;
 ```
 
 With this guard, the remote code isn't loaded for users who aren't logged in.
@@ -3130,7 +3174,7 @@ Put it in a shared package so every remote adds the token and handles 401 errors
 
 ```js
 // @acme/http
-import { getAccessToken, logout } from '@acme/auth';
+import { getAccessToken, logout } from "@acme/auth";
 
 export async function apiFetch(url, options = {}) {
   const token = await getAccessToken();
@@ -3170,15 +3214,15 @@ Move one app at a time and test the host with mixed remotes.
 
 ```js
 federation({
-  name: 'shell',
+  name: "shell",
   remotes: {
     shop: {
-      type: 'module',
-      name: 'shop',
-      entry: 'http://localhost:3001/remoteEntry.js',
+      type: "module",
+      name: "shop",
+      entry: "http://localhost:3001/remoteEntry.js",
     },
   },
-  shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
+  shared: { react: { singleton: true }, "react-dom": { singleton: true } },
 });
 ```
 
@@ -3202,9 +3246,9 @@ Webpack remote entries are usually classic scripts that define a global variable
 
 ```js
 new ModuleFederationPlugin({
-  name: 'shop',
-  filename: 'remoteEntry.js',
-  library: { type: 'module' },
+  name: "shop",
+  filename: "remoteEntry.js",
+  library: { type: "module" },
 });
 ```
 
@@ -3216,9 +3260,9 @@ Each app is a remote that exposes its single-spa lifecycles. The root config loa
 
 ```js
 registerApplication({
-  name: 'shop',
-  app: () => import('shop/spa'),
-  activeWhen: '/shop',
+  name: "shop",
+  app: () => import("shop/spa"),
+  activeWhen: "/shop",
 });
 ```
 
@@ -3249,15 +3293,15 @@ Put a function in a shared package that returns the common config, and let each 
 ```js
 // packages/config/mf.js
 module.exports = function mfConfig({ name, exposes = {}, remotes = {} }) {
-  const deps = require(process.cwd() + '/package.json').dependencies;
+  const deps = require(process.cwd() + "/package.json").dependencies;
   return {
     name,
-    filename: 'remoteEntry.js',
+    filename: "remoteEntry.js",
     exposes,
     remotes,
     shared: {
       react: { singleton: true, requiredVersion: deps.react },
-      'react-dom': { singleton: true, requiredVersion: deps['react-dom'] },
+      "react-dom": { singleton: true, requiredVersion: deps["react-dom"] },
     },
   };
 };
@@ -3335,9 +3379,9 @@ A runtime plugin can record each loaded remote:
 ```ts
 export default function loadLogger() {
   return {
-    name: 'load-logger',
+    name: "load-logger",
     onLoad(args) {
-      analytics.track('mf_loaded', { id: args.id });
+      analytics.track("mf_loaded", { id: args.id });
       return args;
     },
   };
@@ -3387,7 +3431,7 @@ The remote entry only contains the container code, the map of exposed modules to
 
 This is why a host can know about many remotes without paying for their code until it needs them.
 
-## 304: What is the global __FEDERATION__ object?
+## 304: What is the global **FEDERATION** object?
 
 In Module Federation 2.0 the runtime keeps its state in a global `__FEDERATION__` object: the runtime instances, loaded remotes, shared packages and their versions. It lets several builds in the same page work with one shared state.
 
@@ -3437,13 +3481,13 @@ The `resolveShare` hook lets you change the chosen version:
 ```ts
 export default function preferHostReact() {
   return {
-    name: 'prefer-host-react',
+    name: "prefer-host-react",
     resolveShare(args) {
       const { shareScopeMap, scope, pkgName } = args;
-      if (pkgName !== 'react' && pkgName !== 'react-dom') return args;
+      if (pkgName !== "react" && pkgName !== "react-dom") return args;
       const versions = shareScopeMap[scope][pkgName];
       const hostVersion = Object.keys(versions).find(
-        (v) => versions[v].from === 'shell'
+        (v) => versions[v].from === "shell",
       );
       if (hostVersion) args.resolver = () => versions[hostVersion];
       return args;
@@ -3508,9 +3552,9 @@ The host checks a signed cookie or a query parameter (allowed only for internal 
 ```js
 function applyOverrides(remotes) {
   if (!isInternalUser()) return remotes;
-  const overrides = JSON.parse(localStorage.getItem('mf-overrides') ?? '{}');
+  const overrides = JSON.parse(localStorage.getItem("mf-overrides") ?? "{}");
   return remotes.map((r) =>
-    overrides[r.name] ? { ...r, entry: overrides[r.name] } : r
+    overrides[r.name] ? { ...r, entry: overrides[r.name] } : r,
   );
 }
 ```
@@ -3561,14 +3605,14 @@ With a Module Federation 2.0 runtime plugin:
 ```ts
 export default function sriPlugin(hashes: Record<string, string>) {
   return {
-    name: 'sri',
+    name: "sri",
     createScript({ url }) {
       const integrity = hashes[url];
       if (!integrity) return;
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = url;
       script.integrity = integrity;
-      script.crossOrigin = 'anonymous';
+      script.crossOrigin = "anonymous";
       return script;
     },
   };
@@ -3588,7 +3632,10 @@ Turn on Trusted Types in report-only mode first to see what breaks across all re
 Don't load it with Module Federation into your page, because it would get full access. Use an iframe with the `sandbox` attribute and a separate origin, and talk with it only through `postMessage` with a small, validated set of messages.
 
 ```html
-<iframe src="https://partner.example.net/widget" sandbox="allow-scripts allow-forms"></iframe>
+<iframe
+  src="https://partner.example.net/widget"
+  sandbox="allow-scripts allow-forms"
+></iframe>
 ```
 
 ## 325: Why does every remote have full access to the page in Module Federation?
@@ -3676,14 +3723,14 @@ The host doesn't know the widgets ahead of time. It only renders what the regist
 It should combine error handling, loading and lazy loading in one place:
 
 ```jsx
-import { lazy, Suspense, useMemo } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { loadRemote } from '@module-federation/enhanced/runtime';
+import { lazy, Suspense, useMemo } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { loadRemote } from "@module-federation/enhanced/runtime";
 
 export function RemoteBoundary({ remote, module, fallback = null, ...props }) {
   const Component = useMemo(
     () => lazy(() => loadRemote(`${remote}/${module}`)),
-    [remote, module]
+    [remote, module],
   );
 
   return (
@@ -3710,9 +3757,9 @@ Catch them in the remote and report them, and add global `window.onerror` and `u
 Look at the stack trace URLs: each remote's chunks come from its own path or origin, for example `cdn.example.com/shop/`. Map URL prefixes to remote names in the global error handler:
 
 ```js
-window.addEventListener('error', (e) => {
+window.addEventListener("error", (e) => {
   const remote = remotes.find((r) => e.filename?.startsWith(r.baseUrl));
-  monitor.captureException(e.error, { tags: { mfe: remote?.name ?? 'host' } });
+  monitor.captureException(e.error, { tags: { mfe: remote?.name ?? "host" } });
 });
 ```
 
@@ -3799,10 +3846,10 @@ It enables server-side composition at the edge with caching per fragment. Each f
 Each fragment renders into its own container and has its own client script that calls `hydrateRoot` on it:
 
 ```jsx
-import { hydrateRoot } from 'react-dom/client';
-import Cart from './Cart';
+import { hydrateRoot } from "react-dom/client";
+import Cart from "./Cart";
 
-const el = document.getElementById('cart-fragment');
+const el = document.getElementById("cart-fragment");
 hydrateRoot(el, <Cart {...JSON.parse(el.dataset.props)} />);
 ```
 
@@ -3832,9 +3879,15 @@ Each zone sets an `assetPrefix`, and the main app rewrites paths to the other zo
 module.exports = {
   async rewrites() {
     return [
-      { source: '/blog', destination: `${process.env.BLOG_DOMAIN}/blog` },
-      { source: '/blog/:path+', destination: `${process.env.BLOG_DOMAIN}/blog/:path+` },
-      { source: '/blog-static/:path+', destination: `${process.env.BLOG_DOMAIN}/blog-static/:path+` },
+      { source: "/blog", destination: `${process.env.BLOG_DOMAIN}/blog` },
+      {
+        source: "/blog/:path+",
+        destination: `${process.env.BLOG_DOMAIN}/blog/:path+`,
+      },
+      {
+        source: "/blog-static/:path+",
+        destination: `${process.env.BLOG_DOMAIN}/blog-static/:path+`,
+      },
     ];
   },
 };
@@ -3842,7 +3895,7 @@ module.exports = {
 
 ```js
 // next.config.js of the blog zone
-module.exports = { assetPrefix: '/blog-static' };
+module.exports = { assetPrefix: "/blog-static" };
 ```
 
 Links to other zones should use plain `<a>` tags, not `next/link`.
@@ -3910,24 +3963,24 @@ So the remote app runs in its own root and can even use a different React versio
 
 ```jsx
 // remote: src/export-app.jsx
-import { createBridgeComponent } from '@module-federation/bridge-react';
-import App from './App';
+import { createBridgeComponent } from "@module-federation/bridge-react";
+import App from "./App";
 
 export default createBridgeComponent({ rootComponent: App });
 ```
 
 ```jsx
 // host
-import { createRemoteAppComponent } from '@module-federation/bridge-react';
-import { loadRemote } from '@module-federation/enhanced/runtime';
+import { createRemoteAppComponent } from "@module-federation/bridge-react";
+import { loadRemote } from "@module-federation/enhanced/runtime";
 
 const ShopApp = createRemoteAppComponent({
-  loader: () => loadRemote('shop/export-app'),
+  loader: () => loadRemote("shop/export-app"),
   fallback: ({ error }) => <p>Shop failed: {error.message}</p>,
   loading: <p>Loading...</p>,
 });
 
-<Route path="/shop/*" element={<ShopApp basename="/shop" />} />
+<Route path="/shop/*" element={<ShopApp basename="/shop" />} />;
 ```
 
 ## 361: What do you lose when a remote runs in its own React root?
@@ -4038,8 +4091,13 @@ Repeat per remote. Leaks often come from listeners on `window` or subscriptions 
 If the host server knows the route, it can add the remote's entry and main chunks to the HTML:
 
 ```html
-<link rel="preload" href="https://cdn.example.com/shop/1.8.0/remoteEntry.js" as="script" crossorigin>
-<link rel="preconnect" href="https://cdn.example.com" crossorigin>
+<link
+  rel="preload"
+  href="https://cdn.example.com/shop/1.8.0/remoteEntry.js"
+  as="script"
+  crossorigin
+/>
+<link rel="preconnect" href="https://cdn.example.com" crossorigin />
 ```
 
 For a client-only host, start `preloadRemote` as early as possible, before React renders.
@@ -4064,12 +4122,12 @@ Some duplication is fine. Fight it only where it costs real size.
 Use the `web-vitals` library in the host and attach the current route and active remotes to each metric. For INP and CLS, the attribution build tells you which element caused the issue, which you can map to a remote by its container.
 
 ```js
-import { onINP } from 'web-vitals/attribution';
+import { onINP } from "web-vitals/attribution";
 
 onINP(({ value, attribution }) => {
   const el = document.querySelector(attribution.interactionTarget);
-  const mfe = el?.closest('[data-mfe]')?.dataset.mfe ?? 'host';
-  analytics.track('inp', { value, mfe });
+  const mfe = el?.closest("[data-mfe]")?.dataset.mfe ?? "host";
+  analytics.track("inp", { value, mfe });
 });
 ```
 
@@ -4092,22 +4150,29 @@ function LazyWhenVisible({ children, minHeight = 300 }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setVisible(true);
-        observer.disconnect();
-      }
-    }, { rootMargin: '200px' });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
-  return <div ref={ref} style={{ minHeight }}>{visible && children}</div>;
+  return (
+    <div ref={ref} style={{ minHeight }}>
+      {visible && children}
+    </div>
+  );
 }
 
 <LazyWhenVisible>
   <RemoteBoundary remote="reviews" module="ReviewList" productId={id} />
-</LazyWhenVisible>
+</LazyWhenVisible>;
 ```
 
 ## 377: How do you cache remote modules with a service worker?
@@ -4186,15 +4251,17 @@ Tools like Pact are designed for API contracts. For UI contracts teams often use
 Start a static server for the built remote and load it with the federation runtime in a test (Node or a headless browser):
 
 ```js
-import { createInstance } from '@module-federation/enhanced/runtime';
+import { createInstance } from "@module-federation/enhanced/runtime";
 
-test('exposes ProductList', async () => {
+test("exposes ProductList", async () => {
   const mf = createInstance({
-    name: 'contract-test',
-    remotes: [{ name: 'shop', entry: 'http://localhost:4173/mf-manifest.json' }],
+    name: "contract-test",
+    remotes: [
+      { name: "shop", entry: "http://localhost:4173/mf-manifest.json" },
+    ],
   });
-  const mod = await mf.loadRemote('shop/ProductList');
-  expect(typeof mod.default).toBe('function');
+  const mod = await mf.loadRemote("shop/ProductList");
+  expect(typeof mod.default).toBe("function");
 });
 ```
 
@@ -4211,11 +4278,11 @@ This tests your change against real versions of the other remotes without runnin
 In Playwright, block the remote's URL and check that the fallback shows and the rest of the page works:
 
 ```js
-test('page works when reviews remote is down', async ({ page }) => {
-  await page.route('**/reviews/**', (route) => route.abort());
-  await page.goto('/product/42');
-  await expect(page.getByText('Reviews are not available')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Add to cart' })).toBeEnabled();
+test("page works when reviews remote is down", async ({ page }) => {
+  await page.route("**/reviews/**", (route) => route.abort());
+  await page.goto("/product/42");
+  await expect(page.getByText("Reviews are not available")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Add to cart" })).toBeEnabled();
 });
 ```
 
@@ -4240,7 +4307,7 @@ That's why types alone are not enough. You need backward-compatible changes, run
 Use a schema library like Zod in the remote's exposed component:
 
 ```tsx
-import { z } from 'zod';
+import { z } from "zod";
 
 const Props = z.object({
   productId: z.string(),
@@ -4250,7 +4317,7 @@ const Props = z.object({
 export default function AddToCart(rawProps: unknown) {
   const result = Props.safeParse(rawProps);
   if (!result.success) {
-    console.warn('AddToCart: invalid props', result.error.issues);
+    console.warn("AddToCart: invalid props", result.error.issues);
     return null;
   }
   return <AddToCartButton {...result.data} />;
@@ -4432,8 +4499,16 @@ Register them under different names and load each separately:
 
 ```js
 registerRemotes([
-  { name: 'shop_v1', alias: 'shopV1', entry: 'https://cdn.example.com/shop/1.9.0/mf-manifest.json' },
-  { name: 'shop_v2', alias: 'shopV2', entry: 'https://cdn.example.com/shop/2.0.0/mf-manifest.json' },
+  {
+    name: "shop_v1",
+    alias: "shopV1",
+    entry: "https://cdn.example.com/shop/1.9.0/mf-manifest.json",
+  },
+  {
+    name: "shop_v2",
+    alias: "shopV2",
+    entry: "https://cdn.example.com/shop/2.0.0/mf-manifest.json",
+  },
 ]);
 ```
 
@@ -4450,9 +4525,11 @@ The practical approach is to show "a new version is available" and reload the pa
 Poll the registry or manifest every few minutes (or when the tab becomes visible) and compare the version with the one loaded. If it changed, show a non-blocking message or reload on the next navigation.
 
 ```js
-document.addEventListener('visibilitychange', async () => {
-  if (document.visibilityState !== 'visible') return;
-  const registry = await fetch('/mf-registry.json', { cache: 'no-store' }).then((r) => r.json());
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState !== "visible") return;
+  const registry = await fetch("/mf-registry.json", { cache: "no-store" }).then(
+    (r) => r.json(),
+  );
   if (registry.shop.version !== loadedVersions.shop) showUpdateBanner();
 });
 ```
@@ -4666,7 +4743,7 @@ Avoid passing large objects that change identity on every host render, since tha
 Remote components are normal React components, so the usual tools apply: keep props stable (`useMemo`, `useCallback`), and wrap the remote in `memo` if its props rarely change. The React Compiler can do much of this memoization automatically.
 
 ```jsx
-const Reviews = lazy(() => import('reviews/ReviewList'));
+const Reviews = lazy(() => import("reviews/ReviewList"));
 
 const ReviewsSection = memo(function ReviewsSection({ productId }) {
   return <Reviews productId={productId} />;

@@ -540,7 +540,10 @@ Add the provider and remove Zone.js from the polyfills:
 
 ```ts
 // app.config.ts
-import { ApplicationConfig, provideZonelessChangeDetection } from "@angular/core";
+import {
+  ApplicationConfig,
+  provideZonelessChangeDetection,
+} from "@angular/core";
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZonelessChangeDetection()],
@@ -654,7 +657,7 @@ If you write an impure pipe that filters or sorts a big array, it will run that 
 
 ```html
 @for (user of users(); track user.id) {
-  <app-user-row [user]="user" />
+<app-user-row [user]="user" />
 }
 ```
 
@@ -816,9 +819,9 @@ Services listed in a `providers` array are always included, whether used or not.
 
 ```html
 @defer (on viewport) {
-  <app-comments [postId]="postId()" />
+<app-comments [postId]="postId()" />
 } @placeholder {
-  <p>Comments</p>
+<p>Comments</p>
 }
 ```
 
@@ -844,13 +847,13 @@ You can combine them: `@defer (on viewport; on timer(5s))`.
 
 ```html
 @defer (on viewport) {
-  <app-chart [data]="data()" />
+<app-chart [data]="data()" />
 } @placeholder {
-  <div class="chart-box"></div>
+<div class="chart-box"></div>
 } @loading (minimum 500ms) {
-  <app-spinner />
+<app-spinner />
 } @error {
-  <p>Could not load the chart.</p>
+<p>Could not load the chart.</p>
 }
 ```
 
@@ -860,9 +863,9 @@ Prefetching downloads the chunk earlier than it is shown. The trigger decides wh
 
 ```html
 @defer (on interaction; prefetch on idle) {
-  <app-editor />
+<app-editor />
 } @placeholder {
-  <button>Open editor</button>
+<button>Open editor</button>
 }
 ```
 
@@ -902,7 +905,7 @@ Incremental hydration lets parts of the page stay as static server HTML until th
 
 ```html
 @defer (hydrate on viewport) {
-  <app-reviews />
+<app-reviews />
 }
 ```
 
@@ -1008,7 +1011,7 @@ The `async` pipe subscribes to an Observable or Promise in the template, returns
 
 ```html
 @if (user$ | async; as user) {
-  <p>{{ user.name }}</p>
+<p>{{ user.name }}</p>
 }
 ```
 
@@ -1067,7 +1070,11 @@ In Angular, LCP is affected by bundle size, SSR and images. INP is affected by c
 Preloading downloads lazy loaded route chunks in the background after the app has started. The first load stays small, but when the user navigates, the code is often already there.
 
 ```ts
-import { PreloadAllModules, provideRouter, withPreloading } from "@angular/router";
+import {
+  PreloadAllModules,
+  provideRouter,
+  withPreloading,
+} from "@angular/router";
 
 providers: [provideRouter(routes, withPreloading(PreloadAllModules))];
 ```
@@ -1095,7 +1102,9 @@ Virtual scrolling renders only the items that are visible on screen (plus a smal
 
 ```html
 <cdk-virtual-scroll-viewport itemSize="48" class="list">
-  <div *cdkVirtualFor="let item of items; trackBy: trackById">{{ item.name }}</div>
+  <div *cdkVirtualFor="let item of items; trackBy: trackById">
+    {{ item.name }}
+  </div>
 </cdk-virtual-scroll-viewport>
 ```
 
@@ -1264,7 +1273,7 @@ The modern approach is native CSS animations with `animate.enter` and `animate.l
 
 ```html
 @if (open()) {
-  <div class="panel" animate.enter="slide-in" animate.leave="slide-out"></div>
+<div class="panel" animate.enter="slide-in" animate.leave="slide-out"></div>
 }
 ```
 
@@ -1348,7 +1357,9 @@ userId = input.required<string>();
 user = resource({
   params: () => ({ id: this.userId() }),
   loader: ({ params, abortSignal }) =>
-    fetch(`/api/users/${params.id}`, { signal: abortSignal }).then((r) => r.json()),
+    fetch(`/api/users/${params.id}`, { signal: abortSignal }).then((r) =>
+      r.json(),
+    ),
 });
 ```
 
@@ -1417,10 +1428,9 @@ They work well with OnPush and zoneless apps: when the parent passes a new value
 `@let` declares a local variable in the template:
 
 ```html
-@let user = user$ | async;
-@if (user) {
-  <h2>{{ user.name }}</h2>
-  <p>{{ user.email }}</p>
+@let user = user$ | async; @if (user) {
+<h2>{{ user.name }}</h2>
+<p>{{ user.email }}</p>
 }
 ```
 
@@ -1486,7 +1496,13 @@ Use it for origins that the page will surely need soon, like an image CDN or API
 - `prefetch`: download this resource at low priority, it may be needed for a future navigation.
 
 ```html
-<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+<link
+  rel="preload"
+  href="/fonts/inter.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 Angular uses the same idea with route preloading and `@defer` prefetching.
@@ -1525,8 +1541,13 @@ There are also `provideCloudinaryLoader`, `provideImageKitLoader`, `provideCloud
 ```
 
 ```css
-.cover { position: relative; aspect-ratio: 16 / 9; }
-img { object-fit: cover; }
+.cover {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+img {
+  object-fit: cover;
+}
 ```
 
 It's useful for background-like images where you don't know the exact size.
@@ -1943,9 +1964,9 @@ When you face a slow app, ask what work can be skipped before trying to make the
 
 ```html
 @for (order of orders(); track order.id) {
-  <app-order-row [order]="order" />
+<app-order-row [order]="order" />
 } @empty {
-  <p>No orders yet.</p>
+<p>No orders yet.</p>
 }
 ```
 
@@ -2055,7 +2076,7 @@ export class OrderList {
 ```html
 <h2>{{ count() }} orders</h2>
 @for (o of orders(); track o.id) {
-  <app-order-row [order]="o" />
+<app-order-row [order]="o" />
 }
 ```
 
@@ -2316,11 +2337,11 @@ They prevent flicker:
 
 ```html
 @defer (on viewport) {
-  <app-chart />
+<app-chart />
 } @placeholder (minimum 500ms) {
-  <div class="skeleton"></div>
+<div class="skeleton"></div>
 } @loading (after 100ms; minimum 1s) {
-  <app-spinner />
+<app-spinner />
 }
 ```
 
@@ -2336,9 +2357,9 @@ Give the `@placeholder` the same size as the final content:
 
 ```html
 @defer (on viewport) {
-  <app-reviews />
+<app-reviews />
 } @placeholder {
-  <div style="min-height: 420px"></div>
+<div style="min-height: 420px"></div>
 }
 ```
 
@@ -2352,7 +2373,7 @@ You can point the trigger at a template reference outside the block:
 <button #loadBtn>Show details</button>
 
 @defer (on interaction(loadBtn); prefetch on hover(loadBtn)) {
-  <app-details />
+<app-details />
 }
 ```
 
@@ -2383,7 +2404,7 @@ With incremental hydration (`hydrate` triggers), the server does render the main
 
 ```html
 @defer (on viewport; hydrate on interaction) {
-  <app-product-gallery />
+<app-product-gallery />
 }
 ```
 
@@ -2395,7 +2416,7 @@ It keeps the server-rendered HTML as static content. Angular never loads the Jav
 
 ```html
 @defer (hydrate never) {
-  <app-legal-footer />
+<app-legal-footer />
 }
 ```
 
@@ -2440,7 +2461,11 @@ import { RenderMode, ServerRoute } from "@angular/ssr";
 
 export const serverRoutes: ServerRoute[] = [
   { path: "", renderMode: RenderMode.Prerender },
-  { path: "blog/:slug", renderMode: RenderMode.Prerender, getPrerenderParams: async () => [{ slug: "hello" }] },
+  {
+    path: "blog/:slug",
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => [{ slug: "hello" }],
+  },
   { path: "account/**", renderMode: RenderMode.Client },
   { path: "**", renderMode: RenderMode.Server },
 ];
@@ -2554,13 +2579,17 @@ It's useful in SSR when a non-HTTP Observable delivers data that should be in th
     {
       "name": "app",
       "installMode": "prefetch",
-      "resources": { "files": ["/favicon.ico", "/index.html", "/*.css", "/*.js"] }
+      "resources": {
+        "files": ["/favicon.ico", "/index.html", "/*.css", "/*.js"]
+      }
     },
     {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
-      "resources": { "files": ["/assets/**", "/*.(svg|jpg|png|webp|avif|woff2)"] }
+      "resources": {
+        "files": ["/assets/**", "/*.(svg|jpg|png|webp|avif|woff2)"]
+      }
     }
   ]
 }
@@ -2700,7 +2729,9 @@ For HTTP calls that complete, `false` keeps the result cached for the app's life
 - Keep items immutable and replace only the changed item:
 
 ```ts
-this.items.update((list) => list.map((i) => (i.id === updated.id ? updated : i)));
+this.items.update((list) =>
+  list.map((i) => (i.id === updated.id ? updated : i)),
+);
 ```
 
 - Track by id in `@for`, so Angular keeps all other DOM nodes
@@ -2833,7 +2864,10 @@ With Signal Forms (stable in Angular 22), fields are created lazily and validato
 It changes when a control updates its value and runs validation. The default is `"change"`, which updates on every keystroke.
 
 ```ts
-email = new FormControl("", { validators: [Validators.email], updateOn: "blur" });
+email = new FormControl("", {
+  validators: [Validators.email],
+  updateOn: "blur",
+});
 ```
 
 With `"blur"`, validation and `valueChanges` happen only when the field loses focus. For big forms or expensive validators, this cuts a lot of work. `"submit"` is also available.
@@ -2843,11 +2877,13 @@ With `"blur"`, validation and `valueChanges` happen only when the field loses fo
 Async validators run on every value change by default. For reactive forms, add a delay inside the validator:
 
 ```ts
-export const usernameTaken = (api: UserApi): AsyncValidatorFn => (control) =>
-  timer(400).pipe(
-    switchMap(() => api.exists(control.value)),
-    map((taken) => (taken ? { taken: true } : null)),
-  );
+export const usernameTaken =
+  (api: UserApi): AsyncValidatorFn =>
+  (control) =>
+    timer(400).pipe(
+      switchMap(() => api.exists(control.value)),
+      map((taken) => (taken ? { taken: true } : null)),
+    );
 ```
 
 Because Angular unsubscribes from the old validator when the value changes, the timer is cancelled and only the last value hits the API. In Signal Forms, `validateAsync` and `validateHttp` support a `debounce` option since v22.
@@ -2857,7 +2893,10 @@ Because Angular unsubscribes from the old validator when the value changes, the 
 ```ts
 @Pipe({ name: "price" })
 export class PricePipe implements PipeTransform {
-  private format = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+  private format = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   transform(value: number): string {
     return this.format.format(value);
@@ -2867,7 +2906,7 @@ export class PricePipe implements PipeTransform {
 
 ```html
 @for (item of items(); track item.id) {
-  <td>{{ item.price | price }}</td>
+<td>{{ item.price | price }}</td>
 }
 ```
 
@@ -2910,7 +2949,7 @@ Use event delegation: one listener on the parent instead of one per row.
 ```html
 <ul (click)="onListClick($event)">
   @for (item of items(); track item.id) {
-    <li [attr.data-id]="item.id">{{ item.name }}</li>
+  <li [attr.data-id]="item.id">{{ item.name }}</li>
   }
 </ul>
 ```
@@ -2954,7 +2993,7 @@ export class Tabs {
 
 ```html
 @if (open()) {
-  <ng-container [ngTemplateOutlet]="details()" />
+<ng-container [ngTemplateOutlet]="details()" />
 }
 ```
 
@@ -3383,7 +3422,10 @@ The trade-off is memory use and stale data. Only cache a few routes, and clear t
 ```ts
 provideRouter(
   routes,
-  withInMemoryScrolling({ scrollPositionRestoration: "enabled", anchorScrolling: "enabled" }),
+  withInMemoryScrolling({
+    scrollPositionRestoration: "enabled",
+    anchorScrolling: "enabled",
+  }),
 );
 ```
 
@@ -3418,7 +3460,11 @@ If filtering is local, `computed()` over a reasonably sized list is often fast e
 
 ```ts
 this.socket.messages$
-  .pipe(bufferTime(200), filter((batch) => batch.length > 0), takeUntilDestroyed())
+  .pipe(
+    bufferTime(200),
+    filter((batch) => batch.length > 0),
+    takeUntilDestroyed(),
+  )
   .subscribe((batch) => this.applyUpdates(batch));
 ```
 
@@ -3684,7 +3730,12 @@ A leak on the server affects every user, not just one tab, so watch heap usage i
 The generated `server.ts` uses `AngularNodeAppEngine`:
 
 ```ts
-import { AngularNodeAppEngine, createNodeRequestHandler, isMainModule, writeResponseToNodeResponse } from "@angular/ssr/node";
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse,
+} from "@angular/ssr/node";
 import express from "express";
 
 const app = express();
@@ -3695,7 +3746,9 @@ app.use(express.static(browserDistFolder, { maxAge: "1y", index: false }));
 app.use((req, res, next) => {
   angularApp
     .handle(req)
-    .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
+    .then((response) =>
+      response ? writeResponseToNodeResponse(response, res) : next(),
+    )
     .catch(next);
 });
 
@@ -3932,9 +3985,15 @@ Also give the `computed()` a custom `equal` function if it often produces equiva
 When the `computed()` often returns a new object or array with the same content:
 
 ```ts
-selectedIds = computed(() => this.items().filter((i) => i.selected).map((i) => i.id), {
-  equal: (a, b) => a.length === b.length && a.every((v, i) => v === b[i]),
-});
+selectedIds = computed(
+  () =>
+    this.items()
+      .filter((i) => i.selected)
+      .map((i) => i.id),
+  {
+    equal: (a, b) => a.length === b.length && a.every((v, i) => v === b[i]),
+  },
+);
 ```
 
 Without `equal`, every new array counts as a change and every consumer updates. With it, consumers update only when the ids really changed. Keep the comparison cheaper than the work it saves.
@@ -4342,7 +4401,9 @@ Often the fix is narrower selectors and OnPush components that receive only the 
 ## 355: Why can a selector that returns a new array on every call hurt performance?
 
 ```ts
-export const selectActive = createSelector(selectUsers, (users) => users.filter((u) => u.active));
+export const selectActive = createSelector(selectUsers, (users) =>
+  users.filter((u) => u.active),
+);
 ```
 
 This one is fine because `createSelector` memoizes on `selectUsers`. But a selector without memoization, or one whose input changes on every action, returns a new array each time. Components using it get a new reference, OnPush sees a change and everything below re-renders.
@@ -4385,7 +4446,7 @@ applyTick(id: string, price: number) {
 
 ```html
 @for (row of rows(); track row.id) {
-  <td>{{ row.price() }}</td>
+<td>{{ row.price() }}</td>
 }
 ```
 
@@ -4443,12 +4504,20 @@ export class GroupedStrategy implements VirtualScrollStrategy {
     this.viewport = viewport;
     this.update();
   }
-  detach() { this.viewport = undefined; }
-  onContentScrolled() { this.update(); }
-  onDataLengthChanged() { this.update(); }
+  detach() {
+    this.viewport = undefined;
+  }
+  onContentScrolled() {
+    this.update();
+  }
+  onDataLengthChanged() {
+    this.update();
+  }
   onContentRendered() {}
   onRenderedOffsetChanged() {}
-  scrollToIndex(index: number, behavior: ScrollBehavior) { /* ... */ }
+  scrollToIndex(index: number, behavior: ScrollBehavior) {
+    /* ... */
+  }
 
   private update() {
     // use precomputed row offsets to find the range,
@@ -4555,11 +4624,13 @@ A directive on every row runs its constructor, host bindings and hooks for each 
 @Injectable({ providedIn: "root" })
 export class VisibilityService {
   private callbacks = new Map<Element, (visible: boolean) => void>();
-  private observer = typeof IntersectionObserver !== "undefined"
-    ? new IntersectionObserver((entries) => {
-        for (const e of entries) this.callbacks.get(e.target)?.(e.isIntersecting);
-      })
-    : null;
+  private observer =
+    typeof IntersectionObserver !== "undefined"
+      ? new IntersectionObserver((entries) => {
+          for (const e of entries)
+            this.callbacks.get(e.target)?.(e.isIntersecting);
+        })
+      : null;
 
   observe(el: Element, cb: (visible: boolean) => void) {
     this.callbacks.set(el, cb);
@@ -5091,7 +5162,9 @@ For important content, add an `@error` block with a retry option (for example a 
 You don't test speed in unit tests, but you can test that blocks behave correctly. `TestBed` supports controlling defer blocks:
 
 ```ts
-TestBed.configureTestingModule({ deferBlockBehavior: DeferBlockBehavior.Manual });
+TestBed.configureTestingModule({
+  deferBlockBehavior: DeferBlockBehavior.Manual,
+});
 
 const fixture = TestBed.createComponent(Page);
 const [block] = await fixture.getDeferBlocks();
@@ -5184,7 +5257,15 @@ The Speculation Rules API lets a page tell the browser to prefetch or prerender 
 
 ```html
 <script type="speculationrules">
-  { "prefetch": [{ "source": "document", "where": { "href_matches": "/products/*" }, "eagerness": "moderate" }] }
+  {
+    "prefetch": [
+      {
+        "source": "document",
+        "where": { "href_matches": "/products/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
 </script>
 ```
 
@@ -5239,7 +5320,9 @@ load(id: string) {
 
 ```html
 @if (toast()) {
-  <div class="toast" animate.enter="fade-in" animate.leave="fade-out">{{ toast() }}</div>
+<div class="toast" animate.enter="fade-in" animate.leave="fade-out">
+  {{ toast() }}
+</div>
 }
 ```
 

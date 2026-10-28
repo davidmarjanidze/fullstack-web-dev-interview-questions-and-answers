@@ -502,7 +502,7 @@ Attributes give extra information about an element. They go inside the start tag
 
 ```html
 <a href="https://example.com" target="_blank">Visit</a>
-<img src="cat.jpg" alt="A grey cat sleeping">
+<img src="cat.jpg" alt="A grey cat sleeping" />
 ```
 
 `href`, `target`, `src` and `alt` are attributes. Some attributes work on every element (like `id` and `class`), others only make sense on specific elements (like `href` on `<a>`).
@@ -523,8 +523,7 @@ A void element is an element that cannot have any content, so it has no end tag.
 - `<area>`, `<base>`, `<col>`, `<embed>`
 
 ```html
-<img src="logo.png" alt="Company logo">
-<input type="text" name="email">
+<img src="logo.png" alt="Company logo" /> <input type="text" name="email" />
 ```
 
 ### 8: Do void elements need a closing slash like `<br />`?
@@ -555,10 +554,10 @@ The result is that your CSS may not work as expected. Always add `<!DOCTYPE html
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <h1>Hello</h1>
@@ -598,7 +597,7 @@ It should be the first thing in `<head>`, because the browser needs to know the 
 ### 15: What is the viewport meta tag?
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
 Without it, mobile browsers pretend the screen is about 980px wide and zoom out, so the page looks tiny. With `width=device-width` the layout width matches the device width, and `initial-scale=1` sets the starting zoom to 100%. You need it for any responsive design.
@@ -647,8 +646,7 @@ There used to be an "outline algorithm" where each `<section>` could start over 
 In normal text, the browser collapses runs of spaces, tabs and new lines into a single space. So this:
 
 ```html
-<p>Hello        world
-   how are you?</p>
+<p>Hello world how are you?</p>
 ```
 
 shows as "Hello world how are you?". If you want to keep whitespace exactly, use `<pre>` or the CSS `white-space` property.
@@ -659,8 +657,8 @@ shows as "Hello world how are you?". If you want to keep whitespace exactly, use
 
 ```html
 <p>
-  221B Baker Street<br>
-  London<br>
+  221B Baker Street<br />
+  London<br />
   NW1 6XE
 </p>
 ```
@@ -700,7 +698,9 @@ Use relative URLs for links inside your own site and absolute ones for other sit
 Add `target="_blank"`:
 
 ```html
-<a href="https://example.com" target="_blank" rel="noopener noreferrer">Example</a>
+<a href="https://example.com" target="_blank" rel="noopener noreferrer"
+  >Example</a
+>
 ```
 
 `rel="noopener"` stops the new page from getting access to your page through `window.opener`. Modern browsers now apply `noopener` by default for `target="_blank"`, but many teams still add it to be explicit. `noreferrer` also hides the `Referer` header.
@@ -732,7 +732,12 @@ You can also link to a part of another page: `/docs/setup#install`. A link with 
 ### 28: How do you add an image to a page?
 
 ```html
-<img src="photo.jpg" alt="Two people hiking up a snowy mountain" width="800" height="600">
+<img
+  src="photo.jpg"
+  alt="Two people hiking up a snowy mountain"
+  width="800"
+  height="600"
+/>
 ```
 
 `src` is the image URL and `alt` is the text alternative. `width` and `height` help the browser reserve space before the image loads. `<img>` is a void element, so it has no closing tag.
@@ -752,7 +757,7 @@ Without `alt`, many screen readers read the file name, like "IMG_4021 dot jpg", 
 When the image is only decoration and adds no information, use `alt=""`:
 
 ```html
-<img src="divider-flourish.svg" alt="">
+<img src="divider-flourish.svg" alt="" />
 ```
 
 An empty `alt` tells screen readers to skip the image. This is different from leaving `alt` out completely, which makes some screen readers read the file name. Also use empty `alt` when the same information is already in the text next to the image, like an icon beside the word "Settings".
@@ -811,7 +816,8 @@ Put the inner list inside an `<li>` of the outer list:
 
 ```html
 <ul>
-  <li>Fruits
+  <li>
+    Fruits
     <ul>
       <li>Apple</li>
       <li>Banana</li>
@@ -847,14 +853,26 @@ They group table rows into the header, body and footer:
 ```html
 <table>
   <thead>
-    <tr><th>Item</th><th>Price</th></tr>
+    <tr>
+      <th>Item</th>
+      <th>Price</th>
+    </tr>
   </thead>
   <tbody>
-    <tr><td>Coffee</td><td>$3</td></tr>
-    <tr><td>Tea</td><td>$2</td></tr>
+    <tr>
+      <td>Coffee</td>
+      <td>$3</td>
+    </tr>
+    <tr>
+      <td>Tea</td>
+      <td>$2</td>
+    </tr>
   </tbody>
   <tfoot>
-    <tr><td>Total</td><td>$5</td></tr>
+    <tr>
+      <td>Total</td>
+      <td>$5</td>
+    </tr>
   </tfoot>
 </table>
 ```
@@ -889,7 +907,9 @@ They make a cell take up more than one column or row:
 
 ```html
 <table>
-  <caption>Monthly sales in 2026</caption>
+  <caption>
+    Monthly sales in 2026
+  </caption>
   ...
 </table>
 ```
@@ -903,7 +923,7 @@ A form collects input from the user and sends it somewhere, usually to a server.
 ```html
 <form action="/subscribe" method="post">
   <label for="email">Email</label>
-  <input id="email" name="email" type="email" required>
+  <input id="email" name="email" type="email" required />
   <button type="submit">Subscribe</button>
 </form>
 ```
@@ -927,7 +947,7 @@ With `POST`, the data goes in the request body. Use it for actions that change d
 `name` is the key used when the form data is sent. Fields without a `name` are not sent at all.
 
 ```html
-<input name="city" value="Tbilisi">
+<input name="city" value="Tbilisi" />
 ```
 
 This sends `city=Tbilisi`. Radio buttons use the same `name` to form a group. In JavaScript you can also use `name` to get fields, for example `form.elements.city`.
@@ -960,8 +980,7 @@ Every form field needs a label.
 Explicit, with `for` pointing to the field's `id`:
 
 ```html
-<label for="username">Username</label>
-<input id="username" name="username">
+<label for="username">Username</label> <input id="username" name="username" />
 ```
 
 Implicit, by wrapping the field:
@@ -969,7 +988,7 @@ Implicit, by wrapping the field:
 ```html
 <label>
   Username
-  <input name="username">
+  <input name="username" />
 </label>
 ```
 
@@ -987,7 +1006,13 @@ A multi-line text field:
 
 ```html
 <label for="message">Message</label>
-<textarea id="message" name="message" rows="5" cols="40" maxlength="500"></textarea>
+<textarea
+  id="message"
+  name="message"
+  rows="5"
+  cols="40"
+  maxlength="500"
+></textarea>
 ```
 
 Unlike `<input>`, it has an end tag and the default value goes between the tags, not in a `value` attribute. Any whitespace between the tags becomes part of the value, so keep the tags tight.
@@ -1032,8 +1057,11 @@ Give them the same `name`. Only one radio in a group can be checked at a time.
 ```html
 <fieldset>
   <legend>Delivery</legend>
-  <label><input type="radio" name="delivery" value="standard" checked> Standard</label>
-  <label><input type="radio" name="delivery" value="express"> Express</label>
+  <label
+    ><input type="radio" name="delivery" value="standard" checked />
+    Standard</label
+  >
+  <label><input type="radio" name="delivery" value="express" /> Express</label>
 </fieldset>
 ```
 
@@ -1044,7 +1072,10 @@ The `value` of the checked radio is what gets sent. Wrapping the group in `<fiel
 A checkbox is an on/off field. Each checkbox works on its own, so the user can check any number of them.
 
 ```html
-<label><input type="checkbox" name="newsletter" value="yes"> Send me the newsletter</label>
+<label
+  ><input type="checkbox" name="newsletter" value="yes" /> Send me the
+  newsletter</label
+>
 ```
 
 When checked, it sends `newsletter=yes`. If you leave `value` out, it sends `on`. When unchecked, nothing is sent for that field at all. Use `checked` to make it checked by default.
@@ -1084,7 +1115,7 @@ Most projects use `<button>` today.
 It marks a field as mandatory. If the field is empty when the user submits, the browser stops the submit, focuses the field and shows a message.
 
 ```html
-<input type="email" name="email" required>
+<input type="email" name="email" required />
 ```
 
 This is client-side validation for convenience only. Users can turn it off or send requests directly, so the server must always check the data too.
@@ -1101,9 +1132,9 @@ This is client-side validation for convenience only. Users can turn it off or se
 It depends on the field:
 
 ```html
-<input name="city" value="Tbilisi">
+<input name="city" value="Tbilisi" />
 <textarea name="bio">Default text</textarea>
-<input type="checkbox" name="terms" checked>
+<input type="checkbox" name="terms" checked />
 <select name="size">
   <option>S</option>
   <option selected>M</option>
@@ -1120,9 +1151,9 @@ The `value` attribute is the default value. When the user types, the current val
 <fieldset>
   <legend>Shipping address</legend>
   <label for="street">Street</label>
-  <input id="street" name="street">
+  <input id="street" name="street" />
   <label for="zip">ZIP code</label>
-  <input id="zip" name="zip">
+  <input id="zip" name="zip" />
 </fieldset>
 ```
 
@@ -1225,7 +1256,7 @@ Both are bold by default. Pick the one that matches the meaning, and use CSS `fo
 
 ### 70: What is the difference between `<em>` and `<i>`?
 
-`<em>` means stress emphasis, the kind that changes the meaning of a sentence: "I *never* said that" vs "I never said *that*".
+`<em>` means stress emphasis, the kind that changes the meaning of a sentence: "I _never_ said that" vs "I never said _that_".
 
 `<i>` is for text in a different voice or mood, like technical terms, foreign words, thoughts or ship names: `<i lang="fr">c'est la vie</i>`.
 
@@ -1264,7 +1295,10 @@ Both are italic by default.
 <blockquote cite="https://example.com/talk">
   <p>Simple things should be simple.</p>
 </blockquote>
-<p>As stated in <cite>The Pragmatic Programmer</cite>, <q>care about your craft</q>.</p>
+<p>
+  As stated in <cite>The Pragmatic Programmer</cite>,
+  <q>care about your craft</q>.
+</p>
 ```
 
 ### 74: What is the `<abbr>` element?
@@ -1272,7 +1306,10 @@ Both are italic by default.
 `<abbr>` marks an abbreviation or acronym. You can put the full form in the `title` attribute, or better, write it out in the text the first time it is used:
 
 ```html
-<p>The <abbr>WHATWG</abbr> (Web Hypertext Application Technology Working Group) maintains HTML.</p>
+<p>
+  The <abbr>WHATWG</abbr> (Web Hypertext Application Technology Working Group)
+  maintains HTML.
+</p>
 <p><abbr title="Cascading Style Sheets">CSS</abbr> is used for styling.</p>
 ```
 
@@ -1310,7 +1347,7 @@ It is not for any random postal address in your content, like the address of a r
 
 ```html
 <figure>
-  <img src="chart.png" alt="Bar chart of sales by month, peaking in December">
+  <img src="chart.png" alt="Bar chart of sales by month, peaking in December" />
   <figcaption>Figure 1: Sales in 2026</figcaption>
 </figure>
 ```
@@ -1333,13 +1370,13 @@ Comments are not shown on the page, but anyone can see them with "View source", 
 
 Entities are codes for characters that are reserved in HTML or hard to type. They start with `&` and end with `;`.
 
-| Character | Named | Numeric |
-| --- | --- | --- |
-| `<` | `&lt;` | `&#60;` |
-| `>` | `&gt;` | `&#62;` |
-| `&` | `&amp;` | `&#38;` |
-| `"` | `&quot;` | `&#34;` |
-| `©` | `&copy;` | `&#169;` |
+| Character | Named    | Numeric  |
+| --------- | -------- | -------- |
+| `<`       | `&lt;`   | `&#60;`  |
+| `>`       | `&gt;`   | `&#62;`  |
+| `&`       | `&amp;`  | `&#38;`  |
+| `"`       | `&quot;` | `&#34;`  |
+| `©`       | `&copy;` | `&#169;` |
 
 With UTF-8 you can type most characters directly (like `©` or `€`), so you mainly need entities for `<`, `&` and quotes inside attributes.
 
@@ -1406,14 +1443,16 @@ Inline styles are hard to reuse and override, they mix content with styling, and
 1. External stylesheet (the usual way):
 
 ```html
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css" />
 ```
 
 2. Internal `<style>` block in the `<head>`:
 
 ```html
 <style>
-  body { font-family: system-ui, sans-serif; }
+  body {
+    font-family: system-ui, sans-serif;
+  }
 </style>
 ```
 
@@ -1429,7 +1468,7 @@ With the `<script>` element, either pointing to a file or with code inside:
 <script src="app.js" defer></script>
 
 <script>
-  console.log('Hello');
+  console.log("Hello");
 </script>
 
 <script type="module" src="main.js"></script>
@@ -1482,7 +1521,7 @@ They let you store custom data on HTML elements. The name must start with `data-
 In JavaScript you read them through `dataset`, with the name changed to camelCase:
 
 ```js
-const btn = document.querySelector('button');
+const btn = document.querySelector("button");
 console.log(btn.dataset.productId); // "42"
 ```
 
@@ -1501,9 +1540,7 @@ Watch out: if your CSS sets `display: flex` (or anything else) on that element, 
 ### 93: How do you add audio to a page?
 
 ```html
-<audio controls src="podcast.mp3">
-  Your browser does not support audio.
-</audio>
+<audio controls src="podcast.mp3">Your browser does not support audio.</audio>
 ```
 
 `controls` shows the browser's play, pause and volume controls. Without it, the audio is invisible and can only be played with JavaScript. The text inside is a fallback for very old browsers.
@@ -1512,9 +1549,9 @@ Watch out: if your CSS sets `display: flex` (or anything else) on that element, 
 
 ```html
 <video controls width="640" height="360" poster="preview.jpg">
-  <source src="movie.webm" type="video/webm">
-  <source src="movie.mp4" type="video/mp4">
-  <track kind="captions" src="captions-en.vtt" srclang="en" label="English">
+  <source src="movie.webm" type="video/webm" />
+  <source src="movie.mp4" type="video/mp4" />
+  <track kind="captions" src="captions-en.vtt" srclang="en" label="English" />
   Your browser doesn't support HTML video.
 </video>
 ```
@@ -1551,8 +1588,8 @@ It gives several options for a media resource, and the browser picks the first o
 
 ```html
 <audio controls>
-  <source src="song.ogg" type="audio/ogg">
-  <source src="song.mp3" type="audio/mpeg">
+  <source src="song.ogg" type="audio/ogg" />
+  <source src="song.mp3" type="audio/mpeg" />
 </audio>
 ```
 
@@ -1563,7 +1600,13 @@ The `type` attribute lets the browser skip formats it can't play without downloa
 `<track>` adds timed text to `<video>` or `<audio>`, written in WebVTT format (`.vtt` files).
 
 ```html
-<track kind="subtitles" src="subs-ka.vtt" srclang="ka" label="ქართული" default>
+<track
+  kind="subtitles"
+  src="subs-ka.vtt"
+  srclang="ka"
+  label="ქართული"
+  default
+/>
 ```
 
 The `kind` can be `subtitles`, `captions`, `descriptions`, `chapters` or `metadata`. `default` turns that track on automatically. Captions are important for deaf and hard of hearing users and for people watching without sound.
@@ -1576,9 +1619,11 @@ An `<iframe>` embeds another HTML page inside the current page. It is used for t
 <iframe
   src="https://www.youtube.com/embed/VIDEO_ID"
   title="Product demo video"
-  width="560" height="315"
+  width="560"
+  height="315"
   loading="lazy"
-  allowfullscreen>
+  allowfullscreen
+>
 </iframe>
 ```
 
@@ -1587,9 +1632,9 @@ Always add a `title` so screen reader users know what the frame contains.
 ### 100: How do you add a favicon?
 
 ```html
-<link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 ```
 
 The favicon is the small icon in the browser tab and bookmarks. If you don't add any `<link>`, browsers try `/favicon.ico` by default. An SVG icon scales well and can even react to dark mode with a media query inside it.
@@ -1605,9 +1650,9 @@ Attribute values can be case-sensitive though. For example, `id` and `class` val
 Boolean attributes are on when they are present and off when they are missing. The value doesn't matter.
 
 ```html
-<input type="checkbox" checked>
-<input disabled>
-<video autoplay muted>
+<input type="checkbox" checked />
+<input disabled />
+<video autoplay muted></video>
 ```
 
 `disabled="false"` still disables the input, because the attribute is present. To turn it off, remove the attribute completely. Valid ways to write it are `disabled`, `disabled=""` or `disabled="disabled"`.
@@ -1617,7 +1662,7 @@ Boolean attributes are on when they are present and off when they are missing. T
 Not always. You can leave quotes off if the value has no spaces, quotes, `=`, `<`, `>` or backticks.
 
 ```html
-<input type=text name=email>
+<input type="text" name="email" />
 ```
 
 But it is good practice to always use double quotes. It avoids bugs when a value later contains a space, and it is safer when values come from user data.
@@ -1657,8 +1702,8 @@ Valid HTML is not a goal on its own, but the errors often point to real bugs lik
 The DOM (Document Object Model) is the tree of objects the browser builds from your HTML. Each element, text and comment becomes a node in that tree. JavaScript uses the DOM API to read and change the page:
 
 ```js
-const title = document.querySelector('h1');
-title.textContent = 'New title';
+const title = document.querySelector("h1");
+title.textContent = "New title";
 ```
 
 When the DOM changes, the browser updates what's on screen.
@@ -1679,7 +1724,7 @@ The HTML source is the text the server sent. The DOM is the live tree in memory.
 
 ```html
 <head>
-  <base href="https://example.com/docs/" target="_blank">
+  <base href="https://example.com/docs/" target="_blank" />
 </head>
 ```
 
@@ -1690,12 +1735,18 @@ Now `<a href="intro">` goes to `https://example.com/docs/intro`. There can be on
 `<link>` connects the document to other resources. The `rel` attribute says what kind of link it is:
 
 ```html
-<link rel="stylesheet" href="styles.css">
-<link rel="icon" href="/favicon.svg">
-<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="canonical" href="https://example.com/page">
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="alternate" hreflang="de" href="https://example.com/de/">
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="/favicon.svg" />
+<link
+  rel="preload"
+  href="/fonts/inter.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link rel="canonical" href="https://example.com/page" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="alternate" hreflang="de" href="https://example.com/de/" />
 ```
 
 It is a void element and usually lives in `<head>`.
@@ -1703,7 +1754,10 @@ It is a void element and usually lives in `<head>`.
 ### 111: What is the meta description?
 
 ```html
-<meta name="description" content="Easy recipes for busy weeknights, ready in 30 minutes or less.">
+<meta
+  name="description"
+  content="Easy recipes for busy weeknights, ready in 30 minutes or less."
+/>
 ```
 
 It is a short summary of the page. Search engines often show it under the title in results, so a good description can get more clicks. It doesn't directly affect rankings. Keep it around 150-160 characters and make it unique per page.
@@ -1750,7 +1804,7 @@ Underlined text looks like a link to most users, so avoid `<u>` for styling. Use
 `<wbr>` (word break opportunity) tells the browser where it may break a long word or URL if needed.
 
 ```html
-<p>https://example.com/<wbr>very/<wbr>long/<wbr>path</p>
+<p>https://example.com/<wbr />very/<wbr />long/<wbr />path</p>
 ```
 
 If there's enough space, nothing happens. If not, the line breaks there instead of overflowing.
@@ -1765,10 +1819,10 @@ If there's enough space, nothing happens. If not, the line breaks there instead 
 </template>
 
 <script>
-  const tpl = document.getElementById('row');
+  const tpl = document.getElementById("row");
   const clone = tpl.content.cloneNode(true);
-  clone.querySelector('.name').textContent = 'New item';
-  document.querySelector('ul').append(clone);
+  clone.querySelector(".name").textContent = "New item";
+  document.querySelector("ul").append(clone);
 </script>
 ```
 
@@ -1812,7 +1866,9 @@ They create a disclosure widget, content that the user can show and hide, with n
 
 ```html
 <label>Upload: <progress value="70" max="100">70%</progress></label>
-<label>Disk usage: <meter value="0.8" min="0" max="1" high="0.9">80%</meter></label>
+<label
+  >Disk usage: <meter value="0.8" min="0" max="1" high="0.9">80%</meter></label
+>
 ```
 
 ### 121: What is the `<output>` element?
@@ -1821,8 +1877,8 @@ They create a disclosure widget, content that the user can show and hide, with n
 
 ```html
 <form oninput="total.value = Number(a.value) + Number(b.value)">
-  <input type="number" id="a" value="1"> +
-  <input type="number" id="b" value="2"> =
+  <input type="number" id="a" value="1" /> +
+  <input type="number" id="b" value="2" /> =
   <output name="total" for="a b">3</output>
 </form>
 ```
@@ -1835,11 +1891,11 @@ The `for` attribute lists the ids of the inputs that affect the result. Screen r
 
 ```html
 <label for="browser">Browser</label>
-<input id="browser" name="browser" list="browsers">
+<input id="browser" name="browser" list="browsers" />
 <datalist id="browsers">
-  <option value="Chrome">
-  <option value="Firefox">
-  <option value="Safari">
+  <option value="Chrome"></option>
+  <option value="Firefox"></option>
+  <option value="Safari"></option>
 </datalist>
 ```
 
@@ -1852,8 +1908,8 @@ It is simple autocomplete with no JavaScript. The look of the suggestion list ca
 ```html
 <canvas id="c" width="300" height="150">A red square</canvas>
 <script>
-  const ctx = document.getElementById('c').getContext('2d');
-  ctx.fillStyle = 'red';
+  const ctx = document.getElementById("c").getContext("2d");
+  ctx.fillStyle = "red";
   ctx.fillRect(10, 10, 100, 100);
 </script>
 ```
@@ -1878,9 +1934,9 @@ Or load it as an image with `<img src="icon.svg" alt="...">`. Inline SVG can be 
 
 ```html
 <picture>
-  <source srcset="photo.avif" type="image/avif">
-  <source srcset="photo.webp" type="image/webp">
-  <img src="photo.jpg" alt="Sunset over the sea" width="1200" height="800">
+  <source srcset="photo.avif" type="image/avif" />
+  <source srcset="photo.webp" type="image/webp" />
+  <img src="photo.jpg" alt="Sunset over the sea" width="1200" height="800" />
 </picture>
 ```
 
@@ -1912,7 +1968,7 @@ Attributes like `align`, `bgcolor`, `border` on tables and `width` on `<td>` are
 <search>
   <form action="/search">
     <label for="q">Search articles</label>
-    <input id="q" name="q" type="search">
+    <input id="q" name="q" type="search" />
     <button>Search</button>
   </form>
 </search>
@@ -1973,7 +2029,7 @@ They deal with text direction when mixing left-to-right and right-to-left langua
 - `auto`: the browser guesses from the content
 
 ```html
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl"></html>
 ```
 
 Set it on `<html>` for the whole page. Use `dir="auto"` on inputs and user-generated content where the language isn't known.
@@ -2004,7 +2060,7 @@ It turns the browser spell checker on or off for editable content:
 
 ```html
 <textarea spellcheck="true"></textarea>
-<input name="username" spellcheck="false">
+<input name="username" spellcheck="false" />
 ```
 
 Turn it off for things like usernames, codes and email addresses where red underlines aren't helpful.
@@ -2028,6 +2084,7 @@ Yes. `lang` works on any element, so you can mark parts written in another langu
 <html lang="en">
   ...
   <p>The French say <span lang="fr">bon appétit</span> before eating.</p>
+</html>
 ```
 
 Screen readers switch pronunciation for that part, and spell checkers use the right dictionary.
@@ -2048,10 +2105,10 @@ The value, if given, is the suggested file name. It only works for same-origin U
 It tells the browser what kind of data a field expects, so it can fill it in from saved data, or tells it not to.
 
 ```html
-<input name="email" type="email" autocomplete="email">
-<input name="name" autocomplete="name">
-<input name="pwd" type="password" autocomplete="current-password">
-<input name="promo" autocomplete="off">
+<input name="email" type="email" autocomplete="email" />
+<input name="name" autocomplete="name" />
+<input name="pwd" type="password" autocomplete="current-password" />
+<input name="promo" autocomplete="off" />
 ```
 
 Correct values make forms much faster to fill, especially on phones. It also helps password managers.
@@ -2061,7 +2118,7 @@ Correct values make forms much faster to fill, especially on phones. It also hel
 It focuses the element when the page or dialog loads.
 
 ```html
-<input name="q" type="search" autofocus>
+<input name="q" type="search" autofocus />
 ```
 
 Use it carefully. It can confuse screen reader users, because the page jumps to the middle of the content, and on phones it opens the keyboard right away. It works well inside a `<dialog>` to focus the first field.
@@ -2071,9 +2128,9 @@ Use it carefully. It can confuse screen reader users, because the page jumps to 
 They limit the allowed values on `number`, `range` and date/time inputs.
 
 ```html
-<input type="number" name="qty" min="1" max="10" step="1" value="1">
-<input type="range" name="volume" min="0" max="100" step="5">
-<input type="date" name="checkin" min="2026-01-01" max="2026-12-31">
+<input type="number" name="qty" min="1" max="10" step="1" value="1" />
+<input type="range" name="volume" min="0" max="100" step="5" />
+<input type="date" name="checkin" min="2026-01-01" max="2026-12-31" />
 ```
 
 The browser blocks submitting values outside the range, and the up/down arrows move by `step`.
@@ -2083,7 +2140,7 @@ The browser blocks submitting values outside the range, and the up/down arrows m
 They set the minimum and maximum number of characters in text inputs and `<textarea>`.
 
 ```html
-<input name="username" minlength="3" maxlength="20" required>
+<input name="username" minlength="3" maxlength="20" required />
 ```
 
 `maxlength` stops the user from typing more characters. `minlength` is checked when the form is submitted. An empty field isn't checked by `minlength` unless it's also `required`.
@@ -2094,7 +2151,7 @@ They set the minimum and maximum number of characters in text inputs and `<texta
 
 ```html
 <label for="zip">ZIP code (5 digits)</label>
-<input id="zip" name="zip" pattern="[0-9]{5}" required>
+<input id="zip" name="zip" pattern="[0-9]{5}" required />
 ```
 
 The pattern must match the whole value; you don't need `^` and `$`. Explain the expected format in the label or a hint, because the browser's default error message doesn't say what the pattern is.
@@ -2108,7 +2165,7 @@ It allows more than one value:
 - On `<input type="email">`: the user can enter several emails separated by commas.
 
 ```html
-<input type="file" name="photos" multiple accept="image/*">
+<input type="file" name="photos" multiple accept="image/*" />
 ```
 
 ### 146: How do you let users upload files?
@@ -2118,7 +2175,7 @@ Use `<input type="file">`, and make sure the form uses `POST` and `enctype="mult
 ```html
 <form action="/upload" method="post" enctype="multipart/form-data">
   <label for="avatar">Profile photo</label>
-  <input id="avatar" name="avatar" type="file" accept="image/png, image/jpeg">
+  <input id="avatar" name="avatar" type="file" accept="image/png, image/jpeg" />
   <button>Upload</button>
 </form>
 ```
@@ -2130,8 +2187,8 @@ Use `<input type="file">`, and make sure the form uses `POST` and `enctype="mult
 A field that isn't shown to the user but is sent with the form.
 
 ```html
-<input type="hidden" name="productId" value="42">
-<input type="hidden" name="csrf_token" value="abc123">
+<input type="hidden" name="productId" value="42" />
+<input type="hidden" name="csrf_token" value="abc123" />
 ```
 
 It is used for ids, CSRF tokens and similar data. "Hidden" doesn't mean secret: anyone can see and change it in DevTools, so never trust it on the server without checking.
@@ -2151,7 +2208,7 @@ If you upload files without `multipart/form-data`, only the file name is sent, n
 It tells search engine crawlers how to handle the page:
 
 ```html
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="noindex, nofollow" />
 ```
 
 - `noindex`: don't show this page in search results.
@@ -2242,8 +2299,14 @@ CSS also blocks scripts that come after it, because a script might read styles. 
 It tells the browser to download a resource early, with high priority, because the page will need it soon.
 
 ```html
-<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/hero.avif" as="image">
+<link
+  rel="preload"
+  href="/fonts/inter.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+<link rel="preload" href="/hero.avif" as="image" />
 ```
 
 It is useful for resources the browser finds late, like fonts referenced in CSS or a hero image set as a CSS background. The `as` attribute is required. It sets the priority and the right request headers. If you preload something and don't use it within a few seconds, Chrome warns in the console.
@@ -2253,7 +2316,7 @@ It is useful for resources the browser finds late, like fonts referenced in CSS 
 `prefetch` downloads a resource with low priority because it might be needed for a future navigation.
 
 ```html
-<link rel="prefetch" href="/checkout.js">
+<link rel="prefetch" href="/checkout.js" />
 ```
 
 It goes into the HTTP cache, so if the user goes to the next page, it loads faster. Use `preload` for the current page and `prefetch` for the next one.
@@ -2263,8 +2326,8 @@ It goes into the HTTP cache, so if the user goes to the next page, it loads fast
 They set up connections to other origins before you request anything from them.
 
 ```html
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="https://api.example.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://api.example.com" />
 ```
 
 - `dns-prefetch` only does the DNS lookup.
@@ -2277,7 +2340,7 @@ This can save a few hundred milliseconds for important third-party origins. Only
 It is like `preload`, but for JavaScript modules. It downloads, parses and compiles the module ahead of time, and can also load its dependencies.
 
 ```html
-<link rel="modulepreload" href="/js/app.js">
+<link rel="modulepreload" href="/js/app.js" />
 ```
 
 Without it, the browser only finds out about imports after downloading and parsing each file, which creates a "waterfall" of requests. Build tools like Vite add these links for you.
@@ -2287,8 +2350,8 @@ Without it, the browser only finds out about imports after downloading and parsi
 `fetchpriority` gives the browser a hint about how important a resource is compared to others of the same type. Values are `high`, `low` and `auto`.
 
 ```html
-<img src="hero.jpg" alt="..." fetchpriority="high">
-<img src="carousel-slide-3.jpg" alt="..." fetchpriority="low">
+<img src="hero.jpg" alt="..." fetchpriority="high" />
+<img src="carousel-slide-3.jpg" alt="..." fetchpriority="low" />
 <script src="non-critical.js" async fetchpriority="low"></script>
 ```
 
@@ -2297,8 +2360,12 @@ It is supported on `<img>`, `<link>`, `<script>` and `<iframe>`, and in `fetch()
 ### 162: How does `loading="lazy"` work?
 
 ```html
-<img src="photo.jpg" alt="..." loading="lazy" width="800" height="600">
-<iframe src="https://maps.example.com/embed" title="Map" loading="lazy"></iframe>
+<img src="photo.jpg" alt="..." loading="lazy" width="800" height="600" />
+<iframe
+  src="https://maps.example.com/embed"
+  title="Map"
+  loading="lazy"
+></iframe>
 ```
 
 The browser waits to load the image or iframe until the user scrolls near it. This saves bandwidth and speeds up the first load. It works in all modern browsers.
@@ -2314,7 +2381,7 @@ It hints how the browser should decode the image:
 - `auto`: let the browser choose (default).
 
 ```html
-<img src="large.jpg" alt="..." decoding="async">
+<img src="large.jpg" alt="..." decoding="async" />
 ```
 
 In practice, browsers already do a good job here, so the effect is small. Most people use it for big images below the fold.
@@ -2329,7 +2396,9 @@ You list image files with their real widths, and tell the browser how wide the i
   srcset="photo-400.jpg 400w, photo-800.jpg 800w, photo-1600.jpg 1600w"
   sizes="(max-width: 600px) 100vw, 50vw"
   alt="A forest in autumn"
-  width="1600" height="1067">
+  width="1600"
+  height="1067"
+/>
 ```
 
 `sizes` says: on screens up to 600px the image is full width, otherwise it is half the viewport. The browser takes that size, multiplies it by the device pixel ratio and picks the smallest file that is big enough. Without `sizes`, the browser assumes `100vw`.
@@ -2339,8 +2408,13 @@ You list image files with their real widths, and tell the browser how wide the i
 When the image always has the same display size, for example a logo or avatar, and you only need sharper versions for high-density screens:
 
 ```html
-<img src="avatar.png" srcset="avatar.png 1x, avatar@2x.png 2x, avatar@3x.png 3x"
-     alt="Profile picture" width="64" height="64">
+<img
+  src="avatar.png"
+  srcset="avatar.png 1x, avatar@2x.png 2x, avatar@3x.png 3x"
+  alt="Profile picture"
+  width="64"
+  height="64"
+/>
 ```
 
 The browser picks the file that matches the screen's pixel density. You can't mix `x` and `w` descriptors in the same `srcset`.
@@ -2351,9 +2425,14 @@ Art direction means showing a different crop or image depending on the screen, n
 
 ```html
 <picture>
-  <source media="(max-width: 600px)" srcset="team-portrait.jpg">
-  <source media="(min-width: 601px)" srcset="team-wide.jpg">
-  <img src="team-wide.jpg" alt="Our team of 12 people in the office" width="1200" height="600">
+  <source media="(max-width: 600px)" srcset="team-portrait.jpg" />
+  <source media="(min-width: 601px)" srcset="team-wide.jpg" />
+  <img
+    src="team-wide.jpg"
+    alt="Our team of 12 people in the office"
+    width="1200"
+    height="600"
+  />
 </picture>
 ```
 
@@ -2365,9 +2444,9 @@ Use `<picture>` with `type` on each `<source>`:
 
 ```html
 <picture>
-  <source srcset="photo.avif" type="image/avif">
-  <source srcset="photo.webp" type="image/webp">
-  <img src="photo.jpg" alt="..." width="1200" height="800">
+  <source srcset="photo.avif" type="image/avif" />
+  <source srcset="photo.webp" type="image/webp" />
+  <img src="photo.jpg" alt="..." width="1200" height="800" />
 </picture>
 ```
 
@@ -2381,7 +2460,13 @@ The browser takes the first format it supports. AVIF and WebP are usually much s
 - Don't insert content above what the user is reading, unless it is a response to their action.
 
 ```html
-<img src="photo.jpg" alt="..." width="1200" height="800" style="max-width:100%;height:auto">
+<img
+  src="photo.jpg"
+  alt="..."
+  width="1200"
+  height="800"
+  style="max-width:100%;height:auto"
+/>
 ```
 
 ### 169: What makes good `alt` text?
@@ -2404,13 +2489,13 @@ One downside of CSS backgrounds: the preload scanner can't see them, so they sta
 
 ### 171: What are the ways to include SVG and their trade-offs?
 
-| Method | Style with page CSS | Cached | Notes |
-| --- | --- | --- | --- |
-| Inline `<svg>` | Yes | No (part of HTML) | Can use `currentColor`, animate, script |
-| `<img src="x.svg">` | No | Yes | Scripts inside don't run, safest |
-| CSS `background-image` | No | Yes | Decorative only |
-| `<use href="sprite.svg#icon">` | Partly (via `currentColor` and CSS variables) | Yes | Good for icon systems |
-| `<object>` / `<iframe>` | No | Yes | Rarely needed |
+| Method                         | Style with page CSS                           | Cached            | Notes                                   |
+| ------------------------------ | --------------------------------------------- | ----------------- | --------------------------------------- |
+| Inline `<svg>`                 | Yes                                           | No (part of HTML) | Can use `currentColor`, animate, script |
+| `<img src="x.svg">`            | No                                            | Yes               | Scripts inside don't run, safest        |
+| CSS `background-image`         | No                                            | Yes               | Decorative only                         |
+| `<use href="sprite.svg#icon">` | Partly (via `currentColor` and CSS variables) | Yes               | Good for icon systems                   |
+| `<object>` / `<iframe>`        | No                                            | Yes               | Rarely needed                           |
 
 For icons, inline SVG or an SVG sprite with `<use>` is common. For illustrations, `<img>` is usually best.
 
@@ -2436,7 +2521,10 @@ If the icon is the only content, give the button a name:
 For a meaningful standalone SVG image, use `role="img"` and a label:
 
 ```html
-<svg role="img" aria-labelledby="t1"><title id="t1">Company logo</title>...</svg>
+<svg role="img" aria-labelledby="t1">
+  <title id="t1">Company logo</title>
+  ...
+</svg>
 ```
 
 ### 173: When should you use `<canvas>` vs SVG?
@@ -2473,7 +2561,9 @@ The `<button>` is focusable, works with Enter and Space, has the right role and 
 ```html
 <div role="alert">Your session will expire in 1 minute.</div>
 <ul role="tablist">
-  <li role="presentation"><button role="tab" aria-selected="true">Overview</button></li>
+  <li role="presentation">
+    <button role="tab" aria-selected="true">Overview</button>
+  </li>
 </ul>
 ```
 
@@ -2499,7 +2589,7 @@ It links an element to extra descriptive text, which screen readers read after t
 
 ```html
 <label for="pwd">Password</label>
-<input id="pwd" type="password" aria-describedby="pwd-hint">
+<input id="pwd" type="password" aria-describedby="pwd-hint" />
 <p id="pwd-hint">At least 12 characters.</p>
 ```
 
@@ -2518,7 +2608,7 @@ A live region is an area that screen readers announce when its content changes, 
 ```html
 <div aria-live="polite" id="status"></div>
 <script>
-  document.getElementById('status').textContent = '3 items added to cart';
+  document.getElementById("status").textContent = "3 items added to cart";
 </script>
 ```
 
@@ -2534,14 +2624,16 @@ The region must be in the DOM before you change its content, otherwise many scre
 
 ```html
 <button aria-expanded="false" aria-controls="menu" id="menu-btn">Menu</button>
-<ul id="menu" hidden>...</ul>
+<ul id="menu" hidden>
+  ...
+</ul>
 
 <script>
-  const btn = document.getElementById('menu-btn');
-  btn.addEventListener('click', () => {
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    document.getElementById('menu').hidden = open;
+  const btn = document.getElementById("menu-btn");
+  btn.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", String(!open));
+    document.getElementById("menu").hidden = open;
   });
 </script>
 ```
@@ -2554,7 +2646,7 @@ It marks the current item in a set, like the current page in navigation or the c
 
 ```html
 <nav aria-label="Main">
-  <a href="/" >Home</a>
+  <a href="/">Home</a>
   <a href="/blog" aria-current="page">Blog</a>
 </nav>
 ```
@@ -2565,16 +2657,16 @@ Values include `page`, `step`, `location`, `date`, `time` and `true`. Screen rea
 
 Landmarks are regions of the page that screen reader users can jump between.
 
-| Landmark role | HTML element |
-| --- | --- |
-| `banner` | `<header>` (top-level only) |
-| `navigation` | `<nav>` |
-| `main` | `<main>` |
-| `complementary` | `<aside>` |
-| `contentinfo` | `<footer>` (top-level only) |
-| `region` | `<section>` with an accessible name |
-| `form` | `<form>` with an accessible name |
-| `search` | `<search>` |
+| Landmark role   | HTML element                        |
+| --------------- | ----------------------------------- |
+| `banner`        | `<header>` (top-level only)         |
+| `navigation`    | `<nav>`                             |
+| `main`          | `<main>`                            |
+| `complementary` | `<aside>`                           |
+| `contentinfo`   | `<footer>` (top-level only)         |
+| `region`        | `<section>` with an accessible name |
+| `form`          | `<form>` with an accessible name    |
+| `search`        | `<search>`                          |
 
 Use the HTML elements and you don't need the roles. All page content should ideally be inside a landmark.
 
@@ -2591,8 +2683,14 @@ A skip link is a link at the very top of the page that jumps to the main content
 ```
 
 ```css
-.skip-link { position: absolute; left: -9999px; }
-.skip-link:focus { left: 1rem; top: 1rem; }
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
 ```
 
 It is usually hidden until it gets focus. The `tabindex="-1"` on `<main>` makes sure focus really moves there in all browsers.
@@ -2642,7 +2740,9 @@ Don't use `<a href="#" onclick="...">` for actions and don't use buttons with `l
 
 ```html
 <h2 id="errors" tabindex="-1">There are 2 errors in the form</h2>
-<script>document.getElementById('errors').focus();</script>
+<script>
+  document.getElementById("errors").focus();
+</script>
 ```
 
 ### 190: Why should you avoid positive `tabindex` values?
@@ -2671,12 +2771,20 @@ The WAI-ARIA Authoring Practices Guide (APG) describes the expected keyboard beh
 
 ```html
 <table>
-  <caption>Exam results</caption>
+  <caption>
+    Exam results
+  </caption>
   <thead>
-    <tr><th scope="col">Student</th><th scope="col">Score</th></tr>
+    <tr>
+      <th scope="col">Student</th>
+      <th scope="col">Score</th>
+    </tr>
   </thead>
   <tbody>
-    <tr><th scope="row">Ana</th><td>92</td></tr>
+    <tr>
+      <th scope="row">Ana</th>
+      <td>92</td>
+    </tr>
   </tbody>
 </table>
 ```
@@ -2692,7 +2800,13 @@ When the user moves to "92", the screen reader can say "Ana, Score, 92".
 
 ```html
 <label for="email">Email</label>
-<input id="email" name="email" type="email" aria-invalid="true" aria-describedby="email-error">
+<input
+  id="email"
+  name="email"
+  type="email"
+  aria-invalid="true"
+  aria-describedby="email-error"
+/>
 <p id="email-error">Enter an email address like name@example.com</p>
 ```
 
@@ -2705,8 +2819,8 @@ Use `<fieldset>` and `<legend>`, especially for radio buttons and checkboxes:
 ```html
 <fieldset>
   <legend>Preferred contact method</legend>
-  <label><input type="radio" name="contact" value="email"> Email</label>
-  <label><input type="radio" name="contact" value="phone"> Phone</label>
+  <label><input type="radio" name="contact" value="email" /> Email</label>
+  <label><input type="radio" name="contact" value="phone" /> Phone</label>
 </fieldset>
 ```
 
@@ -2721,10 +2835,12 @@ It is the JavaScript API behind built-in form validation. The main methods:
 - `setCustomValidity(message)`: sets a custom error. An empty string clears it.
 
 ```js
-const confirm = document.getElementById('confirm');
-confirm.addEventListener('input', () => {
-  const pwd = document.getElementById('pwd').value;
-  confirm.setCustomValidity(confirm.value === pwd ? '' : 'Passwords do not match');
+const confirm = document.getElementById("confirm");
+confirm.addEventListener("input", () => {
+  const pwd = document.getElementById("pwd").value;
+  confirm.setCustomValidity(
+    confirm.value === pwd ? "" : "Passwords do not match",
+  );
 });
 ```
 
@@ -2745,7 +2861,7 @@ Every form field has a `validity` property with booleans that explain why it is 
 
 ```js
 if (input.validity.valueMissing) {
-  showError('This field is required');
+  showError("This field is required");
 }
 ```
 
@@ -2760,9 +2876,11 @@ You can use it to show your own error messages instead of the browser's default 
 <form novalidate>...</form>
 
 <form>
-  <input name="title" required>
+  <input name="title" required />
   <button type="submit">Publish</button>
-  <button type="submit" formnovalidate name="action" value="draft">Save draft</button>
+  <button type="submit" formnovalidate name="action" value="draft">
+    Save draft
+  </button>
 </form>
 ```
 
@@ -2798,7 +2916,13 @@ They change the on-screen keyboard:
 `inputmode` controls which virtual keyboard appears, without changing the input type or its validation.
 
 ```html
-<input type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" name="code">
+<input
+  type="text"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  autocomplete="one-time-code"
+  name="code"
+/>
 ```
 
 Values: `none`, `text`, `decimal`, `numeric`, `tel`, `search`, `email`, `url`. It's useful when `type="number"` is wrong for the data, like credit card numbers, PIN codes or ZIP codes. Those aren't really numbers, since leading zeros matter and you don't want spinner arrows.
@@ -2808,8 +2932,8 @@ Values: `none`, `text`, `decimal`, `numeric`, `tel`, `search`, `email`, `url`. I
 It changes the label or icon of the Enter key on mobile keyboards:
 
 ```html
-<input type="search" name="q" enterkeyhint="search">
-<input name="message" enterkeyhint="send">
+<input type="search" name="q" enterkeyhint="search" />
+<input name="message" enterkeyhint="send" />
 ```
 
 Values: `enter`, `done`, `go`, `next`, `previous`, `search`, `send`. It only changes the label. You still need to handle what happens when the key is pressed.
@@ -2827,7 +2951,7 @@ Some of the most useful ones:
 - `bday`, `organization`
 
 ```html
-<input name="newPassword" type="password" autocomplete="new-password">
+<input name="newPassword" type="password" autocomplete="new-password" />
 ```
 
 `new-password` tells password managers to suggest a strong password, and `current-password` tells them to fill the saved one. Correct values also help meet the WCAG "Identify Input Purpose" rule.
@@ -2838,7 +2962,7 @@ It links a field to a `<form>` by its `id`, even if the field is somewhere else 
 
 ```html
 <form id="search-form" action="/search">
-  <input name="q">
+  <input name="q" />
 </form>
 
 <button type="submit" form="search-form">Search</button>
@@ -2858,9 +2982,11 @@ They let a submit button override the form's settings:
 
 ```html
 <form action="/posts" method="post">
-  <input name="title">
+  <input name="title" />
   <button type="submit">Publish</button>
-  <button type="submit" formaction="/posts/preview" formtarget="_blank">Preview</button>
+  <button type="submit" formaction="/posts/preview" formtarget="_blank">
+    Preview
+  </button>
 </form>
 ```
 
@@ -2871,16 +2997,16 @@ So one form can have several buttons that do different things.
 Use `FormData`:
 
 ```js
-const form = document.querySelector('form');
+const form = document.querySelector("form");
 
-form.addEventListener('submit', async (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const data = new FormData(form, event.submitter);
 
-  console.log(data.get('email'));
-  console.log(data.getAll('tags'));
+  console.log(data.get("email"));
+  console.log(data.getAll("tags"));
 
-  await fetch('/api/signup', { method: 'POST', body: data });
+  await fetch("/api/signup", { method: "POST", body: data });
 });
 ```
 
@@ -2893,7 +3019,7 @@ form.addEventListener('submit', async (event) => {
 
 ```js
 form.requestSubmit();
-form.requestSubmit(document.querySelector('#save-draft')); // as if this button was clicked
+form.requestSubmit(document.querySelector("#save-draft")); // as if this button was clicked
 ```
 
 In most cases you want `requestSubmit()`.
@@ -2903,7 +3029,7 @@ In most cases you want `requestSubmit()`.
 Listen to the `submit` event on the form, not the `click` event on the button:
 
 ```js
-form.addEventListener('submit', (event) => {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
   // validate, send with fetch, show a message...
 });
@@ -2918,8 +3044,8 @@ Nothing. Unchecked checkboxes are left out of the form data completely. So on th
 If you need an explicit value, a common trick is a hidden field with the same name before the checkbox:
 
 ```html
-<input type="hidden" name="newsletter" value="no">
-<input type="checkbox" name="newsletter" value="yes">
+<input type="hidden" name="newsletter" value="no" />
+<input type="checkbox" name="newsletter" value="yes" />
 ```
 
 When checked, both values are sent and many server frameworks take the last one. Check how your back end handles repeated keys before using this.
@@ -2943,8 +3069,8 @@ The display format depends on the user's language and region, but the `value` al
 
 ```js
 const input = document.querySelector('input[type="date"]');
-console.log(input.value);        // "2026-10-24"
-console.log(input.valueAsDate);  // Date object (UTC midnight)
+console.log(input.value); // "2026-10-24"
+console.log(input.valueAsDate); // Date object (UTC midnight)
 ```
 
 `datetime-local` has no time zone, so you must decide on the server which zone it means.
@@ -2956,10 +3082,10 @@ console.log(input.valueAsDate);  // Date object (UTC midnight)
 
 ```html
 <label for="vol">Volume</label>
-<input id="vol" type="range" min="0" max="100" value="50">
+<input id="vol" type="range" min="0" max="100" value="50" />
 
 <label for="theme">Theme color</label>
-<input id="theme" type="color" value="#3366ff">
+<input id="theme" type="color" value="#3366ff" />
 ```
 
 A range slider doesn't show its value by default. Pair it with an `<output>` if the number matters.
@@ -2981,9 +3107,9 @@ Using `for` and `id`, or both together, is the most reliable choice.
 - `showModal()` opens a modal dialog. It goes into the top layer above everything, gets a `::backdrop`, makes the rest of the page inert, moves focus into it and closes with Esc.
 
 ```js
-const dialog = document.querySelector('dialog');
+const dialog = document.querySelector("dialog");
 dialog.showModal();
-dialog.close('done'); // closes and sets returnValue to "done"
+dialog.close("done"); // closes and sets returnValue to "done"
 ```
 
 Don't use the `open` attribute to show a dialog. It opens it non-modally and skips focus handling.
@@ -3002,9 +3128,9 @@ A form inside a `<dialog>` with `method="dialog"` doesn't send anything to a ser
 </dialog>
 
 <script>
-  const dialog = document.getElementById('confirm');
-  dialog.addEventListener('close', () => {
-    if (dialog.returnValue === 'discard') discardChanges();
+  const dialog = document.getElementById("confirm");
+  dialog.addEventListener("close", () => {
+    if (dialog.returnValue === "discard") discardChanges();
   });
 </script>
 ```
@@ -3052,7 +3178,7 @@ It is supported in all modern browsers since 2024.
 ```html
 <div id="toast" popover="manual">Saved!</div>
 <script>
-  const toast = document.getElementById('toast');
+  const toast = document.getElementById("toast");
   toast.showPopover();
   setTimeout(() => toast.hidePopover(), 3000);
 </script>
@@ -3107,7 +3233,7 @@ It hides content like `hidden`, but the browser's find-in-page (Ctrl+F) and link
 ```html
 <div hidden="until-found" id="answer">The full answer text...</div>
 <script>
-  document.getElementById('answer').addEventListener('beforematch', () => {
+  document.getElementById("answer").addEventListener("beforematch", () => {
     // update your accordion state here
   });
 </script>
@@ -3144,12 +3270,15 @@ The content of a `<template>` lives in a `DocumentFragment` at `template.content
 </template>
 
 <script>
-  const tpl = document.getElementById('product-card');
-  for (const p of [{ name: 'Mug', price: '$8' }, { name: 'Pen', price: '$2' }]) {
+  const tpl = document.getElementById("product-card");
+  for (const p of [
+    { name: "Mug", price: "$8" },
+    { name: "Pen", price: "$2" },
+  ]) {
     const card = tpl.content.cloneNode(true);
-    card.querySelector('h3').textContent = p.name;
-    card.querySelector('.price').textContent = p.price;
-    document.querySelector('#products').append(card);
+    card.querySelector("h3").textContent = p.name;
+    card.querySelector(".price").textContent = p.price;
+    document.querySelector("#products").append(card);
   }
 </script>
 ```
@@ -3167,10 +3296,10 @@ Web components are a set of browser features for building reusable custom elemen
 ```js
 class HelloUser extends HTMLElement {
   connectedCallback() {
-    this.textContent = `Hello, ${this.getAttribute('name')}`;
+    this.textContent = `Hello, ${this.getAttribute("name")}`;
   }
 }
-customElements.define('hello-user', HelloUser);
+customElements.define("hello-user", HelloUser);
 ```
 
 ```html
@@ -3208,11 +3337,11 @@ The `data-` prefix is removed and the rest is turned from kebab-case into camelC
 ```
 
 ```js
-const el = document.getElementById('el');
-el.dataset.userId;        // "7"
-el.dataset.isAdmin;       // "true" (a string, not a boolean)
-el.dataset.lastLogin = '2026-10-24'; // adds data-last-login
-delete el.dataset.isAdmin;           // removes the attribute
+const el = document.getElementById("el");
+el.dataset.userId; // "7"
+el.dataset.isAdmin; // "true" (a string, not a boolean)
+el.dataset.lastLogin = "2026-10-24"; // adds data-last-login
+delete el.dataset.isAdmin; // removes the attribute
 ```
 
 All values are strings, so convert them yourself. Don't store large data or anything secret in them.
@@ -3222,11 +3351,14 @@ All values are strings, so convert them yourself. Don't store large data or anyt
 They control how a page looks when shared on social media and chat apps (Facebook, LinkedIn, Slack, WhatsApp and others):
 
 ```html
-<meta property="og:title" content="10 Easy Pasta Recipes">
-<meta property="og:description" content="Quick dinners in under 20 minutes.">
-<meta property="og:image" content="https://example.com/images/pasta-share.jpg">
-<meta property="og:url" content="https://example.com/recipes/pasta">
-<meta property="og:type" content="article">
+<meta property="og:title" content="10 Easy Pasta Recipes" />
+<meta property="og:description" content="Quick dinners in under 20 minutes." />
+<meta
+  property="og:image"
+  content="https://example.com/images/pasta-share.jpg"
+/>
+<meta property="og:url" content="https://example.com/recipes/pasta" />
+<meta property="og:type" content="article" />
 ```
 
 Note they use `property`, not `name`. The image URL should be absolute. A size of 1200x630 pixels works well on most platforms.
@@ -3236,8 +3368,8 @@ Note they use `property`, not `name`. The image URL should be absolute. A size o
 X uses its own tags but falls back to Open Graph for most values:
 
 ```html
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@example">
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@example" />
 ```
 
 `twitter:card` sets the layout: `summary` (small image) or `summary_large_image`. If you already have `og:title`, `og:description` and `og:image`, usually you only need `twitter:card`.
@@ -3245,7 +3377,7 @@ X uses its own tags but falls back to Open Graph for most values:
 ### 230: What is a canonical link?
 
 ```html
-<link rel="canonical" href="https://example.com/shoes/running">
+<link rel="canonical" href="https://example.com/shoes/running" />
 ```
 
 It tells search engines the main URL of a page when the same content is available at several URLs, like with tracking parameters (`?utm_source=...`), sorting options, `www` vs no `www`, or print versions. Search engines then combine the ranking signals into that one URL instead of splitting them.
@@ -3257,10 +3389,10 @@ It's a hint, not a command. Use absolute URLs and point each page to itself if i
 It tells search engines about translated or regional versions of a page, so they show the right one to each user.
 
 ```html
-<link rel="alternate" hreflang="en" href="https://example.com/en/pricing">
-<link rel="alternate" hreflang="de" href="https://example.com/de/pricing">
-<link rel="alternate" hreflang="en-GB" href="https://example.com/uk/pricing">
-<link rel="alternate" hreflang="x-default" href="https://example.com/pricing">
+<link rel="alternate" hreflang="en" href="https://example.com/en/pricing" />
+<link rel="alternate" hreflang="de" href="https://example.com/de/pricing" />
+<link rel="alternate" hreflang="en-GB" href="https://example.com/uk/pricing" />
+<link rel="alternate" hreflang="x-default" href="https://example.com/pricing" />
 ```
 
 Every version must list all the others and itself. `x-default` is the fallback for users who don't match any language.
@@ -3280,18 +3412,18 @@ The recommended format is JSON-LD in a script tag:
 
 ```html
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "Trail running shoes",
-  "image": "https://example.com/shoes.jpg",
-  "offers": {
-    "@type": "Offer",
-    "price": "89.99",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock"
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Trail running shoes",
+    "image": "https://example.com/shoes.jpg",
+    "offers": {
+      "@type": "Offer",
+      "price": "89.99",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
   }
-}
 </script>
 ```
 
@@ -3315,8 +3447,16 @@ It still works, but JSON-LD is usually easier because it is kept separate from t
 It sets the color of the browser's UI, like the address bar on mobile or the title bar of an installed web app.
 
 ```html
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
+<meta
+  name="theme-color"
+  content="#ffffff"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#111111"
+  media="(prefers-color-scheme: dark)"
+/>
 ```
 
 Support varies: Safari and Chrome on Android use it, desktop browsers mostly don't.
@@ -3326,7 +3466,7 @@ Support varies: Safari and Chrome on Android use it, desktop browsers mostly don
 A manifest is a JSON file that describes your web app: name, icons, start URL, colors and display mode. It's needed to make a site installable as a PWA.
 
 ```html
-<link rel="manifest" href="/manifest.webmanifest">
+<link rel="manifest" href="/manifest.webmanifest" />
 ```
 
 ```json
@@ -3349,10 +3489,13 @@ A manifest is a JSON file that describes your web app: name, icons, start URL, c
 A small set covers almost everything:
 
 ```html
-<link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png"><!-- 180x180 -->
-<link rel="manifest" href="/manifest.webmanifest"><!-- with 192 and 512 icons -->
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" /><!-- 180x180 -->
+<link
+  rel="manifest"
+  href="/manifest.webmanifest"
+/><!-- with 192 and 512 icons -->
 ```
 
 The `.ico` is for old browsers and tools that request `/favicon.ico` directly. The SVG is for modern browsers. The Apple touch icon is used when someone adds the site to their iOS home screen.
@@ -3362,8 +3505,8 @@ The `.ico` is for old browsers and tools that request `/favicon.ico` directly. T
 It acts like an HTTP response header set inside the HTML. Common uses:
 
 ```html
-<meta http-equiv="refresh" content="5; url=https://example.com/new">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<meta http-equiv="refresh" content="5; url=https://example.com/new" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'" />
 ```
 
 - `refresh` reloads or redirects the page after some seconds. Avoid it for redirects; use a server 301/302, since it hurts accessibility and SEO.
@@ -3394,7 +3537,7 @@ You can also control referrers more precisely with the `referrerpolicy` attribut
 
 ```html
 <a href="https://example.com" referrerpolicy="no-referrer">Link</a>
-<img src="https://cdn.example.com/x.png" referrerpolicy="origin" alt="">
+<img src="https://cdn.example.com/x.png" referrerpolicy="origin" alt="" />
 ```
 
 ### 241: Do you still need `rel="noopener"` with `target="_blank"`?
@@ -3415,7 +3558,11 @@ Many linters still require `rel="noopener noreferrer"` and it does no harm, so i
 You then allow only what you need:
 
 ```html
-<iframe src="/widget.html" sandbox="allow-scripts allow-forms" title="Widget"></iframe>
+<iframe
+  src="/widget.html"
+  sandbox="allow-scripts allow-forms"
+  title="Widget"
+></iframe>
 ```
 
 It is great for showing untrusted content, like user-written HTML or third-party widgets.
@@ -3428,7 +3575,8 @@ It is great for showing untrusted content, like user-written HTML or third-party
 <iframe
   src="https://video.example.com/embed/123"
   title="Video"
-  allow="fullscreen; autoplay; encrypted-media; picture-in-picture">
+  allow="fullscreen; autoplay; encrypted-media; picture-in-picture"
+>
 </iframe>
 
 <iframe src="https://maps.example.com" title="Map" allow="geolocation"></iframe>
@@ -3451,7 +3599,10 @@ It is useful for previews, like an email or a code playground. If both `srcdoc` 
 Screen readers announce the `title` when the user reaches the frame. Without it, the user only hears "frame" and has no idea if it is a video, a map, an ad or a payment form.
 
 ```html
-<iframe src="https://www.youtube.com/embed/abc" title="Video: How to set up your account"></iframe>
+<iframe
+  src="https://www.youtube.com/embed/abc"
+  title="Video: How to set up your account"
+></iframe>
 ```
 
 ### 246: Should you lazy-load iframes?
@@ -3459,7 +3610,13 @@ Screen readers announce the `title` when the user reaches the frame. Without it,
 Yes, for frames below the first screen. Embeds like YouTube videos, maps and social posts load a lot of JavaScript, even if the user never scrolls to them.
 
 ```html
-<iframe src="https://www.youtube.com/embed/abc" title="Demo" loading="lazy" width="560" height="315"></iframe>
+<iframe
+  src="https://www.youtube.com/embed/abc"
+  title="Demo"
+  loading="lazy"
+  width="560"
+  height="315"
+></iframe>
 ```
 
 For even better performance, use a "facade": show a static image with a play button, and only insert the real iframe when the user clicks.
@@ -3470,12 +3627,15 @@ With `postMessage`, which works safely between different origins:
 
 ```js
 // parent page
-const frame = document.querySelector('iframe');
-frame.contentWindow.postMessage({ type: 'theme', value: 'dark' }, 'https://widget.example.com');
+const frame = document.querySelector("iframe");
+frame.contentWindow.postMessage(
+  { type: "theme", value: "dark" },
+  "https://widget.example.com",
+);
 
 // inside the iframe
-window.addEventListener('message', (event) => {
-  if (event.origin !== 'https://parent.example.com') return;
+window.addEventListener("message", (event) => {
+  if (event.origin !== "https://parent.example.com") return;
   console.log(event.data);
 });
 ```
@@ -3525,15 +3685,15 @@ Use `textContent` by default for setting text.
 Attributes are in the HTML markup. Properties are on the DOM object in JavaScript. Many attributes have matching properties, but they are not always the same:
 
 ```html
-<input id="name" value="Ana">
+<input id="name" value="Ana" />
 ```
 
 ```js
-const input = document.getElementById('name');
+const input = document.getElementById("name");
 // user types "Maria"
-input.value;                 // "Maria" (property, current value)
-input.getAttribute('value'); // "Ana" (attribute, initial value)
-input.defaultValue;          // "Ana"
+input.value; // "Maria" (property, current value)
+input.getAttribute("value"); // "Ana" (attribute, initial value)
+input.defaultValue; // "Ana"
 ```
 
 Some names differ too: the `class` attribute is the `className` property, and `for` is `htmlFor`.
@@ -3543,9 +3703,9 @@ Some names differ too: the `class` attribute is the `className` property, and `f
 Because `disabled` is a boolean attribute. Its presence means "disabled", no matter what the value is. `'false'` is just a string.
 
 ```js
-button.setAttribute('disabled', 'false'); // still disabled
-button.removeAttribute('disabled');        // enabled
-button.disabled = false;                   // enabled (property is a real boolean)
+button.setAttribute("disabled", "false"); // still disabled
+button.removeAttribute("disabled"); // enabled
+button.disabled = false; // enabled (property is a real boolean)
 ```
 
 Use the property, or `toggleAttribute('disabled', condition)`.
@@ -3556,8 +3716,8 @@ Use the property, or `toggleAttribute('disabled', condition)`.
 - `change` fires when the change is "committed": for text fields when the field loses focus after being changed, for checkboxes, radios and selects right after the user picks a value.
 
 ```js
-field.addEventListener('input', (e) => updatePreview(e.target.value));
-field.addEventListener('change', (e) => saveDraft(e.target.value));
+field.addEventListener("input", (e) => updatePreview(e.target.value));
+field.addEventListener("change", (e) => saveDraft(e.target.value));
 ```
 
 Use `input` for live feedback and `change` for less frequent work.
@@ -3639,14 +3799,18 @@ From the HTML side, the simplest and most accessible way is to let the table scr
 ```html
 <div class="table-wrap" role="region" aria-labelledby="cap" tabindex="0">
   <table>
-    <caption id="cap">Plans compared</caption>
+    <caption id="cap">
+      Plans compared
+    </caption>
     ...
   </table>
 </div>
 ```
 
 ```css
-.table-wrap { overflow-x: auto; }
+.table-wrap {
+  overflow-x: auto;
+}
 ```
 
 The `tabindex="0"` lets keyboard users scroll it, and `role="region"` with a label tells screen reader users what the scrolling area is. Changing tables into stacked cards with CSS is possible too, but `display` changes on table elements can remove table semantics in some browsers.
@@ -3738,8 +3902,8 @@ Browsers allow autoplay when the video is muted, or when the user has interacted
 
 ```html
 <video autoplay muted loop playsinline poster="still.jpg">
-  <source src="loop.webm" type="video/webm">
-  <source src="loop.mp4" type="video/mp4">
+  <source src="loop.webm" type="video/webm" />
+  <source src="loop.mp4" type="video/mp4" />
 </video>
 ```
 
@@ -3765,8 +3929,8 @@ For pages with many videos, `preload="none"` or `metadata` saves a lot of data. 
 
 ```html
 <video controls>
-  <source src="movie-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"'>
-  <source src="movie-h264.mp4" type='video/mp4; codecs="avc1.42E01E"'>
+  <source src="movie-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' />
+  <source src="movie-h264.mp4" type='video/mp4; codecs="avc1.42E01E"' />
 </video>
 ```
 
@@ -3814,7 +3978,7 @@ Critical CSS is the small set of styles needed to render the first screen. You i
   <style>
     /* header, hero and layout styles only */
   </style>
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/main.css" />
 </head>
 ```
 
@@ -3855,7 +4019,7 @@ Lighthouse warns at around 1,400 elements. To reduce it, avoid deep wrapper `<di
 Use the `media` attribute:
 
 ```html
-<link rel="stylesheet" href="print.css" media="print">
+<link rel="stylesheet" href="print.css" media="print" />
 ```
 
 The browser still downloads it, but with low priority, and it doesn't block rendering on screen because the media query doesn't match. The same works for other media queries like `(min-width: 1200px)`.
@@ -3865,7 +4029,7 @@ The browser still downloads it, but with low priority, and it doesn't block rend
 It tells the browser which color schemes the page supports, before any CSS loads:
 
 ```html
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light dark" />
 ```
 
 The browser then uses dark default colors for the background, form controls and scrollbars when the user prefers dark mode. This avoids a white flash before your dark CSS loads. The CSS property `color-scheme` does the same thing from a stylesheet.
@@ -3875,7 +4039,7 @@ The browser then uses dark default colors for the background, form controls and 
 It sets the referrer policy for the whole page, meaning how much of the current URL is sent in the `Referer` header when the user follows links or the page loads resources.
 
 ```html
-<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="referrer" content="strict-origin-when-cross-origin" />
 ```
 
 Common values:
@@ -3892,7 +4056,7 @@ When users write in different languages, you don't know the direction ahead of t
 
 ```html
 <p dir="auto">{{ comment.text }}</p>
-<input name="title" dir="auto">
+<input name="title" dir="auto" />
 ```
 
 Without it, an Arabic comment on an English page can show punctuation and numbers in the wrong place. For short pieces inside a sentence, `<bdi>` does the same job.
@@ -3902,14 +4066,22 @@ Without it, an Arabic comment on an English page can show punctuation and number
 Several standard formats:
 
 ```html
-<time datetime="2026-10-24">Oct 24</time>                       <!-- date -->
-<time datetime="2026-10">October 2026</time>                    <!-- month -->
-<time datetime="2026">2026</time>                               <!-- year -->
-<time datetime="14:30">2:30 PM</time>                           <!-- time -->
-<time datetime="2026-10-24T14:30">Saturday afternoon</time>     <!-- local date and time -->
-<time datetime="2026-10-24T14:30:00+04:00">2:30 PM Tbilisi</time> <!-- with offset -->
-<time datetime="2026-W43">week 43</time>                        <!-- week -->
-<time datetime="PT1H30M">1.5 hours</time>                       <!-- duration -->
+<time datetime="2026-10-24">Oct 24</time>
+<!-- date -->
+<time datetime="2026-10">October 2026</time>
+<!-- month -->
+<time datetime="2026">2026</time>
+<!-- year -->
+<time datetime="14:30">2:30 PM</time>
+<!-- time -->
+<time datetime="2026-10-24T14:30">Saturday afternoon</time>
+<!-- local date and time -->
+<time datetime="2026-10-24T14:30:00+04:00">2:30 PM Tbilisi</time>
+<!-- with offset -->
+<time datetime="2026-W43">week 43</time>
+<!-- week -->
+<time datetime="PT1H30M">1.5 hours</time>
+<!-- duration -->
 ```
 
 If there's no `datetime` attribute, the text content itself must be in one of these formats.
@@ -3925,8 +4097,18 @@ For files you generate in the browser, create a `Blob`, make a URL with `URL.cre
 ### 286: How do you link to an RSS or Atom feed?
 
 ```html
-<link rel="alternate" type="application/rss+xml" title="Blog posts" href="/feed.xml">
-<link rel="alternate" type="application/atom+xml" title="Blog posts (Atom)" href="/atom.xml">
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="Blog posts"
+  href="/feed.xml"
+/>
+<link
+  rel="alternate"
+  type="application/atom+xml"
+  title="Blog posts (Atom)"
+  href="/atom.xml"
+/>
 ```
 
 Feed readers and some browser extensions use this to discover the feed automatically when someone enters your site URL.
@@ -3936,8 +4118,11 @@ Feed readers and some browser extensions use this to discover the feed automatic
 They divide the range into low, medium and high parts and say which part is good. The browser colors the meter based on that.
 
 ```html
-<label>Battery
-  <meter min="0" max="100" low="20" high="80" optimum="100" value="15">15%</meter>
+<label
+  >Battery
+  <meter min="0" max="100" low="20" high="80" optimum="100" value="15">
+    15%
+  </meter>
 </label>
 ```
 
@@ -4040,13 +4225,13 @@ Don't use `display: none` or `visibility: hidden` for this, since those also hid
 
 ### 293: What is the difference between `hidden`, `display: none`, `aria-hidden` and visually hidden?
 
-| Method | Visible | Read by screen readers | Focusable |
-| --- | --- | --- | --- |
-| `hidden` attribute / `display: none` | No | No | No |
-| `visibility: hidden` | No (keeps space) | No | No |
-| `aria-hidden="true"` | Yes | No | Yes (careful!) |
-| Visually hidden class | No | Yes | Yes |
-| `inert` | Yes | No | No |
+| Method                               | Visible          | Read by screen readers | Focusable      |
+| ------------------------------------ | ---------------- | ---------------------- | -------------- |
+| `hidden` attribute / `display: none` | No               | No                     | No             |
+| `visibility: hidden`                 | No (keeps space) | No                     | No             |
+| `aria-hidden="true"`                 | Yes              | No                     | Yes (careful!) |
+| Visually hidden class                | No               | Yes                    | Yes            |
+| `inert`                              | Yes              | No                     | No             |
 
 Pick based on who should get the content: nobody, only screen reader users, or only sighted users.
 
@@ -4131,11 +4316,17 @@ Several links with the same text "Read more" are confusing for screen reader use
 
 ```html
 <!-- add hidden context -->
-<a href="/post/1">Read more<span class="visually-hidden"> about choosing running shoes</span></a>
+<a href="/post/1"
+  >Read more<span class="visually-hidden">
+    about choosing running shoes</span
+  ></a
+>
 
 <!-- reference the heading -->
 <h3 id="post-1">Choosing running shoes</h3>
-<a href="/post/1" aria-labelledby="readmore-1 post-1" id="readmore-1">Read more</a>
+<a href="/post/1" aria-labelledby="readmore-1 post-1" id="readmore-1"
+  >Read more</a
+>
 ```
 
 Often the simplest fix is to make the heading itself the link and drop the "Read more" link.
@@ -4158,7 +4349,9 @@ When the parser finds content in a place inside a table where it isn't allowed, 
 ```html
 <table>
   <div>Oops</div>
-  <tr><td>Cell</td></tr>
+  <tr>
+    <td>Cell</td>
+  </tr>
 </table>
 ```
 
@@ -4166,7 +4359,13 @@ The DOM becomes:
 
 ```html
 <div>Oops</div>
-<table><tbody><tr><td>Cell</td></tr></tbody></table>
+<table>
+  <tbody>
+    <tr>
+      <td>Cell</td>
+    </tr>
+  </tbody>
+</table>
 ```
 
 This explains bugs where content "jumps" out of a table, and it's one reason frameworks complain when you put a `<div>` straight inside `<tbody>` in a template.
@@ -4197,11 +4396,11 @@ The spec lets you leave out some start and end tags, and the parser adds them:
 ```html
 <!DOCTYPE html>
 <title>Minimal</title>
-<p>First paragraph
-<p>Second paragraph
+<p>First paragraph</p>
+<p>Second paragraph</p>
 <ul>
-  <li>One
-  <li>Two
+  <li>One</li>
+  <li>Two</li>
 </ul>
 ```
 
@@ -4251,7 +4450,7 @@ It lets you mark a script, style or link as render-blocking on purpose:
 
 ```html
 <script blocking="render" async src="/critical-theme.js"></script>
-<link rel="expect" href="#main-content" blocking="render">
+<link rel="expect" href="#main-content" blocking="render" />
 ```
 
 The browser won't paint until it's done. This is useful for things like A/B test scripts or theme setup that would otherwise cause a visible flash. It's supported in Chromium-based browsers. Use it carefully, since it delays first paint for everyone.
@@ -4275,8 +4474,8 @@ Anything that delays step 1 or 2 (big HTML, render-blocking CSS, parser-blocking
 - `load` fires on `window` when everything is finished: images, stylesheets, iframes, fonts used so far and so on.
 
 ```js
-document.addEventListener('DOMContentLoaded', () => initApp());
-window.addEventListener('load', () => startNonCriticalWork());
+document.addEventListener("DOMContentLoaded", () => initApp());
+window.addEventListener("load", () => startNonCriticalWork());
 ```
 
 With `defer` or `type="module"`, you usually don't need to listen for `DOMContentLoaded` at all, because the DOM is ready when your script runs.
@@ -4296,16 +4495,16 @@ Import maps let you control how bare module specifiers like `import { x } from '
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "lodash-es": "https://cdn.jsdelivr.net/npm/lodash-es@4.17.21/lodash.js",
-    "app/": "/js/app/"
+  {
+    "imports": {
+      "lodash-es": "https://cdn.jsdelivr.net/npm/lodash-es@4.17.21/lodash.js",
+      "app/": "/js/app/"
+    }
   }
-}
 </script>
 <script type="module">
-  import { debounce } from 'lodash-es';
-  import { start } from 'app/main.js';
+  import { debounce } from "lodash-es";
+  import { start } from "app/main.js";
 </script>
 ```
 
@@ -4319,7 +4518,8 @@ SRI lets the browser check that a file from a CDN hasn't been changed. You add a
 <script
   src="https://cdn.example.com/lib@3.2.1/lib.min.js"
   integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"
+></script>
 ```
 
 If the file's hash doesn't match, the browser refuses to run it. This protects you if the CDN is hacked. It only works with files that never change, so always pin an exact version. Cross-origin files also need `crossorigin` so the browser can read the response.
@@ -4333,8 +4533,13 @@ It decides whether a cross-origin request is made in CORS mode, and whether cred
 - `crossorigin="use-credentials"`: CORS request with cookies.
 
 ```html
-<link rel="preload" href="https://fonts.example.com/inter.woff2" as="font" crossorigin>
-<img src="https://img.example.com/photo.jpg" crossorigin alt="...">
+<link
+  rel="preload"
+  href="https://fonts.example.com/inter.woff2"
+  as="font"
+  crossorigin
+/>
+<img src="https://img.example.com/photo.jpg" crossorigin alt="..." />
 ```
 
 Fonts are always fetched with CORS, which is why font preloads need `crossorigin`. Without it, the preload doesn't match the real request and the font downloads twice.
@@ -4344,7 +4549,12 @@ Fonts are always fetched with CORS, which is why font preloads need `crossorigin
 If you draw a cross-origin image on a `<canvas>` without CORS, the canvas becomes "tainted". You can still show it, but you can't read the pixels: `getImageData()`, `toDataURL()` and `toBlob()` throw a security error.
 
 ```html
-<img id="photo" src="https://img.example.com/a.jpg" crossorigin="anonymous" alt="">
+<img
+  id="photo"
+  src="https://img.example.com/a.jpg"
+  crossorigin="anonymous"
+  alt=""
+/>
 ```
 
 To avoid it, load the image with `crossorigin="anonymous"` and make sure the server sends `Access-Control-Allow-Origin`. This rule stops pages from reading private images from other sites through a canvas.
@@ -4360,7 +4570,9 @@ Content-Security-Policy: script-src 'nonce-r4nd0m123' 'strict-dynamic'
 ```
 
 ```html
-<script nonce="r4nd0m123">initApp();</script>
+<script nonce="r4nd0m123">
+  initApp();
+</script>
 ```
 
 **Hash**: the SHA hash of the exact script content:
@@ -4380,7 +4592,7 @@ Content-Security-Policy: require-trusted-types-for 'script'; trusted-types app-s
 ```
 
 ```js
-const policy = trustedTypes.createPolicy('app-sanitizer', {
+const policy = trustedTypes.createPolicy("app-sanitizer", {
   createHTML: (input) => DOMPurify.sanitize(input),
 });
 el.innerHTML = policy.createHTML(userInput);
@@ -4435,7 +4647,7 @@ So for content served from your own origin, this combination is about as safe as
 When page A opens page B in a new tab, page B gets a reference to page A via `window.opener`. Even across origins, B can do:
 
 ```js
-window.opener.location = 'https://evil.example/fake-login';
+window.opener.location = "https://evil.example/fake-login";
 ```
 
 The user returns to the original tab and sees a fake login page that looks like site A. That is reverse tabnabbing.
@@ -4465,7 +4677,7 @@ HTML elements with `id` or `name` attributes create global variables and propert
 
 ```js
 // your code
-const src = window.config?.scriptUrl || '/default.js'; // 'config' is now the <a> element
+const src = window.config?.scriptUrl || "/default.js"; // 'config' is now the <a> element
 ```
 
 Defenses:
@@ -4484,7 +4696,7 @@ Protection:
 
 ```html
 <form method="post" action="/transfer">
-  <input type="hidden" name="csrf_token" value="8f3a1c...">
+  <input type="hidden" name="csrf_token" value="8f3a1c..." />
   ...
 </form>
 ```
@@ -4500,7 +4712,7 @@ Mixed content is when an HTTPS page loads resources over plain HTTP:
 
 ```html
 <script src="http://cdn.example.com/lib.js"></script>
-<img src="http://example.com/photo.jpg" alt="">
+<img src="http://example.com/photo.jpg" alt="" />
 ```
 
 - Scripts, styles, iframes and fetch requests over HTTP are blocked.
@@ -4538,7 +4750,11 @@ It lets you create a shadow root in plain HTML with a `<template shadowrootmode>
 <user-card>
   <template shadowrootmode="open">
     <style>
-      :host { display: block; border: 1px solid #ccc; padding: 1rem; }
+      :host {
+        display: block;
+        border: 1px solid #ccc;
+        padding: 1rem;
+      }
     </style>
     <slot name="name"></slot>
   </template>
@@ -4560,16 +4776,20 @@ class StarRating extends HTMLElement {
   set value(v) {
     this.#internals.setFormValue(String(v));
     if (!v) {
-      this.#internals.setValidity({ valueMissing: true }, 'Pick a rating');
+      this.#internals.setValidity({ valueMissing: true }, "Pick a rating");
     } else {
       this.#internals.setValidity({});
     }
   }
 
-  formResetCallback() { this.value = 0; }
-  formDisabledCallback(disabled) { this.toggleAttribute('aria-disabled', disabled); }
+  formResetCallback() {
+    this.value = 0;
+  }
+  formDisabledCallback(disabled) {
+    this.toggleAttribute("aria-disabled", disabled);
+  }
 }
-customElements.define('star-rating', StarRating);
+customElements.define("star-rating", StarRating);
 ```
 
 `ElementInternals` also lets you set ARIA defaults like `this.#internals.role = 'slider'` without adding attributes to the host.
@@ -4585,10 +4805,16 @@ customElements.define('star-rating', StarRating);
 
 ```js
 class TimeAgo extends HTMLElement {
-  static observedAttributes = ['datetime'];
-  attributeChangedCallback() { this.render(); }
-  connectedCallback() { this.render(); }
-  render() { /* ... */ }
+  static observedAttributes = ["datetime"];
+  attributeChangedCallback() {
+    this.render();
+  }
+  connectedCallback() {
+    this.render();
+  }
+  render() {
+    /* ... */
+  }
 }
 ```
 
@@ -4599,8 +4825,10 @@ class TimeAgo extends HTMLElement {
 They extend a built-in element instead of `HTMLElement`, and you use them with the `is` attribute:
 
 ```js
-class FancyButton extends HTMLButtonElement { /* ... */ }
-customElements.define('fancy-button', FancyButton, { extends: 'button' });
+class FancyButton extends HTMLButtonElement {
+  /* ... */
+}
+customElements.define("fancy-button", FancyButton, { extends: "button" });
 ```
 
 ```html
@@ -4615,7 +4843,11 @@ Slots are placeholders in the shadow tree where the element's children (light DO
 
 ```html
 <template id="card-tpl">
-  <style>header { font-weight: bold; }</style>
+  <style>
+    header {
+      font-weight: bold;
+    }
+  </style>
   <header><slot name="title">Untitled</slot></header>
   <div><slot></slot></div>
 </template>
@@ -4648,11 +4880,13 @@ It creates a plain `HTMLElement` in an "undefined" state. The element is in the 
 You can style the waiting state and wait for definitions:
 
 ```css
-user-card:not(:defined) { visibility: hidden; }
+user-card:not(:defined) {
+  visibility: hidden;
+}
 ```
 
 ```js
-await customElements.whenDefined('user-card');
+await customElements.whenDefined("user-card");
 ```
 
 Properties set on an element before it upgrades end up as own properties on the instance and can hide the class setters, so well-written components check for that in `connectedCallback`.
@@ -4666,10 +4900,12 @@ When you clone `template.content` and insert the clone into the page, the cloned
 ```html
 <template id="tpl">
   <p>Hello</p>
-  <script>console.log('runs when the clone is inserted');</script>
+  <script>
+    console.log("runs when the clone is inserted");
+  </script>
 </template>
 <script>
-  document.body.append(document.getElementById('tpl').content.cloneNode(true));
+  document.body.append(document.getElementById("tpl").content.cloneNode(true));
 </script>
 ```
 
@@ -4683,7 +4919,7 @@ But this is **not** XSS protection. Event handler attributes still run:
 
 ```js
 el.innerHTML = '<img src="x" onerror="alert(1)">'; // runs
-el.innerHTML = '<script>alert(1)</script>';           // doesn't run
+el.innerHTML = "<script>alert(1)</script>"; // doesn't run
 ```
 
 `Range.createContextualFragment()` and `document.createElement('script')` do produce scripts that run. So all HTML injection points are dangerous with untrusted data.
@@ -4697,7 +4933,7 @@ el.innerHTML = '<script>alert(1)</script>';           // doesn't run
 ```js
 const frag = document.createDocumentFragment();
 for (const item of items) {
-  const li = document.createElement('li');
+  const li = document.createElement("li");
   li.textContent = item.name;
   frag.append(li);
 }
@@ -4711,7 +4947,9 @@ The biggest performance problem usually isn't the method. It's mixing DOM writes
 They are newer methods to parse HTML strings, and unlike `innerHTML` and `DOMParser`, they understand declarative shadow DOM:
 
 ```js
-host.setHTMLUnsafe('<my-el><template shadowrootmode="open"><p>Hi</p></template></my-el>');
+host.setHTMLUnsafe(
+  '<my-el><template shadowrootmode="open"><p>Hi</p></template></my-el>',
+);
 const doc = Document.parseHTMLUnsafe(htmlString);
 ```
 
@@ -4833,7 +5071,8 @@ A custom modal needed all of this:
 It is a newer feature that lets you fully style a native `<select>`, including the dropdown and options, and put rich content like images inside options:
 
 ```css
-select, ::picker(select) {
+select,
+::picker(select) {
   appearance: base-select;
 }
 ```
@@ -4841,8 +5080,8 @@ select, ::picker(select) {
 ```html
 <select>
   <button><selectedcontent></selectedcontent></button>
-  <option value="ge"><img src="ge.svg" alt=""> Georgia</option>
-  <option value="de"><img src="de.svg" alt=""> Germany</option>
+  <option value="ge"><img src="ge.svg" alt="" /> Georgia</option>
+  <option value="de"><img src="de.svg" alt="" /> Germany</option>
 </select>
 ```
 
@@ -4886,8 +5125,12 @@ This way keyboard users don't have to Tab through every button, and when they co
 `aria-activedescendant` lets real focus stay on one element (like a text input) while telling screen readers which child is "active":
 
 ```html
-<input role="combobox" aria-controls="list" aria-expanded="true"
-       aria-activedescendant="opt-2">
+<input
+  role="combobox"
+  aria-controls="list"
+  aria-expanded="true"
+  aria-activedescendant="opt-2"
+/>
 <ul id="list" role="listbox">
   <li id="opt-1" role="option">Apple</li>
   <li id="opt-2" role="option" aria-selected="true">Banana</li>
@@ -4934,7 +5177,9 @@ It removes the element's own semantics, but keeps its content:
 
 ```html
 <table role="presentation">
-  <tr><td>Layout cell</td></tr>
+  <tr>
+    <td>Layout cell</td>
+  </tr>
 </table>
 ```
 
@@ -4958,7 +5203,9 @@ When `scope` isn't enough, link each cell to all its headers with `id` and `head
 
 ```html
 <table>
-  <caption>Quarterly sales by region</caption>
+  <caption>
+    Quarterly sales by region
+  </caption>
   <tr>
     <td></td>
     <th id="q1" colspan="2">Q1</th>
@@ -5021,14 +5268,14 @@ Most screen readers on desktop have a "browse mode" for reading and a "focus/for
 Passkeys use the WebAuthn API. For a smooth sign-in, you can let the browser show passkeys in the autofill dropdown of the username field ("conditional UI"):
 
 ```html
-<input type="text" name="username" autocomplete="username webauthn">
+<input type="text" name="username" autocomplete="username webauthn" />
 ```
 
 ```js
 if (await PublicKeyCredential.isConditionalMediationAvailable?.()) {
   const credential = await navigator.credentials.get({
-    mediation: 'conditional',
-    publicKey: { challenge, rpId: 'example.com' },
+    mediation: "conditional",
+    publicKey: { challenge, rpId: "example.com" },
   });
   // send credential to the server to verify
 }
@@ -5041,7 +5288,13 @@ The `webauthn` token in `autocomplete` tells the browser to include passkeys in 
 `autocomplete="one-time-code"` lets iOS and Android suggest codes from incoming SMS (and some email clients and password managers too):
 
 ```html
-<input name="otp" inputmode="numeric" autocomplete="one-time-code" pattern="\d{6}" maxlength="6">
+<input
+  name="otp"
+  inputmode="numeric"
+  autocomplete="one-time-code"
+  pattern="\d{6}"
+  maxlength="6"
+/>
 ```
 
 For automatic fill on Android Chrome, the WebOTP API reads the code if the SMS ends with a special line:
@@ -5053,7 +5306,7 @@ Your code is 123456.
 ```
 
 ```js
-const otp = await navigator.credentials.get({ otp: { transport: ['sms'] } });
+const otp = await navigator.credentials.get({ otp: { transport: ["sms"] } });
 input.value = otp.code;
 ```
 
@@ -5070,26 +5323,32 @@ class PhoneInput extends HTMLElement {
   #input;
 
   connectedCallback() {
-    const root = this.attachShadow({ mode: 'open', delegatesFocus: true });
+    const root = this.attachShadow({ mode: "open", delegatesFocus: true });
     root.innerHTML = '<input type="tel">';
-    this.#input = root.querySelector('input');
-    this.#input.addEventListener('input', () => this.#update());
+    this.#input = root.querySelector("input");
+    this.#input.addEventListener("input", () => this.#update());
     this.#update();
   }
 
   #update() {
     const value = this.#input.value;
     this.#internals.setFormValue(value);
-    if (this.hasAttribute('required') && !value) {
-      this.#internals.setValidity({ valueMissing: true }, 'Enter a phone number', this.#input);
+    if (this.hasAttribute("required") && !value) {
+      this.#internals.setValidity(
+        { valueMissing: true },
+        "Enter a phone number",
+        this.#input,
+      );
     } else {
       this.#internals.setValidity({});
     }
   }
 
-  checkValidity() { return this.#internals.checkValidity(); }
+  checkValidity() {
+    return this.#internals.checkValidity();
+  }
 }
-customElements.define('phone-input', PhoneInput);
+customElements.define("phone-input", PhoneInput);
 ```
 
 The third argument to `setValidity` is the anchor element, where the browser shows its error bubble. The form then blocks submit and `:invalid` matches the custom element.
@@ -5122,7 +5381,7 @@ Give each button a `name` and `value`, and the clicked one is sent:
 
 ```html
 <form method="post" action="/article">
-  <input name="title">
+  <input name="title" />
   <button name="intent" value="publish">Publish</button>
   <button name="intent" value="draft">Save draft</button>
 </form>
@@ -5149,10 +5408,10 @@ It doesn't reset to empty. If you changed `input.value` with JavaScript, reset g
 - Redirect after a successful POST (Post/Redirect/Get), so refreshing the page doesn't resubmit.
 
 ```js
-form.addEventListener('submit', (e) => {
+form.addEventListener("submit", (e) => {
   const btn = e.submitter;
   btn.disabled = true;
-  btn.textContent = 'Saving...';
+  btn.textContent = "Saving...";
 });
 ```
 
@@ -5163,8 +5422,11 @@ Be careful with buttons that carry a `name`/`value` ("intent" buttons): disabled
 The `formdata` event fires on a form when its data set is built: during submit, or when you call `new FormData(form)`. You can add extra entries:
 
 ```js
-form.addEventListener('formdata', (event) => {
-  event.formData.append('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+form.addEventListener("formdata", (event) => {
+  event.formData.append(
+    "timezone",
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+  );
 });
 ```
 
@@ -5178,7 +5440,7 @@ Before form-associated custom elements, this was a way for custom widgets to add
 - `webkitdirectory`: select a whole folder (non-standard name but supported in all major browsers).
 
 ```html
-<input type="file" accept="image/*" capture="environment">
+<input type="file" accept="image/*" capture="environment" />
 ```
 
 In JavaScript, `input.files` gives a `FileList`. You can read files with `file.text()`, `file.arrayBuffer()` or show a preview with `URL.createObjectURL(file)`. Remember to call `URL.revokeObjectURL()` when done, and always validate on the server.
@@ -5214,7 +5476,10 @@ For lazy-loaded images, the browser already knows the layout size when it starts
   sizes="auto, (max-width: 600px) 100vw, 400px"
   srcset="card-400.jpg 400w, card-800.jpg 800w, card-1200.jpg 1200w"
   src="card-800.jpg"
-  alt="..." width="400" height="300">
+  alt="..."
+  width="400"
+  height="300"
+/>
 ```
 
 It only works with `loading="lazy"`. The fallback list after `auto` is used by browsers that don't support it. It's supported in Chromium-based browsers so far.
@@ -5227,8 +5492,10 @@ It only works with `loading="lazy"`. The fallback list after `auto` is used by b
   srcset="hero-800.avif 800w, hero-1200.avif 1200w, hero-2000.avif 2000w"
   sizes="100vw"
   alt="..."
-  width="2000" height="1000"
-  fetchpriority="high">
+  width="2000"
+  height="1000"
+  fetchpriority="high"
+/>
 ```
 
 - A real `<img>` in the initial server HTML, so the preload scanner finds it.
@@ -5248,7 +5515,8 @@ Use `imagesrcset` and `imagesizes` on the preload link, matching the `<img>`:
   as="image"
   imagesrcset="hero-800.webp 800w, hero-1200.webp 1200w, hero-2000.webp 2000w"
   imagesizes="100vw"
-  fetchpriority="high">
+  fetchpriority="high"
+/>
 ```
 
 The browser picks the same candidate it would pick for the image, so it doesn't download two different sizes. For art direction with `<picture>`, add `media` to separate preload links. If the image is already in the HTML near the top, you usually don't need a preload at all.
@@ -5256,7 +5524,13 @@ The browser picks the same candidate it would pick for the image, so it doesn't 
 ### 377: How do you preload web fonts correctly?
 
 ```html
-<link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link
+  rel="preload"
+  href="/fonts/inter-var.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 - `as="font"` is required.
@@ -5288,16 +5562,20 @@ Speculation rules let you tell the browser which pages to prefetch or even fully
 
 ```html
 <script type="speculationrules">
-{
-  "prerender": [{
-    "where": { "href_matches": "/products/*" },
-    "eagerness": "moderate"
-  }],
-  "prefetch": [{
-    "where": { "selector_matches": ".nav a" },
-    "eagerness": "conservative"
-  }]
-}
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/products/*" },
+        "eagerness": "moderate"
+      }
+    ],
+    "prefetch": [
+      {
+        "where": { "selector_matches": ".nav a" },
+        "eagerness": "conservative"
+      }
+    ]
+  }
 </script>
 ```
 
@@ -5325,11 +5603,11 @@ You can check why a page wasn't cached in Chrome DevTools under Application > Ba
 <script src="/critical-widget.js" async fetchpriority="high"></script>
 
 <!-- preloads are high priority by default; lower one -->
-<link rel="preload" href="/below-fold.js" as="script" fetchpriority="low">
+<link rel="preload" href="/below-fold.js" as="script" fetchpriority="low" />
 
 <!-- first carousel image high, rest low -->
-<img src="slide-1.jpg" alt="..." fetchpriority="high">
-<img src="slide-2.jpg" alt="..." fetchpriority="low">
+<img src="slide-1.jpg" alt="..." fetchpriority="high" />
+<img src="slide-2.jpg" alt="..." fetchpriority="low" />
 ```
 
 It's a hint, not a guarantee, and it doesn't change execution order. Use it to fix specific problems you see in the Network panel's Priority column, not on everything.
@@ -5445,7 +5723,10 @@ Common problems: marking up content that isn't visible on the page, missing requ
 
 ```html
 <!-- Bad -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+/>
 ```
 
 It stops users from zooming in, which many people with low vision need. It fails WCAG 1.4.4 (Resize text). iOS Safari ignores it for accessibility reasons, but Android browsers may respect it.
@@ -5459,16 +5740,24 @@ Each iframe is basically a whole extra page: its own HTML, CSS, JavaScript, netw
 A facade is a lightweight placeholder that looks like the embed:
 
 ```html
-<button class="yt-facade" data-id="dQw4w9WgXcQ" aria-label="Play video: Product demo">
-  <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="" loading="lazy">
+<button
+  class="yt-facade"
+  data-id="dQw4w9WgXcQ"
+  aria-label="Play video: Product demo"
+>
+  <img
+    src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+    alt=""
+    loading="lazy"
+  />
 </button>
 <script>
-  document.querySelectorAll('.yt-facade').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const iframe = document.createElement('iframe');
+  document.querySelectorAll(".yt-facade").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const iframe = document.createElement("iframe");
       iframe.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.id}?autoplay=1`;
-      iframe.title = btn.getAttribute('aria-label');
-      iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+      iframe.title = btn.getAttribute("aria-label");
+      iframe.allow = "autoplay; encrypted-media; picture-in-picture";
       iframe.allowFullscreen = true;
       btn.replaceWith(iframe);
     });
@@ -5484,8 +5773,8 @@ You can use the `media` attribute on `<source>` inside `<video>`. It was removed
 
 ```html
 <video autoplay muted loop playsinline>
-  <source src="hero-mobile.mp4" media="(max-width: 600px)" type="video/mp4">
-  <source src="hero-desktop.mp4" type="video/mp4">
+  <source src="hero-mobile.mp4" media="(max-width: 600px)" type="video/mp4" />
+  <source src="hero-desktop.mp4" type="video/mp4" />
 </video>
 ```
 
@@ -5497,8 +5786,8 @@ Almost always. A short MP4 or WebM is often 5-20 times smaller than the same GIF
 
 ```html
 <video autoplay loop muted playsinline width="480" height="270">
-  <source src="demo.webm" type="video/webm">
-  <source src="demo.mp4" type="video/mp4">
+  <source src="demo.webm" type="video/webm" />
+  <source src="demo.mp4" type="video/mp4" />
 </video>
 ```
 
@@ -5565,7 +5854,9 @@ The whitespace between tags in your HTML (new lines and indentation) becomes a t
 ```
 
 ```css
-.tab { display: inline-block; }
+.tab {
+  display: inline-block;
+}
 ```
 
 The fix today is to use Flexbox or Grid on the parent, where whitespace-only text nodes are ignored. The same thing explains the small gap under images: an `<img>` is inline, so it sits on the text baseline with room below for descenders. `display: block` or `vertical-align: middle` removes it.
@@ -5604,14 +5895,18 @@ Chrome now makes `document.domain` setting a no-op by default (pages are origin-
 ### 404: How do you safely receive messages from `postMessage`?
 
 ```js
-const ALLOWED = new Set(['https://app.example.com', 'https://widget.example.com']);
+const ALLOWED = new Set([
+  "https://app.example.com",
+  "https://widget.example.com",
+]);
 
-window.addEventListener('message', (event) => {
+window.addEventListener("message", (event) => {
   if (!ALLOWED.has(event.origin)) return;
   if (event.source !== iframe.contentWindow) return;
 
   const data = event.data;
-  if (typeof data !== 'object' || data === null || data.type !== 'resize') return;
+  if (typeof data !== "object" || data === null || data.type !== "resize")
+    return;
 
   iframe.style.height = `${Number(data.height) || 0}px`;
 });
@@ -5648,10 +5943,13 @@ Scoped registries let you create a separate `CustomElementRegistry` and attach i
 
 ```js
 const registry = new CustomElementRegistry();
-registry.define('x-button', MyButton);
+registry.define("x-button", MyButton);
 
-const root = host.attachShadow({ mode: 'open', customElementRegistry: registry });
-root.innerHTML = '<x-button>Click</x-button>';
+const root = host.attachShadow({
+  mode: "open",
+  customElementRegistry: registry,
+});
+root.innerHTML = "<x-button>Click</x-button>";
 ```
 
 Elements inside that shadow root use the scoped registry. This is a newer feature; Safari and recent Chromium versions have shipped it, so check support before relying on it.
@@ -5661,13 +5959,13 @@ Elements inside that shadow root use the scoped registry. This is a newer featur
 Import attributes let you import non-JavaScript files as modules:
 
 ```js
-import config from './config.json' with { type: 'json' };
-import sheet from './card.css' with { type: 'css' };
+import config from "./config.json" with { type: "json" };
+import sheet from "./card.css" with { type: "css" };
 
 class MyCard extends HTMLElement {
   constructor() {
     super();
-    const root = this.attachShadow({ mode: 'open' });
+    const root = this.attachShadow({ mode: "open" });
     root.adoptedStyleSheets = [sheet];
   }
 }
@@ -5682,13 +5980,17 @@ Shadow DOM blocks page styles, but there are ways to let styles in on purpose:
 - **CSS custom properties** pass through the shadow boundary:
 
 ```css
-my-button { --button-bg: rebeccapurple; }
+my-button {
+  --button-bg: rebeccapurple;
+}
 ```
 
 - **`::part()`**: the component marks elements with `part="label"`, and the page can style them:
 
 ```css
-my-button::part(label) { font-weight: 700; }
+my-button::part(label) {
+  font-weight: 700;
+}
 ```
 
 - **Slotted content** stays in the light DOM, so page styles apply to it directly.
@@ -5702,7 +6004,7 @@ my-button::part(label) { font-weight: 700; }
 When you create a shadow root with `delegatesFocus: true`, focusing the host element moves focus to the first focusable element inside the shadow tree, and clicking a non-focusable area inside also focuses that element.
 
 ```js
-this.attachShadow({ mode: 'open', delegatesFocus: true });
+this.attachShadow({ mode: "open", delegatesFocus: true });
 ```
 
 The host also matches `:focus` when something inside it is focused. It makes a custom element with an inner `<input>` behave like a native input when used with `.focus()`, labels or `autofocus`.
@@ -5713,11 +6015,13 @@ The host also matches `:focus` when something inside it is focused. It makes a c
 - **`composed`**: only events with `composed: true` cross the shadow boundary. Most UI events (click, input, keydown, focus) are composed. Custom events are not by default.
 
 ```js
-this.dispatchEvent(new CustomEvent('rating-change', {
-  detail: { value: 4 },
-  bubbles: true,
-  composed: true,
-}));
+this.dispatchEvent(
+  new CustomEvent("rating-change", {
+    detail: { value: 4 },
+    bubbles: true,
+    composed: true,
+  }),
+);
 ```
 
 `event.composedPath()` returns the full path including shadow internals (for open shadow roots). Some events, like `change` from an inner `<input>`, are not composed, so the component has to re-dispatch them.
@@ -5799,11 +6103,25 @@ Use the Layout Shift regions in DevTools or the Web Vitals extension to see exac
 ```html
 <div class="tabs">
   <div role="tablist" aria-label="Account settings">
-    <button role="tab" id="tab-1" aria-selected="true" aria-controls="panel-1">Profile</button>
-    <button role="tab" id="tab-2" aria-selected="false" aria-controls="panel-2" tabindex="-1">Security</button>
+    <button role="tab" id="tab-1" aria-selected="true" aria-controls="panel-1">
+      Profile
+    </button>
+    <button
+      role="tab"
+      id="tab-2"
+      aria-selected="false"
+      aria-controls="panel-2"
+      tabindex="-1"
+    >
+      Security
+    </button>
   </div>
-  <div role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">...</div>
-  <div role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0" hidden>...</div>
+  <div role="tabpanel" id="panel-1" aria-labelledby="tab-1" tabindex="0">
+    ...
+  </div>
+  <div role="tabpanel" id="panel-2" aria-labelledby="tab-2" tabindex="0" hidden>
+    ...
+  </div>
 </div>
 ```
 
@@ -5977,15 +6295,15 @@ HTML ignores unknown elements and attributes, so new features (like `closedby`, 
 Check for the property or method instead of the browser name:
 
 ```js
-const supportsPopover = HTMLElement.prototype.hasOwnProperty('popover');
-const supportsDialog = typeof HTMLDialogElement === 'function';
-const supportsLazy = 'loading' in HTMLImageElement.prototype;
-const supportsInert = 'inert' in HTMLElement.prototype;
-const supportsCommands = 'command' in HTMLButtonElement.prototype;
+const supportsPopover = HTMLElement.prototype.hasOwnProperty("popover");
+const supportsDialog = typeof HTMLDialogElement === "function";
+const supportsLazy = "loading" in HTMLImageElement.prototype;
+const supportsInert = "inert" in HTMLElement.prototype;
+const supportsCommands = "command" in HTMLButtonElement.prototype;
 
-const input = document.createElement('input');
-input.type = 'date';
-const supportsDateInput = input.type === 'date'; // unknown types fall back to "text"
+const input = document.createElement("input");
+input.type = "date";
+const supportsDateInput = input.type === "date"; // unknown types fall back to "text"
 ```
 
 In CSS, use `@supports` (for example `@supports (appearance: base-select)` or `@supports selector(:popover-open)`). Then load polyfills only where needed.
@@ -6013,19 +6331,21 @@ Elements with an `id` become properties of `window`:
 
 ```html
 <div id="header"></div>
-<script>console.log(window.header); // the div</script>
+<script>
+  console.log(window.header); // the div
+</script>
 ```
 
 And form fields are available by `name` on the form:
 
 ```html
 <form id="f">
-  <input name="action" value="x">
-  <input name="submit">
+  <input name="action" value="x" />
+  <input name="submit" />
 </form>
 <script>
-  const f = document.getElementById('f');
-  f.action;   // the <input>, not the form's action URL!
+  const f = document.getElementById("f");
+  f.action; // the <input>, not the form's action URL!
   f.submit(); // TypeError: f.submit is not a function
 </script>
 ```
@@ -6051,10 +6371,10 @@ None of the unsafe ones should get untrusted input without sanitizing.
 ```js
 const observer = new MutationObserver((mutations) => {
   for (const m of mutations) {
-    if (m.type === 'childList') {
+    if (m.type === "childList") {
       m.addedNodes.forEach((node) => {
         if (node instanceof HTMLImageElement && !node.alt) {
-          console.warn('Image without alt added:', node);
+          console.warn("Image without alt added:", node);
         }
       });
     }
@@ -6107,8 +6427,10 @@ An `<a>` without `href` is a "placeholder link". It's not a link at all:
 - It doesn't react to Enter.
 
 ```html
-<a>Current page</a>                    <!-- placeholder, valid -->
-<a href="/about">About</a>             <!-- real link -->
+<a>Current page</a>
+<!-- placeholder, valid -->
+<a href="/about">About</a>
+<!-- real link -->
 ```
 
 It's valid HTML and sometimes used for the current page in navigation. But often it shows up by mistake in apps that add click handlers to `<a>` elements without `href`, which breaks keyboard access. If it acts, use a `<button>`; if it navigates, give it an `href`.
@@ -6116,7 +6438,9 @@ It's valid HTML and sometimes used for the current page in navigation. But often
 ### 440: What is the `ping` attribute on links?
 
 ```html
-<a href="https://example.com/product" ping="https://analytics.example.com/click">Product</a>
+<a href="https://example.com/product" ping="https://analytics.example.com/click"
+  >Product</a
+>
 ```
 
 When the user follows the link, the browser sends a small `POST` request to the `ping` URL(s) in the background. It's meant for click tracking without redirect URLs or JavaScript, so navigation isn't slowed down.
@@ -6142,7 +6466,7 @@ The Lighthouse report and the Network panel's waterfall usually make these easy 
 It's used together with `blocking="render"` to tell the browser not to render the first frame until a certain element has been parsed:
 
 ```html
-<link rel="expect" href="#hero" blocking="render">
+<link rel="expect" href="#hero" blocking="render" />
 ```
 
 Its main use is with cross-document View Transitions. The new page waits until the element that takes part in the transition exists, so the animation has the right content. It's supported in Chromium-based browsers. Point it at an element near the top of the page, or you delay rendering.
@@ -6178,20 +6502,20 @@ In interviews, it's fine to say you don't know every new feature by heart. What 
 
 ### 445: Which common UI patterns can now be built with HTML only?
 
-| Pattern | HTML feature |
-| --- | --- |
-| Modal dialog | `<dialog>` + `command="show-modal"` |
-| Dropdown menu, popup | `popover` + `popovertarget` |
-| Accordion | `<details name>` |
-| Disclosure / FAQ | `<details>` / `<summary>` |
-| Searchable hidden content | `hidden="until-found"` |
-| Autocomplete suggestions | `<datalist>` |
-| Styled select | `<select>` + `appearance: base-select` |
-| Form validation | `required`, `pattern`, `min`, `max`, `type` |
-| Lazy loading | `loading="lazy"` |
-| Responsive images | `srcset`, `sizes`, `<picture>` |
-| Instant navigation | speculation rules |
-| Page transitions | View Transitions (CSS opt-in) |
+| Pattern                   | HTML feature                                |
+| ------------------------- | ------------------------------------------- |
+| Modal dialog              | `<dialog>` + `command="show-modal"`         |
+| Dropdown menu, popup      | `popover` + `popovertarget`                 |
+| Accordion                 | `<details name>`                            |
+| Disclosure / FAQ          | `<details>` / `<summary>`                   |
+| Searchable hidden content | `hidden="until-found"`                      |
+| Autocomplete suggestions  | `<datalist>`                                |
+| Styled select             | `<select>` + `appearance: base-select`      |
+| Form validation           | `required`, `pattern`, `min`, `max`, `type` |
+| Lazy loading              | `loading="lazy"`                            |
+| Responsive images         | `srcset`, `sizes`, `<picture>`              |
+| Instant navigation        | speculation rules                           |
+| Page transitions          | View Transitions (CSS opt-in)               |
 
 Not all of these have full browser support yet, but many of them work as progressive enhancements. Less JavaScript means less to download, fewer bugs and better accessibility by default.
 

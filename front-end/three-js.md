@@ -134,8 +134,8 @@ npm install three
 ```
 
 ```js
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 ```
 
 The core library is imported from `three`. Extra features like controls, loaders and post-processing live in the addons folder and are imported from `three/addons/...`.
@@ -158,10 +158,15 @@ Without a bundler you can use an import map:
 A **scene**, a **camera** and a **renderer**. The scene holds your objects, the camera decides what part of the scene you see, and the renderer draws the scene from the camera's point of view onto a canvas.
 
 ```js
-import * as THREE from 'three';
+import * as THREE from "three";
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  innerWidth / innerHeight,
+  0.1,
+  100,
+);
 camera.position.z = 3;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -170,7 +175,7 @@ document.body.appendChild(renderer.domElement);
 
 const cube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
-  new THREE.MeshBasicMaterial({ color: 0x44aa88 })
+  new THREE.MeshBasicMaterial({ color: 0x44aa88 }),
 );
 scene.add(cube);
 
@@ -212,7 +217,7 @@ const camera = new THREE.OrthographicCamera(
   frustumSize / 2,
   -frustumSize / 2,
   0.1,
-  100
+  100,
 );
 ```
 
@@ -224,7 +229,7 @@ A `Mesh` is a visible 3D object. It combines a **geometry** (the shape, made of 
 
 ```js
 const geometry = new THREE.SphereGeometry(1, 32, 16);
-const material = new THREE.MeshStandardMaterial({ color: 'orange' });
+const material = new THREE.MeshStandardMaterial({ color: "orange" });
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 ```
@@ -322,7 +327,7 @@ car.position.x = 5; // the body and the wheels all move together
 You need to update the camera's aspect ratio and the renderer size:
 
 ```js
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -345,7 +350,7 @@ Capping it at 2 is a common practice. A ratio of 3 means rendering 9 times more 
 
 ```js
 const loader = new THREE.TextureLoader();
-const texture = loader.load('/textures/wood.jpg');
+const texture = loader.load("/textures/wood.jpg");
 texture.colorSpace = THREE.SRGBColorSpace;
 
 const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -358,7 +363,7 @@ const material = new THREE.MeshStandardMaterial({ map: texture });
 `OrbitControls` let the user rotate the camera around a target with the mouse or touch, zoom with the wheel and pan with the right button.
 
 ```js
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -377,10 +382,10 @@ Other controls in the addons include `MapControls`, `TrackballControls`, `FlyCon
 The most common way is to load a glTF file with `GLTFLoader`:
 
 ```js
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const loader = new GLTFLoader();
-const gltf = await loader.loadAsync('/models/robot.glb');
+const gltf = await loader.loadAsync("/models/robot.glb");
 scene.add(gltf.scene);
 ```
 
@@ -452,7 +457,7 @@ If you want a transparent canvas so the HTML behind it shows through, create the
 const a = new THREE.Vector3(1, 2, 3);
 const b = new THREE.Vector3(4, 5, 6);
 
-a.add(b);                 // a is now (5, 7, 9)
+a.add(b); // a is now (5, 7, 9)
 const dist = a.distanceTo(b);
 const dir = b.clone().sub(a).normalize();
 const dot = a.dot(b);
@@ -487,7 +492,7 @@ Use a `Raycaster`. You convert the mouse position to normalized device coordinat
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
-renderer.domElement.addEventListener('pointerdown', (event) => {
+renderer.domElement.addEventListener("pointerdown", (event) => {
   const rect = renderer.domElement.getBoundingClientRect();
   pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -527,12 +532,16 @@ Older code uses `THREE.Clock` for this. `Clock` is deprecated since r183. `Timer
 Use an `AnimationMixer`. Each clip from `gltf.animations` becomes an `AnimationAction` that you can play, pause, fade and loop.
 
 ```js
-const gltf = await loader.loadAsync('/models/character.glb');
+const gltf = await loader.loadAsync("/models/character.glb");
 scene.add(gltf.scene);
 
 const mixer = new THREE.AnimationMixer(gltf.scene);
-const walk = mixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'Walk'));
-const run = mixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'Run'));
+const walk = mixer.clipAction(
+  THREE.AnimationClip.findByName(gltf.animations, "Walk"),
+);
+const run = mixer.clipAction(
+  THREE.AnimationClip.findByName(gltf.animations, "Run"),
+);
 walk.play();
 
 // later, blend smoothly from walk to run
@@ -587,13 +596,13 @@ Since glTF stores roughness and metalness in one texture (green and blue channel
 Load an HDR image and assign it to `scene.environment`. All PBR materials will use it for reflections and soft ambient light.
 
 ```js
-import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
-const envMap = await new HDRLoader().loadAsync('/env/studio.hdr');
+const envMap = await new HDRLoader().loadAsync("/env/studio.hdr");
 envMap.mapping = THREE.EquirectangularReflectionMapping;
 
 scene.environment = envMap;
-scene.background = envMap;      // optional
+scene.background = envMap; // optional
 scene.backgroundBlurriness = 0.3; // optional
 ```
 
@@ -621,7 +630,7 @@ Getting these wrong is the main reason scenes look washed out or too dark.
 ```js
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set(4, 4);          // tile 4 times
+texture.repeat.set(4, 4); // tile 4 times
 texture.offset.set(0.5, 0);
 texture.rotation = Math.PI / 4;
 texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -647,7 +656,9 @@ function disposeObject(root) {
     if (!obj.isMesh) return;
     obj.geometry.dispose();
 
-    const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+    const materials = Array.isArray(obj.material)
+      ? obj.material
+      : [obj.material];
     for (const material of materials) {
       for (const value of Object.values(material)) {
         if (value?.isTexture) value.dispose();
@@ -700,7 +711,7 @@ Ways to reduce them:
 - Hide objects that aren't needed instead of drawing them.
 
 ```js
-import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 const merged = mergeGeometries(geometries);
 ```
 
@@ -725,16 +736,11 @@ Create a `BufferGeometry` and add attributes from typed arrays:
 ```js
 const geometry = new THREE.BufferGeometry();
 
-const positions = new Float32Array([
-  -1, -1, 0,
-   1, -1, 0,
-   1,  1, 0,
-  -1,  1, 0,
-]);
+const positions = new Float32Array([-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0]);
 const uvs = new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]);
 
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
 geometry.setIndex([0, 1, 2, 0, 2, 3]);
 geometry.computeVertexNormals();
 ```
@@ -752,7 +758,7 @@ Both let you write your own GLSL shaders.
 const material = new THREE.ShaderMaterial({
   uniforms: {
     uTime: { value: 0 },
-    uColor: { value: new THREE.Color('hotpink') },
+    uColor: { value: new THREE.Color("hotpink") },
   },
   vertexShader: /* glsl */ `
     uniform float uTime;
@@ -784,16 +790,16 @@ These only work with `WebGLRenderer`. With `WebGPURenderer` you write shaders in
 Use `onBeforeCompile`. It gives you the shader source before it is compiled, so you can replace parts of it and keep all the built-in lighting, shadows and fog.
 
 ```js
-const material = new THREE.MeshStandardMaterial({ color: 'teal' });
+const material = new THREE.MeshStandardMaterial({ color: "teal" });
 const uniforms = { uTime: { value: 0 } };
 
 material.onBeforeCompile = (shader) => {
   shader.uniforms.uTime = uniforms.uTime;
   shader.vertexShader = shader.vertexShader
-    .replace('#include <common>', '#include <common>\nuniform float uTime;')
+    .replace("#include <common>", "#include <common>\nuniform float uTime;")
     .replace(
-      '#include <begin_vertex>',
-      '#include <begin_vertex>\ntransformed.y += sin(position.x * 3.0 + uTime) * 0.2;'
+      "#include <begin_vertex>",
+      "#include <begin_vertex>\ntransformed.y += sin(position.x * 3.0 + uTime) * 0.2;",
     );
 };
 ```
@@ -805,14 +811,21 @@ It is a string-replace hack, so it can break when the internal shader chunks cha
 With `WebGLRenderer`, use `EffectComposer` from the addons. You render the scene into a render target and then run full-screen passes over it.
 
 ```js
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 1.0, 0.4, 0.85));
+composer.addPass(
+  new UnrealBloomPass(
+    new THREE.Vector2(innerWidth, innerHeight),
+    1.0,
+    0.4,
+    0.85,
+  ),
+);
 composer.addPass(new OutputPass());
 
 renderer.setAnimationLoop(() => composer.render());
@@ -874,7 +887,10 @@ Euler angles (`rotation.x/y/z`) are easy to read, but they suffer from gimbal lo
 Quaternions don't have these problems and interpolate smoothly. Every `Object3D` keeps `rotation` and `quaternion` in sync, so you can use either one.
 
 ```js
-const target = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI);
+const target = new THREE.Quaternion().setFromAxisAngle(
+  new THREE.Vector3(0, 1, 0),
+  Math.PI,
+);
 
 // smoothly rotate towards target
 mesh.quaternion.slerp(target, 0.1);
@@ -894,13 +910,15 @@ mesh.quaternion.rotateTowards(target, 2 * delta);
 The `gltf-transform` CLI does most of this in one command. In Three.js you register the decoders:
 
 ```js
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
-import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 
-const draco = new DRACOLoader().setDecoderPath('/draco/');
-const ktx2 = new KTX2Loader().setTranscoderPath('/basis/').detectSupport(renderer);
+const draco = new DRACOLoader().setDecoderPath("/draco/");
+const ktx2 = new KTX2Loader()
+  .setTranscoderPath("/basis/")
+  .detectSupport(renderer);
 
 const loader = new GLTFLoader()
   .setDRACOLoader(draco)
@@ -921,7 +939,7 @@ manager.onProgress = (url, loaded, total) => {
   progressBar.style.width = `${(loaded / total) * 100}%`;
 };
 manager.onLoad = () => loadingScreen.remove();
-manager.onError = (url) => console.error('Failed to load', url);
+manager.onError = (url) => console.error("Failed to load", url);
 
 const gltfLoader = new GLTFLoader(manager);
 const textureLoader = new THREE.TextureLoader(manager);
@@ -934,9 +952,9 @@ The progress is counted per file, not per byte, so one large file shows 0% until
 React Three Fiber (R3F) is a React renderer for Three.js. You describe the scene with JSX, and it creates and updates the Three.js objects for you. Everything in Three.js is available, it is not a wrapper with a limited API.
 
 ```jsx
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { useRef } from 'react';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { useRef } from "react";
 
 function Box() {
   const ref = useRef();
@@ -968,17 +986,20 @@ export default function App() {
 Use `CSS2DRenderer` from the addons. It positions normal HTML elements over the canvas so they follow 3D objects.
 
 ```js
-import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import {
+  CSS2DRenderer,
+  CSS2DObject,
+} from "three/addons/renderers/CSS2DRenderer.js";
 
 const labelRenderer = new CSS2DRenderer();
 labelRenderer.setSize(innerWidth, innerHeight);
-labelRenderer.domElement.style.position = 'absolute';
-labelRenderer.domElement.style.top = '0';
-labelRenderer.domElement.style.pointerEvents = 'none';
+labelRenderer.domElement.style.position = "absolute";
+labelRenderer.domElement.style.top = "0";
+labelRenderer.domElement.style.pointerEvents = "none";
 document.body.appendChild(labelRenderer.domElement);
 
-const div = document.createElement('div');
-div.textContent = 'Engine';
+const div = document.createElement("div");
+div.textContent = "Engine";
 const label = new CSS2DObject(div);
 label.position.set(0, 1.2, 0);
 car.add(label);
@@ -998,10 +1019,10 @@ Every object and camera has a `layers` property with 32 layers. An object is ren
 const HIDDEN_FROM_MAIN = 1;
 helper.layers.set(HIDDEN_FROM_MAIN); // only on layer 1
 
-camera.layers.enable(0);              // main camera sees layer 0 only
+camera.layers.enable(0); // main camera sees layer 0 only
 debugCamera.layers.enable(HIDDEN_FROM_MAIN);
 
-raycaster.layers.set(2);              // only pick objects on layer 2
+raycaster.layers.set(2); // only pick objects on layer 2
 ```
 
 Uses: selective bloom, hiding objects from certain cameras (minimap, mirrors), and limiting raycasting to clickable objects. Lights don't use layers to decide what they light.
@@ -1013,9 +1034,9 @@ WebGL lines are drawn with `gl.LINES`, and most platforms (including Chrome on W
 For thick lines use `Line2` with `LineMaterial` and `LineGeometry` from the addons. They build each segment out of triangles:
 
 ```js
-import { Line2 } from 'three/addons/lines/Line2.js';
-import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+import { Line2 } from "three/addons/lines/Line2.js";
+import { LineMaterial } from "three/addons/lines/LineMaterial.js";
+import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 
 const geometry = new LineGeometry().setPositions([0, 0, 0, 1, 1, 0, 2, 0, 0]);
 const material = new LineMaterial({ color: 0xff0000, linewidth: 4 }); // in pixels
@@ -1073,8 +1094,8 @@ const decalMaterial = new THREE.MeshStandardMaterial({
 Morph targets (blend shapes) store alternate vertex positions for the same mesh. You blend between them with weights from 0 to 1. They are used for facial expressions, lip sync and shape changes that bones can't do well.
 
 ```js
-const head = gltf.scene.getObjectByName('Head');
-const index = head.morphTargetDictionary['smile'];
+const head = gltf.scene.getObjectByName("Head");
+const index = head.morphTargetDictionary["smile"];
 head.morphTargetInfluences[index] = 0.8;
 ```
 
@@ -1087,7 +1108,7 @@ Morph targets from glTF can be animated with `AnimationMixer` like any other tra
 `WebGPURenderer` is the newer renderer. Despite the name, it has two backends: it uses WebGPU when the browser supports it and falls back to a WebGL 2 backend otherwise, so the same code runs in both cases.
 
 ```js
-import * as THREE from 'three/webgpu';
+import * as THREE from "three/webgpu";
 
 const renderer = new THREE.WebGPURenderer({ antialias: true });
 renderer.setSize(innerWidth, innerHeight);
@@ -1110,14 +1131,22 @@ Main differences:
 TSL (Three Shading Language) is a way to write shaders as JavaScript function calls instead of GLSL strings. You build a node graph, and Three.js compiles it to WGSL for WebGPU or GLSL for the WebGL backend.
 
 ```js
-import * as THREE from 'three/webgpu';
-import { color, positionLocal, normalLocal, sin, time, mix, uv } from 'three/tsl';
+import * as THREE from "three/webgpu";
+import {
+  color,
+  positionLocal,
+  normalLocal,
+  sin,
+  time,
+  mix,
+  uv,
+} from "three/tsl";
 
 const material = new THREE.MeshStandardNodeMaterial();
 
-material.colorNode = mix(color('#1e3a8a'), color('#f97316'), uv().y);
+material.colorNode = mix(color("#1e3a8a"), color("#f97316"), uv().y);
 material.positionNode = positionLocal.add(
-  normalLocal.mul(sin(time.mul(2).add(positionLocal.y.mul(5))).mul(0.05))
+  normalLocal.mul(sin(time.mul(2).add(positionLocal.y.mul(5))).mul(0.05)),
 );
 ```
 
@@ -1134,16 +1163,29 @@ Why it exists:
 With `WebGPURenderer` and TSL. A typical case is updating thousands of particles on the GPU instead of in JavaScript.
 
 ```js
-import * as THREE from 'three/webgpu';
-import { Fn, instancedArray, instanceIndex, deltaTime, vec3, hash } from 'three/tsl';
+import * as THREE from "three/webgpu";
+import {
+  Fn,
+  instancedArray,
+  instanceIndex,
+  deltaTime,
+  vec3,
+  hash,
+} from "three/tsl";
 
 const count = 100000;
-const positions = instancedArray(count, 'vec3');
-const velocities = instancedArray(count, 'vec3');
+const positions = instancedArray(count, "vec3");
+const velocities = instancedArray(count, "vec3");
 
 const init = Fn(() => {
   const v = velocities.element(instanceIndex);
-  v.assign(vec3(hash(instanceIndex), hash(instanceIndex.add(1)), hash(instanceIndex.add(2))).sub(0.5));
+  v.assign(
+    vec3(
+      hash(instanceIndex),
+      hash(instanceIndex.add(1)),
+      hash(instanceIndex.add(2)),
+    ).sub(0.5),
+  );
 })().compute(count);
 
 const update = Fn(() => {
@@ -1295,7 +1337,11 @@ Options:
 - **three-mesh-bvh**: builds a bounding volume hierarchy for each geometry so the ray only checks a few triangles. It is usually a 100x or bigger speedup and also gives fast shape casts and distance queries.
 
 ```js
-import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
+import {
+  computeBoundsTree,
+  disposeBoundsTree,
+  acceleratedRaycast,
+} from "three-mesh-bvh";
 
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
@@ -1354,14 +1400,14 @@ const renderer = new THREE.WebGLRenderer({ reversedDepthBuffer: true });
 With `WebGPURenderer` it is cleaner: render the scene once with MRT, writing both `output` and `emissive`, and run `bloom()` only on the emissive output:
 
 ```js
-import { pass, mrt, output, emissive } from 'three/tsl';
-import { bloom } from 'three/addons/tsl/display/BloomNode.js';
+import { pass, mrt, output, emissive } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 const scenePass = pass(scene, camera);
 scenePass.setMRT(mrt({ output, emissive }));
 
-const color = scenePass.getTextureNode('output');
-const glow = scenePass.getTextureNode('emissive');
+const color = scenePass.getTextureNode("output");
+const glow = scenePass.getTextureNode("emissive");
 
 const pipeline = new THREE.RenderPipeline(renderer);
 pipeline.outputNode = color.add(bloom(glow, 2.5, 0.5));
@@ -1376,13 +1422,13 @@ The browser can take the GPU context away from a page: the GPU driver resets, th
 ```js
 const canvas = renderer.domElement;
 
-canvas.addEventListener('webglcontextlost', (event) => {
+canvas.addEventListener("webglcontextlost", (event) => {
   event.preventDefault(); // allows the context to be restored
   renderer.setAnimationLoop(null);
-  showMessage('Graphics were reset, restoring...');
+  showMessage("Graphics were reset, restoring...");
 });
 
-canvas.addEventListener('webglcontextrestored', () => {
+canvas.addEventListener("webglcontextrestored", () => {
   hideMessage();
   renderer.setAnimationLoop(animate);
 });
@@ -1396,23 +1442,34 @@ Transfer the canvas to a worker with `OffscreenCanvas`. Rendering and scene logi
 
 ```js
 // main.js
-const canvas = document.querySelector('canvas');
+const canvas = document.querySelector("canvas");
 const offscreen = canvas.transferControlToOffscreen();
-const worker = new Worker(new URL('./render-worker.js', import.meta.url), { type: 'module' });
+const worker = new Worker(new URL("./render-worker.js", import.meta.url), {
+  type: "module",
+});
 
 worker.postMessage(
-  { type: 'init', canvas: offscreen, width: canvas.clientWidth, height: canvas.clientHeight, dpr: devicePixelRatio },
-  [offscreen]
+  {
+    type: "init",
+    canvas: offscreen,
+    width: canvas.clientWidth,
+    height: canvas.clientHeight,
+    dpr: devicePixelRatio,
+  },
+  [offscreen],
 );
 ```
 
 ```js
 // render-worker.js
-import * as THREE from 'three';
+import * as THREE from "three";
 
 self.onmessage = ({ data }) => {
-  if (data.type !== 'init') return;
-  const renderer = new THREE.WebGLRenderer({ canvas: data.canvas, antialias: true });
+  if (data.type !== "init") return;
+  const renderer = new THREE.WebGLRenderer({
+    canvas: data.canvas,
+    antialias: true,
+  });
   renderer.setPixelRatio(data.dpr);
   renderer.setSize(data.width, data.height, false); // false: there is no style in a worker
   // build scene, then renderer.setAnimationLoop(...)
@@ -1431,12 +1488,14 @@ On unmount:
 function destroy() {
   renderer.setAnimationLoop(null);
   controls.dispose();
-  window.removeEventListener('resize', onResize);
+  window.removeEventListener("resize", onResize);
 
   scene.traverse((obj) => {
     if (obj.geometry) obj.geometry.dispose();
     if (obj.material) {
-      const materials = Array.isArray(obj.material) ? obj.material : [obj.material];
+      const materials = Array.isArray(obj.material)
+        ? obj.material
+        : [obj.material];
       materials.forEach((m) => {
         Object.values(m).forEach((v) => v?.isTexture && v.dispose());
         m.dispose();
@@ -1460,9 +1519,9 @@ Also watch out for closures that keep the scene alive (event handlers, global ca
 Use `SkeletonUtils.clone`, which rebuilds the skeleton with the cloned bones:
 
 ```js
-import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
+import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
-const gltf = await loader.loadAsync('/models/soldier.glb');
+const gltf = await loader.loadAsync("/models/soldier.glb");
 
 for (let i = 0; i < 10; i++) {
   const soldier = SkeletonUtils.clone(gltf.scene);
@@ -1492,10 +1551,14 @@ for (let i = 0; i < count * 3; i++) {
 }
 
 const geometry = new THREE.BufferGeometry();
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-const material = new THREE.PointsMaterial({ size: 0.05, vertexColors: true, sizeAttenuation: true });
+const material = new THREE.PointsMaterial({
+  size: 0.05,
+  vertexColors: true,
+  sizeAttenuation: true,
+});
 scene.add(new THREE.Points(geometry, material));
 ```
 
@@ -1549,8 +1612,8 @@ function requestRender() {
   needsRender = true;
 }
 
-controls.addEventListener('change', requestRender);
-window.addEventListener('resize', () => {
+controls.addEventListener("change", requestRender);
+window.addEventListener("resize", () => {
   // update camera and renderer size...
   requestRender();
 });
@@ -1593,13 +1656,13 @@ In practice you combine this with an environment map, tone mapping and exposure,
 Enable XR on the renderer and use the button helpers from the addons to start a session:
 
 ```js
-import { VRButton } from 'three/addons/webxr/VRButton.js';
+import { VRButton } from "three/addons/webxr/VRButton.js";
 
 renderer.xr.enabled = true;
 document.body.appendChild(VRButton.createButton(renderer));
 
 const controller = renderer.xr.getController(0);
-controller.addEventListener('select', onSelect);
+controller.addEventListener("select", onSelect);
 scene.add(controller);
 
 renderer.setAnimationLoop(() => renderer.render(scene, camera));
@@ -1619,7 +1682,7 @@ Things that matter in XR:
 The easiest way is `ShaderPass` with a shader object. The previous pass's result comes in as the `tDiffuse` uniform.
 
 ```js
-import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 const VignetteShader = {
   uniforms: {

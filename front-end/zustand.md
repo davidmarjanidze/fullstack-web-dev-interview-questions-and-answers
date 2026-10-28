@@ -489,13 +489,13 @@ The current major version is v5 (5.0.x). It needs React 18 or newer and TypeScri
 You call `create` with a function that returns the initial state and the actions.
 
 ```js
-import { create } from 'zustand'
+import { create } from "zustand";
 
 const useCounterStore = create((set) => ({
   count: 0,
   increment: () => set((state) => ({ count: state.count + 1 })),
   reset: () => set({ count: 0 }),
-}))
+}));
 ```
 
 The result, `useCounterStore`, is a React hook.
@@ -506,10 +506,10 @@ Call the hook with a selector function that picks the value you need.
 
 ```jsx
 function Counter() {
-  const count = useCounterStore((state) => state.count)
-  const increment = useCounterStore((state) => state.increment)
+  const count = useCounterStore((state) => state.count);
+  const increment = useCounterStore((state) => state.increment);
 
-  return <button onClick={increment}>Count: {count}</button>
+  return <button onClick={increment}>Count: {count}</button>;
 }
 ```
 
@@ -522,8 +522,8 @@ No. A store made with `create` lives in a module, outside of React, so any compo
 `set` updates the store state and notifies subscribers. You can pass it an object with the fields you want to change, or a function that receives the current state and returns those fields.
 
 ```js
-set({ loading: true })
-set((state) => ({ count: state.count + 1 }))
+set({ loading: true });
+set((state) => ({ count: state.count + 1 }));
 ```
 
 ### 9: Does `set` replace the whole state or merge it?
@@ -536,8 +536,8 @@ No, the merge is only one level deep. If you update a nested object you must cop
 
 ```js
 set((state) => ({
-  user: { ...state.user, name: 'Ana' },
-}))
+  user: { ...state.user, name: "Ana" },
+}));
 ```
 
 If you only return `{ user: { name: 'Ana' } }`, every other field inside `user` is lost.
@@ -551,7 +551,7 @@ const useCartStore = create((set, get) => ({
   items: [],
   total: () => get().items.reduce((sum, item) => sum + item.price, 0),
   clear: () => set({ items: [] }),
-}))
+}));
 ```
 
 ### 12: What is a selector?
@@ -592,8 +592,8 @@ Zustand won't know the state changed, so no listener is called and no component 
 The hook returned by `create` also has the store methods attached to it, so you can call `getState()` anywhere.
 
 ```js
-const count = useCounterStore.getState().count
-useCounterStore.getState().increment()
+const count = useCounterStore.getState().count;
+useCounterStore.getState().increment();
 ```
 
 This is useful in event handlers, utility functions or API code.
@@ -603,8 +603,8 @@ This is useful in event handlers, utility functions or API code.
 Use `setState` on the hook.
 
 ```js
-useCounterStore.setState({ count: 10 })
-useCounterStore.setState((state) => ({ count: state.count + 1 }))
+useCounterStore.setState({ count: 10 });
+useCounterStore.setState((state) => ({ count: state.count + 1 }));
 ```
 
 It works the same way as `set` inside the store.
@@ -619,10 +619,10 @@ The hook has `getState`, `setState`, `getInitialState` and `subscribe`. Middlewa
 
 ```js
 const unsubscribe = useCounterStore.subscribe((state, prevState) => {
-  console.log('count changed from', prevState.count, 'to', state.count)
-})
+  console.log("count changed from", prevState.count, "to", state.count);
+});
 
-unsubscribe()
+unsubscribe();
 ```
 
 ### 23: What does `getInitialState` return?
@@ -634,7 +634,7 @@ It returns the state that the store creator returned when the store was created.
 Replace the current state with the initial state.
 
 ```js
-useCounterStore.setState(useCounterStore.getInitialState(), true)
+useCounterStore.setState(useCounterStore.getInitialState(), true);
 ```
 
 You can also add a `reset` action inside the store that does the same thing.
@@ -648,12 +648,12 @@ const useUserStore = create((set) => ({
   user: null,
   loading: false,
   fetchUser: async (id) => {
-    set({ loading: true })
-    const res = await fetch(`/api/users/${id}`)
-    const user = await res.json()
-    set({ user, loading: false })
+    set({ loading: true });
+    const res = await fetch(`/api/users/${id}`);
+    const user = await res.json();
+    set({ user, loading: false });
   },
-}))
+}));
 ```
 
 ### 26: Does Zustand need middleware like redux-thunk for async code?
@@ -690,12 +690,12 @@ Since `create` returns a hook, the name usually starts with `use`, for example `
 Yes. `createStore` from `zustand/vanilla` creates a store with no React dependency. It has the same `getState`, `setState`, `subscribe` and `getInitialState` methods. You can use it in plain JavaScript, in other frameworks, or connect it to React later with `useStore`.
 
 ```js
-import { createStore } from 'zustand/vanilla'
+import { createStore } from "zustand/vanilla";
 
 const counterStore = createStore((set) => ({
   count: 0,
   increment: () => set((state) => ({ count: state.count + 1 })),
-}))
+}));
 ```
 
 ### 31: What is the difference between `create` and `createStore`?
@@ -707,11 +707,11 @@ const counterStore = createStore((set) => ({
 Use the `useStore` hook and pass it the store and a selector.
 
 ```jsx
-import { useStore } from 'zustand'
+import { useStore } from "zustand";
 
 function Counter() {
-  const count = useStore(counterStore, (state) => state.count)
-  return <span>{count}</span>
+  const count = useStore(counterStore, (state) => state.count);
+  return <span>{count}</span>;
 }
 ```
 
@@ -740,7 +740,7 @@ It is the function you pass to `create` or `createStore`. It receives `set`, `ge
 ```js
 const useStore = create((set, get, store) => ({
   value: 0,
-}))
+}));
 ```
 
 The third argument is rarely needed, but middleware uses it.
@@ -758,8 +758,8 @@ Because actions are created one time inside the store creator and keep the same 
 The simplest way is one hook call per value.
 
 ```jsx
-const count = useCounterStore((s) => s.count)
-const step = useCounterStore((s) => s.step)
+const count = useCounterStore((s) => s.count);
+const step = useCounterStore((s) => s.step);
 ```
 
 If you want one call that returns an object or array, wrap the selector with `useShallow`, otherwise you'll get extra re-renders or an infinite loop warning.
@@ -769,11 +769,11 @@ If you want one call that returns an object or array, wrap the selector with `us
 `useShallow` is a hook from `zustand/shallow` that wraps a selector. It remembers the last result and returns the old reference when the new result is shallowly equal. This makes selectors that return objects or arrays safe to use.
 
 ```jsx
-import { useShallow } from 'zustand/shallow'
+import { useShallow } from "zustand/shallow";
 
 const { count, step } = useCounterStore(
   useShallow((s) => ({ count: s.count, step: s.step })),
-)
+);
 ```
 
 ### 41: What does "shallow equal" mean?
@@ -785,10 +785,10 @@ Two values are shallowly equal if they have the same keys (or the same items for
 `shallow` is a plain function that compares two values shallowly and returns `true` or `false`. It works with objects, arrays, Maps and Sets. It is used inside `useShallow`, and you can also pass it as an equality function to `createWithEqualityFn` or `subscribeWithSelector`.
 
 ```js
-import { shallow } from 'zustand/shallow'
+import { shallow } from "zustand/shallow";
 
-shallow({ a: 1 }, { a: 1 }) // true
-shallow([1, 2], [1, 2]) // true
+shallow({ a: 1 }, { a: 1 }); // true
+shallow([1, 2], [1, 2]); // true
 ```
 
 ### 43: How do you use Zustand with TypeScript?
@@ -796,17 +796,17 @@ shallow([1, 2], [1, 2]) // true
 Define a type for the state and pass it to `create`. Note the extra `()` after `create<State>()`. It is needed for TypeScript to infer types correctly, especially with middleware.
 
 ```ts
-import { create } from 'zustand'
+import { create } from "zustand";
 
 interface CounterState {
-  count: number
-  increment: () => void
+  count: number;
+  increment: () => void;
 }
 
 const useCounterStore = create<CounterState>()((set) => ({
   count: 0,
   increment: () => set((state) => ({ count: state.count + 1 })),
-}))
+}));
 ```
 
 ### 44: Why do you write `create<T>()(...)` with two sets of parentheses in TypeScript?
@@ -818,12 +818,12 @@ It is a curried call. The first call takes only the state type, and the second t
 Middleware is a function that wraps the store creator to add behavior. For example, `persist` saves state to storage and `devtools` connects to the Redux DevTools. You apply it by wrapping the store creator.
 
 ```js
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const useStore = create(
-  persist((set) => ({ theme: 'light' }), { name: 'settings' }),
-)
+  persist((set) => ({ theme: "light" }), { name: "settings" }),
+);
 ```
 
 ### 46: What middleware comes with Zustand?
@@ -840,18 +840,18 @@ const useStore = create(
 Wrap the store with the `persist` middleware and give it a unique `name`. By default it uses `localStorage`.
 
 ```js
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const useSettingsStore = create(
   persist(
     (set) => ({
-      theme: 'light',
+      theme: "light",
       setTheme: (theme) => set({ theme }),
     }),
-    { name: 'settings-storage' },
+    { name: "settings-storage" },
   ),
-)
+);
 ```
 
 ### 48: What is the `name` option in `persist`?
@@ -863,12 +863,12 @@ It is the key used in storage, so in the example above the data is saved under `
 Pass a different storage with `createJSONStorage`.
 
 ```js
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { persist, createJSONStorage } from "zustand/middleware";
 
 persist(storeCreator, {
-  name: 'form-draft',
+  name: "form-draft",
   storage: createJSONStorage(() => sessionStorage),
-})
+});
 ```
 
 ### 50: How do you see Zustand state in the Redux DevTools?
@@ -876,18 +876,19 @@ persist(storeCreator, {
 Wrap the store with the `devtools` middleware and install the Redux DevTools browser extension.
 
 ```js
-import { create } from 'zustand'
-import { devtools } from 'zustand/middleware'
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 const useCounterStore = create(
   devtools(
     (set) => ({
       count: 0,
-      increment: () => set((s) => ({ count: s.count + 1 }), undefined, 'counter/increment'),
+      increment: () =>
+        set((s) => ({ count: s.count + 1 }), undefined, "counter/increment"),
     }),
-    { name: 'CounterStore' },
+    { name: "CounterStore" },
   ),
-)
+);
 ```
 
 The third argument to `set` is the action name shown in DevTools.
@@ -897,19 +898,19 @@ The third argument to `set` is the action name shown in DevTools.
 It lets you write state updates as if you were changing the state directly. Immer turns those changes into a new immutable state for you. This is handy when you update deeply nested data.
 
 ```js
-import { create } from 'zustand'
-import { immer } from 'zustand/middleware/immer'
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
 const useTodoStore = create(
   immer((set) => ({
     todos: [],
     toggle: (id) =>
       set((state) => {
-        const todo = state.todos.find((t) => t.id === id)
-        if (todo) todo.done = !todo.done
+        const todo = state.todos.find((t) => t.id === id);
+        if (todo) todo.done = !todo.done;
       }),
   })),
-)
+);
 ```
 
 You need to install `immer` yourself.
@@ -949,7 +950,7 @@ Compute them in a selector. You don't need to store derived values in state.
 ```js
 const total = useCartStore((s) =>
   s.items.reduce((sum, item) => sum + item.price * item.qty, 0),
-)
+);
 ```
 
 If the result is a primitive like a number, this is cheap and causes no extra re-renders.
@@ -964,7 +965,7 @@ Usually no. If you store both `items` and `total`, you must keep them in sync on
 const useUiStore = create((set) => ({
   sidebarOpen: false,
   toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-}))
+}));
 ```
 
 Use the function form of `set` because the new value depends on the old one.
@@ -1021,10 +1022,13 @@ const useStore = create((set, get) => ({
   items: [],
   clear: () => set({ items: [] }),
   checkout: async () => {
-    await fetch('/api/checkout', { method: 'POST', body: JSON.stringify(get().items) })
-    get().clear()
+    await fetch("/api/checkout", {
+      method: "POST",
+      body: JSON.stringify(get().items),
+    });
+    get().clear();
   },
-}))
+}));
 ```
 
 ### 68: Can you use a store inside a custom hook?
@@ -1033,7 +1037,7 @@ Yes. Store hooks are normal hooks, so you can wrap them in your own hooks to giv
 
 ```js
 export function useIsLoggedIn() {
-  return useAuthStore((s) => s.user !== null)
+  return useAuthStore((s) => s.user !== null);
 }
 ```
 
@@ -1048,10 +1052,10 @@ Read it with `getState()` inside the handler. The component won't re-render when
 ```jsx
 function SaveButton() {
   const save = () => {
-    const draft = useEditorStore.getState().draft
-    fetch('/api/save', { method: 'POST', body: JSON.stringify(draft) })
-  }
-  return <button onClick={save}>Save</button>
+    const draft = useEditorStore.getState().draft;
+    fetch("/api/save", { method: "POST", body: JSON.stringify(draft) });
+  };
+  return <button onClick={save}>Save</button>;
 }
 ```
 
@@ -1068,14 +1072,14 @@ Tearing is when two components show different values for the same state during o
 `combine` takes an initial state object and a function that creates actions, and merges them. Its main use is TypeScript: the state type is inferred from the initial object, so you don't have to write an interface.
 
 ```ts
-import { create } from 'zustand'
-import { combine } from 'zustand/middleware'
+import { create } from "zustand";
+import { combine } from "zustand/middleware";
 
 const useCounterStore = create(
   combine({ count: 0 }, (set) => ({
     increment: () => set((s) => ({ count: s.count + 1 })),
   })),
-)
+);
 ```
 
 ### 74: What is the `subscribeWithSelector` middleware?
@@ -1083,15 +1087,15 @@ const useCounterStore = create(
 It changes the store's `subscribe` method so you can pass a selector and only be called when that selected value changes. You can also give an equality function and ask it to fire right away.
 
 ```js
-import { create } from 'zustand'
-import { subscribeWithSelector } from 'zustand/middleware'
+import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 
-const useStore = create(subscribeWithSelector(() => ({ count: 0, name: '' })))
+const useStore = create(subscribeWithSelector(() => ({ count: 0, name: "" })));
 
 useStore.subscribe(
   (state) => state.count,
-  (count, prevCount) => console.log(prevCount, '->', count),
-)
+  (count, prevCount) => console.log(prevCount, "->", count),
+);
 ```
 
 ### 75: What is the `redux` middleware?
@@ -1099,21 +1103,21 @@ useStore.subscribe(
 It lets you write the store as a reducer and update it with `dispatch`, like in Redux.
 
 ```js
-import { create } from 'zustand'
-import { redux } from 'zustand/middleware'
+import { create } from "zustand";
+import { redux } from "zustand/middleware";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'increment':
-      return { count: state.count + 1 }
+    case "increment":
+      return { count: state.count + 1 };
     default:
-      return state
+      return state;
   }
-}
+};
 
-const useCounterStore = create(redux(reducer, { count: 0 }))
+const useCounterStore = create(redux(reducer, { count: 0 }));
 
-useCounterStore.dispatch({ type: 'increment' })
+useCounterStore.dispatch({ type: "increment" });
 ```
 
 It is useful when moving from Redux or when you like the reducer pattern.
@@ -1126,17 +1130,17 @@ It is a way to split a big store into smaller pieces. Each slice is a function t
 const createBearSlice = (set) => ({
   bears: 0,
   addBear: () => set((s) => ({ bears: s.bears + 1 })),
-})
+});
 
 const createFishSlice = (set) => ({
   fishes: 0,
   addFish: () => set((s) => ({ fishes: s.fishes + 1 })),
-})
+});
 
 const useBoundStore = create((...a) => ({
   ...createBearSlice(...a),
   ...createFishSlice(...a),
-}))
+}));
 ```
 
 ### 77: Should you use one big store or many small stores?
@@ -1149,9 +1153,13 @@ Yes. Just call each store hook.
 
 ```jsx
 function Header() {
-  const user = useAuthStore((s) => s.user)
-  const itemCount = useCartStore((s) => s.items.length)
-  return <div>{user?.name} ({itemCount})</div>
+  const user = useAuthStore((s) => s.user);
+  const itemCount = useCartStore((s) => s.items.length);
+  return (
+    <div>
+      {user?.name} ({itemCount})
+    </div>
+  );
 }
 ```
 
@@ -1160,7 +1168,7 @@ function Header() {
 Call `clearStorage` on the store's `persist` API.
 
 ```js
-useSettingsStore.persist.clearStorage()
+useSettingsStore.persist.clearStorage();
 ```
 
 This removes the item from storage but does not change the in-memory state. Reset the state separately if you need to.
@@ -1171,9 +1179,9 @@ Use the `partialize` option to return only the fields you want saved.
 
 ```js
 persist(storeCreator, {
-  name: 'app',
+  name: "app",
   partialize: (state) => ({ theme: state.theme, language: state.language }),
-})
+});
 ```
 
 Actions are not saved anyway, because functions can't be turned into JSON.
@@ -1187,11 +1195,11 @@ Hydration is when `persist` reads the saved data from storage and merges it into
 Use `persist.hasHydrated()`, or listen with `persist.onFinishHydration`.
 
 ```js
-const hydrated = useSettingsStore.persist.hasHydrated()
+const hydrated = useSettingsStore.persist.hasHydrated();
 
 const unsub = useSettingsStore.persist.onFinishHydration((state) => {
-  console.log('hydrated', state)
-})
+  console.log("hydrated", state);
+});
 ```
 
 ### 83: How do you use Zustand persist with React Native?
@@ -1199,16 +1207,16 @@ const unsub = useSettingsStore.persist.onFinishHydration((state) => {
 Use `createJSONStorage` with AsyncStorage.
 
 ```js
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 const useStore = create(
   persist((set) => ({ token: null, setToken: (token) => set({ token }) }), {
-    name: 'auth',
+    name: "auth",
     storage: createJSONStorage(() => AsyncStorage),
   }),
-)
+);
 ```
 
 Because AsyncStorage is async, check `hasHydrated` before relying on the saved values.
@@ -1234,7 +1242,10 @@ It needs the Redux DevTools browser extension. If the extension is not installed
 Use the `enabled` option.
 
 ```js
-devtools(storeCreator, { name: 'AppStore', enabled: process.env.NODE_ENV !== 'production' })
+devtools(storeCreator, {
+  name: "AppStore",
+  enabled: process.env.NODE_ENV !== "production",
+});
 ```
 
 Without `enabled`, the middleware is already off when the build runs in production mode (it checks `process.env.NODE_ENV` in the CommonJS build and `import.meta.env.MODE` in the ESM build), but setting `enabled` makes it explicit.
@@ -1252,18 +1263,18 @@ The second argument is the `replace` flag, so pass `undefined` or `false` there.
 ### 90: How do you write a simple counter with Zustand?
 
 ```jsx
-import { create } from 'zustand'
+import { create } from "zustand";
 
 const useCounterStore = create((set) => ({
   count: 0,
   inc: () => set((s) => ({ count: s.count + 1 })),
   dec: () => set((s) => ({ count: s.count - 1 })),
-}))
+}));
 
 export default function Counter() {
-  const count = useCounterStore((s) => s.count)
-  const inc = useCounterStore((s) => s.inc)
-  const dec = useCounterStore((s) => s.dec)
+  const count = useCounterStore((s) => s.count);
+  const inc = useCounterStore((s) => s.inc);
+  const dec = useCounterStore((s) => s.dec);
 
   return (
     <div>
@@ -1271,25 +1282,27 @@ export default function Counter() {
       <span>{count}</span>
       <button onClick={inc}>+</button>
     </div>
-  )
+  );
 }
 ```
 
 ### 91: How do you write a simple todo store?
 
 ```js
-import { create } from 'zustand'
+import { create } from "zustand";
 
 const useTodoStore = create((set) => ({
   todos: [],
   add: (text) =>
-    set((s) => ({ todos: [...s.todos, { id: crypto.randomUUID(), text, done: false }] })),
+    set((s) => ({
+      todos: [...s.todos, { id: crypto.randomUUID(), text, done: false }],
+    })),
   toggle: (id) =>
     set((s) => ({
       todos: s.todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
     })),
   remove: (id) => set((s) => ({ todos: s.todos.filter((t) => t.id !== id) })),
-}))
+}));
 ```
 
 ### 92: How do you store a simple auth state?
@@ -1300,7 +1313,7 @@ const useAuthStore = create((set) => ({
   token: null,
   login: (user, token) => set({ user, token }),
   logout: () => set({ user: null, token: null }),
-}))
+}));
 ```
 
 Often this store is wrapped in `persist` so the user stays logged in after a page reload. Be careful about what you save, since `localStorage` can be read by any script on the page.
@@ -1311,12 +1324,13 @@ Often this store is wrapped in `persist` so the user stays logged in after a pag
 const useThemeStore = create(
   persist(
     (set) => ({
-      theme: 'light',
-      toggleTheme: () => set((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' })),
+      theme: "light",
+      toggleTheme: () =>
+        set((s) => ({ theme: s.theme === "light" ? "dark" : "light" })),
     }),
-    { name: 'theme' },
+    { name: "theme" },
   ),
-)
+);
 ```
 
 ### 94: How do you use a store value in a `useEffect`?
@@ -1324,12 +1338,12 @@ const useThemeStore = create(
 Select the value and use it as a dependency like any other value.
 
 ```jsx
-const query = useSearchStore((s) => s.query)
+const query = useSearchStore((s) => s.query);
 
 useEffect(() => {
-  if (!query) return
-  fetchResults(query)
-}, [query])
+  if (!query) return;
+  fetchResults(query);
+}, [query]);
 ```
 
 Actions can be called from effects too, and since their reference is stable they don't cause the effect to rerun.
@@ -1359,11 +1373,11 @@ const useStore = create((set) => ({
   selected: new Set(),
   toggle: (id) =>
     set((s) => {
-      const next = new Set(s.selected)
-      next.has(id) ? next.delete(id) : next.add(id)
-      return { selected: next }
+      const next = new Set(s.selected);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return { selected: next };
     }),
-}))
+}));
 ```
 
 Note that Maps and Sets don't serialize to JSON, so `persist` needs a custom `replacer` and `reviver`.
@@ -1377,12 +1391,12 @@ There is no rule. Common choices are a `stores/` folder with one file per store 
 Write them as plain functions and export them, so components don't repeat the same logic.
 
 ```js
-export const selectItemCount = (state) => state.items.length
+export const selectItemCount = (state) => state.items.length;
 export const selectTotal = (state) =>
-  state.items.reduce((sum, i) => sum + i.price * i.qty, 0)
+  state.items.reduce((sum, i) => sum + i.price * i.qty, 0);
 
 // in a component
-const total = useCartStore(selectTotal)
+const total = useCartStore(selectTotal);
 ```
 
 ### 102: Why is a selector defined outside the component a good idea?
@@ -1399,15 +1413,19 @@ It marks the shape of the saved data. When you change the state shape in a break
 
 ```js
 persist(storeCreator, {
-  name: 'settings',
+  name: "settings",
   version: 1,
   migrate: (persistedState, version) => {
     if (version === 0) {
-      return { ...persistedState, language: persistedState.lang, lang: undefined }
+      return {
+        ...persistedState,
+        language: persistedState.lang,
+        lang: undefined,
+      };
     }
-    return persistedState
+    return persistedState;
   },
-})
+});
 ```
 
 If the version changes and there is no `migrate`, the saved state is not used and an error is logged.
@@ -1433,17 +1451,17 @@ State is the data, like `count` or `todos`. Actions are the functions that chang
 `StateCreator` is the type of the function you pass to `create`. You use it mostly when writing slices or reusable store parts.
 
 ```ts
-import type { StateCreator } from 'zustand'
+import type { StateCreator } from "zustand";
 
 interface BearSlice {
-  bears: number
-  addBear: () => void
+  bears: number;
+  addBear: () => void;
 }
 
 const createBearSlice: StateCreator<BearSlice> = (set) => ({
   bears: 0,
   addBear: () => set((s) => ({ bears: s.bears + 1 })),
-})
+});
 ```
 
 ### 110: What is `StoreApi` in TypeScript?
@@ -1455,9 +1473,9 @@ const createBearSlice: StateCreator<BearSlice> = (set) => ({
 `ExtractState` is a type helper that gets the state type from a store or a store hook.
 
 ```ts
-import type { ExtractState } from 'zustand'
+import type { ExtractState } from "zustand";
 
-type CounterState = ExtractState<typeof useCounterStore>
+type CounterState = ExtractState<typeof useCounterStore>;
 ```
 
 It saves you from exporting the state interface separately.
@@ -1467,8 +1485,8 @@ It saves you from exporting the state interface separately.
 The state type comes from the store, so inline selectors are typed for you. For selectors defined outside the component, type the parameter.
 
 ```ts
-const selectCount = (state: CounterState) => state.count
-const count = useCounterStore(selectCount) // number
+const selectCount = (state: CounterState) => state.count;
+const count = useCounterStore(selectCount); // number
 ```
 
 ### 113: Does Zustand store state immutably?
@@ -1488,11 +1506,11 @@ No, not by default. State is in memory and is lost on reload. Use the `persist` 
 Zustand doesn't sync tabs by itself. With `persist` and `localStorage`, you can listen to the browser `storage` event and call `persist.rehydrate()` so other tabs pick up the change.
 
 ```js
-window.addEventListener('storage', (e) => {
-  if (e.key === 'settings-storage') {
-    useSettingsStore.persist.rehydrate()
+window.addEventListener("storage", (e) => {
+  if (e.key === "settings-storage") {
+    useSettingsStore.persist.rehydrate();
   }
-})
+});
 ```
 
 There are also community packages built for this.
@@ -1503,8 +1521,8 @@ Call the action or `setState` as usual. Since the store is outside React, there 
 
 ```js
 setInterval(() => {
-  useClockStore.getState().tick()
-}, 1000)
+  useClockStore.getState().tick();
+}, 1000);
 ```
 
 ### 118: What is a common beginner mistake with selectors?
@@ -1524,7 +1542,7 @@ Not with the hook directly, because hooks only work in function components. You 
 No, it is a hook, so it can't be inside `if` statements. Call it unconditionally and handle the condition in the selector or after.
 
 ```jsx
-const user = useAuthStore((s) => (enabled ? s.user : null))
+const user = useAuthStore((s) => (enabled ? s.user : null));
 ```
 
 ### 122: How do you handle a form with Zustand?
@@ -1533,10 +1551,10 @@ Keep the field values in the store and update them with an action. For simple fo
 
 ```js
 const useSignupStore = create((set) => ({
-  values: { email: '', password: '' },
+  values: { email: "", password: "" },
   setField: (name, value) =>
     set((s) => ({ values: { ...s.values, [name]: value } })),
-}))
+}));
 ```
 
 ### 123: How do you store a multi-step wizard state?
@@ -1548,7 +1566,7 @@ const useWizardStore = create((set) => ({
   next: () => set((s) => ({ step: s.step + 1 })),
   back: () => set((s) => ({ step: Math.max(1, s.step - 1) })),
   setData: (part) => set((s) => ({ data: { ...s.data, ...part } })),
-}))
+}));
 ```
 
 Wrapping it in `persist` with `sessionStorage` keeps the progress if the user reloads the page.
@@ -1560,7 +1578,7 @@ const useModalStore = create((set) => ({
   modal: null,
   open: (name, props = {}) => set({ modal: { name, props } }),
   close: () => set({ modal: null }),
-}))
+}));
 ```
 
 A single `<ModalRoot />` component reads `modal` and renders the right modal. Any component can call `open('confirm')` without passing props through the tree.
@@ -1571,13 +1589,13 @@ A single `<ModalRoot />` component reads `modal` and renders the right modal. An
 const useToastStore = create((set) => ({
   toasts: [],
   show: (message) => {
-    const id = crypto.randomUUID()
-    set((s) => ({ toasts: [...s.toasts, { id, message }] }))
+    const id = crypto.randomUUID();
+    set((s) => ({ toasts: [...s.toasts, { id, message }] }));
     setTimeout(() => {
-      set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }))
-    }, 3000)
+      set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) }));
+    }, 3000);
   },
-}))
+}));
 ```
 
 Because `show` can be called with `useToastStore.getState().show('Saved')`, even non-React code like API helpers can show toasts.
@@ -1603,10 +1621,10 @@ The docs suggest a few habits: keep a single store per area of state, update sta
 Define the store with only data, and write actions as plain module functions.
 
 ```js
-export const useCounterStore = create(() => ({ count: 0 }))
+export const useCounterStore = create(() => ({ count: 0 }));
 
 export const increment = () =>
-  useCounterStore.setState((s) => ({ count: s.count + 1 }))
+  useCounterStore.setState((s) => ({ count: s.count + 1 }));
 ```
 
 Components import `increment` directly, and you don't need a hook to call it. It also helps with code splitting.
@@ -1621,8 +1639,8 @@ Use the prop inside the selector.
 
 ```jsx
 function TodoItem({ id }) {
-  const todo = useTodoStore((s) => s.todos.find((t) => t.id === id))
-  return <li>{todo?.text}</li>
+  const todo = useTodoStore((s) => s.todos.find((t) => t.id === id));
+  return <li>{todo?.text}</li>;
 }
 ```
 
@@ -1641,9 +1659,9 @@ Yes. A module-level store is shared by anything that imports it, including two d
 If the store has no actions inside it, you can ignore all arguments.
 
 ```js
-const usePositionStore = create(() => ({ x: 0, y: 0 }))
+const usePositionStore = create(() => ({ x: 0, y: 0 }));
 
-usePositionStore.setState({ x: 10 })
+usePositionStore.setState({ x: 10 });
 ```
 
 ### 136: Can you subscribe to a store inside a component?
@@ -1653,9 +1671,9 @@ Yes, but usually you use the hook with a selector. Subscribing manually is for c
 ```jsx
 useEffect(() => {
   return usePositionStore.subscribe((state) => {
-    ref.current.style.transform = `translate(${state.x}px, ${state.y}px)`
-  })
-}, [])
+    ref.current.style.transform = `translate(${state.x}px, ${state.y}px)`;
+  });
+}, []);
 ```
 
 ### 137: What does the third argument of the store creator give you?
@@ -1672,14 +1690,14 @@ Render the component normally with React Testing Library. The store is real, so 
 
 ```jsx
 beforeEach(() => {
-  useCounterStore.setState(useCounterStore.getInitialState(), true)
-})
+  useCounterStore.setState(useCounterStore.getInitialState(), true);
+});
 
-test('shows count', () => {
-  useCounterStore.setState({ count: 5 })
-  render(<Counter />)
-  expect(screen.getByText('Count: 5')).toBeInTheDocument()
-})
+test("shows count", () => {
+  useCounterStore.setState({ count: 5 });
+  render(<Counter />);
+  expect(screen.getByText("Count: 5")).toBeInTheDocument();
+});
 ```
 
 ### 140: Why do you need to reset stores between tests?
@@ -1691,10 +1709,10 @@ Stores live at module level, so state from one test stays for the next test in t
 Call actions and read state directly.
 
 ```js
-test('increment', () => {
-  useCounterStore.getState().increment()
-  expect(useCounterStore.getState().count).toBe(1)
-})
+test("increment", () => {
+  useCounterStore.getState().increment();
+  expect(useCounterStore.getState().count).toBe(1);
+});
 ```
 
 No rendering is needed, which makes store tests fast and simple.
@@ -1712,7 +1730,7 @@ npm install immer
 Then import it from `zustand/middleware/immer`, not from `zustand/middleware`.
 
 ```js
-import { immer } from 'zustand/middleware/immer'
+import { immer } from "zustand/middleware/immer";
 ```
 
 ### 144: Why is immer middleware imported from a separate path?
@@ -1735,9 +1753,9 @@ Add it to the object returned by the store creator, with a default value. If the
 
 ```jsx
 function NameInput() {
-  const name = useProfileStore((s) => s.name)
-  const setName = useProfileStore((s) => s.setName)
-  return <input value={name} onChange={(e) => setName(e.target.value)} />
+  const name = useProfileStore((s) => s.name);
+  const setName = useProfileStore((s) => s.setName);
+  return <input value={name} onChange={(e) => setName(e.target.value)} />;
 }
 ```
 
@@ -1762,11 +1780,11 @@ const useStore = create<State>()(
       immer((set) => ({
         // state and actions
       })),
-      { name: 'app' },
+      { name: "app" },
     ),
-    { name: 'AppStore' },
+    { name: "AppStore" },
   ),
-)
+);
 ```
 
 If `devtools` is inside `persist` or `immer`, actions from those wrappers may not show up correctly, and TypeScript may lose the extra `set` argument for action names.
@@ -1780,12 +1798,12 @@ If `devtools` is inside `persist` or `immer`, actions from those wrappers may no
 Use the curried `create<State>()` and wrap normally. Types for `persist`, `devtools` and `immer` are inferred from the middleware.
 
 ```ts
-import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 interface BearState {
-  bears: number
-  increase: (by: number) => void
+  bears: number;
+  increase: (by: number) => void;
 }
 
 const useBearStore = create<BearState>()(
@@ -1795,10 +1813,10 @@ const useBearStore = create<BearState>()(
         bears: 0,
         increase: (by) => set((s) => ({ bears: s.bears + by })),
       }),
-      { name: 'bear-storage' },
+      { name: "bear-storage" },
     ),
   ),
-)
+);
 ```
 
 ### 154: How do you type slices in TypeScript?
@@ -1806,26 +1824,43 @@ const useBearStore = create<BearState>()(
 Give each slice a `StateCreator` with the full combined state as the first type and the slice as the last.
 
 ```ts
-import { create, type StateCreator } from 'zustand'
+import { create, type StateCreator } from "zustand";
 
-interface BearSlice { bears: number; addBear: () => void; eatFish: () => void }
-interface FishSlice { fishes: number; addFish: () => void }
+interface BearSlice {
+  bears: number;
+  addBear: () => void;
+  eatFish: () => void;
+}
+interface FishSlice {
+  fishes: number;
+  addFish: () => void;
+}
 
-const createBearSlice: StateCreator<BearSlice & FishSlice, [], [], BearSlice> = (set) => ({
+const createBearSlice: StateCreator<
+  BearSlice & FishSlice,
+  [],
+  [],
+  BearSlice
+> = (set) => ({
   bears: 0,
   addBear: () => set((s) => ({ bears: s.bears + 1 })),
   eatFish: () => set((s) => ({ fishes: s.fishes - 1 })),
-})
+});
 
-const createFishSlice: StateCreator<BearSlice & FishSlice, [], [], FishSlice> = (set) => ({
+const createFishSlice: StateCreator<
+  BearSlice & FishSlice,
+  [],
+  [],
+  FishSlice
+> = (set) => ({
   fishes: 0,
   addFish: () => set((s) => ({ fishes: s.fishes + 1 })),
-})
+});
 
 export const useBoundStore = create<BearSlice & FishSlice>()((...a) => ({
   ...createBearSlice(...a),
   ...createFishSlice(...a),
-}))
+}));
 ```
 
 The first type lets a slice read and update other slices.
@@ -1837,14 +1872,15 @@ They describe middleware "mutators". The second list is the middleware applied a
 ```ts
 const createBearSlice: StateCreator<
   BearSlice & FishSlice,
-  [['zustand/devtools', never]],
+  [["zustand/devtools", never]],
   [],
   BearSlice
 > = (set) => ({
   bears: 0,
-  addBear: () => set((s) => ({ bears: s.bears + 1 }), undefined, 'bear/addBear'),
+  addBear: () =>
+    set((s) => ({ bears: s.bears + 1 }), undefined, "bear/addBear"),
   eatFish: () => set((s) => ({ fishes: s.fishes - 1 })),
-})
+});
 ```
 
 Now `set` accepts the third argument (the action name) that `devtools` adds.
@@ -1861,10 +1897,10 @@ const useBoundStore = create<BearSlice & FishSlice>()(
         ...createBearSlice(...a),
         ...createFishSlice(...a),
       }),
-      { name: 'bound-store' },
+      { name: "bound-store" },
     ),
   ),
-)
+);
 ```
 
 ### 157: How do you reset all slices of a store?
@@ -1872,22 +1908,27 @@ const useBoundStore = create<BearSlice & FishSlice>()(
 Each slice can register its initial state, and a shared `resetAll` puts them back.
 
 ```ts
-const sliceResetFns = new Set<() => void>()
+const sliceResetFns = new Set<() => void>();
 
 export const resetAllSlices = () => {
-  sliceResetFns.forEach((reset) => reset())
-}
+  sliceResetFns.forEach((reset) => reset());
+};
 
-const initialBearState = { bears: 0 }
+const initialBearState = { bears: 0 };
 
-const createBearSlice: StateCreator<BearSlice & FishSlice, [], [], BearSlice> = (set) => {
-  sliceResetFns.add(() => set(initialBearState))
+const createBearSlice: StateCreator<
+  BearSlice & FishSlice,
+  [],
+  [],
+  BearSlice
+> = (set) => {
+  sliceResetFns.add(() => set(initialBearState));
   return {
     ...initialBearState,
     addBear: () => set((s) => ({ bears: s.bears + 1 })),
     eatFish: () => set((s) => ({ fishes: s.fishes - 1 })),
-  }
-}
+  };
+};
 ```
 
 If you only need to reset the whole store, `setState(getInitialState(), true)` is simpler.
@@ -1897,15 +1938,15 @@ If you only need to reset the whole store, `setState(getInitialState(), true)` i
 Keep a list of reset functions and call them all.
 
 ```ts
-const resetters: (() => void)[] = []
+const resetters: (() => void)[] = [];
 
 export function createResettable<T>(initializer: StateCreator<T>) {
-  const store = create<T>()(initializer)
-  resetters.push(() => store.setState(store.getInitialState(), true))
-  return store
+  const store = create<T>()(initializer);
+  resetters.push(() => store.setState(store.getInitialState(), true));
+  return store;
 }
 
-export const resetAllStores = () => resetters.forEach((reset) => reset())
+export const resetAllStores = () => resetters.forEach((reset) => reset());
 ```
 
 Call `resetAllStores()` in your logout action. Persisted stores also need `persist.clearStorage()`.
@@ -1915,28 +1956,39 @@ Call `resetAllStores()` in your logout action. Persisted stores also need `persi
 Use `createStore` with `useState` (or `useRef`) so the store is created once per Provider, then read it with `useStore`.
 
 ```tsx
-import { createContext, useContext, useState, type ReactNode } from 'react'
-import { createStore, useStore, type StoreApi } from 'zustand'
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { createStore, useStore, type StoreApi } from "zustand";
 
-interface CounterState { count: number; inc: () => void }
+interface CounterState {
+  count: number;
+  inc: () => void;
+}
 
 const createCounterStore = (initial: number) =>
   createStore<CounterState>()((set) => ({
     count: initial,
     inc: () => set((s) => ({ count: s.count + 1 })),
-  }))
+  }));
 
-const CounterContext = createContext<StoreApi<CounterState> | null>(null)
+const CounterContext = createContext<StoreApi<CounterState> | null>(null);
 
-export function CounterProvider({ initial, children }: { initial: number; children: ReactNode }) {
-  const [store] = useState(() => createCounterStore(initial))
-  return <CounterContext.Provider value={store}>{children}</CounterContext.Provider>
+export function CounterProvider({
+  initial,
+  children,
+}: {
+  initial: number;
+  children: ReactNode;
+}) {
+  const [store] = useState(() => createCounterStore(initial));
+  return (
+    <CounterContext.Provider value={store}>{children}</CounterContext.Provider>
+  );
 }
 
 export function useCounter<T>(selector: (s: CounterState) => T): T {
-  const store = useContext(CounterContext)
-  if (!store) throw new Error('useCounter must be used inside CounterProvider')
-  return useStore(store, selector)
+  const store = useContext(CounterContext);
+  if (!store) throw new Error("useCounter must be used inside CounterProvider");
+  return useStore(store, selector);
 }
 ```
 
@@ -1962,7 +2014,7 @@ const createBearStore = (initProps?: Partial<BearProps>) =>
     bears: 0,
     ...initProps,
     addBear: () => set((s) => ({ bears: s.bears + 1 })),
-  }))
+  }));
 ```
 
 The props are only used when the store is created. If the props change later, you have to sync them yourself, for example with an effect that calls `setState`.
@@ -1976,23 +2028,25 @@ It was a helper (`createContext`) from v3. It was deprecated in v4 and removed i
 The docs show a small helper that adds a `use` object with one hook per key.
 
 ```ts
-import type { StoreApi, UseBoundStore } from 'zustand'
+import type { StoreApi, UseBoundStore } from "zustand";
 
 type WithSelectors<S> = S extends { getState: () => infer T }
   ? S & { use: { [K in keyof T]: () => T[K] } }
-  : never
+  : never;
 
-export const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(_store: S) => {
-  const store = _store as WithSelectors<typeof _store>
-  store.use = {}
+export const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
+  _store: S,
+) => {
+  const store = _store as WithSelectors<typeof _store>;
+  store.use = {};
   for (const k of Object.keys(store.getState())) {
-    ;(store.use as any)[k] = () => store((s) => s[k as keyof typeof s])
+    (store.use as any)[k] = () => store((s) => s[k as keyof typeof s]);
   }
-  return store
-}
+  return store;
+};
 
-const useBearStore = createSelectors(useBearStoreBase)
-const bears = useBearStore.use.bears()
+const useBearStore = createSelectors(useBearStoreBase);
+const bears = useBearStore.use.bears();
 ```
 
 It saves typing but every call is still a separate subscription to one field.
@@ -2002,12 +2056,15 @@ It saves typing but every call is still a separate subscription to one field.
 It comes from `zustand/traditional`. It works like `create`, but the hook accepts an equality function as the second argument, and you can set a default equality function for the whole store. It is useful when moving from v4, where `create` accepted `shallow` as a second argument.
 
 ```ts
-import { createWithEqualityFn } from 'zustand/traditional'
-import { shallow } from 'zustand/shallow'
+import { createWithEqualityFn } from "zustand/traditional";
+import { shallow } from "zustand/shallow";
 
-const useStore = createWithEqualityFn<State>()((set) => ({ a: 1, b: 2 }), shallow)
+const useStore = createWithEqualityFn<State>()(
+  (set) => ({ a: 1, b: 2 }),
+  shallow,
+);
 
-const { a, b } = useStore((s) => ({ a: s.a, b: s.b }))
+const { a, b } = useStore((s) => ({ a: s.a, b: s.b }));
 ```
 
 It needs the `use-sync-external-store` package.
@@ -2017,10 +2074,14 @@ It needs the `use-sync-external-store` package.
 It is the vanilla store version of `createWithEqualityFn`. You pass a vanilla store, a selector and an equality function.
 
 ```ts
-import { useStoreWithEqualityFn } from 'zustand/traditional'
-import { shallow } from 'zustand/shallow'
+import { useStoreWithEqualityFn } from "zustand/traditional";
+import { shallow } from "zustand/shallow";
 
-const { x, y } = useStoreWithEqualityFn(positionStore, (s) => ({ x: s.x, y: s.y }), shallow)
+const { x, y } = useStoreWithEqualityFn(
+  positionStore,
+  (s) => ({ x: s.x, y: s.y }),
+  shallow,
+);
 ```
 
 ### 168: What is the difference between `useShallow` and passing `shallow` to `createWithEqualityFn`?
@@ -2040,14 +2101,16 @@ v5 uses React's `useSyncExternalStore` directly, which doesn't support a custom 
 Option 1, `useShallow`:
 
 ```ts
-const doneTodos = useTodoStore(useShallow((s) => s.todos.filter((t) => t.done)))
+const doneTodos = useTodoStore(
+  useShallow((s) => s.todos.filter((t) => t.done)),
+);
 ```
 
 Option 2, select the source and derive in the component:
 
 ```ts
-const todos = useTodoStore((s) => s.todos)
-const doneTodos = useMemo(() => todos.filter((t) => t.done), [todos])
+const todos = useTodoStore((s) => s.todos);
+const doneTodos = useMemo(() => todos.filter((t) => t.done), [todos]);
 ```
 
 The second is better when the filter is expensive, because `useShallow` still runs the filter on every store change.
@@ -2057,8 +2120,8 @@ The second is better when the filter is expensive, because `useShallow` still ru
 A selector like `(s) => s.list ?? []` returns a new empty array every time `list` is missing, which can cause re-renders or the infinite loop error. Use a constant defined outside the component.
 
 ```ts
-const EMPTY: Item[] = []
-const list = useStore((s) => s.list ?? EMPTY)
+const EMPTY: Item[] = [];
+const list = useStore((s) => s.list ?? EMPTY);
 ```
 
 ### 173: How do you select several actions at once?
@@ -2068,7 +2131,7 @@ Actions are stable, so `useShallow` works well.
 ```ts
 const { add, remove, clear } = useCartStore(
   useShallow((s) => ({ add: s.add, remove: s.remove, clear: s.clear })),
-)
+);
 ```
 
 Some teams group actions in a nested `actions` object so one selector returns them all with a stable reference.
@@ -2080,9 +2143,9 @@ const useCartStore = create<CartState>()((set) => ({
     add: (item) => set((s) => ({ items: [...s.items, item] })),
     clear: () => set({ items: [] }),
   },
-}))
+}));
 
-export const useCartActions = () => useCartStore((s) => s.actions)
+export const useCartActions = () => useCartStore((s) => s.actions);
 ```
 
 ### 174: What is the downside of the nested `actions` object pattern?
@@ -2100,8 +2163,8 @@ Subscribe and log both states.
 ```ts
 if (import.meta.env.DEV) {
   useCartStore.subscribe((state, prev) => {
-    console.log('[cart]', prev, '->', state)
-  })
+    console.log("[cart]", prev, "->", state);
+  });
 }
 ```
 
@@ -2115,15 +2178,20 @@ A middleware takes a store creator and returns a new one. Here is a logger:
 const logger = (config) => (set, get, api) =>
   config(
     (...args) => {
-      console.log('before', get())
-      set(...args)
-      console.log('after', get())
+      console.log("before", get());
+      set(...args);
+      console.log("after", get());
     },
     get,
     api,
-  )
+  );
 
-const useStore = create(logger((set) => ({ count: 0, inc: () => set((s) => ({ count: s.count + 1 })) })))
+const useStore = create(
+  logger((set) => ({
+    count: 0,
+    inc: () => set((s) => ({ count: s.count + 1 })),
+  })),
+);
 ```
 
 Note that this only wraps the `set` used inside the store. Calls to `useStore.setState` from outside skip it unless you also replace `api.setState`.
@@ -2135,12 +2203,12 @@ Replace `api.setState` too, and pass the wrapped one into the creator.
 ```js
 const logger = (config) => (set, get, api) => {
   const loggedSet = (...args) => {
-    set(...args)
-    console.log('new state', get())
-  }
-  api.setState = loggedSet
-  return config(loggedSet, get, api)
-}
+    set(...args);
+    console.log("new state", get());
+  };
+  api.setState = loggedSet;
+  return config(loggedSet, get, api);
+};
 ```
 
 This is the same approach the built-in `persist` and `immer` middleware use.
@@ -2150,20 +2218,23 @@ This is the same approach the built-in `persist` and `immer` middleware use.
 You give it an object with `getItem`, `setItem` and `removeItem`. With `createJSONStorage`, your storage only needs to work with strings, and Zustand handles `JSON.stringify` and `JSON.parse`.
 
 ```ts
-import { get, set, del } from 'idb-keyval'
-import { createJSONStorage, type StateStorage } from 'zustand/middleware'
+import { get, set, del } from "idb-keyval";
+import { createJSONStorage, type StateStorage } from "zustand/middleware";
 
 const idbStorage: StateStorage = {
   getItem: async (name) => (await get(name)) ?? null,
   setItem: async (name, value) => {
-    await set(name, value)
+    await set(name, value);
   },
   removeItem: async (name) => {
-    await del(name)
+    await del(name);
   },
-}
+};
 
-persist(storeCreator, { name: 'big-store', storage: createJSONStorage(() => idbStorage) })
+persist(storeCreator, {
+  name: "big-store",
+  storage: createJSONStorage(() => idbStorage),
+});
 ```
 
 ### 180: How do you persist a Map, Set or Date?
@@ -2199,15 +2270,15 @@ It runs before hydration starts and can return a function that runs after hydrat
 
 ```ts
 persist(storeCreator, {
-  name: 'app',
+  name: "app",
   onRehydrateStorage: (state) => {
-    console.log('hydration starts')
+    console.log("hydration starts");
     return (state, error) => {
-      if (error) console.error('hydration failed', error)
-      else console.log('hydration finished')
-    }
+      if (error) console.error("hydration failed", error);
+      else console.log("hydration finished");
+    };
   },
-})
+});
 ```
 
 It is often used to set a `hasHydrated` flag in the store.
@@ -2218,8 +2289,8 @@ When `skipHydration: true`, `persist` doesn't read storage when the store is cre
 
 ```tsx
 useEffect(() => {
-  useSettingsStore.persist.rehydrate()
-}, [])
+  useSettingsStore.persist.rehydrate();
+}, []);
 ```
 
 ### 184: Why does a persisted store cause a hydration mismatch in Next.js?
@@ -2229,18 +2300,22 @@ On the server there is no `localStorage`, so the server renders the default stat
 ### 185: How do you write a hook that waits for a persisted store to hydrate?
 
 ```ts
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
 export function useHydrated() {
-  const [hydrated, setHydrated] = useState(useSettingsStore.persist.hasHydrated())
+  const [hydrated, setHydrated] = useState(
+    useSettingsStore.persist.hasHydrated(),
+  );
 
   useEffect(() => {
-    const unsubFinish = useSettingsStore.persist.onFinishHydration(() => setHydrated(true))
-    setHydrated(useSettingsStore.persist.hasHydrated())
-    return unsubFinish
-  }, [])
+    const unsubFinish = useSettingsStore.persist.onFinishHydration(() =>
+      setHydrated(true),
+    );
+    setHydrated(useSettingsStore.persist.hasHydrated());
+    return unsubFinish;
+  }, []);
 
-  return hydrated
+  return hydrated;
 }
 ```
 
@@ -2255,8 +2330,8 @@ Show a loader or default UI until it returns `true`.
 Use `persist.setOptions`. For example, change the storage key when the user changes, then rehydrate.
 
 ```ts
-useCartStore.persist.setOptions({ name: `cart-${userId}` })
-await useCartStore.persist.rehydrate()
+useCartStore.persist.setOptions({ name: `cart-${userId}` });
+await useCartStore.persist.rehydrate();
 ```
 
 `persist.getOptions()` returns the current options.
@@ -2276,23 +2351,26 @@ Write a custom `StateStorage` that reads and writes the URL.
 ```ts
 const hashStorage: StateStorage = {
   getItem: (key) => {
-    const params = new URLSearchParams(location.hash.slice(1))
-    const value = params.get(key)
-    return value ? JSON.parse(value) : null
+    const params = new URLSearchParams(location.hash.slice(1));
+    const value = params.get(key);
+    return value ? JSON.parse(value) : null;
   },
   setItem: (key, value) => {
-    const params = new URLSearchParams(location.hash.slice(1))
-    params.set(key, JSON.stringify(value))
-    location.hash = params.toString()
+    const params = new URLSearchParams(location.hash.slice(1));
+    params.set(key, JSON.stringify(value));
+    location.hash = params.toString();
   },
   removeItem: (key) => {
-    const params = new URLSearchParams(location.hash.slice(1))
-    params.delete(key)
-    location.hash = params.toString()
+    const params = new URLSearchParams(location.hash.slice(1));
+    params.delete(key);
+    location.hash = params.toString();
   },
-}
+};
 
-persist(storeCreator, { name: 'filters', storage: createJSONStorage(() => hashStorage) })
+persist(storeCreator, {
+  name: "filters",
+  storage: createJSONStorage(() => hashStorage),
+});
 ```
 
 Here `getItem` must return a string, which is why the stored value is parsed once. The docs have a similar example called "connect to state with URL hash".
@@ -2307,11 +2385,11 @@ It lets several stores share one DevTools connection. All stores with the same `
 
 ```ts
 const useBearStore = create<BearState>()(
-  devtools((set) => ({ bears: 0 }), { name: 'MyApp', store: 'bears' }),
-)
+  devtools((set) => ({ bears: 0 }), { name: "MyApp", store: "bears" }),
+);
 const useFishStore = create<FishState>()(
-  devtools((set) => ({ fishes: 0 }), { name: 'MyApp', store: 'fishes' }),
-)
+  devtools((set) => ({ fishes: 0 }), { name: "MyApp", store: "fishes" }),
+);
 ```
 
 ### 193: What is `anonymousActionType` in devtools?
@@ -2338,14 +2416,14 @@ const useTodoStore = create<TodoState>()(
       add: (text) =>
         set(
           (state) => {
-            state.todos.push({ id: crypto.randomUUID(), text, done: false })
+            state.todos.push({ id: crypto.randomUUID(), text, done: false });
           },
           undefined,
-          'todos/add',
+          "todos/add",
         ),
     })),
   ),
-)
+);
 ```
 
 ### 197: In the immer middleware, can you still return a new object from `set`?
@@ -2353,8 +2431,10 @@ const useTodoStore = create<TodoState>()(
 Yes. You can either mutate the draft and return nothing, or pass a plain object for a normal merge. What you should not do is mutate the draft and also return a value from the same function; immer will throw an error for that.
 
 ```ts
-set((state) => { state.count += 1 })   // mutate draft
-set({ count: 0 })                      // plain partial object
+set((state) => {
+  state.count += 1;
+}); // mutate draft
+set({ count: 0 }); // plain partial object
 ```
 
 ### 198: What are the downsides of the immer middleware?
@@ -2367,12 +2447,15 @@ Use `subscribeWithSelector`, or write the comparison yourself with plain `subscr
 
 ```ts
 // with the middleware
-useStore.subscribe((s) => s.user, (user) => analytics.identify(user?.id))
+useStore.subscribe(
+  (s) => s.user,
+  (user) => analytics.identify(user?.id),
+);
 
 // without it
 useStore.subscribe((state, prev) => {
-  if (state.user !== prev.user) analytics.identify(state.user?.id)
-})
+  if (state.user !== prev.user) analytics.identify(state.user?.id);
+});
 ```
 
 ### 200: What options does `subscribeWithSelector` accept?
@@ -2380,13 +2463,13 @@ useStore.subscribe((state, prev) => {
 The third argument has `equalityFn` and `fireImmediately`.
 
 ```ts
-import { shallow } from 'zustand/shallow'
+import { shallow } from "zustand/shallow";
 
 useStore.subscribe(
   (s) => [s.x, s.y],
   ([x, y]) => console.log(x, y),
   { equalityFn: shallow, fireImmediately: true },
-)
+);
 ```
 
 `equalityFn` decides whether the selected value changed (default `Object.is`). `fireImmediately` calls the listener once right away with the current value.
@@ -2396,21 +2479,23 @@ useStore.subscribe(
 If the user triggers the same request twice, the slower old response can overwrite the newer one. Keep a request id and ignore old responses, or cancel the old request with `AbortController`.
 
 ```ts
-let controller: AbortController | null = null
+let controller: AbortController | null = null;
 
 const useSearchStore = create<SearchState>()((set) => ({
   results: [],
   search: async (query) => {
-    controller?.abort()
-    controller = new AbortController()
+    controller?.abort();
+    controller = new AbortController();
     try {
-      const res = await fetch(`/api/search?q=${query}`, { signal: controller.signal })
-      set({ results: await res.json() })
+      const res = await fetch(`/api/search?q=${query}`, {
+        signal: controller.signal,
+      });
+      set({ results: await res.json() });
     } catch (err) {
-      if ((err as Error).name !== 'AbortError') throw err
+      if ((err as Error).name !== "AbortError") throw err;
     }
   },
-}))
+}));
 ```
 
 ### 202: How do you do an optimistic update with Zustand?
@@ -2438,19 +2523,19 @@ Rolling back to `prev` can undo other changes made in the meantime. For more saf
 Keep the timer outside the state and clear it on each call.
 
 ```ts
-let timer: ReturnType<typeof setTimeout> | undefined
+let timer: ReturnType<typeof setTimeout> | undefined;
 
 const useSearchStore = create<SearchState>()((set, get) => ({
-  query: '',
+  query: "",
   setQuery: (query) => {
-    set({ query })
-    clearTimeout(timer)
-    timer = setTimeout(() => get().search(query), 300)
+    set({ query });
+    clearTimeout(timer);
+    timer = setTimeout(() => get().search(query), 300);
   },
   search: async (q) => {
     /* ... */
   },
-}))
+}));
 ```
 
 The input updates right away, and the request runs only after the user stops typing.
@@ -2465,12 +2550,14 @@ Open the socket outside React (or in a top-level effect) and call `setState` whe
 
 ```ts
 export function connectPrices() {
-  const ws = new WebSocket('wss://example.com/prices')
+  const ws = new WebSocket("wss://example.com/prices");
   ws.onmessage = (event) => {
-    const { symbol, price } = JSON.parse(event.data)
-    usePriceStore.setState((s) => ({ prices: { ...s.prices, [symbol]: price } }))
-  }
-  return () => ws.close()
+    const { symbol, price } = JSON.parse(event.data);
+    usePriceStore.setState((s) => ({
+      prices: { ...s.prices, [symbol]: price },
+    }));
+  };
+  return () => ws.close();
 }
 ```
 
@@ -2482,13 +2569,13 @@ Read it with `getState()`. No hook is needed.
 
 ```ts
 export async function api(path: string, init: RequestInit = {}) {
-  const token = useAuthStore.getState().token
+  const token = useAuthStore.getState().token;
   const res = await fetch(path, {
     ...init,
     headers: { ...init.headers, Authorization: `Bearer ${token}` },
-  })
-  if (res.status === 401) useAuthStore.getState().logout()
-  return res
+  });
+  if (res.status === 401) useAuthStore.getState().logout();
+  return res;
 }
 ```
 
@@ -2500,12 +2587,14 @@ Let TanStack Query own server data and Zustand own client state. A typical examp
 
 ```tsx
 function ProductList() {
-  const filters = useFilterStore(useShallow((s) => ({ category: s.category, sort: s.sort })))
+  const filters = useFilterStore(
+    useShallow((s) => ({ category: s.category, sort: s.sort })),
+  );
   const { data } = useQuery({
-    queryKey: ['products', filters],
+    queryKey: ["products", filters],
     queryFn: () => fetchProducts(filters),
-  })
-  return <List items={data ?? []} />
+  });
+  return <List items={data ?? []} />;
 }
 ```
 
@@ -2517,9 +2606,9 @@ Loaders run outside components, so use `getState()` and `setState()`.
 
 ```ts
 export async function loader() {
-  const { token } = useAuthStore.getState()
-  if (!token) throw redirect('/login')
-  return fetchDashboard(token)
+  const { token } = useAuthStore.getState();
+  if (!token) throw redirect("/login");
+  return fetchDashboard(token);
 }
 ```
 
@@ -2529,38 +2618,45 @@ The docs recommend a store factory, a client Provider that creates the store onc
 
 ```tsx
 // stores/counter-store.ts
-import { createStore } from 'zustand/vanilla'
+import { createStore } from "zustand/vanilla";
 
-export type CounterState = { count: number }
-export type CounterActions = { inc: () => void }
-export type CounterStore = CounterState & CounterActions
+export type CounterState = { count: number };
+export type CounterActions = { inc: () => void };
+export type CounterStore = CounterState & CounterActions;
 
 export const createCounterStore = (initState: CounterState = { count: 0 }) =>
   createStore<CounterStore>()((set) => ({
     ...initState,
     inc: () => set((s) => ({ count: s.count + 1 })),
-  }))
+  }));
 ```
 
 ```tsx
 // providers/counter-store-provider.tsx
-'use client'
-import { createContext, useContext, useState, type ReactNode } from 'react'
-import { useStore } from 'zustand'
-import { createCounterStore, type CounterStore } from '@/stores/counter-store'
+"use client";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { useStore } from "zustand";
+import { createCounterStore, type CounterStore } from "@/stores/counter-store";
 
-type CounterStoreApi = ReturnType<typeof createCounterStore>
-const CounterStoreContext = createContext<CounterStoreApi | undefined>(undefined)
+type CounterStoreApi = ReturnType<typeof createCounterStore>;
+const CounterStoreContext = createContext<CounterStoreApi | undefined>(
+  undefined,
+);
 
 export function CounterStoreProvider({ children }: { children: ReactNode }) {
-  const [store] = useState(() => createCounterStore())
-  return <CounterStoreContext.Provider value={store}>{children}</CounterStoreContext.Provider>
+  const [store] = useState(() => createCounterStore());
+  return (
+    <CounterStoreContext.Provider value={store}>
+      {children}
+    </CounterStoreContext.Provider>
+  );
 }
 
 export function useCounterStore<T>(selector: (store: CounterStore) => T): T {
-  const store = useContext(CounterStoreContext)
-  if (!store) throw new Error('useCounterStore must be used within CounterStoreProvider')
-  return useStore(store, selector)
+  const store = useContext(CounterStoreContext);
+  if (!store)
+    throw new Error("useCounterStore must be used within CounterStoreProvider");
+  return useStore(store, selector);
 }
 ```
 
@@ -2581,12 +2677,12 @@ Fetch in a server component and pass the data as a prop to the client Provider, 
 ```tsx
 // app/cart/page.tsx (server component)
 export default async function CartPage() {
-  const cart = await getCart()
+  const cart = await getCart();
   return (
     <CartStoreProvider initialItems={cart.items}>
       <Cart />
     </CartStoreProvider>
-  )
+  );
 }
 ```
 
@@ -2598,42 +2694,52 @@ The docs show a `__mocks__/zustand.ts` file that wraps `create` and `createStore
 
 ```ts
 // __mocks__/zustand.ts
-import { act } from '@testing-library/react'
-import type * as ZustandExportedTypes from 'zustand'
-export * from 'zustand'
+import { act } from "@testing-library/react";
+import type * as ZustandExportedTypes from "zustand";
+export * from "zustand";
 
 const { create: actualCreate, createStore: actualCreateStore } =
-  jest.requireActual<typeof ZustandExportedTypes>('zustand')
+  jest.requireActual<typeof ZustandExportedTypes>("zustand");
 
-export const storeResetFns = new Set<() => void>()
+export const storeResetFns = new Set<() => void>();
 
-const createUncurried = <T,>(stateCreator: ZustandExportedTypes.StateCreator<T>) => {
-  const store = actualCreate(stateCreator)
-  const initialState = store.getInitialState()
-  storeResetFns.add(() => store.setState(initialState, true))
-  return store
-}
+const createUncurried = <T>(
+  stateCreator: ZustandExportedTypes.StateCreator<T>,
+) => {
+  const store = actualCreate(stateCreator);
+  const initialState = store.getInitialState();
+  storeResetFns.add(() => store.setState(initialState, true));
+  return store;
+};
 
-export const create = (<T,>(stateCreator: ZustandExportedTypes.StateCreator<T>) =>
-  typeof stateCreator === 'function' ? createUncurried(stateCreator) : createUncurried
-) as typeof ZustandExportedTypes.create
+export const create = (<T>(
+  stateCreator: ZustandExportedTypes.StateCreator<T>,
+) =>
+  typeof stateCreator === "function"
+    ? createUncurried(stateCreator)
+    : createUncurried) as typeof ZustandExportedTypes.create;
 
-const createStoreUncurried = <T,>(stateCreator: ZustandExportedTypes.StateCreator<T>) => {
-  const store = actualCreateStore(stateCreator)
-  const initialState = store.getInitialState()
-  storeResetFns.add(() => store.setState(initialState, true))
-  return store
-}
+const createStoreUncurried = <T>(
+  stateCreator: ZustandExportedTypes.StateCreator<T>,
+) => {
+  const store = actualCreateStore(stateCreator);
+  const initialState = store.getInitialState();
+  storeResetFns.add(() => store.setState(initialState, true));
+  return store;
+};
 
-export const createStore = (<T,>(stateCreator: ZustandExportedTypes.StateCreator<T>) =>
-  typeof stateCreator === 'function' ? createStoreUncurried(stateCreator) : createStoreUncurried
-) as typeof ZustandExportedTypes.createStore
+export const createStore = (<T>(
+  stateCreator: ZustandExportedTypes.StateCreator<T>,
+) =>
+  typeof stateCreator === "function"
+    ? createStoreUncurried(stateCreator)
+    : createStoreUncurried) as typeof ZustandExportedTypes.createStore;
 
 afterEach(() => {
   act(() => {
-    storeResetFns.forEach((resetFn) => resetFn())
-  })
-})
+    storeResetFns.forEach((resetFn) => resetFn());
+  });
+});
 ```
 
 The `__mocks__` folder must be next to `node_modules` (the project root) for Jest to pick it up automatically.
@@ -2645,13 +2751,13 @@ Vitest doesn't automatically pick up root `__mocks__` for packages. Put the mock
 ```ts
 // __mocks__/zustand.ts (top part)
 const { create: actualCreate, createStore: actualCreateStore } =
-  await vi.importActual<typeof ZustandExportedTypes>('zustand')
+  await vi.importActual<typeof ZustandExportedTypes>("zustand");
 ```
 
 ```ts
 // setup-vitest.ts
-import '@testing-library/jest-dom/vitest'
-vi.mock('zustand')
+import "@testing-library/jest-dom/vitest";
+vi.mock("zustand");
 ```
 
 Add the setup file to `test.setupFiles` in the Vitest config. You also need a `__mocks__` folder at the project root, as with Jest.
@@ -2662,9 +2768,9 @@ When a test changes the store while components are rendered, React needs to proc
 
 ```tsx
 act(() => {
-  useCounterStore.getState().increment()
-})
-expect(screen.getByText('Count: 1')).toBeInTheDocument()
+  useCounterStore.getState().increment();
+});
+expect(screen.getByText("Count: 1")).toBeInTheDocument();
 ```
 
 Events fired through `userEvent` or `fireEvent` are already wrapped.
@@ -2674,17 +2780,17 @@ Events fired through `userEvent` or `fireEvent` are already wrapped.
 Mock `fetch` (or use MSW), call the action, await it, and check the state.
 
 ```ts
-test('fetchUser stores the user', async () => {
+test("fetchUser stores the user", async () => {
   global.fetch = vi.fn().mockResolvedValue({
     ok: true,
-    json: async () => ({ id: 1, name: 'Ana' }),
-  }) as unknown as typeof fetch
+    json: async () => ({ id: 1, name: "Ana" }),
+  }) as unknown as typeof fetch;
 
-  await useUserStore.getState().fetchUser(1)
+  await useUserStore.getState().fetchUser(1);
 
-  expect(useUserStore.getState().user).toEqual({ id: 1, name: 'Ana' })
-  expect(useUserStore.getState().loading).toBe(false)
-})
+  expect(useUserStore.getState().user).toEqual({ id: 1, name: "Ana" });
+  expect(useUserStore.getState().loading).toBe(false);
+});
 ```
 
 ### 217: How do you test a component with a store that lives in context?
@@ -2696,7 +2802,7 @@ render(
   <CounterProvider initial={3}>
     <Counter />
   </CounterProvider>,
-)
+);
 ```
 
 This is one of the nice side effects of the context pattern.
@@ -2706,9 +2812,12 @@ This is one of the nice side effects of the context pattern.
 In jsdom, `localStorage` exists, so `persist` works. Clear it between tests with `localStorage.clear()` and `persist.clearStorage()`. To test hydration, write data to `localStorage` before calling `persist.rehydrate()`, then check the state.
 
 ```ts
-localStorage.setItem('settings', JSON.stringify({ state: { theme: 'dark' }, version: 0 }))
-await useSettingsStore.persist.rehydrate()
-expect(useSettingsStore.getState().theme).toBe('dark')
+localStorage.setItem(
+  "settings",
+  JSON.stringify({ state: { theme: "dark" }, version: 0 }),
+);
+await useSettingsStore.persist.rehydrate();
+expect(useSettingsStore.getState().theme).toBe("dark");
 ```
 
 ### 219: Should you mock the store itself in component tests?
@@ -2723,11 +2832,11 @@ Set the state you need in a decorator or in the story's `beforeEach`/`loaders` b
 export const Empty: Story = {
   decorators: [
     (Story) => {
-      useCartStore.setState({ items: [] })
-      return <Story />
+      useCartStore.setState({ items: [] });
+      return <Story />;
     },
   ],
-}
+};
 ```
 
 For stores in context, wrap the story in the Provider with the initial values you want.
@@ -2760,11 +2869,13 @@ Upgrade to the latest v4 first and fix all the deprecation warnings it prints. T
 `setState` has two overloads, one for `replace?: false` and one for `replace: true`. A plain `boolean` matches neither. The docs suggest casting the arguments to the parameters type.
 
 ```ts
-const useBearStore = create<{ bears: number }>()(() => ({ bears: 0 }))
+const useBearStore = create<{ bears: number }>()(() => ({ bears: 0 }));
 
-const replaceFlag = Math.random() > 0.5
-const args = [{ bears: 5 }, replaceFlag] as Parameters<typeof useBearStore.setState>
-useBearStore.setState(...args)
+const replaceFlag = Math.random() > 0.5;
+const args = [{ bears: 5 }, replaceFlag] as Parameters<
+  typeof useBearStore.setState
+>;
+useBearStore.setState(...args);
 ```
 
 This only type checks when the object is a full state, because one of the overloads needs it.
@@ -2778,12 +2889,12 @@ It is the type of the hook returned by `create`: a function you can call with or
 Write overloads, so it returns the whole state without a selector and the selected value with one.
 
 ```ts
-import { useStore } from 'zustand'
+import { useStore } from "zustand";
 
-export function useBear(): BearState
-export function useBear<T>(selector: (s: BearState) => T): T
+export function useBear(): BearState;
+export function useBear<T>(selector: (s: BearState) => T): T;
 export function useBear<T>(selector?: (s: BearState) => T) {
-  return useStore(bearStore, selector!)
+  return useStore(bearStore, selector!);
 }
 ```
 
@@ -2793,16 +2904,16 @@ The types come from the state interface, so `get()` returns the full state with 
 
 ```ts
 interface CartState {
-  items: Item[]
-  add: (item: Item) => void
-  addMany: (items: Item[]) => void
+  items: Item[];
+  add: (item: Item) => void;
+  addMany: (items: Item[]) => void;
 }
 
 const useCartStore = create<CartState>()((set, get) => ({
   items: [],
   add: (item) => set((s) => ({ items: [...s.items, item] })),
   addMany: (items) => items.forEach((item) => get().add(item)),
-}))
+}));
 ```
 
 `addMany` here calls `set` once per item. For large lists it is better to do one `set`.
@@ -2818,13 +2929,17 @@ The second generic of `persist` is the persisted shape. It is inferred from `par
 ```ts
 const useStore = create<State>()(
   persist(
-    (set) => ({ theme: 'light', token: null, setTheme: (theme) => set({ theme }) }),
+    (set) => ({
+      theme: "light",
+      token: null,
+      setTheme: (theme) => set({ theme }),
+    }),
     {
-      name: 'app',
+      name: "app",
       partialize: (s) => ({ theme: s.theme }),
     },
   ),
-)
+);
 ```
 
 `migrate` then must return the persisted shape (`{ theme }`), not the full state.
@@ -2856,13 +2971,13 @@ The parent selects only the list of ids and renders rows. Each row selects its o
 
 ```tsx
 function TodoList() {
-  const ids = useTodoStore((s) => s.ids)
-  return ids.map((id) => <TodoRow key={id} id={id} />)
+  const ids = useTodoStore((s) => s.ids);
+  return ids.map((id) => <TodoRow key={id} id={id} />);
 }
 
 function TodoRow({ id }: { id: string }) {
-  const todo = useTodoStore((s) => s.byId[id])
-  return <li>{todo.text}</li>
+  const todo = useTodoStore((s) => s.byId[id]);
+  return <li>{todo.text}</li>;
 }
 ```
 
@@ -2874,10 +2989,10 @@ Keep the page, page size and totals together, and reset the page when filters ch
 const useListStore = create<ListState>()((set) => ({
   page: 1,
   pageSize: 20,
-  filter: '',
+  filter: "",
   setPage: (page) => set({ page }),
   setFilter: (filter) => set({ filter, page: 1 }),
-}))
+}));
 ```
 
 Doing both changes in one `set` keeps them consistent and causes one update.
@@ -2890,11 +3005,11 @@ One store's action can read or update another store directly through `getState` 
 const useCartStore = create<CartState>()((set) => ({
   items: [],
   checkout: async () => {
-    const user = useAuthStore.getState().user
-    if (!user) return useModalStore.getState().open('login')
+    const user = useAuthStore.getState().user;
+    if (!user) return useModalStore.getState().open("login");
     // ...
   },
-}))
+}));
 ```
 
 Keep these links one-directional where you can, so you don't end up with circular imports.
@@ -2906,9 +3021,9 @@ Subscribe to the first store and update the second.
 ```ts
 useAuthStore.subscribe((state, prev) => {
   if (prev.user && !state.user) {
-    useCartStore.setState(useCartStore.getInitialState(), true)
+    useCartStore.setState(useCartStore.getInitialState(), true);
   }
-})
+});
 ```
 
 Put this kind of wiring in one place, for example an `initStores.ts` file, so it is easy to find.
@@ -2921,14 +3036,14 @@ Options, from simplest:
 2. Write a memoized selector with a small cache (or a library like `reselect` or `proxy-memoize`) and pass it to the hook.
 
 ```ts
-import { createSelector } from 'reselect'
+import { createSelector } from "reselect";
 
 const selectVisibleTodos = createSelector(
   [(s: TodoState) => s.todos, (s: TodoState) => s.filter],
-  (todos, filter) => todos.filter((t) => (filter === 'done' ? t.done : true)),
-)
+  (todos, filter) => todos.filter((t) => (filter === "done" ? t.done : true)),
+);
 
-const visible = useTodoStore(selectVisibleTodos)
+const visible = useTodoStore(selectVisibleTodos);
 ```
 
 A memoized selector returns the same array until its inputs change, so it also avoids the new-reference problem.
@@ -2939,15 +3054,16 @@ It means reacting to frequent state changes without re-rendering the component. 
 
 ```tsx
 function Cursor() {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(
     () =>
       useMouseStore.subscribe((s) => {
-        if (ref.current) ref.current.style.transform = `translate(${s.x}px, ${s.y}px)`
+        if (ref.current)
+          ref.current.style.transform = `translate(${s.x}px, ${s.y}px)`;
       }),
     [],
-  )
-  return <div ref={ref} className="cursor" />
+  );
+  return <div ref={ref} className="cursor" />;
 }
 ```
 
@@ -2959,21 +3075,26 @@ A small manual version:
 
 ```ts
 const useEditorStore = create<EditorState>()((set, get) => ({
-  text: '',
+  text: "",
   past: [],
   future: [],
-  setText: (text) => set((s) => ({ past: [...s.past, s.text], text, future: [] })),
+  setText: (text) =>
+    set((s) => ({ past: [...s.past, s.text], text, future: [] })),
   undo: () => {
-    const { past, text, future } = get()
-    if (!past.length) return
-    set({ text: past[past.length - 1], past: past.slice(0, -1), future: [text, ...future] })
+    const { past, text, future } = get();
+    if (!past.length) return;
+    set({
+      text: past[past.length - 1],
+      past: past.slice(0, -1),
+      future: [text, ...future],
+    });
   },
   redo: () => {
-    const { past, text, future } = get()
-    if (!future.length) return
-    set({ text: future[0], past: [...past, text], future: future.slice(1) })
+    const { past, text, future } = get();
+    if (!future.length) return;
+    set({ text: future[0], past: [...past, text], future: future.slice(1) });
   },
-}))
+}));
 ```
 
 ### 240: How do you split stores for code splitting?
@@ -2993,16 +3114,18 @@ Errors in actions are normal JavaScript errors. A sync error is thrown to the ca
 Have one error store, and call it from actions or from a fetch helper.
 
 ```ts
-export const useErrorStore = create<{ message: string | null; show: (m: string) => void; clear: () => void }>()(
-  (set) => ({
-    message: null,
-    show: (message) => set({ message }),
-    clear: () => set({ message: null }),
-  }),
-)
+export const useErrorStore = create<{
+  message: string | null;
+  show: (m: string) => void;
+  clear: () => void;
+}>()((set) => ({
+  message: null,
+  show: (message) => set({ message }),
+  clear: () => set({ message: null }),
+}));
 
 // anywhere
-useErrorStore.getState().show('Could not save')
+useErrorStore.getState().show("Could not save");
 ```
 
 ### 244: How do you sync a store with `localStorage` changes from other tabs?
@@ -3010,11 +3133,11 @@ useErrorStore.getState().show('Could not save')
 Listen to the `storage` event and rehydrate.
 
 ```ts
-window.addEventListener('storage', (event) => {
+window.addEventListener("storage", (event) => {
   if (event.key === useSettingsStore.persist.getOptions().name) {
-    useSettingsStore.persist.rehydrate()
+    useSettingsStore.persist.rehydrate();
   }
-})
+});
 ```
 
 The `storage` event only fires in other tabs, not in the tab that made the change, so there is no loop.
@@ -3024,7 +3147,7 @@ The `storage` event only fires in other tabs, not in the tab that made the chang
 Select the specific field, not the parent object. Selecting `s.user` re-renders on any change to the user object. Selecting `s.user.name` re-renders only when the name changes.
 
 ```ts
-const name = useAuthStore((s) => s.user?.name)
+const name = useAuthStore((s) => s.user?.name);
 ```
 
 ### 246: What does `useShallow` compare when the selector returns an array of values?
@@ -3068,13 +3191,10 @@ Custom hooks like `useCartCount()` or `useCartActions()` hide the store shape. I
 Use `partialize` on the combined store and pick fields from each slice.
 
 ```ts
-persist(
-  (...a) => ({ ...createCartSlice(...a), ...createUiSlice(...a) }),
-  {
-    name: 'shop',
-    partialize: (s) => ({ items: s.items, currency: s.currency }),
-  },
-)
+persist((...a) => ({ ...createCartSlice(...a), ...createUiSlice(...a) }), {
+  name: "shop",
+  partialize: (s) => ({ items: s.items, currency: s.currency }),
+});
 ```
 
 UI fields like `isMenuOpen` are left out so they reset on every visit.
@@ -3104,16 +3224,16 @@ Show a splash screen until `hasHydrated()` is true.
 
 ```tsx
 export function App() {
-  const [ready, setReady] = useState(useAuthStore.persist.hasHydrated())
+  const [ready, setReady] = useState(useAuthStore.persist.hasHydrated());
 
   useEffect(() => {
-    const unsub = useAuthStore.persist.onFinishHydration(() => setReady(true))
-    if (useAuthStore.persist.hasHydrated()) setReady(true)
-    return unsub
-  }, [])
+    const unsub = useAuthStore.persist.onFinishHydration(() => setReady(true));
+    if (useAuthStore.persist.hasHydrated()) setReady(true);
+    return unsub;
+  }, []);
 
-  if (!ready) return <Splash />
-  return <Routes />
+  if (!ready) return <Splash />;
+  return <Routes />;
 }
 ```
 
@@ -3132,14 +3252,14 @@ const useStore = create<State>()(
       // ...
     }),
     {
-      name: 'app',
+      name: "app",
       partialize: ({ _hasHydrated, setHasHydrated, ...rest }) => rest,
       onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true)
+        state?.setHasHydrated(true);
       },
     },
   ),
-)
+);
 ```
 
 Components can then select `s._hasHydrated` like any other value.
@@ -3154,9 +3274,9 @@ A single selector can only read one store. Call both hooks and combine in the co
 
 ```ts
 export function useCanCheckout() {
-  const loggedIn = useAuthStore((s) => s.user !== null)
-  const hasItems = useCartStore((s) => s.items.length > 0)
-  return loggedIn && hasItems
+  const loggedIn = useAuthStore((s) => s.user !== null);
+  const hasItems = useCartStore((s) => s.items.length > 0);
+  return loggedIn && hasItems;
 }
 ```
 
@@ -3165,11 +3285,13 @@ export function useCanCheckout() {
 Let React Hook Form manage field values and validation. Use Zustand for things around the form, such as a saved draft or wizard steps. On submit, copy the result into the store.
 
 ```tsx
-const { register, handleSubmit } = useForm({ defaultValues: useWizardStore.getState().data })
+const { register, handleSubmit } = useForm({
+  defaultValues: useWizardStore.getState().data,
+});
 const onSubmit = (values) => {
-  useWizardStore.getState().setData(values)
-  useWizardStore.getState().next()
-}
+  useWizardStore.getState().setData(values);
+  useWizardStore.getState().next();
+};
 ```
 
 ### 260: How do you keep a store in sync with a prop that changes?
@@ -3178,10 +3300,10 @@ Update the store in an effect when the prop changes.
 
 ```tsx
 function Editor({ documentId }: { documentId: string }) {
-  const load = useEditorStore((s) => s.load)
+  const load = useEditorStore((s) => s.load);
   useEffect(() => {
-    load(documentId)
-  }, [documentId, load])
+    load(documentId);
+  }, [documentId, load]);
   // ...
 }
 ```
@@ -3207,14 +3329,14 @@ The vanilla store works anywhere. For Preact, `preact/compat` provides `useSyncE
 Subscribe and call the library's update method.
 
 ```ts
-const chart = new Chart(canvas, config)
+const chart = new Chart(canvas, config);
 
 const unsub = statsStore.subscribe((state, prev) => {
   if (state.points !== prev.points) {
-    chart.data.datasets[0].data = state.points
-    chart.update()
+    chart.data.datasets[0].data = state.points;
+    chart.update();
   }
-})
+});
 ```
 
 ### 264: How do you handle a store field that holds a big list from the server?
@@ -3251,10 +3373,15 @@ Actions live in the state, so `useStore.getState().someAction()` calls them dire
 Selectors are pure functions, so test them with plain objects.
 
 ```ts
-test('selectTotal', () => {
-  const state = { items: [{ price: 2, qty: 3 }, { price: 5, qty: 1 }] } as CartState
-  expect(selectTotal(state)).toBe(11)
-})
+test("selectTotal", () => {
+  const state = {
+    items: [
+      { price: 2, qty: 3 },
+      { price: 5, qty: 1 },
+    ],
+  } as CartState;
+  expect(selectTotal(state)).toBe(11);
+});
 ```
 
 ### 270: How do you test `subscribe` logic?
@@ -3262,16 +3389,16 @@ test('selectTotal', () => {
 Subscribe with a mock function, change state, and check the calls.
 
 ```ts
-test('subscribe gets new and old state', () => {
-  const listener = vi.fn()
-  const unsub = useCounterStore.subscribe(listener)
-  useCounterStore.getState().increment()
+test("subscribe gets new and old state", () => {
+  const listener = vi.fn();
+  const unsub = useCounterStore.subscribe(listener);
+  useCounterStore.getState().increment();
   expect(listener).toHaveBeenCalledWith(
     expect.objectContaining({ count: 1 }),
     expect.objectContaining({ count: 0 }),
-  )
-  unsub()
-})
+  );
+  unsub();
+});
 ```
 
 ### 271: How do you write an action that updates several fields at once?
@@ -3299,7 +3426,7 @@ You can add a function that uses `get()`.
 const useCartStore = create<CartState>()((set, get) => ({
   items: [],
   total: () => get().items.reduce((sum, i) => sum + i.price * i.qty, 0),
-}))
+}));
 ```
 
 But a component that selects `s.total` gets the function, not the value, and won't re-render when items change. In components, use a selector like `useCartStore((s) => s.total())` or a separate `selectTotal` function. JavaScript `get total()` getters on the state object are not a good replacement either (see the next question).
@@ -3314,10 +3441,10 @@ Write a generic slice creator and reuse it.
 
 ```ts
 interface LoadingSlice {
-  loading: boolean
-  error: string | null
-  start: () => void
-  fail: (error: string) => void
+  loading: boolean;
+  error: string | null;
+  start: () => void;
+  fail: (error: string) => void;
 }
 
 export const createLoadingSlice =
@@ -3327,16 +3454,16 @@ export const createLoadingSlice =
     error: null,
     start: () => set({ loading: true, error: null } as Partial<T>),
     fail: (error) => set({ loading: false, error } as Partial<T>),
-  })
+  });
 
 interface UserState extends LoadingSlice {
-  user: User | null
+  user: User | null;
 }
 
 const useUserStore = create<UserState>()((...a) => ({
   user: null,
   ...createLoadingSlice<UserState>()(...a),
-}))
+}));
 ```
 
 Any store whose state includes `LoadingSlice` can spread it in.
@@ -3370,7 +3497,12 @@ Select it for display, and inside the click handler use the selected value or `g
 ### 279: How do you build a shopping cart store with quantities?
 
 ```ts
-interface CartItem { id: string; name: string; price: number; qty: number }
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  qty: number;
+}
 
 const useCartStore = create<CartState>()(
   persist(
@@ -3378,25 +3510,28 @@ const useCartStore = create<CartState>()(
       items: [],
       add: (product) =>
         set((s) => {
-          const existing = s.items.find((i) => i.id === product.id)
+          const existing = s.items.find((i) => i.id === product.id);
           if (existing) {
             return {
-              items: s.items.map((i) => (i.id === product.id ? { ...i, qty: i.qty + 1 } : i)),
-            }
+              items: s.items.map((i) =>
+                i.id === product.id ? { ...i, qty: i.qty + 1 } : i,
+              ),
+            };
           }
-          return { items: [...s.items, { ...product, qty: 1 }] }
+          return { items: [...s.items, { ...product, qty: 1 }] };
         }),
       setQty: (id, qty) =>
         set((s) => ({
-          items: qty <= 0
-            ? s.items.filter((i) => i.id !== id)
-            : s.items.map((i) => (i.id === id ? { ...i, qty } : i)),
+          items:
+            qty <= 0
+              ? s.items.filter((i) => i.id !== id)
+              : s.items.map((i) => (i.id === id ? { ...i, qty } : i)),
         })),
       clear: () => set({ items: [] }),
     }),
-    { name: 'cart' },
+    { name: "cart" },
   ),
-)
+);
 ```
 
 ### 280: How do you handle feature flags with Zustand?
@@ -3404,14 +3539,17 @@ const useCartStore = create<CartState>()(
 Load flags once at startup, put them in a store, and select single flags in components.
 
 ```ts
-const useFlagStore = create<{ flags: Record<string, boolean> }>()(() => ({ flags: {} }))
+const useFlagStore = create<{ flags: Record<string, boolean> }>()(() => ({
+  flags: {},
+}));
 
 export async function loadFlags() {
-  const flags = await fetch('/api/flags').then((r) => r.json())
-  useFlagStore.setState({ flags })
+  const flags = await fetch("/api/flags").then((r) => r.json());
+  useFlagStore.setState({ flags });
 }
 
-export const useFlag = (name: string) => useFlagStore((s) => s.flags[name] ?? false)
+export const useFlag = (name: string) =>
+  useFlagStore((s) => s.flags[name] ?? false);
 ```
 
 ### 281: How do you handle permissions in the UI with a store?
@@ -3420,7 +3558,7 @@ Keep the user's roles in the auth store and write small hooks for checks.
 
 ```ts
 export const useCan = (permission: string) =>
-  useAuthStore((s) => s.user?.permissions.includes(permission) ?? false)
+  useAuthStore((s) => s.user?.permissions.includes(permission) ?? false);
 ```
 
 The hook returns a boolean, so components only re-render when the answer changes. Remember that UI checks are only for display; the server must enforce permissions.
@@ -3431,11 +3569,13 @@ Store the user's choice (`'light' | 'dark' | 'system'`), persist it, and compute
 
 ```ts
 const useThemeStore = create<ThemeState>()(
-  persist((set) => ({ mode: 'system', setMode: (mode) => set({ mode }) }), { name: 'theme' }),
-)
+  persist((set) => ({ mode: "system", setMode: (mode) => set({ mode }) }), {
+    name: "theme",
+  }),
+);
 
-useThemeStore.subscribe((s) => applyTheme(s.mode))
-applyTheme(useThemeStore.getState().mode)
+useThemeStore.subscribe((s) => applyTheme(s.mode));
+applyTheme(useThemeStore.getState().mode);
 ```
 
 `applyTheme` sets a class on `<html>`. To avoid a flash on load, a small inline script in the HTML head can read `localStorage` before React starts.
@@ -3445,15 +3585,15 @@ applyTheme(useThemeStore.getState().mode)
 Count renders with a mock or the React Profiler API, change an unrelated field, and assert the count didn't change.
 
 ```tsx
-const renders = vi.fn()
+const renders = vi.fn();
 function Name() {
-  renders()
-  return <span>{useUserStore((s) => s.name)}</span>
+  renders();
+  return <span>{useUserStore((s) => s.name)}</span>;
 }
 
-render(<Name />)
-act(() => useUserStore.setState({ age: 30 }))
-expect(renders).toHaveBeenCalledTimes(1)
+render(<Name />);
+act(() => useUserStore.setState({ age: 30 }));
+expect(renders).toHaveBeenCalledTimes(1);
 ```
 
 ### 284: Why might a component re-render even though its selected value didn't change?
@@ -3515,10 +3655,16 @@ A user who skipped version 1 still gets both changes.
 Use a `feature/action` pattern, like `cart/add` or `auth/logout`. Some teams wrap `set` in a helper that adds the prefix automatically, so they don't repeat the slice name in every action.
 
 ```ts
-const createCartSlice: StateCreator<Store, [['zustand/devtools', never]], [], CartSlice> = (set) => ({
+const createCartSlice: StateCreator<
+  Store,
+  [["zustand/devtools", never]],
+  [],
+  CartSlice
+> = (set) => ({
   items: [],
-  add: (item) => set((s) => ({ items: [...s.items, item] }), undefined, 'cart/add'),
-})
+  add: (item) =>
+    set((s) => ({ items: [...s.items, item] }), undefined, "cart/add"),
+});
 ```
 
 ### 290: How do you keep Zustand and the URL in sync both ways?
@@ -3527,16 +3673,17 @@ Read the URL into the store on load, update the URL when the store changes, and 
 
 ```ts
 useFilterStore.subscribe((s, prev) => {
-  if (s.query === prev.query) return
-  const url = new URL(location.href)
-  url.searchParams.set('q', s.query)
-  history.replaceState(null, '', url)
-})
+  if (s.query === prev.query) return;
+  const url = new URL(location.href);
+  url.searchParams.set("q", s.query);
+  history.replaceState(null, "", url);
+});
 
-window.addEventListener('popstate', () => {
-  const q = new URL(location.href).searchParams.get('q') ?? ''
-  if (q !== useFilterStore.getState().query) useFilterStore.setState({ query: q })
-})
+window.addEventListener("popstate", () => {
+  const q = new URL(location.href).searchParams.get("q") ?? "";
+  if (q !== useFilterStore.getState().query)
+    useFilterStore.setState({ query: q });
+});
 ```
 
 With a router, use the router's search params API instead of `history` directly.
@@ -3577,8 +3724,8 @@ Keep the same hook and the same field names, and move the code into slice files 
 Zustand doesn't suspend by itself. If you want Suspense, store a promise and read it with React's `use` hook, or let a data library handle it. Most apps keep loading flags in the store and show spinners instead.
 
 ```tsx
-const promise = useDataStore((s) => s.promise)
-const data = use(promise)
+const promise = useDataStore((s) => s.promise);
+const data = use(promise);
 ```
 
 The promise must be created once and kept in the store; creating it during render would cause an endless loop.
@@ -3588,20 +3735,21 @@ The promise must be created once and kept in the store; creating it during rende
 Use a `Record<string, true>` or a `Set`. A record is simpler to persist and to select from.
 
 ```ts
-const useSelectionStore = create<{ selected: Record<string, true>; toggle: (id: string) => void }>()(
-  (set) => ({
-    selected: {},
-    toggle: (id) =>
-      set((s) => {
-        const next = { ...s.selected }
-        if (next[id]) delete next[id]
-        else next[id] = true
-        return { selected: next }
-      }),
-  }),
-)
+const useSelectionStore = create<{
+  selected: Record<string, true>;
+  toggle: (id: string) => void;
+}>()((set) => ({
+  selected: {},
+  toggle: (id) =>
+    set((s) => {
+      const next = { ...s.selected };
+      if (next[id]) delete next[id];
+      else next[id] = true;
+      return { selected: next };
+    }),
+}));
 
-const isSelected = useSelectionStore((s) => !!s.selected[rowId])
+const isSelected = useSelectionStore((s) => !!s.selected[rowId]);
 ```
 
 Each row selects a boolean, so toggling one row re-renders only that row (and anything that reads the whole selection).
@@ -3611,7 +3759,9 @@ Each row selects a boolean, so toggling one row re-renders only that row (and an
 Compare the current values with the saved ones in a selector.
 
 ```ts
-const isDirty = useFormStore((s) => JSON.stringify(s.values) !== JSON.stringify(s.saved))
+const isDirty = useFormStore(
+  (s) => JSON.stringify(s.values) !== JSON.stringify(s.saved),
+);
 ```
 
 For bigger forms, keep a `dirty` boolean that each `setField` sets to `true` and `save` sets to `false`, so you don't stringify on every change.
@@ -3621,13 +3771,13 @@ For bigger forms, keep a `dirty` boolean that each `setField` sets to `true` and
 Subscribe to the dirty flag and add or remove a `beforeunload` listener.
 
 ```ts
-const handler = (e: BeforeUnloadEvent) => e.preventDefault()
+const handler = (e: BeforeUnloadEvent) => e.preventDefault();
 
 useFormStore.subscribe((s, prev) => {
-  if (s.dirty === prev.dirty) return
-  if (s.dirty) window.addEventListener('beforeunload', handler)
-  else window.removeEventListener('beforeunload', handler)
-})
+  if (s.dirty === prev.dirty) return;
+  if (s.dirty) window.addEventListener("beforeunload", handler);
+  else window.removeEventListener("beforeunload", handler);
+});
 ```
 
 ### 298: What are some useful third-party libraries around Zustand?
@@ -3639,10 +3789,11 @@ The docs list many. A few that come up often: `zundo` (undo/redo middleware), `r
 Wrap the creation in a function that caches the result.
 
 ```ts
-let store: ReturnType<typeof createHeavyStore> | undefined
+let store: ReturnType<typeof createHeavyStore> | undefined;
 
-export const getHeavyStore = () => (store ??= createHeavyStore())
-export const useHeavy = <T,>(selector: (s: HeavyState) => T) => useStore(getHeavyStore(), selector)
+export const getHeavyStore = () => (store ??= createHeavyStore());
+export const useHeavy = <T>(selector: (s: HeavyState) => T) =>
+  useStore(getHeavyStore(), selector);
 ```
 
 Usually this isn't needed, because a module is only evaluated when it is first imported.
@@ -3665,29 +3816,29 @@ It is a short closure. It keeps `state` and a `Set` of listeners in local variab
 
 ```js
 const createStoreImpl = (createState) => {
-  let state
-  const listeners = new Set()
+  let state;
+  const listeners = new Set();
   const setState = (partial, replace) => {
-    const nextState = typeof partial === 'function' ? partial(state) : partial
+    const nextState = typeof partial === "function" ? partial(state) : partial;
     if (!Object.is(nextState, state)) {
-      const previousState = state
+      const previousState = state;
       state =
-        (replace ?? (typeof nextState !== 'object' || nextState === null))
+        (replace ?? (typeof nextState !== "object" || nextState === null))
           ? nextState
-          : Object.assign({}, state, nextState)
-      listeners.forEach((listener) => listener(state, previousState))
+          : Object.assign({}, state, nextState);
+      listeners.forEach((listener) => listener(state, previousState));
     }
-  }
-  const getState = () => state
-  const getInitialState = () => initialState
+  };
+  const getState = () => state;
+  const getInitialState = () => initialState;
   const subscribe = (listener) => {
-    listeners.add(listener)
-    return () => listeners.delete(listener)
-  }
-  const api = { setState, getState, getInitialState, subscribe }
-  const initialState = (state = createState(setState, getState, api))
-  return api
-}
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  };
+  const api = { setState, getState, getInitialState, subscribe };
+  const initialState = (state = createState(setState, getState, api));
+  return api;
+};
 ```
 
 There is no scheduler, no queue and no batching inside the store. Everything happens synchronously.
@@ -3722,9 +3873,9 @@ function useStore(api, selector = identity) {
     api.subscribe,
     React.useCallback(() => selector(api.getState()), [api, selector]),
     () => selector(api.getInitialState()),
-  )
-  React.useDebugValue(slice)
-  return slice
+  );
+  React.useDebugValue(slice);
+  return slice;
 }
 ```
 
@@ -3748,11 +3899,11 @@ It keeps the previous result in a `useRef`. Each time the wrapped selector runs,
 
 ```js
 function useShallow(selector) {
-  const prev = React.useRef(undefined)
+  const prev = React.useRef(undefined);
   return (state) => {
-    const next = selector(state)
-    return shallow(prev.current, next) ? prev.current : (prev.current = next)
-  }
+    const next = selector(state);
+    return shallow(prev.current, next) ? prev.current : (prev.current = next);
+  };
 }
 ```
 
@@ -3791,19 +3942,19 @@ Every `setState` calls every listener. For each subscribed component, React call
 Collect them in a buffer and flush on the next animation frame.
 
 ```ts
-let buffer: Record<string, number> = {}
-let scheduled = false
+let buffer: Record<string, number> = {};
+let scheduled = false;
 
 export function onPrice(symbol: string, price: number) {
-  buffer[symbol] = price
-  if (scheduled) return
-  scheduled = true
+  buffer[symbol] = price;
+  if (scheduled) return;
+  scheduled = true;
   requestAnimationFrame(() => {
-    const updates = buffer
-    buffer = {}
-    scheduled = false
-    usePriceStore.setState((s) => ({ prices: { ...s.prices, ...updates } }))
-  })
+    const updates = buffer;
+    buffer = {};
+    scheduled = false;
+    usePriceStore.setState((s) => ({ prices: { ...s.prices, ...updates } }));
+  });
 }
 ```
 
@@ -3818,9 +3969,9 @@ Updates from external stores read through `useSyncExternalStore` can't be render
 Select the value as usual, then pass it through `useDeferredValue` before giving it to the slow part. React renders the fast parts with the new value first and renders the slow part in the background.
 
 ```tsx
-const query = useSearchStore((s) => s.query)
-const deferredQuery = useDeferredValue(query)
-return <SlowResults query={deferredQuery} />
+const query = useSearchStore((s) => s.query);
+const deferredQuery = useDeferredValue(query);
+return <SlowResults query={deferredQuery} />;
 ```
 
 `SlowResults` should be memoized so it only re-renders when `deferredQuery` changes.
@@ -3838,13 +3989,13 @@ It is a type registry. Each middleware adds an entry to `StoreMutators` through 
 Declare a mutator with module augmentation and type the middleware with the mutator lists.
 
 ```ts
-import type { StateCreator, StoreMutatorIdentifier } from 'zustand'
+import type { StateCreator, StoreMutatorIdentifier } from "zustand";
 
-type WithReset<S> = S & { reset: () => void }
+type WithReset<S> = S & { reset: () => void };
 
-declare module 'zustand/vanilla' {
+declare module "zustand/vanilla" {
   interface StoreMutators<S, A> {
-    'myapp/reset': WithReset<S>
+    "myapp/reset": WithReset<S>;
   }
 }
 
@@ -3853,18 +4004,21 @@ type Resettable = <
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = [],
 >(
-  initializer: StateCreator<T, [...Mps, ['myapp/reset', never]], Mcs>,
-) => StateCreator<T, Mps, [['myapp/reset', never], ...Mcs]>
+  initializer: StateCreator<T, [...Mps, ["myapp/reset", never]], Mcs>,
+) => StateCreator<T, Mps, [["myapp/reset", never], ...Mcs]>;
 
-type ResettableImpl = <T>(initializer: StateCreator<T, [], []>) => StateCreator<T, [], []>
+type ResettableImpl = <T>(
+  initializer: StateCreator<T, [], []>,
+) => StateCreator<T, [], []>;
 
 const resettableImpl: ResettableImpl = (initializer) => (set, get, store) => {
-  const initial = initializer(set, get, store)
-  ;(store as WithReset<typeof store>).reset = () => store.setState(initial, true)
-  return initial
-}
+  const initial = initializer(set, get, store);
+  (store as WithReset<typeof store>).reset = () =>
+    store.setState(initial, true);
+  return initial;
+};
 
-export const resettable = resettableImpl as unknown as Resettable
+export const resettable = resettableImpl as unknown as Resettable;
 ```
 
 Now `useStore.reset()` is typed after `create<State>()(resettable(...))`. The cast at the end is the same trick the built-in middleware use.
@@ -3951,11 +4105,12 @@ It replaces `store.setState` with a function that checks whether the updater is 
 ```js
 const immerImpl = (initializer) => (set, get, store) => {
   store.setState = (updater, replace, ...args) => {
-    const nextState = typeof updater === 'function' ? produce(updater) : updater
-    return set(nextState, replace, ...args)
-  }
-  return initializer(store.setState, get, store)
-}
+    const nextState =
+      typeof updater === "function" ? produce(updater) : updater;
+    return set(nextState, replace, ...args);
+  };
+  return initializer(store.setState, get, store);
+};
 ```
 
 ### 342: Why does Immer make structural sharing important for Zustand selectors?
@@ -4000,13 +4155,13 @@ Yes, the vanilla store has no DOM or React dependency. But a store in a worker a
 
 ```ts
 // worker.ts
-const store = createStore(() => ({ result: null as number | null }))
-store.subscribe((s) => postMessage({ type: 'state', state: s }))
+const store = createStore(() => ({ result: null as number | null }));
+store.subscribe((s) => postMessage({ type: "state", state: s }));
 
 // main.ts
 worker.onmessage = (e) => {
-  if (e.data.type === 'state') useResultStore.setState(e.data.state)
-}
+  if (e.data.type === "state") useResultStore.setState(e.data.state);
+};
 ```
 
 ### 352: How would you sync a store across tabs without `localStorage` events?
@@ -4014,19 +4169,19 @@ worker.onmessage = (e) => {
 Use a `BroadcastChannel`. Send changes from one tab and apply them in others, with a flag to avoid echoing them back.
 
 ```ts
-const channel = new BroadcastChannel('cart')
-let fromRemote = false
+const channel = new BroadcastChannel("cart");
+let fromRemote = false;
 
 useCartStore.subscribe((s, prev) => {
-  if (fromRemote || s.items === prev.items) return
-  channel.postMessage({ items: s.items })
-})
+  if (fromRemote || s.items === prev.items) return;
+  channel.postMessage({ items: s.items });
+});
 
 channel.onmessage = (e) => {
-  fromRemote = true
-  useCartStore.setState({ items: e.data.items })
-  fromRemote = false
-}
+  fromRemote = true;
+  useCartStore.setState({ items: e.data.items });
+  fromRemote = false;
+};
 ```
 
 This works without persistence and is faster than writing to storage. The `fromRemote` flag works because `setState` and listeners run synchronously.
@@ -4057,11 +4212,11 @@ A single store gives one place for middleware, easy cross-slice actions, and one
 Don't export the store. Export only selector hooks and action functions.
 
 ```ts
-const useCartStoreBase = create<CartState>()(() => ({ items: [] }))
+const useCartStoreBase = create<CartState>()(() => ({ items: [] }));
 
-export const useCartItems = () => useCartStoreBase((s) => s.items)
+export const useCartItems = () => useCartStoreBase((s) => s.items);
 export const addToCart = (item: Item) =>
-  useCartStoreBase.setState((s) => ({ items: [...s.items, item] }))
+  useCartStoreBase.setState((s) => ({ items: [...s.items, item] }));
 ```
 
 Now the only way to change the cart is through `addToCart`, which keeps all update logic in one file.
@@ -4083,23 +4238,25 @@ When the logic has many states and transitions that must follow strict rules, su
 Use one `status` field and a transition table, and only allow known transitions.
 
 ```ts
-type Status = 'idle' | 'loading' | 'success' | 'error'
-type Event = 'FETCH' | 'RESOLVE' | 'REJECT' | 'RESET'
+type Status = "idle" | "loading" | "success" | "error";
+type Event = "FETCH" | "RESOLVE" | "REJECT" | "RESET";
 
 const transitions: Record<Status, Partial<Record<Event, Status>>> = {
-  idle: { FETCH: 'loading' },
-  loading: { RESOLVE: 'success', REJECT: 'error' },
-  success: { FETCH: 'loading', RESET: 'idle' },
-  error: { FETCH: 'loading', RESET: 'idle' },
-}
+  idle: { FETCH: "loading" },
+  loading: { RESOLVE: "success", REJECT: "error" },
+  success: { FETCH: "loading", RESET: "idle" },
+  error: { FETCH: "loading", RESET: "idle" },
+};
 
-const useMachine = create<{ status: Status; send: (e: Event) => void }>()((set, get) => ({
-  status: 'idle',
-  send: (event) => {
-    const next = transitions[get().status][event]
-    if (next) set({ status: next })
-  },
-}))
+const useMachine = create<{ status: Status; send: (e: Event) => void }>()(
+  (set, get) => ({
+    status: "idle",
+    send: (event) => {
+      const next = transitions[get().status][event];
+      if (next) set({ status: next });
+    },
+  }),
+);
 ```
 
 ### 362: What happens if two components call the same async action at the same time?
@@ -4112,10 +4269,10 @@ Expose actions with meaning, not raw setters. Instead of `setStatus` and `setDat
 
 ```ts
 type State =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'success'; data: User }
-  | { status: 'error'; error: string }
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: User }
+  | { status: "error"; error: string };
 ```
 
 Use `replace: true` when switching between union members so leftover keys don't stay around.
@@ -4130,21 +4287,21 @@ Put the union under one key, so actions stay at the top level and the default me
 
 ```ts
 interface Store {
-  request: RequestState
-  load: () => Promise<void>
+  request: RequestState;
+  load: () => Promise<void>;
 }
 
 const useUserStore = create<Store>()((set) => ({
-  request: { status: 'idle' },
+  request: { status: "idle" },
   load: async () => {
-    set({ request: { status: 'loading' } })
+    set({ request: { status: "loading" } });
     try {
-      set({ request: { status: 'success', data: await fetchUser() } })
+      set({ request: { status: "success", data: await fetchUser() } });
     } catch (e) {
-      set({ request: { status: 'error', error: String(e) } })
+      set({ request: { status: "error", error: String(e) } });
     }
   },
-}))
+}));
 ```
 
 Each `set` replaces `request` completely, so no leftover keys.
@@ -4191,16 +4348,16 @@ Wrap `set` and `api.setState`, run the update, then validate the new state with 
 
 ```ts
 const validate =
-  <T,>(schema: { parse: (v: unknown) => T }) =>
+  <T>(schema: { parse: (v: unknown) => T }) =>
   (config: StateCreator<T>): StateCreator<T> =>
   (set, get, api) => {
     const checkedSet = ((...args: Parameters<typeof set>) => {
-      set(...args)
-      if (process.env.NODE_ENV !== 'production') schema.parse(get())
-    }) as typeof set
-    api.setState = checkedSet
-    return config(checkedSet, get, api)
-  }
+      set(...args);
+      if (process.env.NODE_ENV !== "production") schema.parse(get());
+    }) as typeof set;
+    api.setState = checkedSet;
+    return config(checkedSet, get, api);
+  };
 ```
 
 Validating on every update can be slow, so keep it for development.
@@ -4210,17 +4367,17 @@ Validating on every update can be slow, so keep it for development.
 Subscribe and save snapshots, then restore one with `replace: true`.
 
 ```ts
-const history: State[] = [useStore.getState()]
-let restoring = false
+const history: State[] = [useStore.getState()];
+let restoring = false;
 
 useStore.subscribe((s) => {
-  if (!restoring) history.push(s)
-})
+  if (!restoring) history.push(s);
+});
 
 export function goTo(index: number) {
-  restoring = true
-  useStore.setState(history[index], true)
-  restoring = false
+  restoring = true;
+  useStore.setState(history[index], true);
+  restoring = false;
 }
 ```
 
@@ -4235,21 +4392,21 @@ Each update creates a new top-level object but reuses every unchanged nested obj
 Track the number of subscribers by wrapping `subscribe`.
 
 ```ts
-const store = createStore<State>()(() => ({ data: null, loading: false }))
-const originalSubscribe = store.subscribe
-let count = 0
+const store = createStore<State>()(() => ({ data: null, loading: false }));
+const originalSubscribe = store.subscribe;
+let count = 0;
 
 store.subscribe = (listener) => {
   if (count++ === 0 && !store.getState().data) {
-    store.setState({ loading: true })
-    fetchData().then((data) => store.setState({ data, loading: false }))
+    store.setState({ loading: true });
+    fetchData().then((data) => store.setState({ data, loading: false }));
   }
-  const unsub = originalSubscribe(listener)
+  const unsub = originalSubscribe(listener);
   return () => {
-    count--
-    unsub()
-  }
-}
+    count--;
+    unsub();
+  };
+};
 ```
 
 This is similar to how some data libraries start fetching only when someone is listening.
@@ -4306,12 +4463,12 @@ Create a vanilla store in a shared module. The React app reads it with `useStore
 Give each plugin its own store and register it in a central registry, instead of injecting keys into one store. The host can then read plugin stores by id.
 
 ```ts
-const registry = new Map<string, StoreApi<unknown>>()
+const registry = new Map<string, StoreApi<unknown>>();
 
 export function registerPluginStore<T>(id: string, creator: StateCreator<T>) {
-  const store = createStore<T>()(creator)
-  registry.set(id, store as StoreApi<unknown>)
-  return store
+  const store = createStore<T>()(creator);
+  registry.set(id, store as StoreApi<unknown>);
+  return store;
 }
 ```
 
@@ -4330,13 +4487,13 @@ const safeLocalStorage: StateStorage = {
   getItem: (k) => localStorage.getItem(k),
   setItem: (k, v) => {
     try {
-      localStorage.setItem(k, v)
+      localStorage.setItem(k, v);
     } catch (e) {
-      console.warn('persist failed', e)
+      console.warn("persist failed", e);
     }
   },
   removeItem: (k) => localStorage.removeItem(k),
-}
+};
 ```
 
 ### 387: How do you limit how often `persist` writes to storage?
@@ -4345,18 +4502,21 @@ Write a storage wrapper that debounces `setItem`.
 
 ```ts
 const debounced = (storage: StateStorage, ms = 500): StateStorage => {
-  let timer: ReturnType<typeof setTimeout> | undefined
+  let timer: ReturnType<typeof setTimeout> | undefined;
   return {
     getItem: storage.getItem,
     removeItem: storage.removeItem,
     setItem: (name, value) => {
-      clearTimeout(timer)
-      timer = setTimeout(() => storage.setItem(name, value), ms)
+      clearTimeout(timer);
+      timer = setTimeout(() => storage.setItem(name, value), ms);
     },
-  }
-}
+  };
+};
 
-persist(creator, { name: 'editor', storage: createJSONStorage(() => debounced(localStorage)) })
+persist(creator, {
+  name: "editor",
+  storage: createJSONStorage(() => debounced(localStorage)),
+});
 ```
 
 Note that `JSON.stringify` still runs on every update. To save that cost too, write a `PersistStorage` (the non-JSON interface) that debounces before stringifying. Also flush on `pagehide` so the last change isn't lost.
@@ -4380,25 +4540,29 @@ Zustand is basically a small, well-tested wrapper around the same idea: a store 
 ### 392: How would you write a minimal Zustand-like store from scratch?
 
 ```ts
-import { useSyncExternalStore } from 'react'
+import { useSyncExternalStore } from "react";
 
 export function createMiniStore<T extends object>(init: T) {
-  let state = init
-  const listeners = new Set<() => void>()
+  let state = init;
+  const listeners = new Set<() => void>();
 
   const setState = (partial: Partial<T> | ((s: T) => Partial<T>)) => {
-    const next = typeof partial === 'function' ? partial(state) : partial
-    state = { ...state, ...next }
-    listeners.forEach((l) => l())
-  }
+    const next = typeof partial === "function" ? partial(state) : partial;
+    state = { ...state, ...next };
+    listeners.forEach((l) => l());
+  };
   const subscribe = (l: () => void) => {
-    listeners.add(l)
-    return () => listeners.delete(l)
-  }
-  const useStore = <U,>(selector: (s: T) => U) =>
-    useSyncExternalStore(subscribe, () => selector(state), () => selector(init))
+    listeners.add(l);
+    return () => listeners.delete(l);
+  };
+  const useStore = <U>(selector: (s: T) => U) =>
+    useSyncExternalStore(
+      subscribe,
+      () => selector(state),
+      () => selector(init),
+    );
 
-  return { getState: () => state, setState, subscribe, useStore }
+  return { getState: () => state, setState, subscribe, useStore };
 }
 ```
 
@@ -4414,11 +4578,11 @@ Subscribe to the auth store and reset dependent stores when the user id changes.
 
 ```ts
 useAuthStore.subscribe((s, prev) => {
-  if (s.user?.id === prev.user?.id) return
-  useCartStore.setState(useCartStore.getInitialState(), true)
-  useCartStore.persist.setOptions({ name: `cart-${s.user?.id ?? 'guest'}` })
-  useCartStore.persist.rehydrate()
-})
+  if (s.user?.id === prev.user?.id) return;
+  useCartStore.setState(useCartStore.getInitialState(), true);
+  useCartStore.persist.setOptions({ name: `cart-${s.user?.id ?? "guest"}` });
+  useCartStore.persist.rehydrate();
+});
 ```
 
 ### 395: How do you implement optimistic updates that are safe with concurrent edits?
@@ -4449,10 +4613,10 @@ Subscribe to the inputs and update the derived field when they change.
 
 ```ts
 useCartStore.subscribe((s, prev) => {
-  if (s.items === prev.items) return
-  const total = s.items.reduce((sum, i) => sum + i.price * i.qty, 0)
-  useCartStore.setState({ total })
-})
+  if (s.items === prev.items) return;
+  const total = s.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  useCartStore.setState({ total });
+});
 ```
 
 This triggers a second update right after the first, and for a moment listeners see the old `total`. Usually a memoized selector is the better design.
@@ -4467,11 +4631,11 @@ Keep pages of ids and a map of items, plus a cursor and status.
 
 ```ts
 interface FeedState {
-  ids: string[]
-  byId: Record<string, Post>
-  cursor: string | null
-  status: 'idle' | 'loading' | 'error' | 'done'
-  loadMore: () => Promise<void>
+  ids: string[];
+  byId: Record<string, Post>;
+  cursor: string | null;
+  status: "idle" | "loading" | "error" | "done";
+  loadMore: () => Promise<void>;
 }
 ```
 
@@ -4482,19 +4646,19 @@ interface FeedState {
 Use fake timers, trigger the update, advance time, and assert.
 
 ```ts
-test('debounced search', async () => {
-  vi.useFakeTimers()
-  const search = vi.fn()
-  useSearchStore.setState({ search })
+test("debounced search", async () => {
+  vi.useFakeTimers();
+  const search = vi.fn();
+  useSearchStore.setState({ search });
 
-  useSearchStore.getState().setQuery('re')
-  useSearchStore.getState().setQuery('react')
-  vi.advanceTimersByTime(300)
+  useSearchStore.getState().setQuery("re");
+  useSearchStore.getState().setQuery("react");
+  vi.advanceTimersByTime(300);
 
-  expect(search).toHaveBeenCalledTimes(1)
-  expect(search).toHaveBeenCalledWith('react')
-  vi.useRealTimers()
-})
+  expect(search).toHaveBeenCalledTimes(1);
+  expect(search).toHaveBeenCalledWith("react");
+  vi.useRealTimers();
+});
 ```
 
 Replacing the `search` action with a mock through `setState` works because actions are just state fields.
@@ -4519,12 +4683,12 @@ When you edit the store file, the bundler re-runs that module and creates a new 
 export const useCounterStore = create<CounterState>()((set) => ({
   count: import.meta.hot?.data.count ?? 0,
   inc: () => set((s) => ({ count: s.count + 1 })),
-}))
+}));
 
 if (import.meta.hot) {
   import.meta.hot.dispose((data) => {
-    data.count = useCounterStore.getState().count
-  })
+    data.count = useCounterStore.getState().count;
+  });
 }
 ```
 
@@ -4584,19 +4748,19 @@ const useQueueStore = create<QueueState>()(
       flush: async () => {
         for (const job of get().queue) {
           try {
-            await send(job)
-            set((s) => ({ queue: s.queue.filter((j) => j.id !== job.id) }))
+            await send(job);
+            set((s) => ({ queue: s.queue.filter((j) => j.id !== job.id) }));
           } catch {
-            break
+            break;
           }
         }
       },
     }),
-    { name: 'offline-queue' },
+    { name: "offline-queue" },
   ),
-)
+);
 
-window.addEventListener('online', () => useQueueStore.getState().flush())
+window.addEventListener("online", () => useQueueStore.getState().flush());
 ```
 
 Make jobs idempotent on the server (with a job id), because a job can be sent twice if the app closes after sending but before removing it.
@@ -4606,20 +4770,20 @@ Make jobs idempotent on the server (with a job id), because a job can be sent tw
 Keep a single refresh promise outside the state, and let all callers wait for it.
 
 ```ts
-let refreshing: Promise<string> | null = null
+let refreshing: Promise<string> | null = null;
 
 async function getFreshToken() {
   if (!refreshing) {
     refreshing = refreshToken(useAuthStore.getState().refreshToken)
       .then((token) => {
-        useAuthStore.setState({ token })
-        return token
+        useAuthStore.setState({ token });
+        return token;
       })
       .finally(() => {
-        refreshing = null
-      })
+        refreshing = null;
+      });
   }
-  return refreshing
+  return refreshing;
 }
 ```
 
@@ -4632,10 +4796,10 @@ Subscribe to the store and compare old and new state.
 ```ts
 useCartStore.subscribe((s, prev) => {
   if (s.items.length > prev.items.length) {
-    const added = s.items.find((i) => !prev.items.some((p) => p.id === i.id))
-    if (added) analytics.track('add_to_cart', { id: added.id })
+    const added = s.items.find((i) => !prev.items.some((p) => p.id === i.id));
+    if (added) analytics.track("add_to_cart", { id: added.id });
   }
-})
+});
 ```
 
 Or write a middleware that reads the devtools-style action name (third argument of `set`) and sends it. Keep analytics out of components so it is easy to find and test.
@@ -4647,12 +4811,12 @@ Wrap `set` and use the third argument as the event name.
 ```ts
 const track = (config) => (set, get, api) => {
   const trackedSet = (partial, replace, name) => {
-    set(partial, replace, name)
-    if (typeof name === 'string') analytics.track(name)
-  }
-  api.setState = trackedSet
-  return config(trackedSet, get, api)
-}
+    set(partial, replace, name);
+    if (typeof name === "string") analytics.track(name);
+  };
+  api.setState = trackedSet;
+  return config(trackedSet, get, api);
+};
 ```
 
 Passing `name` on to `set` matters: if `track` sits inside `devtools`, that `set` is the devtools version, which uses the name for the action label. For TypeScript, you would declare a mutator so `set` accepts the third argument.
@@ -4679,9 +4843,10 @@ Yes. If a selector throws, for example because it reads a property of `undefined
 
 ```ts
 createJSONStorage(() => localStorage, {
-  replacer: (_, v) => (typeof v === 'bigint' ? { __bigint: v.toString() } : v),
-  reviver: (_, v: any) => (v && typeof v.__bigint === 'string' ? BigInt(v.__bigint) : v),
-})
+  replacer: (_, v) => (typeof v === "bigint" ? { __bigint: v.toString() } : v),
+  reviver: (_, v: any) =>
+    v && typeof v.__bigint === "string" ? BigInt(v.__bigint) : v,
+});
 ```
 
 ### 418: How do you handle Dates correctly with `persist`?
@@ -4694,16 +4859,16 @@ Keep the hook name and signature, and change only its implementation.
 
 ```ts
 // before
-export const useCartStore = create<CartState>()(creator)
+export const useCartStore = create<CartState>()(creator);
 
 // after
-export const createCartStore = () => createStore<CartState>()(creator)
-const CartContext = createContext<StoreApi<CartState> | null>(null)
+export const createCartStore = () => createStore<CartState>()(creator);
+const CartContext = createContext<StoreApi<CartState> | null>(null);
 
 export function useCartStore<T>(selector: (s: CartState) => T): T {
-  const store = useContext(CartContext)
-  if (!store) throw new Error('Missing CartProvider')
-  return useStore(store, selector)
+  const store = useContext(CartContext);
+  if (!store) throw new Error("Missing CartProvider");
+  return useStore(store, selector);
 }
 ```
 
@@ -4723,9 +4888,9 @@ Keep columns and cards normalized, and separate the persistent board data from t
 
 ```ts
 interface BoardState {
-  columns: Record<string, { id: string; cardIds: string[] }>
-  cards: Record<string, Card>
-  moveCard: (cardId: string, from: string, to: string, index: number) => void
+  columns: Record<string, { id: string; cardIds: string[] }>;
+  cards: Record<string, Card>;
+  moveCard: (cardId: string, from: string, to: string, index: number) => void;
 }
 ```
 
@@ -4753,23 +4918,26 @@ A selector should only use the state passed to it. Calling `otherStore.getState(
 Have each action return or record an inverse operation.
 
 ```ts
-interface Command { do: () => void; undo: () => void }
+interface Command {
+  do: () => void;
+  undo: () => void;
+}
 
-const undoStack: Command[] = []
+const undoStack: Command[] = [];
 
 export function run(cmd: Command) {
-  cmd.do()
-  undoStack.push(cmd)
+  cmd.do();
+  undoStack.push(cmd);
 }
 
 export function undo() {
-  undoStack.pop()?.undo()
+  undoStack.pop()?.undo();
 }
 
 run({
-  do: () => useBoardStore.getState().moveCard('c1', 'todo', 'done', 0),
-  undo: () => useBoardStore.getState().moveCard('c1', 'done', 'todo', 0),
-})
+  do: () => useBoardStore.getState().moveCard("c1", "todo", "done", 0),
+  undo: () => useBoardStore.getState().moveCard("c1", "done", "todo", 0),
+});
 ```
 
 This uses less memory than storing full snapshots and works across several stores.
@@ -4782,9 +4950,9 @@ Type `get` with the combined store type using the first `StateCreator` generic.
 const createCartSlice: StateCreator<Store, [], [], CartSlice> = (set, get) => ({
   items: [],
   checkout: () => {
-    if (!get().user) get().openLogin() // from AuthSlice
+    if (!get().user) get().openLogin(); // from AuthSlice
   },
-})
+});
 ```
 
 `Store` is the intersection of all slices. TypeScript then checks that `user` and `openLogin` exist in some slice.
@@ -4807,9 +4975,9 @@ Select the minimal primitive from each store, then compute in the component.
 
 ```tsx
 function Price({ productId }: { productId: string }) {
-  const base = useProductStore((s) => s.byId[productId]?.price ?? 0)
-  const rate = useCurrencyStore((s) => s.rate)
-  return <span>{(base * rate).toFixed(2)}</span>
+  const base = useProductStore((s) => s.byId[productId]?.price ?? 0);
+  const rate = useCurrencyStore((s) => s.rate);
+  return <span>{(base * rate).toFixed(2)}</span>;
 }
 ```
 
@@ -4820,18 +4988,18 @@ Both hooks return numbers, so the component only re-renders when one of the numb
 Keep a counter in a store and wrap requests.
 
 ```ts
-const useLoadingStore = create<{ pending: number }>()(() => ({ pending: 0 }))
+const useLoadingStore = create<{ pending: number }>()(() => ({ pending: 0 }));
 
 export async function tracked<T>(promise: Promise<T>) {
-  useLoadingStore.setState((s) => ({ pending: s.pending + 1 }))
+  useLoadingStore.setState((s) => ({ pending: s.pending + 1 }));
   try {
-    return await promise
+    return await promise;
   } finally {
-    useLoadingStore.setState((s) => ({ pending: s.pending - 1 }))
+    useLoadingStore.setState((s) => ({ pending: s.pending - 1 }));
   }
 }
 
-export const useIsLoading = () => useLoadingStore((s) => s.pending > 0)
+export const useIsLoading = () => useLoadingStore((s) => s.pending > 0);
 ```
 
 A counter is safer than a boolean, because two parallel requests would otherwise turn it off too early.
@@ -4845,17 +5013,21 @@ Avoid reading `window`, `localStorage` or `navigator` at module level. Read them
 Create the store with a factory that receives its dependencies.
 
 ```ts
-export const createUserStore = (api: { getUser: (id: string) => Promise<User> }) =>
+export const createUserStore = (api: {
+  getUser: (id: string) => Promise<User>;
+}) =>
   createStore<UserState>()((set) => ({
     user: null,
     load: async (id) => set({ user: await api.getUser(id) }),
-  }))
+  }));
 
 // app
-export const userStore = createUserStore(realApi)
+export const userStore = createUserStore(realApi);
 
 // test
-const store = createUserStore({ getUser: async () => ({ id: '1', name: 'Test' }) })
+const store = createUserStore({
+  getUser: async () => ({ id: "1", name: "Test" }),
+});
 ```
 
 Tests get a fresh store with a fake API, without mocking modules.
@@ -4892,21 +5064,21 @@ Write a middleware that deep-freezes the state after each update in development.
 
 ```ts
 const deepFreeze = (obj: any) => {
-  if (obj && typeof obj === 'object' && !Object.isFrozen(obj)) {
-    Object.freeze(obj)
-    Object.values(obj).forEach(deepFreeze)
+  if (obj && typeof obj === "object" && !Object.isFrozen(obj)) {
+    Object.freeze(obj);
+    Object.values(obj).forEach(deepFreeze);
   }
-  return obj
-}
+  return obj;
+};
 
 const freeze = (config) => (set, get, api) => {
   const frozenSet = (...args) => {
-    set(...args)
-    if (process.env.NODE_ENV !== 'production') deepFreeze(get())
-  }
-  api.setState = frozenSet
-  return deepFreeze(config(frozenSet, get, api))
-}
+    set(...args);
+    if (process.env.NODE_ENV !== "production") deepFreeze(get());
+  };
+  api.setState = frozenSet;
+  return deepFreeze(config(frozenSet, get, api));
+};
 ```
 
 Mutations then throw in strict mode code instead of silently failing. Immer already freezes the state it produces by default.
@@ -4938,16 +5110,16 @@ Use the hook when the value affects what the component renders. Use `subscribe` 
 Read the latest props through a ref, or include them in the effect's dependency list so the subscription is recreated.
 
 ```tsx
-const thresholdRef = useRef(threshold)
-thresholdRef.current = threshold
+const thresholdRef = useRef(threshold);
+thresholdRef.current = threshold;
 
 useEffect(
   () =>
     useSensorStore.subscribe((s) => {
-      if (s.value > thresholdRef.current) alarm()
+      if (s.value > thresholdRef.current) alarm();
     }),
   [],
-)
+);
 ```
 
 The store state itself is never stale inside the listener because it is passed in.
@@ -4990,9 +5162,9 @@ const useRecentStore = create<RecentState>()(
         })),
       clear: () => set({ recent: [] }),
     }),
-    { name: 'recent-searches', version: 1 },
+    { name: "recent-searches", version: 1 },
   ),
-)
+);
 ```
 
 It keeps the newest search first, removes duplicates and caps the list at 10, so storage never grows without limit.

@@ -123,7 +123,7 @@ If you spot a mistake or something that is out of date, feel free to open an iss
   - [114: How do you use icons in React Native?](#114-how-do-you-use-icons-in-react-native)
   - [115: How do you render SVG in React Native?](#115-how-do-you-render-svg-in-react-native)
   - [116: How do you use environment variables in React Native?](#116-how-do-you-use-environment-variables-in-react-native)
-  - [117: What is __DEV__?](#117-what-is-__dev__)
+  - [117: What is **DEV**?](#117-what-is-__dev__)
   - [118: What is the difference between a debug build and a release build?](#118-what-is-the-difference-between-a-debug-build-and-a-release-build)
   - [119: What is the difference between an APK and an AAB?](#119-what-is-the-difference-between-an-apk-and-an-aab)
   - [120: How do you publish an iOS app?](#120-how-do-you-publish-an-ios-app)
@@ -525,13 +525,13 @@ This is the main difference from tools like Cordova or Ionic, which render HTML 
 
 Both are cross-platform frameworks, but they work differently:
 
-| | React Native | Flutter |
-|---|---|---|
-| Language | JavaScript / TypeScript | Dart |
-| UI | Uses real platform views | Draws everything itself with its own engine (Impeller) |
-| Look | Native look by default | Same look on every platform by default |
-| Web skills reuse | High, if you know React | Low |
-| OTA updates | Common (EAS Update and others) | Not officially supported |
+|                  | React Native                   | Flutter                                                |
+| ---------------- | ------------------------------ | ------------------------------------------------------ |
+| Language         | JavaScript / TypeScript        | Dart                                                   |
+| UI               | Uses real platform views       | Draws everything itself with its own engine (Impeller) |
+| Look             | Native look by default         | Same look on every platform by default                 |
+| Web skills reuse | High, if you know React        | Low                                                    |
+| OTA updates      | Common (EAS Update and others) | Not officially supported                               |
 
 React Native is a good choice if your team knows React or you share code with a React web app. Flutter is a good choice if you want pixel-identical UI everywhere and are fine with Dart.
 
@@ -659,11 +659,11 @@ Anything else (navigation, icons, gestures, camera) comes from libraries.
 `View` is the basic building block of the UI. It is a container that supports layout with Flexbox, styles, touch handling and accessibility. It maps to `UIView` on iOS and `ViewGroup` on Android.
 
 ```tsx
-import { View, Text } from 'react-native';
+import { View, Text } from "react-native";
 
 export function Card() {
   return (
-    <View style={{ padding: 16, borderRadius: 8, backgroundColor: 'white' }}>
+    <View style={{ padding: 16, borderRadius: 8, backgroundColor: "white" }}>
       <Text>Hello</Text>
     </View>
   );
@@ -710,11 +710,11 @@ Remote images must have a width and height (or be sized by their parent with Fle
 `TextInput` is a text field. You usually use it as a controlled component:
 
 ```tsx
-import { useState } from 'react';
-import { TextInput } from 'react-native';
+import { useState } from "react";
+import { TextInput } from "react-native";
 
 export function NameInput() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
 
   return (
     <TextInput
@@ -757,18 +757,18 @@ It is rarely used in real apps because you can only change its `title` and `colo
 `Pressable` is the recommended component for handling touches. It wraps any content and gives you press events and the pressed state:
 
 ```tsx
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text } from "react-native";
 
 <Pressable
-  onPress={() => console.log('pressed')}
-  onLongPress={() => console.log('long press')}
+  onPress={() => console.log("pressed")}
+  onLongPress={() => console.log("long press")}
   style={({ pressed }) => ({
     padding: 12,
-    backgroundColor: pressed ? '#ddd' : '#eee',
+    backgroundColor: pressed ? "#ddd" : "#eee",
   })}
 >
   <Text>Tap me</Text>
-</Pressable>
+</Pressable>;
 ```
 
 It also supports `onPressIn`, `onPressOut`, `delayLongPress`, `hitSlop`, `disabled` and `android_ripple`.
@@ -784,7 +784,7 @@ They still work and you will see them in older code, but the docs recommend `Pre
 There is no CSS. You write styles as JavaScript objects and pass them to the `style` prop. Property names are camelCase (`backgroundColor`, not `background-color`), and most numbers have no unit.
 
 ```tsx
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text } from "react-native";
 
 export function Box() {
   return (
@@ -795,8 +795,8 @@ export function Box() {
 }
 
 const styles = StyleSheet.create({
-  box: { padding: 16, backgroundColor: '#fafafa' },
-  title: { fontSize: 18, fontWeight: '600' },
+  box: { padding: 16, backgroundColor: "#fafafa" },
+  title: { fontSize: 18, fontWeight: "600" },
 });
 ```
 
@@ -836,8 +836,8 @@ So a plain list of `View`s stacks vertically, which fits mobile screens well.
 
 ```tsx
 <View style={{ flex: 1 }}>
-  <View style={{ flex: 1, backgroundColor: 'red' }} />
-  <View style={{ flex: 2, backgroundColor: 'blue' }} />
+  <View style={{ flex: 1, backgroundColor: "red" }} />
+  <View style={{ flex: 2, backgroundColor: "blue" }} />
 </View>
 ```
 
@@ -851,7 +851,7 @@ Here the blue view is twice as tall as the red one. The root view of a screen us
 To center something in the middle of the screen:
 
 ```tsx
-<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
   <Text>Centered</Text>
 </View>
 ```
@@ -863,7 +863,7 @@ If you change `flexDirection` to `row`, the two swap directions.
 You can use margins or padding, but the simplest way today is `gap`, `rowGap` and `columnGap`, which work like on the web:
 
 ```tsx
-<View style={{ flexDirection: 'row', gap: 8 }}>
+<View style={{ flexDirection: "row", gap: 8 }}>
   <Chip label="One" />
   <Chip label="Two" />
   <Chip label="Three" />
@@ -879,7 +879,7 @@ Set `position: 'absolute'` and use `top`, `left`, `right` and `bottom`. The elem
 ```tsx
 <View style={{ width: 100, height: 100 }}>
   <Image source={avatar} style={{ width: 100, height: 100 }} />
-  <View style={{ position: 'absolute', top: 4, right: 4 }}>
+  <View style={{ position: "absolute", top: 4, right: 4 }}>
     <Badge count={3} />
   </View>
 </View>
@@ -898,7 +898,13 @@ Pass an array to `style`. Later styles override earlier ones, and falsy values a
 This is also how you let a parent customize a child component: accept a `style` prop and put it last in the array.
 
 ```tsx
-function Card({ style, children }: { style?: StyleProp<ViewStyle>; children: React.ReactNode }) {
+function Card({
+  style,
+  children,
+}: {
+  style?: StyleProp<ViewStyle>;
+  children: React.ReactNode;
+}) {
   return <View style={[styles.card, style]}>{children}</View>;
 }
 ```
@@ -908,8 +914,8 @@ function Card({ style, children }: { style?: StyleProp<ViewStyle>; children: Rea
 Mostly no. A `View`'s styles do not affect its children. The one exception is text: a `Text` nested inside another `Text` inherits font styles like `color`, `fontSize` and `fontWeight`.
 
 ```tsx
-<Text style={{ fontSize: 16, color: '#333' }}>
-  Hello <Text style={{ fontWeight: 'bold' }}>world</Text>
+<Text style={{ fontSize: 16, color: "#333" }}>
+  Hello <Text style={{ fontWeight: "bold" }}>world</Text>
 </Text>
 ```
 
@@ -920,16 +926,16 @@ Mostly no. A `View`'s styles do not affect its children. The one exception is te
 Add the font files to your project and load them. With Expo you can use the `expo-font` config plugin (fonts are embedded at build time) or the `useFonts` hook (fonts are loaded at runtime):
 
 ```tsx
-import { useFonts } from 'expo-font';
+import { useFonts } from "expo-font";
 
 export default function App() {
   const [loaded] = useFonts({
-    'Inter-Regular': require('./assets/fonts/Inter-Regular.ttf'),
+    "Inter-Regular": require("./assets/fonts/Inter-Regular.ttf"),
   });
 
   if (!loaded) return null;
 
-  return <Text style={{ fontFamily: 'Inter-Regular' }}>Hello</Text>;
+  return <Text style={{ fontFamily: "Inter-Regular" }}>Hello</Text>;
 }
 ```
 
@@ -968,7 +974,11 @@ Main props:
 `keyExtractor` tells `FlatList` how to get a unique key for each item. React uses keys to know which items changed, were added or were removed.
 
 ```tsx
-<FlatList data={orders} keyExtractor={(order) => order.id} renderItem={renderOrder} />
+<FlatList
+  data={orders}
+  keyExtractor={(order) => order.id}
+  renderItem={renderOrder}
+/>
 ```
 
 If you don't pass it, `FlatList` looks for `item.key`, then falls back to the index. Using the index is a bad idea if items can be added, removed or reordered, because state ends up on the wrong rows.
@@ -980,12 +990,14 @@ If you don't pass it, `FlatList` looks for `item.key`, then falls back to the in
 ```tsx
 <SectionList
   sections={[
-    { title: 'A', data: ['Alice', 'Adam'] },
-    { title: 'B', data: ['Bob'] },
+    { title: "A", data: ["Alice", "Adam"] },
+    { title: "B", data: ["Bob"] },
   ]}
   keyExtractor={(item) => item}
   renderItem={({ item }) => <Text>{item}</Text>}
-  renderSectionHeader={({ section }) => <Text style={styles.header}>{section.title}</Text>}
+  renderSectionHeader={({ section }) => (
+    <Text style={styles.header}>{section.title}</Text>
+  )}
   stickySectionHeadersEnabled
 />
 ```
@@ -1026,7 +1038,7 @@ async function handleRefresh() {
   renderItem={renderItem}
   refreshing={refreshing}
   onRefresh={handleRefresh}
-/>
+/>;
 ```
 
 On a `ScrollView` you pass a `<RefreshControl>` to the `refreshControl` prop.
@@ -1054,9 +1066,9 @@ Use `onEndReached` together with `onEndReachedThreshold`:
 `Platform` tells you which OS the app runs on, so you can write platform-specific code:
 
 ```tsx
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from "react-native";
 
-if (Platform.OS === 'ios') {
+if (Platform.OS === "ios") {
   // iOS only
 }
 
@@ -1079,7 +1091,7 @@ Button.android.tsx
 ```
 
 ```tsx
-import { Button } from './Button'; // Metro loads the file for the current platform
+import { Button } from "./Button"; // Metro loads the file for the current platform
 ```
 
 There is also `.native.tsx`, which is used on iOS and Android but not on web. This is handy when you share code with a web app. Use separate files when the platform code is large. For small differences, `Platform.select` is simpler.
@@ -1092,7 +1104,7 @@ Both give you the screen or window size.
 - `useWindowDimensions()` is a hook that re-renders your component when the size changes.
 
 ```tsx
-import { useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from "react-native";
 
 function Grid() {
   const { width } = useWindowDimensions();
@@ -1108,11 +1120,11 @@ Prefer `useWindowDimensions` inside components.
 Use the `react-native-safe-area-context` library. It gives you a `SafeAreaView` and a `useSafeAreaInsets` hook that work on both iOS and Android:
 
 ```tsx
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export function Screen() {
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+    <SafeAreaView style={{ flex: 1 }} edges={["top", "bottom"]}>
       <Content />
     </SafeAreaView>
   );
@@ -1126,9 +1138,9 @@ The `SafeAreaView` from `react-native` itself only worked on iOS and was depreca
 `StatusBar` controls the system bar at the top of the screen: the color of its icons and whether it is visible.
 
 ```tsx
-import { StatusBar } from 'react-native';
+import { StatusBar } from "react-native";
 
-<StatusBar barStyle="light-content" hidden={false} />
+<StatusBar barStyle="light-content" hidden={false} />;
 ```
 
 `barStyle` can be `'default'`, `'light-content'` or `'dark-content'`. Because Android apps now draw edge-to-edge (behind the status bar), the Android-only `backgroundColor` and `translucent` props were removed in 0.87. You color the area behind the status bar with your own views instead. In Expo apps you often use `expo-status-bar`, which has a simpler `style="auto"` option.
@@ -1146,7 +1158,7 @@ Use the `resizeMode` prop (or the `objectFit` style, which works like CSS):
 ```tsx
 <Image
   source={{ uri: url }}
-  style={{ width: '100%', height: 200 }}
+  style={{ width: "100%", height: 200 }}
   resizeMode="cover"
 />
 ```
@@ -1158,7 +1170,7 @@ The old way was `ImageBackground`, but it was deprecated in 0.87. The recommende
 ```tsx
 <View style={{ height: 200 }}>
   <Image source={cover} style={StyleSheet.absoluteFill} resizeMode="cover" />
-  <Text style={{ color: 'white', margin: 16 }}>Summer sale</Text>
+  <Text style={{ color: "white", margin: 16 }}>Summer sale</Text>
 </View>
 ```
 
@@ -1169,11 +1181,11 @@ You will still see `ImageBackground` in older code.
 Use `ActivityIndicator`. It shows the native spinner of each platform:
 
 ```tsx
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View } from "react-native";
 
 function Loading() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
+    <View style={{ flex: 1, justifyContent: "center" }}>
       <ActivityIndicator size="large" color="#0066ff" />
     </View>
   );
@@ -1192,8 +1204,8 @@ const [enabled, setEnabled] = useState(false);
 <Switch
   value={enabled}
   onValueChange={setEnabled}
-  trackColor={{ false: '#ccc', true: '#4caf50' }}
-/>
+  trackColor={{ false: "#ccc", true: "#4caf50" }}
+/>;
 ```
 
 ### 55: How do you show a modal?
@@ -1215,7 +1227,7 @@ const [visible, setVisible] = useState(false);
       <Button title="Close" onPress={() => setVisible(false)} />
     </View>
   </View>
-</Modal>
+</Modal>;
 ```
 
 `onRequestClose` is called when the user presses the Android back button, so always handle it. If you use a navigation library, you can also show screens as modals there.
@@ -1225,11 +1237,11 @@ const [visible, setVisible] = useState(false);
 Use `Alert.alert`:
 
 ```tsx
-import { Alert } from 'react-native';
+import { Alert } from "react-native";
 
-Alert.alert('Delete item', 'This cannot be undone.', [
-  { text: 'Cancel', style: 'cancel' },
-  { text: 'Delete', style: 'destructive', onPress: () => deleteItem(id) },
+Alert.alert("Delete item", "This cannot be undone.", [
+  { text: "Cancel", style: "cancel" },
+  { text: "Delete", style: "destructive", onPress: () => deleteItem(id) },
 ]);
 ```
 
@@ -1242,7 +1254,7 @@ When the keyboard opens, it can cover text inputs near the bottom of the screen.
 ```tsx
 <KeyboardAvoidingView
   style={{ flex: 1 }}
-  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  behavior={Platform.OS === "ios" ? "padding" : "height"}
 >
   <TextInput placeholder="Message" />
 </KeyboardAvoidingView>
@@ -1255,11 +1267,11 @@ It often needs tuning per platform (`behavior`, `keyboardVerticalOffset`). Many 
 Call `Keyboard.dismiss()`. A common pattern is to dismiss it when the user taps outside the input:
 
 ```tsx
-import { Keyboard, Pressable } from 'react-native';
+import { Keyboard, Pressable } from "react-native";
 
 <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss} accessible={false}>
   <TextInput placeholder="Email" />
-</Pressable>
+</Pressable>;
 ```
 
 In a `ScrollView`, you can use `keyboardDismissMode="on-drag"` to close the keyboard when the user scrolls.
@@ -1298,11 +1310,11 @@ Common `keyboardType` values are `default`, `number-pad`, `decimal-pad`, `email-
 Use `Linking.openURL`:
 
 ```tsx
-import { Linking } from 'react-native';
+import { Linking } from "react-native";
 
-Linking.openURL('https://example.com');
-Linking.openURL('tel:+123456789');
-Linking.openURL('mailto:support@example.com');
+Linking.openURL("https://example.com");
+Linking.openURL("tel:+123456789");
+Linking.openURL("mailto:support@example.com");
 Linking.openSettings(); // opens the app's settings page
 ```
 
@@ -1342,9 +1354,9 @@ There are also `blur()`, `clear()` and `isFocused()`. With React 19, `ref` is a 
 `AppRegistry` is how the native side finds your root component. In the entry file you register it by name:
 
 ```tsx
-import { AppRegistry } from 'react-native';
-import App from './App';
-import { name as appName } from './app.json';
+import { AppRegistry } from "react-native";
+import App from "./App";
+import { name as appName } from "./app.json";
 
 AppRegistry.registerComponent(appName, () => App);
 ```
@@ -1504,8 +1516,8 @@ Both use native screen containers (`react-native-screens`) for good performance.
 A stack navigator shows one screen on top of another, with a back button and the native push animation:
 
 ```tsx
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createStaticNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStaticNavigation } from "@react-navigation/native";
 
 const RootStack = createNativeStackNavigator({
   screens: {
@@ -1533,7 +1545,7 @@ function HomeScreen() {
   return (
     <Button
       title="Open profile"
-      onPress={() => navigation.navigate('Profile', { userId: '42' })}
+      onPress={() => navigation.navigate("Profile", { userId: "42" })}
     />
   );
 }
@@ -1552,7 +1564,7 @@ Other common methods: `goBack()`, `push()` (adds a new screen even if the same r
 A tab navigator shows a tab bar (usually at the bottom) and switches between screens when the user taps a tab:
 
 ```tsx
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tabs = createBottomTabNavigator({
   screens: {
@@ -1570,7 +1582,7 @@ Each tab keeps its state when you switch away. You can set icons with the `tabBa
 A drawer navigator has a side menu that slides in from the edge of the screen. It comes from `@react-navigation/drawer` and needs `react-native-gesture-handler` and `react-native-reanimated`:
 
 ```tsx
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Drawer = createDrawerNavigator({
   screens: {
@@ -1607,7 +1619,7 @@ function Users() {
 
   useEffect(() => {
     let ignore = false;
-    fetch('https://api.example.com/users')
+    fetch("https://api.example.com/users")
       .then((res) => res.json())
       .then((data) => {
         if (!ignore) setUsers(data);
@@ -1617,7 +1629,12 @@ function Users() {
     };
   }, []);
 
-  return <FlatList data={users} renderItem={({ item }) => <Text>{item.name}</Text>} />;
+  return (
+    <FlatList
+      data={users}
+      renderItem={({ item }) => <Text>{item.name}</Text>}
+    />
+  );
 }
 ```
 
@@ -1661,13 +1678,13 @@ Remember that `fetch` does not throw on HTTP errors like 404 or 500. You must ch
 AsyncStorage is a simple key-value storage that saves strings on the device. It is not part of React Native core anymore. You install `@react-native-async-storage/async-storage`:
 
 ```tsx
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-await AsyncStorage.setItem('theme', 'dark');
-const theme = await AsyncStorage.getItem('theme');
-await AsyncStorage.removeItem('theme');
+await AsyncStorage.setItem("theme", "dark");
+const theme = await AsyncStorage.getItem("theme");
+await AsyncStorage.removeItem("theme");
 
-await AsyncStorage.setItem('user', JSON.stringify(user));
+await AsyncStorage.setItem("user", JSON.stringify(user));
 ```
 
 It is asynchronous and not encrypted, so use it for settings and small cached data, not for tokens or passwords.
@@ -1680,10 +1697,10 @@ Use the secure storage of the OS: Keychain on iOS and Keystore-backed encrypted 
 - `react-native-keychain`
 
 ```tsx
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
-await SecureStore.setItemAsync('accessToken', token);
-const saved = await SecureStore.getItemAsync('accessToken');
+await SecureStore.setItemAsync("accessToken", token);
+const saved = await SecureStore.getItemAsync("accessToken");
 ```
 
 Never store tokens in AsyncStorage or plain files, because they are not encrypted.
@@ -1703,10 +1720,10 @@ Mobile apps often also need to persist state between launches, so these are comb
 Exactly like on the web. Create a context, wrap part of the tree in a provider, and read it with `use` or `useContext`:
 
 ```tsx
-const ThemeContext = createContext<'light' | 'dark'>('light');
+const ThemeContext = createContext<"light" | "dark">("light");
 
 export default function App() {
-  const scheme = useColorScheme() ?? 'light';
+  const scheme = useColorScheme() ?? "light";
   return (
     <ThemeContext value={scheme}>
       <HomeScreen />
@@ -1716,7 +1733,9 @@ export default function App() {
 
 function Title() {
   const theme = use(ThemeContext);
-  return <Text style={{ color: theme === 'dark' ? 'white' : 'black' }}>Hi</Text>;
+  return (
+    <Text style={{ color: theme === "dark" ? "white" : "black" }}>Hi</Text>
+  );
 }
 ```
 
@@ -1782,7 +1801,7 @@ It picks the versions that are compatible with your Expo SDK version. If the lib
 
 ```tsx
 <Pressable
-  android_ripple={{ color: 'rgba(0,0,0,0.1)', borderless: false }}
+  android_ripple={{ color: "rgba(0,0,0,0.1)", borderless: false }}
   onPress={onPress}
   style={{ padding: 16 }}
 >
@@ -1849,15 +1868,15 @@ React Native supports web-like accessibility props as an alternative to the `acc
 Read the user's system setting with the `useColorScheme` hook and pick colors based on it:
 
 ```tsx
-import { useColorScheme } from 'react-native';
+import { useColorScheme } from "react-native";
 
 function Screen() {
   const scheme = useColorScheme(); // 'light' | 'dark' | null
-  const isDark = scheme === 'dark';
+  const isDark = scheme === "dark";
 
   return (
-    <View style={{ flex: 1, backgroundColor: isDark ? '#000' : '#fff' }}>
-      <Text style={{ color: isDark ? '#fff' : '#000' }}>Hello</Text>
+    <View style={{ flex: 1, backgroundColor: isDark ? "#000" : "#fff" }}>
+      <Text style={{ color: isDark ? "#fff" : "#000" }}>Hello</Text>
     </View>
   );
 }
@@ -1870,16 +1889,16 @@ The hook re-renders when the user changes the setting. In Expo apps, set `"userI
 `Appearance` is the module behind `useColorScheme`. You can read the scheme outside a component, listen for changes, or force a scheme for your app:
 
 ```tsx
-import { Appearance } from 'react-native';
+import { Appearance } from "react-native";
 
 const scheme = Appearance.getColorScheme();
 
 const sub = Appearance.addChangeListener(({ colorScheme }) => {
-  console.log('Scheme changed to', colorScheme);
+  console.log("Scheme changed to", colorScheme);
 });
 sub.remove();
 
-Appearance.setColorScheme('dark'); // force dark, 'auto' to follow the system
+Appearance.setColorScheme("dark"); // force dark, 'auto' to follow the system
 ```
 
 `setColorScheme` is useful when the app has its own "light / dark / system" setting.
@@ -1890,8 +1909,8 @@ Appearance.setColorScheme('dark'); // force dark, 'auto' to follow the system
 
 ```tsx
 useEffect(() => {
-  const sub = AppState.addEventListener('change', (state) => {
-    if (state === 'active') {
+  const sub = AppState.addEventListener("change", (state) => {
+    if (state === "active") {
       refreshData();
     }
   });
@@ -1907,7 +1926,7 @@ Use `BackHandler`. Return `true` from the listener to stop the default behavior 
 
 ```tsx
 useEffect(() => {
-  const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+  const sub = BackHandler.addEventListener("hardwareBackPress", () => {
     if (isEditing) {
       confirmDiscardChanges();
       return true;
@@ -1925,13 +1944,13 @@ Navigation libraries already handle the back button. In React Navigation you can
 Use the `Share` API:
 
 ```tsx
-import { Share } from 'react-native';
+import { Share } from "react-native";
 
 async function shareArticle() {
   await Share.share({
-    message: 'Check out this article',
-    url: 'https://example.com/article/1', // iOS only
-    title: 'Article', // Android only
+    message: "Check out this article",
+    url: "https://example.com/article/1", // iOS only
+    title: "Article", // Android only
   });
 }
 ```
@@ -1965,7 +1984,11 @@ function FadeIn({ children }: { children: React.ReactNode }) {
   const opacity = useAnimatedValue(0);
 
   useEffect(() => {
-    Animated.timing(opacity, { toValue: 1, duration: 300, useNativeDriver: true }).start();
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   }, []);
 
   return <Animated.View style={{ opacity }}>{children}</Animated.View>;
@@ -1983,7 +2006,7 @@ For a long time the native driver only supported non-layout props like `opacity`
 `LayoutAnimation` animates the next layout change automatically. You call it right before a state update that changes layout:
 
 ```tsx
-import { LayoutAnimation } from 'react-native';
+import { LayoutAnimation } from "react-native";
 
 function toggle() {
   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -1998,15 +2021,23 @@ All views that move, appear or change size in that render will animate. It is si
 `react-native-reanimated` (by Software Mansion) is the most popular animation library for React Native. Animations run on the UI thread using small JavaScript functions called worklets, so they stay smooth even when the JS thread is busy.
 
 ```tsx
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 
 function Box() {
   const offset = useSharedValue(0);
-  const style = useAnimatedStyle(() => ({ transform: [{ translateX: offset.value }] }));
+  const style = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }));
 
   return (
     <Pressable onPress={() => (offset.value = withSpring(offset.value + 50))}>
-      <Animated.View style={[{ width: 80, height: 80, backgroundColor: 'tomato' }, style]} />
+      <Animated.View
+        style={[{ width: 80, height: 80, backgroundColor: "tomato" }, style]}
+      />
     </Pressable>
   );
 }
@@ -2019,15 +2050,17 @@ Reanimated 4 only supports the New Architecture and adds CSS-like animations and
 `react-native-gesture-handler` handles touch gestures (pan, pinch, rotation, tap, long press, fling) on the native side instead of in JavaScript. This makes gestures more responsive and lets them work together with native scroll views.
 
 ```tsx
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
-const tap = Gesture.Tap().numberOfTaps(2).onEnd(() => {
-  console.log('double tap');
-});
+const tap = Gesture.Tap()
+  .numberOfTaps(2)
+  .onEnd(() => {
+    console.log("double tap");
+  });
 
 <GestureDetector gesture={tap}>
   <Animated.View style={styles.box} />
-</GestureDetector>
+</GestureDetector>;
 ```
 
 The app root must be wrapped in `GestureHandlerRootView`. It is used by React Navigation, bottom sheets and many other libraries.
@@ -2042,9 +2075,9 @@ The most common options:
 - SF Symbols on iOS with `expo-symbols`
 
 ```tsx
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-<Ionicons name="heart" size={24} color="red" />
+<Ionicons name="heart" size={24} color="red" />;
 ```
 
 Icon fonts are small and fast. SVG icons are more flexible when you have custom designs.
@@ -2054,12 +2087,12 @@ Icon fonts are small and fast. SVG icons are more flexible when you have custom 
 React Native can't render SVG out of the box. Use the `react-native-svg` library:
 
 ```tsx
-import Svg, { Circle, Path } from 'react-native-svg';
+import Svg, { Circle, Path } from "react-native-svg";
 
 <Svg width={24} height={24} viewBox="0 0 24 24">
   <Circle cx={12} cy={12} r={10} stroke="black" strokeWidth={2} fill="none" />
   <Path d="M8 12h8" stroke="black" strokeWidth={2} />
-</Svg>
+</Svg>;
 ```
 
 To import `.svg` files as components, add `react-native-svg-transformer` to the Metro config. `expo-image` can also display SVG files as images.
@@ -2079,13 +2112,13 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 Without Expo, teams often use `react-native-config` or `react-native-dotenv`. Remember that anything in the bundle can be read by someone who unpacks the app, so never put secret keys there.
 
-### 117: What is __DEV__?
+### 117: What is **DEV**?
 
 `__DEV__` is a global boolean that is `true` in development and `false` in release builds. You can use it to run code only during development:
 
 ```tsx
 if (__DEV__) {
-  console.log('Debug info', data);
+  console.log("Debug info", data);
 }
 ```
 
@@ -2094,11 +2127,13 @@ In release builds Metro replaces `__DEV__` with `false`, and the minifier remove
 ### 118: What is the difference between a debug build and a release build?
 
 **Debug build:**
+
 - Loads JavaScript from the Metro dev server
 - Has Fast Refresh, the dev menu, LogBox and DevTools
 - Runs slower, with extra checks and warnings
 
 **Release build:**
+
 - Contains the JavaScript bundle inside the app (compiled to Hermes bytecode)
 - No dev tools, `__DEV__` is `false`
 - Minified and optimized, much faster
@@ -2164,7 +2199,7 @@ Sensitive features like camera, location, contacts and notifications need the us
 2. **Request** it at runtime with the library's API:
 
 ```tsx
-import { useCameraPermissions } from 'expo-camera';
+import { useCameraPermissions } from "expo-camera";
 
 const [permission, requestPermission] = useCameraPermissions();
 
@@ -2187,10 +2222,10 @@ Through libraries that wrap the native APIs. Common choices:
 - Haptics: `expo-haptics`
 
 ```tsx
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
 const { status } = await Location.requestForegroundPermissionsAsync();
-if (status === 'granted') {
+if (status === "granted") {
   const position = await Location.getCurrentPositionAsync();
   console.log(position.coords.latitude, position.coords.longitude);
 }
@@ -2238,7 +2273,7 @@ New projects come with Jest already configured. The React Native preset mocks na
 ```js
 // jest.config.js
 module.exports = {
-  preset: '@react-native/jest-preset',
+  preset: "@react-native/jest-preset",
 };
 ```
 
@@ -2249,15 +2284,15 @@ Since 0.85 the preset is in its own package, `@react-native/jest-preset`, instea
 React Native Testing Library (`@testing-library/react-native`) is the standard library for testing components. It renders components and lets you find elements the way a user would, by text, role or label:
 
 ```tsx
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { render, screen, userEvent } from "@testing-library/react-native";
 
-test('increments the counter', async () => {
+test("increments the counter", async () => {
   const user = userEvent.setup();
   render(<Counter />);
 
-  await user.press(screen.getByRole('button', { name: 'Increment' }));
+  await user.press(screen.getByRole("button", { name: "Increment" }));
 
-  expect(screen.getByText('Count: 1')).toBeOnTheScreen();
+  expect(screen.getByText("Count: 1")).toBeOnTheScreen();
 });
 ```
 
@@ -2309,8 +2344,8 @@ Yes. Nested `Text` components can have their own `onPress`:
 
 ```tsx
 <Text>
-  By signing up you agree to our{' '}
-  <Text style={{ color: 'blue' }} onPress={() => Linking.openURL(termsUrl)}>
+  By signing up you agree to our{" "}
+  <Text style={{ color: "blue" }} onPress={() => Linking.openURL(termsUrl)}>
     Terms of Service
   </Text>
   .
@@ -2332,7 +2367,7 @@ const { width } = useWindowDimensions();
       <Text>{slide.title}</Text>
     </View>
   ))}
-</ScrollView>
+</ScrollView>;
 ```
 
 `pagingEnabled` stops on each page of the scroll view's width. For snapping to items of a custom size, use `snapToInterval` or `snapToOffsets`. `FlatList` supports the same props.
@@ -2351,7 +2386,7 @@ If you put a large list in a `ScrollView`, the screen takes longer to show and u
 
 ```tsx
 <ScrollView
-  style={{ flex: 1, backgroundColor: '#fff' }}
+  style={{ flex: 1, backgroundColor: "#fff" }}
   contentContainerStyle={{ padding: 16, gap: 12 }}
 >
   {children}
@@ -2370,15 +2405,15 @@ Padding and `justifyContent` usually belong in `contentContainerStyle`. If you w
 - Support for many formats: WebP, AVIF, HEIC, animated GIF, SVG
 
 ```tsx
-import { Image } from 'expo-image';
+import { Image } from "expo-image";
 
 <Image
   source={{ uri: photoUrl }}
-  placeholder={{ blurhash: 'LKO2?U%2Tw=w]~RBVZRi};RPxuwH' }}
+  placeholder={{ blurhash: "LKO2?U%2Tw=w]~RBVZRi};RPxuwH" }}
   contentFit="cover"
   transition={200}
   style={{ width: 300, height: 200 }}
-/>
+/>;
 ```
 
 It works in any React Native app. `react-native-fast-image` was popular before, but it is not well maintained anymore.
@@ -2401,9 +2436,9 @@ Always read the release blog post for breaking changes, update libraries at the 
 Keys help React match list items between renders. With stable keys, React knows which item was added, removed or moved, and keeps each item's state (like a text input value or an animation) with the right item.
 
 ```tsx
-{todos.map((todo) => (
-  <TodoRow key={todo.id} todo={todo} />
-))}
+{
+  todos.map((todo) => <TodoRow key={todo.id} todo={todo} />);
+}
 ```
 
 Using the array index as a key causes bugs when the list is reordered or items are removed. In `FlatList`, keys come from `keyExtractor`.
@@ -2435,8 +2470,8 @@ In current React Native versions you can use `boxShadow`, which works like CSS a
   style={{
     padding: 16,
     borderRadius: 12,
-    backgroundColor: 'white',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+    backgroundColor: "white",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
   }}
 />
 ```
@@ -2477,7 +2512,7 @@ assets/
 ```
 
 ```tsx
-<Image source={require('./assets/logo.png')} />
+<Image source={require("./assets/logo.png")} />
 ```
 
 This keeps images sharp on high-density screens without loading huge images on small devices. For remote images, request a size that matches the device using `PixelRatio`.
@@ -2562,7 +2597,10 @@ Some practical steps:
 - Consider FlashList, which recycles views instead of creating new ones.
 
 ```tsx
-const renderItem = useCallback(({ item }: { item: Product }) => <ProductRow product={item} />, []);
+const renderItem = useCallback(
+  ({ item }: { item: Product }) => <ProductRow product={item} />,
+  [],
+);
 
 <FlatList
   data={products}
@@ -2571,7 +2609,7 @@ const renderItem = useCallback(({ item }: { item: Product }) => <ProductRow prod
   initialNumToRender={10}
   windowSize={7}
   removeClippedSubviews
-/>
+/>;
 ```
 
 ### 154: What is getItemLayout and when should you use it?
@@ -2589,7 +2627,7 @@ const ITEM_HEIGHT = 72;
     offset: ITEM_HEIGHT * index,
     index,
   })}
-/>
+/>;
 ```
 
 Use it when all items have a fixed height. It also makes `scrollToIndex` reliable.
@@ -2607,9 +2645,12 @@ A smaller `windowSize` uses less memory but may show blank areas when scrolling 
 FlashList (`@shopify/flash-list`) is a list component by Shopify with an API very similar to `FlatList`. Instead of destroying and creating item components, it recycles them: when an item scrolls off screen, its component is reused for a new item with new props. This makes scrolling much smoother on large lists.
 
 ```tsx
-import { FlashList } from '@shopify/flash-list';
+import { FlashList } from "@shopify/flash-list";
 
-<FlashList data={products} renderItem={({ item }) => <ProductRow product={item} />} />
+<FlashList
+  data={products}
+  renderItem={({ item }) => <ProductRow product={item} />}
+/>;
 ```
 
 FlashList v2 only supports the New Architecture and no longer needs `estimatedItemSize`. Because items are recycled, you should avoid keeping local state in item components, or reset it when the item changes.
@@ -2635,11 +2676,15 @@ It is useful in React Native because unnecessary re-renders cost more on low-end
 You can use controlled `TextInput`s with `useState`, but for real forms most teams use React Hook Form. Since there is no native `<form>` element, you wrap inputs with `Controller`:
 
 ```tsx
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller } from "react-hook-form";
 
 function LoginForm() {
-  const { control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: { email: '', password: '' },
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { email: "", password: "" },
   });
 
   return (
@@ -2647,7 +2692,7 @@ function LoginForm() {
       <Controller
         control={control}
         name="email"
-        rules={{ required: 'Email is required' }}
+        rules={{ required: "Email is required" }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput value={value} onChangeText={onChange} onBlur={onBlur} />
         )}
@@ -2664,12 +2709,12 @@ function LoginForm() {
 Use a schema library like Zod with the React Hook Form resolver:
 
 ```tsx
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
-  email: z.email('Invalid email'),
-  password: z.string().min(8, 'At least 8 characters'),
+  email: z.email("Invalid email"),
+  password: z.string().min(8, "At least 8 characters"),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -2729,7 +2774,7 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-type ProfileProps = NativeStackScreenProps<RootStackParamList, 'Profile'>;
+type ProfileProps = NativeStackScreenProps<RootStackParamList, "Profile">;
 
 function ProfileScreen({ route }: ProfileProps) {
   return <Text>{route.params.userId}</Text>;
@@ -2822,14 +2867,16 @@ With the static API you add a `linking` object to each screen, and enable linkin
 ```tsx
 const RootStack = createNativeStackNavigator({
   screens: {
-    Home: { screen: HomeScreen, linking: { path: '' } },
-    Profile: { screen: ProfileScreen, linking: { path: 'user/:id' } },
+    Home: { screen: HomeScreen, linking: { path: "" } },
+    Profile: { screen: ProfileScreen, linking: { path: "user/:id" } },
   },
 });
 
 const Navigation = createStaticNavigation(RootStack);
 
-<Navigation linking={{ prefixes: ['myapp://', 'https://example.com'], enabled: 'auto' }} />
+<Navigation
+  linking={{ prefixes: ["myapp://", "https://example.com"], enabled: "auto" }}
+/>;
 ```
 
 Now `myapp://user/42` opens the Profile screen with `id: '42'`. You also need to register the URL scheme in the native config (`scheme` in `app.json` for Expo). Expo Router does all of this automatically from the file structure.
@@ -2849,7 +2896,7 @@ For links that users share (emails, social posts), use universal links and App L
 
 ```tsx
 // app/product/[id].tsx
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from "expo-router";
 
 export default function Product() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -2864,8 +2911,8 @@ export default function Product() {
 Screens in a stack or tabs stay mounted when you navigate away, so `useEffect` doesn't run again when the user comes back. Use `useFocusEffect`:
 
 ```tsx
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 
 function OrdersScreen() {
   useFocusEffect(
@@ -2889,9 +2936,9 @@ const Stack = createNativeStackNavigator({
     Profile: {
       screen: ProfileScreen,
       options: {
-        title: 'My profile',
-        headerStyle: { backgroundColor: '#111' },
-        headerTintColor: '#fff',
+        title: "My profile",
+        headerStyle: { backgroundColor: "#111" },
+        headerTintColor: "#fff",
       },
     },
   },
@@ -2917,7 +2964,7 @@ Set `presentation` in the screen options of a native stack:
 const RootStack = createNativeStackNavigator({
   screens: {
     Home: HomeScreen,
-    NewPost: { screen: NewPostScreen, options: { presentation: 'modal' } },
+    NewPost: { screen: NewPostScreen, options: { presentation: "modal" } },
   },
 });
 ```
@@ -2936,17 +2983,17 @@ Use native stack unless you need a transition it can't do.
 It works the same as on the web, but you should connect it to mobile events, because there are no browser "focus" and "online" events:
 
 ```tsx
-import { AppState, Platform } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
-import { focusManager, onlineManager } from '@tanstack/react-query';
+import { AppState, Platform } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
+import { focusManager, onlineManager } from "@tanstack/react-query";
 
 onlineManager.setEventListener((setOnline) =>
   NetInfo.addEventListener((state) => setOnline(!!state.isConnected)),
 );
 
 useEffect(() => {
-  const sub = AppState.addEventListener('change', (status) => {
-    if (Platform.OS !== 'web') focusManager.setFocused(status === 'active');
+  const sub = AppState.addEventListener("change", (status) => {
+    if (Platform.OS !== "web") focusManager.setFocused(status === "active");
   });
   return () => sub.remove();
 }, []);
@@ -2959,7 +3006,7 @@ Now queries refetch when the app comes back to the foreground, and pause when th
 Use `@react-native-community/netinfo`:
 
 ```tsx
-import { useNetInfo } from '@react-native-community/netinfo';
+import { useNetInfo } from "@react-native-community/netinfo";
 
 function OfflineBanner() {
   const { isConnected, isInternetReachable } = useNetInfo();
@@ -2994,12 +3041,16 @@ It is more work than an online-only app, but it gives a much better experience o
 - **Realm**: an object database. Its sync service (Atlas Device Sync) was deprecated, so fewer teams pick it now.
 
 ```tsx
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from "expo-sqlite";
 
-const db = await SQLite.openDatabaseAsync('app.db');
-await db.execAsync('CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, text TEXT)');
-await db.runAsync('INSERT INTO notes (text) VALUES (?)', 'Hello');
-const notes = await db.getAllAsync<{ id: number; text: string }>('SELECT * FROM notes');
+const db = await SQLite.openDatabaseAsync("app.db");
+await db.execAsync(
+  "CREATE TABLE IF NOT EXISTS notes (id INTEGER PRIMARY KEY, text TEXT)",
+);
+await db.runAsync("INSERT INTO notes (text) VALUES (?)", "Hello");
+const notes = await db.getAllAsync<{ id: number; text: string }>(
+  "SELECT * FROM notes",
+);
 ```
 
 Always use parameters (`?`) instead of building SQL strings by hand.
@@ -3013,11 +3064,11 @@ Always use parameters (`?`) instead of building SQL strings by hand.
 - It supports encryption with a key.
 
 ```tsx
-import { createMMKV } from 'react-native-mmkv';
+import { createMMKV } from "react-native-mmkv";
 
 const storage = createMMKV();
-storage.set('onboardingDone', true);
-const done = storage.getBoolean('onboardingDone');
+storage.set("onboardingDone", true);
+const done = storage.getBoolean("onboardingDone");
 ```
 
 Older versions used `new MMKV()` instead of `createMMKV()`. It is a good fit for settings and persisted state stores. For tokens, still prefer Keychain/Keystore based storage.
@@ -3027,23 +3078,23 @@ Older versions used `new MMKV()` instead of `createMMKV()`. It is a good fit for
 Use the `persist` middleware with a storage adapter:
 
 ```tsx
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type SettingsState = {
-  theme: 'light' | 'dark';
-  setTheme: (theme: 'light' | 'dark') => void;
+  theme: "light" | "dark";
+  setTheme: (theme: "light" | "dark") => void;
 };
 
 export const useSettings = create<SettingsState>()(
   persist(
     (set) => ({
-      theme: 'light',
+      theme: "light",
       setTheme: (theme) => set({ theme }),
     }),
     {
-      name: 'settings',
+      name: "settings",
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),
@@ -3057,16 +3108,32 @@ With AsyncStorage the state is loaded asynchronously, so the first render may sh
 Redux Toolkit works the same as on the web. For persistence, `redux-persist` is the common choice:
 
 ```tsx
-import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { configureStore } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const persisted = persistReducer({ key: 'root', storage: AsyncStorage, whitelist: ['auth', 'settings'] }, rootReducer);
+const persisted = persistReducer(
+  { key: "root", storage: AsyncStorage, whitelist: ["auth", "settings"] },
+  rootReducer,
+);
 
 export const store = configureStore({
   reducer: persisted,
   middleware: (getDefault) =>
-    getDefault({ serializableCheck: { ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER] } }),
+    getDefault({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 export const persistor = persistStore(store);
 ```
@@ -3079,12 +3146,22 @@ In Expo, use `app.config.ts` with an environment variable to change the app name
 
 ```ts
 // app.config.ts
-const variant = process.env.APP_VARIANT ?? 'production';
+const variant = process.env.APP_VARIANT ?? "production";
 
 export default {
-  name: variant === 'production' ? 'MyApp' : `MyApp (${variant})`,
-  ios: { bundleIdentifier: variant === 'production' ? 'com.example.app' : `com.example.app.${variant}` },
-  android: { package: variant === 'production' ? 'com.example.app' : `com.example.app.${variant}` },
+  name: variant === "production" ? "MyApp" : `MyApp (${variant})`,
+  ios: {
+    bundleIdentifier:
+      variant === "production"
+        ? "com.example.app"
+        : `com.example.app.${variant}`,
+  },
+  android: {
+    package:
+      variant === "production"
+        ? "com.example.app"
+        : `com.example.app.${variant}`,
+  },
 };
 ```
 
@@ -3098,7 +3175,12 @@ A config plugin is a function that changes the native project during `npx expo p
 {
   "expo": {
     "plugins": [
-      ["expo-camera", { "cameraPermission": "Allow $(PRODUCT_NAME) to use the camera to scan codes." }]
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to use the camera to scan codes."
+        }
+      ]
     ]
   }
 }
@@ -3172,9 +3254,9 @@ In practice, OTA updates for bug fixes, text changes and small UI changes are fi
 ### 186: How do you set up push notifications with expo-notifications?
 
 ```tsx
-import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
-import Constants from 'expo-constants';
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
+import Constants from "expo-constants";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -3189,7 +3271,7 @@ export async function registerForPush() {
   if (!Device.isDevice) return null;
 
   const { status } = await Notifications.requestPermissionsAsync();
-  if (status !== 'granted') return null;
+  if (status !== "granted") return null;
 
   const projectId = Constants.expoConfig?.extra?.eas?.projectId;
   const { data } = await Notifications.getExpoPushTokenAsync({ projectId });
@@ -3205,10 +3287,12 @@ Listen for notification responses and navigate based on the data in the notifica
 
 ```tsx
 useEffect(() => {
-  const sub = Notifications.addNotificationResponseReceivedListener((response) => {
-    const url = response.notification.request.content.data?.url;
-    if (typeof url === 'string') router.push(url);
-  });
+  const sub = Notifications.addNotificationResponseReceivedListener(
+    (response) => {
+      const url = response.notification.request.content.data?.url;
+      if (typeof url === "string") router.push(url);
+    },
+  );
   return () => sub.remove();
 }, []);
 ```
@@ -3225,15 +3309,15 @@ Mobile OSs strictly limit background work. Options:
 - Native code for special cases like audio playback or uploads.
 
 ```tsx
-import * as TaskManager from 'expo-task-manager';
-import * as BackgroundTask from 'expo-background-task';
+import * as TaskManager from "expo-task-manager";
+import * as BackgroundTask from "expo-background-task";
 
-TaskManager.defineTask('sync-data', async () => {
+TaskManager.defineTask("sync-data", async () => {
   await syncPendingChanges();
   return BackgroundTask.BackgroundTaskResult.Success;
 });
 
-await BackgroundTask.registerTaskAsync('sync-data', { minimumInterval: 15 });
+await BackgroundTask.registerTaskAsync("sync-data", { minimumInterval: 15 });
 ```
 
 The OS decides when the task actually runs. You can't count on exact timing, especially on iOS.
@@ -3249,11 +3333,15 @@ The OS decides when the task actually runs. You can't count on exact timing, esp
 ```tsx
 const { status, canAskAgain } = await Location.getForegroundPermissionsAsync();
 
-if (status !== 'granted' && !canAskAgain) {
-  Alert.alert('Location is off', 'Enable it in Settings to see stores near you.', [
-    { text: 'Cancel', style: 'cancel' },
-    { text: 'Open Settings', onPress: () => Linking.openSettings() },
-  ]);
+if (status !== "granted" && !canAskAgain) {
+  Alert.alert(
+    "Location is off",
+    "Enable it in Settings to see stores near you.",
+    [
+      { text: "Cancel", style: "cancel" },
+      { text: "Open Settings", onPress: () => Linking.openSettings() },
+    ],
+  );
 }
 ```
 
@@ -3267,7 +3355,7 @@ useEffect(() => {
 
   (async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') return;
+    if (status !== "granted") return;
 
     sub = await Location.watchPositionAsync(
       { accuracy: Location.Accuracy.Balanced, distanceInterval: 20 },
@@ -3287,16 +3375,17 @@ Use the lowest accuracy that works for your feature, because high accuracy drain
 - **react-native-vision-camera**: more powerful. It supports frame processors (run code on each camera frame, for example for ML), many formats, and fine control over the device. Good for advanced camera apps.
 
 ```tsx
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { CameraView, useCameraPermissions } from "expo-camera";
 
 function Scanner() {
   const [permission, requestPermission] = useCameraPermissions();
-  if (!permission?.granted) return <Button title="Allow camera" onPress={requestPermission} />;
+  if (!permission?.granted)
+    return <Button title="Allow camera" onPress={requestPermission} />;
 
   return (
     <CameraView
       style={{ flex: 1 }}
-      barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+      barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
       onBarcodeScanned={({ data }) => console.log(data)}
     />
   );
@@ -3310,14 +3399,14 @@ If you just need the user to pick or take one photo, `expo-image-picker` is simp
 Use `expo-file-system`. Its newer object-based API uses `File`, `Directory` and `Paths`:
 
 ```tsx
-import { File, Directory, Paths } from 'expo-file-system';
+import { File, Directory, Paths } from "expo-file-system";
 
-const file = new File(Paths.document, 'notes.txt');
+const file = new File(Paths.document, "notes.txt");
 file.create();
-await file.write('Hello');
+await file.write("Hello");
 const text = await file.text();
 
-const dir = new Directory(Paths.cache, 'images');
+const dir = new Directory(Paths.cache, "images");
 dir.create();
 ```
 
@@ -3330,17 +3419,17 @@ Use `FormData` with an object that has `uri`, `name` and `type`. React Native re
 ```tsx
 async function uploadAvatar(uri: string) {
   const form = new FormData();
-  form.append('avatar', {
+  form.append("avatar", {
     uri,
-    name: 'avatar.jpg',
-    type: 'image/jpeg',
+    name: "avatar.jpg",
+    type: "image/jpeg",
   } as any);
 
-  const res = await fetch('https://api.example.com/avatar', {
-    method: 'POST',
+  const res = await fetch("https://api.example.com/avatar", {
+    method: "POST",
     body: form,
   });
-  if (!res.ok) throw new Error('Upload failed');
+  if (!res.ok) throw new Error("Upload failed");
 }
 ```
 
@@ -3351,13 +3440,13 @@ Don't set the `Content-Type` header yourself, `fetch` adds it with the correct b
 Use `react-native-webview`:
 
 ```tsx
-import { WebView } from 'react-native-webview';
+import { WebView } from "react-native-webview";
 
 <WebView
-  source={{ uri: 'https://example.com/help' }}
-  onMessage={(event) => console.log('from web:', event.nativeEvent.data)}
+  source={{ uri: "https://example.com/help" }}
+  onMessage={(event) => console.log("from web:", event.nativeEvent.data)}
   injectedJavaScript="window.ReactNativeWebView.postMessage(document.title); true;"
-/>
+/>;
 ```
 
 The web page sends messages with `window.ReactNativeWebView.postMessage(string)` and you receive them in `onMessage`. To send messages to the page, use `ref.current.injectJavaScript()` or `postMessage`. Only load trusted URLs, and limit what the page can do (for example with `originWhitelist`), because a web view with a bridge to native code is a security risk.
@@ -3377,15 +3466,15 @@ const opacity = progress.interpolate({
 const translateY = progress.interpolate({
   inputRange: [0, 1],
   outputRange: [50, 0],
-  extrapolate: 'clamp',
+  extrapolate: "clamp",
 });
 
 const rotate = progress.interpolate({
   inputRange: [0, 1],
-  outputRange: ['0deg', '180deg'],
+  outputRange: ["0deg", "180deg"],
 });
 
-<Animated.View style={{ opacity, transform: [{ translateY }, { rotate }] }} />
+<Animated.View style={{ opacity, transform: [{ translateY }, { rotate }] }} />;
 ```
 
 `extrapolate: 'clamp'` stops the output from going beyond the output range.
@@ -3402,7 +3491,11 @@ Use the composition functions:
 
 ```tsx
 Animated.sequence([
-  Animated.timing(scale, { toValue: 1.2, duration: 150, useNativeDriver: true }),
+  Animated.timing(scale, {
+    toValue: 1.2,
+    duration: 150,
+    useNativeDriver: true,
+  }),
   Animated.spring(scale, { toValue: 1, friction: 3, useNativeDriver: true }),
 ]).start(({ finished }) => {
   if (finished) onAnimationDone();
@@ -3497,7 +3590,7 @@ A worklet is a small JavaScript function that can run on a different JS runtime,
 
 ```tsx
 function clamp(value: number, min: number, max: number) {
-  'worklet';
+  "worklet";
   return Math.min(Math.max(value, min), max);
 }
 ```
@@ -3509,8 +3602,12 @@ Worklets can only use values they capture (copied to the UI runtime) and other w
 Use a `Pan` gesture that updates shared values, and an animated style that reads them:
 
 ```tsx
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 
 function Draggable() {
   const x = useSharedValue(0);
@@ -3545,18 +3642,24 @@ The gesture callbacks run on the UI thread as worklets, so dragging stays smooth
 Layout animations animate a component when it mounts, unmounts or changes position:
 
 ```tsx
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
 
-{items.map((item) => (
-  <Animated.View
-    key={item.id}
-    entering={FadeIn.duration(200)}
-    exiting={FadeOut}
-    layout={LinearTransition}
-  >
-    <Text>{item.title}</Text>
-  </Animated.View>
-))}
+{
+  items.map((item) => (
+    <Animated.View
+      key={item.id}
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut}
+      layout={LinearTransition}
+    >
+      <Text>{item.title}</Text>
+    </Animated.View>
+  ));
+}
 ```
 
 - `entering` runs when the view appears
@@ -3634,7 +3737,7 @@ New projects have edge-to-edge on by default (`edgeToEdgeEnabled=true` in `gradl
 `SafeAreaView` adds padding to a whole container. `useSafeAreaInsets` gives you the numbers, so you can apply them exactly where you need:
 
 ```tsx
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function BottomBar() {
   const insets = useSafeAreaInsets();
@@ -3653,14 +3756,18 @@ Use the hook for custom headers, bottom bars, floating buttons and scroll conten
 Put your colors, spacing and typography in theme objects, pick one based on the color scheme, and share it through context:
 
 ```tsx
-const light = { background: '#fff', text: '#111', primary: '#0a7ea4' };
-const dark = { background: '#000', text: '#eee', primary: '#4fc3f7' };
+const light = { background: "#fff", text: "#111", primary: "#0a7ea4" };
+const dark = { background: "#000", text: "#eee", primary: "#4fc3f7" };
 
 const ThemeContext = createContext(light);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const scheme = useColorScheme();
-  return <ThemeContext value={scheme === 'dark' ? dark : light}>{children}</ThemeContext>;
+  return (
+    <ThemeContext value={scheme === "dark" ? dark : light}>
+      {children}
+    </ThemeContext>
+  );
 }
 
 export const useTheme = () => use(ThemeContext);
@@ -3673,19 +3780,22 @@ React Navigation also has a `theme` prop for its own colors. Libraries like Unis
 For translations, use a library like `i18next` with `react-i18next`, and `expo-localization` to read the device language:
 
 ```tsx
-import i18n from 'i18next';
-import { initReactI18next, useTranslation } from 'react-i18next';
-import { getLocales } from 'expo-localization';
+import i18n from "i18next";
+import { initReactI18next, useTranslation } from "react-i18next";
+import { getLocales } from "expo-localization";
 
 i18n.use(initReactI18next).init({
-  lng: getLocales()[0]?.languageCode ?? 'en',
-  fallbackLng: 'en',
-  resources: { en: { translation: { greeting: 'Hello' } }, ar: { translation: { greeting: 'مرحبا' } } },
+  lng: getLocales()[0]?.languageCode ?? "en",
+  fallbackLng: "en",
+  resources: {
+    en: { translation: { greeting: "Hello" } },
+    ar: { translation: { greeting: "مرحبا" } },
+  },
 });
 
 function Header() {
   const { t } = useTranslation();
-  return <Text>{t('greeting')}</Text>;
+  return <Text>{t("greeting")}</Text>;
 }
 ```
 
@@ -3713,16 +3823,19 @@ For values like sliders or progress, use `accessibilityValue={{ min: 0, max: 100
 `AccessibilityInfo` lets you check accessibility settings and talk to the screen reader:
 
 ```tsx
-import { AccessibilityInfo } from 'react-native';
+import { AccessibilityInfo } from "react-native";
 
 const screenReaderOn = await AccessibilityInfo.isScreenReaderEnabled();
 const reduceMotion = await AccessibilityInfo.isReduceMotionEnabled();
 
-AccessibilityInfo.announceForAccessibility('Item added to cart');
+AccessibilityInfo.announceForAccessibility("Item added to cart");
 
-const sub = AccessibilityInfo.addEventListener('screenReaderChanged', (enabled) => {
-  setScreenReader(enabled);
-});
+const sub = AccessibilityInfo.addEventListener(
+  "screenReaderChanged",
+  (enabled) => {
+    setScreenReader(enabled);
+  },
+);
 sub.remove();
 ```
 
@@ -3733,7 +3846,7 @@ Common uses: announcing results of actions that don't move focus, disabling auto
 The same as in React for the web. An error boundary is a class component that catches render errors in its children and shows a fallback instead of crashing the whole tree. Most people use `react-error-boundary`:
 
 ```tsx
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary } from "react-error-boundary";
 
 function Fallback({ resetErrorBoundary }: { resetErrorBoundary: () => void }) {
   return (
@@ -3744,9 +3857,12 @@ function Fallback({ resetErrorBoundary }: { resetErrorBoundary: () => void }) {
   );
 }
 
-<ErrorBoundary FallbackComponent={Fallback} onError={(error) => reportError(error)}>
+<ErrorBoundary
+  FallbackComponent={Fallback}
+  onError={(error) => reportError(error)}
+>
   <App />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 Error boundaries don't catch errors in event handlers, timers or async code. In release builds, an uncaught render error without a boundary closes the app, so boundaries matter more on mobile. Expo Router lets each route export its own `ErrorBoundary`.
@@ -3771,10 +3887,10 @@ For unhandled promise rejections, Hermes tracks them and LogBox shows a warning 
 Use a service like Sentry, Bugsnag, Firebase Crashlytics or EAS Observe. Sentry is a common choice:
 
 ```tsx
-import * as Sentry from '@sentry/react-native';
+import * as Sentry from "@sentry/react-native";
 
 Sentry.init({
-  dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0',
+  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
   tracesSampleRate: 0.2,
 });
 
@@ -3842,12 +3958,15 @@ The deep link command is very handy for testing linking without sending yourself
 
 ```js
 // metro.config.js (Expo)
-const { getDefaultConfig } = require('expo/metro-config');
+const { getDefaultConfig } = require("expo/metro-config");
 
 const config = getDefaultConfig(__dirname);
-config.transformer.babelTransformerPath = require.resolve('react-native-svg-transformer/expo');
-config.resolver.assetExts = config.resolver.assetExts.filter((ext) => ext !== 'svg');
-config.resolver.sourceExts.push('svg');
+config.transformer.babelTransformerPath =
+  require.resolve("react-native-svg-transformer/expo");
+config.resolver.assetExts = config.resolver.assetExts.filter(
+  (ext) => ext !== "svg",
+);
+config.resolver.sourceExts.push("svg");
 
 module.exports = config;
 ```
@@ -3873,8 +3992,8 @@ Expo's Metro config reads `paths` from `tsconfig.json` automatically. In a Commu
 
 ```js
 module.exports = {
-  presets: ['module:@react-native/babel-preset'],
-  plugins: [['module-resolver', { alias: { '@': './src' } }]],
+  presets: ["module:@react-native/babel-preset"],
+  plugins: [["module-resolver", { alias: { "@": "./src" } }]],
 };
 ```
 
@@ -3968,18 +4087,21 @@ There are `getBy*` (throws if missing), `queryBy*` (returns `null`, for checking
 Use `userEvent`, which runs a realistic sequence of events (press in, press out, focus, change text and so on):
 
 ```tsx
-import { render, screen, userEvent } from '@testing-library/react-native';
+import { render, screen, userEvent } from "@testing-library/react-native";
 
-test('submits the form', async () => {
+test("submits the form", async () => {
   const user = userEvent.setup();
   const onSubmit = jest.fn();
   render(<LoginForm onSubmit={onSubmit} />);
 
-  await user.type(screen.getByPlaceholderText('Email'), 'a@b.com');
-  await user.type(screen.getByPlaceholderText('Password'), 'secret123');
-  await user.press(screen.getByRole('button', { name: 'Log in' }));
+  await user.type(screen.getByPlaceholderText("Email"), "a@b.com");
+  await user.type(screen.getByPlaceholderText("Password"), "secret123");
+  await user.press(screen.getByRole("button", { name: "Log in" }));
 
-  expect(onSubmit).toHaveBeenCalledWith({ email: 'a@b.com', password: 'secret123' });
+  expect(onSubmit).toHaveBeenCalledWith({
+    email: "a@b.com",
+    password: "secret123",
+  });
 });
 ```
 
@@ -3991,16 +4113,18 @@ Jest runs in Node, so native modules don't exist. Many libraries ship their own 
 
 ```tsx
 // jest.setup.ts
-jest.mock('expo-haptics', () => ({
+jest.mock("expo-haptics", () => ({
   impactAsync: jest.fn(),
-  ImpactFeedbackStyle: { Light: 'light' },
+  ImpactFeedbackStyle: { Light: "light" },
 }));
 
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+jest.mock("@react-native-async-storage/async-storage", () =>
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock"),
 );
 
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+jest.mock("react-native-reanimated", () =>
+  require("react-native-reanimated/mock"),
+);
 ```
 
 Register the setup file with `setupFiles` or `setupFilesAfterEnv` in `jest.config.js`. Keep mocks small, and only mock the native boundary, not your own logic.
@@ -4010,20 +4134,20 @@ Register the setup file with `setupFiles` or `setupFilesAfterEnv` in `jest.confi
 Render them inside a real navigator instead of mocking `navigation`, so the test behaves like the app:
 
 ```tsx
-import { createStaticNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStaticNavigation } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator({
   screens: { Home: HomeScreen, Details: DetailsScreen },
 });
 const Navigation = createStaticNavigation(Stack);
 
-test('opens details', async () => {
+test("opens details", async () => {
   const user = userEvent.setup();
   render(<Navigation />);
 
-  await user.press(screen.getByText('Go to details'));
-  expect(await screen.findByText('Details screen')).toBeOnTheScreen();
+  await user.press(screen.getByText("Go to details"));
+  expect(await screen.findByText("Details screen")).toBeOnTheScreen();
 });
 ```
 
@@ -4041,13 +4165,13 @@ They are fine for small, stable components (an icon, a formatted price) or with 
 
 ### 232: What is the difference between Detox and Maestro?
 
-| | Detox | Maestro |
-|---|---|---|
-| Test language | JavaScript/TypeScript | YAML flows |
-| Setup | Native build config, more setup | Install CLI, point it at any app |
-| Waiting | Gray box: syncs with the app's network, timers and animations | Black box: retries and waits automatically |
-| Speed to write | Slower | Very fast |
-| Best for | Teams that want E2E tests in the same language and strong sync | Quick smoke tests, QA teams, any app |
+|                | Detox                                                          | Maestro                                    |
+| -------------- | -------------------------------------------------------------- | ------------------------------------------ |
+| Test language  | JavaScript/TypeScript                                          | YAML flows                                 |
+| Setup          | Native build config, more setup                                | Install CLI, point it at any app           |
+| Waiting        | Gray box: syncs with the app's network, timers and animations  | Black box: retries and waits automatically |
+| Speed to write | Slower                                                         | Very fast                                  |
+| Best for       | Teams that want E2E tests in the same language and strong sync | Quick smoke tests, QA teams, any app       |
 
 Both run on simulators and emulators, and both can run in CI. EAS Workflows has built-in steps for Maestro.
 
@@ -4056,12 +4180,12 @@ Both run on simulators and emulators, and both can run in CI. EAS Workflows has 
 Mock at the network level with Mock Service Worker (MSW). It intercepts `fetch` in Node, so your components and data libraries run their real code:
 
 ```tsx
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
-  http.get('https://api.example.com/users', () =>
-    HttpResponse.json([{ id: '1', name: 'Ana' }]),
+  http.get("https://api.example.com/users", () =>
+    HttpResponse.json([{ id: "1", name: "Ana" }]),
   ),
 );
 
@@ -4069,9 +4193,9 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-test('shows users', async () => {
+test("shows users", async () => {
   render(<Users />);
-  expect(await screen.findByText('Ana')).toBeOnTheScreen();
+  expect(await screen.findByText("Ana")).toBeOnTheScreen();
 });
 ```
 
@@ -4113,9 +4237,9 @@ It is a set of TypeScript types generated from React Native's source code, which
 
 ```tsx
 // Before
-import { ViewProperties } from 'react-native';
+import { ViewProperties } from "react-native";
 // After
-import type { ViewProps } from 'react-native';
+import type { ViewProps } from "react-native";
 ```
 
 A temporary opt-out exists through 0.88 with the `react-native-legacy-deep-imports` custom condition in `tsconfig.json`, but you should migrate.
@@ -4125,7 +4249,7 @@ A temporary opt-out exists through 0.88 with the `react-native-legacy-deep-impor
 Use `StyleProp` with the right style type:
 
 ```tsx
-import type { StyleProp, ViewStyle, TextStyle } from 'react-native';
+import type { StyleProp, ViewStyle, TextStyle } from "react-native";
 
 type BadgeProps = {
   label: string;
@@ -4171,7 +4295,7 @@ function showTooltip() {
   <Pressable onPress={showTooltip}>
     <InfoIcon />
   </Pressable>
-</View>
+</View>;
 ```
 
 `measure` gives position relative to the root view and also gives the page position. `measureInWindow` gives position relative to the window. In the New Architecture, you can call them synchronously inside `useLayoutEffect` and get the correct values before the frame is drawn.
@@ -4190,7 +4314,7 @@ const [width, setWidth] = useState(0);
   }}
 >
   <Chart width={width} />
-</View>
+</View>;
 ```
 
 The values are relative to the parent. It is useful for sizing children to a container (charts, carousels). Setting state in `onLayout` causes an extra render, so avoid it for things Flexbox can do.
@@ -4216,10 +4340,12 @@ Subscribe to `Keyboard` events:
 
 ```tsx
 useEffect(() => {
-  const show = Keyboard.addListener('keyboardDidShow', (e) => {
+  const show = Keyboard.addListener("keyboardDidShow", (e) => {
     setKeyboardHeight(e.endCoordinates.height);
   });
-  const hide = Keyboard.addListener('keyboardDidHide', () => setKeyboardHeight(0));
+  const hide = Keyboard.addListener("keyboardDidHide", () =>
+    setKeyboardHeight(0),
+  );
 
   return () => {
     show.remove();
@@ -4240,7 +4366,7 @@ useEffect(() => {
     if (url) handleUrl(url);
   });
 
-  const sub = Linking.addEventListener('url', ({ url }) => handleUrl(url));
+  const sub = Linking.addEventListener("url", ({ url }) => handleUrl(url));
   return () => sub.remove();
 }, []);
 ```
@@ -4252,7 +4378,7 @@ There is also the `useLinkingURL` hook from `expo-linking`. Navigation libraries
 The `Clipboard` API was removed from React Native core. Use `expo-clipboard` or `@react-native-clipboard/clipboard`:
 
 ```tsx
-import * as Clipboard from 'expo-clipboard';
+import * as Clipboard from "expo-clipboard";
 
 await Clipboard.setStringAsync(couponCode);
 const text = await Clipboard.getStringAsync();
@@ -4265,8 +4391,15 @@ On iOS, reading the clipboard shows a system "pasted from" message, so only read
 Use `useInfiniteQuery` with `FlatList`:
 
 ```tsx
-const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch, isRefetching } = useInfiniteQuery({
-  queryKey: ['posts'],
+const {
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  refetch,
+  isRefetching,
+} = useInfiniteQuery({
+  queryKey: ["posts"],
   queryFn: ({ pageParam }) => fetchPosts({ cursor: pageParam }),
   initialPageParam: null as string | null,
   getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -4283,7 +4416,7 @@ const posts = data?.pages.flatMap((page) => page.items) ?? [];
   refreshing={isRefetching}
   onRefresh={refetch}
   ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
-/>
+/>;
 ```
 
 Cursor-based pagination works better than page numbers when items are added while the user scrolls.
@@ -4324,7 +4457,7 @@ Use `stickyHeaderIndices` on a `ScrollView` or `FlatList`. It takes the indexes 
 ```tsx
 <ScrollView stickyHeaderIndices={[1]}>
   <Banner />
-  <FilterBar />   {/* sticks once it reaches the top */}
+  <FilterBar /> {/* sticks once it reaches the top */}
   <ProductList />
 </ScrollView>
 ```
@@ -4416,17 +4549,17 @@ Since mobile apps have no cookies by default, tokens usually go in the `Authoriz
 Use the Authorization Code flow with PKCE in the system browser, not in a web view. Libraries: `expo-auth-session` (with `expo-web-browser`) or `react-native-app-auth`.
 
 ```tsx
-import * as AuthSession from 'expo-auth-session';
-import * as WebBrowser from 'expo-web-browser';
+import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const discovery = AuthSession.useAutoDiscovery('https://auth.example.com');
+const discovery = AuthSession.useAutoDiscovery("https://auth.example.com");
 const [request, response, promptAsync] = AuthSession.useAuthRequest(
   {
-    clientId: 'my-client-id',
-    redirectUri: AuthSession.makeRedirectUri({ scheme: 'myapp' }),
-    scopes: ['openid', 'profile'],
+    clientId: "my-client-id",
+    redirectUri: AuthSession.makeRedirectUri({ scheme: "myapp" }),
+    scopes: ["openid", "profile"],
     usePKCE: true,
   },
   discovery,
@@ -4440,7 +4573,7 @@ The app gets an authorization code through the redirect URL and exchanges it for
 Use `expo-local-authentication` (or `react-native-biometrics`):
 
 ```tsx
-import * as LocalAuthentication from 'expo-local-authentication';
+import * as LocalAuthentication from "expo-local-authentication";
 
 async function unlock() {
   const hasHardware = await LocalAuthentication.hasHardwareAsync();
@@ -4448,7 +4581,7 @@ async function unlock() {
   if (!hasHardware || !enrolled) return false;
 
   const result = await LocalAuthentication.authenticateAsync({
-    promptMessage: 'Unlock MyApp',
+    promptMessage: "Unlock MyApp",
   });
   return result.success;
 }
@@ -4470,14 +4603,22 @@ Always check the subscription status on the server, test with sandbox accounts a
 The usual choice is `react-native-maps`, which uses Apple Maps on iOS (or Google Maps) and Google Maps on Android:
 
 ```tsx
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker } from "react-native-maps";
 
 <MapView
   style={{ flex: 1 }}
-  initialRegion={{ latitude: 41.7151, longitude: 44.8271, latitudeDelta: 0.05, longitudeDelta: 0.05 }}
+  initialRegion={{
+    latitude: 41.7151,
+    longitude: 44.8271,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
+  }}
 >
-  <Marker coordinate={{ latitude: 41.7151, longitude: 44.8271 }} title="Office" />
-</MapView>
+  <Marker
+    coordinate={{ latitude: 41.7151, longitude: 44.8271 }}
+    title="Office"
+  />
+</MapView>;
 ```
 
 Google Maps needs an API key in the native config. Other options are `@rnmapbox/maps` for Mapbox, and `expo-maps`, which wraps Apple Maps and Google Maps with native UI. With many markers, cluster them, because hundreds of custom marker views are slow.
@@ -4487,15 +4628,21 @@ Google Maps needs an API key in the native config. Other options are `@rnmapbox/
 Use `expo-video`, which replaced the video part of the older `expo-av`:
 
 ```tsx
-import { useVideoPlayer, VideoView } from 'expo-video';
+import { useVideoPlayer, VideoView } from "expo-video";
 
 function Intro() {
-  const player = useVideoPlayer('https://example.com/intro.mp4', (p) => {
+  const player = useVideoPlayer("https://example.com/intro.mp4", (p) => {
     p.loop = true;
     p.play();
   });
 
-  return <VideoView player={player} style={{ width: '100%', aspectRatio: 16 / 9 }} allowsFullscreen />;
+  return (
+    <VideoView
+      player={player}
+      style={{ width: "100%", aspectRatio: 16 / 9 }}
+      allowsFullscreen
+    />
+  );
 }
 ```
 
@@ -4506,11 +4653,19 @@ The player is separate from the view, so you control playback without re-renderi
 Use `expo-audio` (the replacement for audio in `expo-av`):
 
 ```tsx
-import { useAudioPlayer } from 'expo-audio';
+import { useAudioPlayer } from "expo-audio";
 
 function Ding() {
-  const player = useAudioPlayer(require('./assets/ding.mp3'));
-  return <Button title="Play" onPress={() => { player.seekTo(0); player.play(); }} />;
+  const player = useAudioPlayer(require("./assets/ding.mp3"));
+  return (
+    <Button
+      title="Play"
+      onPress={() => {
+        player.seekTo(0);
+        player.play();
+      }}
+    />
+  );
 }
 ```
 
@@ -4521,7 +4676,7 @@ For recording there is `useAudioRecorder`. Recording needs microphone permission
 Haptics are small vibrations that give physical feedback, like when you toggle a switch or a payment succeeds. Use `expo-haptics`:
 
 ```tsx
-import * as Haptics from 'expo-haptics';
+import * as Haptics from "expo-haptics";
 
 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -4535,12 +4690,12 @@ Use them for meaningful moments, not on every tap. The core `Vibration` API also
 With `expo-splash-screen`, call `preventAutoHideAsync` early and hide it when your fonts, auth state or cached data are loaded:
 
 ```tsx
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({ Inter: require('../assets/Inter.ttf') });
+  const [fontsLoaded] = useFonts({ Inter: require("../assets/Inter.ttf") });
   const { isReady } = useAuthBootstrap();
 
   useEffect(() => {
@@ -4560,7 +4715,7 @@ Metro finds assets at build time by reading your code. It needs to see the exact
 
 ```tsx
 // Works
-const icon = isActive ? require('./active.png') : require('./inactive.png');
+const icon = isActive ? require("./active.png") : require("./inactive.png");
 
 // Doesn't work: Metro can't know which file to include
 const icon = require(`./${name}.png`);
@@ -4570,11 +4725,11 @@ If you need to choose images by name, build a map of static requires:
 
 ```tsx
 const flags = {
-  ge: require('./flags/ge.png'),
-  us: require('./flags/us.png'),
+  ge: require("./flags/ge.png"),
+  us: require("./flags/us.png"),
 } as const;
 
-<Image source={flags[countryCode]} />
+<Image source={flags[countryCode]} />;
 ```
 
 ### 264: How do you check if a library works with your React Native version and the New Architecture?
@@ -4633,8 +4788,8 @@ class BatteryModule : Module() {
 ```
 
 ```ts
-import { requireNativeModule } from 'expo';
-const Battery = requireNativeModule('Battery');
+import { requireNativeModule } from "expo";
+const Battery = requireNativeModule("Battery");
 Battery.getLevel();
 ```
 
@@ -4646,8 +4801,8 @@ You write a TypeScript spec file, and Codegen generates the native interfaces fr
 
 ```ts
 // specs/NativeLocalStorage.ts
-import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+import type { TurboModule } from "react-native";
+import { TurboModuleRegistry } from "react-native";
 
 export interface Spec extends TurboModule {
   getItem(key: string): string | null;
@@ -4655,7 +4810,7 @@ export interface Spec extends TurboModule {
   clear(): Promise<void>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('NativeLocalStorage');
+export default TurboModuleRegistry.getEnforcing<Spec>("NativeLocalStorage");
 ```
 
 Then you configure `codegenConfig` in `package.json`, run the build, and implement the generated interface in Objective-C++/Swift and Kotlin/Java. The spec acts as a contract that both sides must follow, so type mismatches are caught at build time.
@@ -4683,7 +4838,7 @@ Yes, in the New Architecture. Because Turbo Modules are called through JSI, a me
 
 ```ts
 export interface Spec extends TurboModule {
-  getDeviceName(): string;            // sync
+  getDeviceName(): string; // sync
   fetchContacts(): Promise<Contact[]>; // async
 }
 ```
@@ -4709,9 +4864,9 @@ public class DownloadModule: Module {
 ```
 
 ```tsx
-import { useEvent } from 'expo';
+import { useEvent } from "expo";
 
-const { progress } = useEvent(DownloadModule, 'onProgress', { progress: 0 });
+const { progress } = useEvent(DownloadModule, "onProgress", { progress: 0 });
 ```
 
 In Turbo Modules, you can declare an `EventEmitter` type in the spec (since 0.76), and Codegen generates typed emitters. Always remove listeners when the component unmounts.
@@ -4727,9 +4882,9 @@ Teams do this to move to React Native step by step, or to share a feature betwee
 Headless JS is an Android feature that runs JavaScript tasks in the background without any UI, for example when a push message arrives or a sync job runs. You register a task:
 
 ```ts
-import { AppRegistry } from 'react-native';
+import { AppRegistry } from "react-native";
 
-AppRegistry.registerHeadlessTask('SyncTask', () => async (data) => {
+AppRegistry.registerHeadlessTask("SyncTask", () => async (data) => {
   await syncPendingChanges(data);
 });
 ```
@@ -4746,8 +4901,8 @@ For anything time-based, store timestamps and calculate the difference when the 
 const startedAt = useRef(Date.now());
 
 useEffect(() => {
-  const sub = AppState.addEventListener('change', (s) => {
-    if (s === 'active') setElapsed(Date.now() - startedAt.current);
+  const sub = AppState.addEventListener("change", (s) => {
+    if (s === "active") setElapsed(Date.now() - startedAt.current);
   });
   return () => sub.remove();
 }, []);
@@ -4773,19 +4928,21 @@ For keeping the UI responsive during heavy renders, React's `startTransition` is
 Yes, since the New Architecture supports React's concurrent features. `startTransition` marks an update as non-urgent, so React can keep the UI responsive while rendering it:
 
 ```tsx
-const [query, setQuery] = useState('');
-const [filter, setFilter] = useState('');
+const [query, setQuery] = useState("");
+const [filter, setFilter] = useState("");
 const [isPending, startTransition] = useTransition();
 
 <TextInput
   value={query}
   onChangeText={(text) => {
-    setQuery(text);                       // urgent: update the input
+    setQuery(text); // urgent: update the input
     startTransition(() => setFilter(text)); // can wait: filter a big list
   }}
-/>
-{isPending && <ActivityIndicator />}
-<BigFilteredList filter={filter} />
+/>;
+{
+  isPending && <ActivityIndicator />;
+}
+<BigFilteredList filter={filter} />;
 ```
 
 `useDeferredValue` gives a similar result. In the old architecture these APIs existed but didn't actually make rendering interruptible.
@@ -4802,7 +4959,7 @@ function Profile({ userPromise }: { userPromise: Promise<User> }) {
 
 <Suspense fallback={<ActivityIndicator />}>
   <Profile userPromise={userPromise} />
-</Suspense>
+</Suspense>;
 ```
 
 With the New Architecture, transitions keep the old content visible instead of showing the fallback again. Don't create the promise inside the component that calls `use`, or it will be recreated on every render.
@@ -4846,13 +5003,13 @@ Many companies build their own design system on top of core components instead, 
 `PlatformColor` lets you use the platform's built-in semantic colors, which change automatically with light/dark mode and accessibility settings:
 
 ```tsx
-import { PlatformColor, Platform } from 'react-native';
+import { PlatformColor, Platform } from "react-native";
 
 const styles = StyleSheet.create({
   label: {
     color: Platform.select({
-      ios: PlatformColor('label'),
-      android: PlatformColor('?android:attr/textColorPrimary'),
+      ios: PlatformColor("label"),
+      android: PlatformColor("?android:attr/textColorPrimary"),
     }),
   },
 });
@@ -4861,7 +5018,7 @@ const styles = StyleSheet.create({
 `DynamicColorIOS` defines your own iOS color with light and dark values (and high contrast variants):
 
 ```tsx
-const accent = DynamicColorIOS({ light: '#0a7ea4', dark: '#4fc3f7' });
+const accent = DynamicColorIOS({ light: "#0a7ea4", dark: "#4fc3f7" });
 ```
 
 These colors are resolved by the OS, so they update without a React re-render.
@@ -4918,12 +5075,14 @@ Clean up everything you start in an effect:
 
 ```tsx
 useEffect(() => {
-  const keyboardSub = Keyboard.addListener('keyboardDidShow', onShow);
-  const appStateSub = AppState.addEventListener('change', onAppStateChange);
+  const keyboardSub = Keyboard.addListener("keyboardDidShow", onShow);
+  const appStateSub = AppState.addEventListener("change", onAppStateChange);
   const interval = setInterval(poll, 5000);
   const controller = new AbortController();
 
-  fetch(url, { signal: controller.signal }).then(handle).catch(() => {});
+  fetch(url, { signal: controller.signal })
+    .then(handle)
+    .catch(() => {});
 
   return () => {
     keyboardSub.remove();
@@ -4943,7 +5102,7 @@ Expo Router lets you write server endpoints next to your screens with files endi
 ```ts
 // app/api/hello+api.ts
 export async function GET(request: Request) {
-  return Response.json({ message: 'Hello' });
+  return Response.json({ message: "Hello" });
 }
 
 export async function POST(request: Request) {
@@ -4986,7 +5145,7 @@ You can also make an internal distribution build with EAS (`"distribution": "int
 For JS-only changes, `expo-updates` can check and apply updates at runtime:
 
 ```tsx
-import * as Updates from 'expo-updates';
+import * as Updates from "expo-updates";
 
 async function checkForUpdate() {
   const result = await Updates.checkForUpdateAsync();
@@ -5008,13 +5167,13 @@ Options:
 - Expo UI has native bottom sheet components.
 
 ```tsx
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
-<BottomSheet snapPoints={['25%', '60%']} index={0}>
+<BottomSheet snapPoints={["25%", "60%"]} index={0}>
   <BottomSheetView style={{ padding: 16 }}>
     <Text>Filters</Text>
   </BottomSheetView>
-</BottomSheet>
+</BottomSheet>;
 ```
 
 Native sheets feel the most "native". JS sheets give more control over custom designs.
@@ -5032,9 +5191,13 @@ const { width } = useWindowDimensions();
   data={banners}
   keyExtractor={(b) => b.id}
   showsHorizontalScrollIndicator={false}
-  renderItem={({ item }) => <Image source={{ uri: item.url }} style={{ width, height: 200 }} />}
-  onMomentumScrollEnd={(e) => setIndex(Math.round(e.nativeEvent.contentOffset.x / width))}
-/>
+  renderItem={({ item }) => (
+    <Image source={{ uri: item.url }} style={{ width, height: 200 }} />
+  )}
+  onMomentumScrollEnd={(e) =>
+    setIndex(Math.round(e.nativeEvent.contentOffset.x / width))
+  }
+/>;
 ```
 
 For effects like parallax, scaling neighbours or infinite loops, use `react-native-reanimated-carousel` or `react-native-pager-view` (native pager). Don't auto-scroll when a screen reader is on.
@@ -5054,16 +5217,18 @@ function useDebounce<T>(value: T, delay = 300) {
 }
 
 function Search() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query);
 
   const { data } = useQuery({
-    queryKey: ['search', debouncedQuery],
+    queryKey: ["search", debouncedQuery],
     queryFn: ({ signal }) => searchProducts(debouncedQuery, { signal }),
     enabled: debouncedQuery.length > 1,
   });
 
-  return <TextInput value={query} onChangeText={setQuery} placeholder="Search" />;
+  return (
+    <TextInput value={query} onChangeText={setQuery} placeholder="Search" />
+  );
 }
 ```
 
@@ -5084,7 +5249,17 @@ function SkeletonRow() {
   const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
   return (
-    <Animated.View style={[{ height: 64, borderRadius: 8, backgroundColor: '#e5e5e5', marginBottom: 8 }, style]} />
+    <Animated.View
+      style={[
+        {
+          height: 64,
+          borderRadius: 8,
+          backgroundColor: "#e5e5e5",
+          marginBottom: 8,
+        },
+        style,
+      ]}
+    />
   );
 }
 ```
@@ -5096,11 +5271,11 @@ Skeletons feel faster than a spinner because the layout doesn't jump when data a
 Download images before they are shown, so they appear instantly:
 
 ```tsx
-import { Image } from 'expo-image';
+import { Image } from "expo-image";
 
 await Image.prefetch([
-  'https://cdn.example.com/p/1.jpg',
-  'https://cdn.example.com/p/2.jpg',
+  "https://cdn.example.com/p/1.jpg",
+  "https://cdn.example.com/p/2.jpg",
 ]);
 ```
 
@@ -5111,10 +5286,15 @@ The core `Image` component also has `Image.prefetch(url)`. Prefetch things the u
 Hermes supports the `Intl` API (`Intl.DateTimeFormat`, `Intl.NumberFormat`, `Intl.RelativeTimeFormat` and others), so you can format based on the user's locale:
 
 ```ts
-new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(1234.5);
+new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(
+  1234.5,
+);
 // "1.234,50 €"
 
-new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date());
+new Intl.DateTimeFormat(undefined, {
+  dateStyle: "medium",
+  timeStyle: "short",
+}).format(new Date());
 ```
 
 For date math, use `date-fns` or Day.js. Store and send dates as ISO strings in UTC, and convert to local time only for display. Avoid parsing non-standard date strings with `new Date('...')`, because engines handle them differently.
@@ -5124,7 +5304,7 @@ For date math, use `date-fns` or Day.js. Store and send dates as ISO strings in 
 React Native has `ToastAndroid` for Android only:
 
 ```ts
-ToastAndroid.show('Saved', ToastAndroid.SHORT);
+ToastAndroid.show("Saved", ToastAndroid.SHORT);
 ```
 
 For both platforms, use a library like `sonner-native`, `burnt` (native toasts) or `react-native-toast-message`, or build your own with an absolutely positioned animated view at the root of the app. Make sure toasts are announced to screen readers (`announceForAccessibility`) and don't hide important actions.
@@ -5156,7 +5336,7 @@ Listen to navigation state changes in one place instead of adding tracking code 
 In Expo Router:
 
 ```tsx
-import { Stack, usePathname } from 'expo-router';
+import { Stack, usePathname } from "expo-router";
 
 export default function RootLayout() {
   const pathname = usePathname();
@@ -5176,7 +5356,10 @@ In React Navigation, use the `onStateChange` prop of the navigation container an
 Use the `aspectRatio` style. Set one dimension and let the other be calculated:
 
 ```tsx
-<Image source={{ uri: photo.url }} style={{ width: '100%', aspectRatio: photo.width / photo.height }} />
+<Image
+  source={{ uri: photo.url }}
+  style={{ width: "100%", aspectRatio: photo.width / photo.height }}
+/>
 ```
 
 If you don't know the size, `Image.getSize(url)` returns the width and height of a remote image (it downloads it first, so it costs time). It's better to get the dimensions from your API, so the layout doesn't jump when the image loads.
@@ -5307,16 +5490,20 @@ You describe the component's props in a TypeScript spec using `codegenNativeComp
 
 ```ts
 // specs/RatingViewNativeComponent.ts
-import type { ViewProps, CodegenTypes, HostComponent } from 'react-native';
-import { codegenNativeComponent } from 'react-native';
+import type { ViewProps, CodegenTypes, HostComponent } from "react-native";
+import { codegenNativeComponent } from "react-native";
 
 interface NativeProps extends ViewProps {
   rating?: CodegenTypes.Double;
   maxStars?: CodegenTypes.WithDefault<CodegenTypes.Int32, 5>;
-  onRatingChange?: CodegenTypes.DirectEventHandler<{ value: CodegenTypes.Double }>;
+  onRatingChange?: CodegenTypes.DirectEventHandler<{
+    value: CodegenTypes.Double;
+  }>;
 }
 
-export default codegenNativeComponent<NativeProps>('RatingView') as HostComponent<NativeProps>;
+export default codegenNativeComponent<NativeProps>(
+  "RatingView",
+) as HostComponent<NativeProps>;
 ```
 
 Codegen generates C++ props classes, event emitters, a shadow node and component descriptor, plus platform interfaces. You then write the platform view (a `UIView` subclass registered with Fabric on iOS, a `SimpleViewManager` with the generated delegate on Android). The exact import paths for Codegen types changed with the Strict TypeScript API, so check the docs for your version.
@@ -5326,15 +5513,18 @@ Codegen generates C++ props classes, event emitters, a shadow node and component
 Use view commands. You declare them with `codegenNativeCommands`:
 
 ```ts
-import { codegenNativeCommands } from 'react-native';
+import { codegenNativeCommands } from "react-native";
 
 interface NativeCommands {
   play: (viewRef: React.ElementRef<HostComponent<NativeProps>>) => void;
-  seekTo: (viewRef: React.ElementRef<HostComponent<NativeProps>>, seconds: CodegenTypes.Double) => void;
+  seekTo: (
+    viewRef: React.ElementRef<HostComponent<NativeProps>>,
+    seconds: CodegenTypes.Double,
+  ) => void;
 }
 
 export const Commands = codegenNativeCommands<NativeCommands>({
-  supportedCommands: ['play', 'seekTo'],
+  supportedCommands: ["play", "seekTo"],
 });
 
 // usage
@@ -5399,11 +5589,15 @@ By default, all `import`s at the top of a file run when the file is first loaded
 
 ```js
 // Your code
-import { heavyFormatter } from './heavy';
-export function format(x) { return heavyFormatter(x); }
+import { heavyFormatter } from "./heavy";
+export function format(x) {
+  return heavyFormatter(x);
+}
 
 // After the inline requires transform (simplified)
-export function format(x) { return require('./heavy').heavyFormatter(x); }
+export function format(x) {
+  return require("./heavy").heavyFormatter(x);
+}
 ```
 
 Code for screens the user hasn't opened never runs. Enable it in `metro.config.js` with `transformer.getTransformOptions` returning `{ transform: { inlineRequires: true } }` (Expo's config enables it). Watch out for modules with side effects at the top level, because they will run later than before.
@@ -5576,7 +5770,7 @@ Shared values live in C++ and can be read from both runtimes. When a shared valu
 Worklets on the UI runtime can't call normal JS functions directly. You schedule them on the other thread:
 
 ```tsx
-import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets';
+import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
 const pan = Gesture.Pan().onEnd((e) => {
   if (e.translationX > 120) {
@@ -5585,7 +5779,7 @@ const pan = Gesture.Pan().onEnd((e) => {
 });
 
 scheduleOnUI(() => {
-  'worklet';
+  "worklet";
   offset.value = withSpring(0);
 });
 ```
@@ -5612,10 +5806,16 @@ Gesture Handler has composition functions:
 - `Gesture.Race(a, b)`: the first to activate wins and cancels the others.
 
 ```tsx
-const doubleTap = Gesture.Tap().numberOfTaps(2).onEnd(() => scheduleOnRN(like));
+const doubleTap = Gesture.Tap()
+  .numberOfTaps(2)
+  .onEnd(() => scheduleOnRN(like));
 const singleTap = Gesture.Tap().onEnd(() => scheduleOnRN(openDetails));
-const pinch = Gesture.Pinch().onChange((e) => { scale.value *= e.scaleChange; });
-const rotate = Gesture.Rotation().onChange((e) => { rotation.value += e.rotationChange; });
+const pinch = Gesture.Pinch().onChange((e) => {
+  scale.value *= e.scaleChange;
+});
+const rotate = Gesture.Rotation().onChange((e) => {
+  rotation.value += e.rotationChange;
+});
 
 const gesture = Gesture.Simultaneous(
   Gesture.Exclusive(doubleTap, singleTap),
@@ -5656,7 +5856,7 @@ A smaller bundle means less bytecode to load at startup and smaller OTA updates.
 
 ### 339: Does code splitting work in React Native?
 
-Not like on the web. By default, the whole app is one bundle inside the binary, so there is nothing to download later. `React.lazy` and dynamic `import()` work, but in a native release build they mostly delay when code is *evaluated*, not when it is downloaded. That still helps startup, together with inline requires.
+Not like on the web. By default, the whole app is one bundle inside the binary, so there is nothing to download later. `React.lazy` and dynamic `import()` work, but in a native release build they mostly delay when code is _evaluated_, not when it is downloaded. That still helps startup, together with inline requires.
 
 Real bundle splitting is available in Expo for web and with async routes in Expo Router, and tools like Re.Pack (a Rspack/Webpack-based bundler by Callstack) support module federation and downloading code chunks at runtime. Remote code loading must respect App Store rules, so it's mostly used for big "super apps".
 
@@ -5704,16 +5904,19 @@ Update the UI right away, send the request, and roll back if it fails. With TanS
 const mutation = useMutation({
   mutationFn: (postId: string) => api.likePost(postId),
   onMutate: async (postId) => {
-    await queryClient.cancelQueries({ queryKey: ['post', postId] });
-    const previous = queryClient.getQueryData<Post>(['post', postId]);
-    queryClient.setQueryData<Post>(['post', postId], (p) => p && { ...p, liked: true, likes: p.likes + 1 });
+    await queryClient.cancelQueries({ queryKey: ["post", postId] });
+    const previous = queryClient.getQueryData<Post>(["post", postId]);
+    queryClient.setQueryData<Post>(
+      ["post", postId],
+      (p) => p && { ...p, liked: true, likes: p.likes + 1 },
+    );
     return { previous };
   },
   onError: (_err, postId, context) => {
-    queryClient.setQueryData(['post', postId], context?.previous);
+    queryClient.setQueryData(["post", postId], context?.previous);
   },
   onSettled: (_data, _err, postId) => {
-    queryClient.invalidateQueries({ queryKey: ['post', postId] });
+    queryClient.invalidateQueries({ queryKey: ["post", postId] });
   },
 });
 ```
@@ -5917,12 +6120,14 @@ React Native 0.87 added Android Gradle Plugin 9 support. AGP and Gradle updates 
 ### 363: What are the trade-offs between Expo CNG and committing native folders?
 
 **CNG (native folders generated):**
+
 - Native config lives in `app.json` and plugins, which is easier to review.
 - Upgrades are easier: regenerate instead of merging native diffs.
 - Fewer accidental native changes.
 - Custom native code must be written as config plugins or local modules, which is more work for one-off tweaks.
 
 **Committing `ios/` and `android/` (bare):**
+
 - You can edit any native file directly.
 - Good for brownfield apps or apps with lots of custom native code.
 - Upgrades mean applying diffs with the Upgrade Helper, and conflicts are common.
@@ -5935,13 +6140,15 @@ A config plugin is a function that takes the Expo config and returns a modified 
 
 ```js
 // plugins/withCustomManifest.js
-const { withAndroidManifest, withInfoPlist } = require('expo/config-plugins');
+const { withAndroidManifest, withInfoPlist } = require("expo/config-plugins");
 
 function withCustomSettings(config, { apiKey }) {
   config = withAndroidManifest(config, (cfg) => {
     const app = cfg.modResults.manifest.application[0];
-    app['meta-data'] = app['meta-data'] ?? [];
-    app['meta-data'].push({ $: { 'android:name': 'com.example.API_KEY', 'android:value': apiKey } });
+    app["meta-data"] = app["meta-data"] ?? [];
+    app["meta-data"].push({
+      $: { "android:name": "com.example.API_KEY", "android:value": apiKey },
+    });
     return cfg;
   });
 
@@ -5957,7 +6164,11 @@ module.exports = withCustomSettings;
 ```
 
 ```json
-{ "expo": { "plugins": [["./plugins/withCustomManifest", { "apiKey": "public-key" }]] } }
+{
+  "expo": {
+    "plugins": [["./plugins/withCustomManifest", { "apiKey": "public-key" }]]
+  }
+}
 ```
 
 Plugins should be idempotent (running twice gives the same result). Prefer the typed mods (`withAndroidManifest`, `withInfoPlist`, `withAppBuildGradle`) over string replacements, which break easily.
@@ -5965,12 +6176,14 @@ Plugins should be idempotent (running twice gives the same result). Prefer the t
 ### 365: When would you choose the Expo Modules API over a Turbo Module?
 
 **Expo Modules API**:
+
 - Swift and Kotlin with a small DSL, less boilerplate, no Codegen setup.
 - Built-in support for views, events, shared objects, typed arguments and records.
 - Works in any React Native app (with the `expo` package installed).
 - Good default for app teams writing their own native code.
 
 **Turbo Modules (with Codegen)**:
+
 - Core React Native API, no dependency on Expo.
 - C++ Turbo Modules for shared cross-platform code.
 - Fine control over JSI and threading.
@@ -6017,10 +6230,14 @@ class GradientView: ExpoView {
 ```
 
 ```tsx
-import { requireNativeView } from 'expo';
-const GradientView = requireNativeView('Gradient');
+import { requireNativeView } from "expo";
+const GradientView = requireNativeView("Gradient");
 
-<GradientView colors={['#f00', '#00f']} style={{ height: 100 }} onLayoutDone={(e) => console.log(e.nativeEvent)} />
+<GradientView
+  colors={["#f00", "#00f"]}
+  style={{ height: 100 }}
+  onLayoutDone={(e) => console.log(e.nativeEvent)}
+/>;
 ```
 
 Android uses the same structure in Kotlin. Expo UI is built this way to render SwiftUI and Jetpack Compose from React.
@@ -6109,9 +6326,9 @@ Run them on fixed simulator models, OS versions, fonts and locales, otherwise ti
 - **Reassure** (by Callstack): measures render count and render time of components in Jest and compares them between branches.
 
 ```tsx
-import { measureRenders } from 'reassure';
+import { measureRenders } from "reassure";
 
-test('ProductList renders efficiently', async () => {
+test("ProductList renders efficiently", async () => {
   await measureRenders(<ProductList products={mockProducts} />);
 });
 ```
@@ -6130,11 +6347,13 @@ const errorRef = useRef<Text>(null);
 
 useEffect(() => {
   if (error && errorRef.current) {
-    AccessibilityInfo.sendAccessibilityEvent(errorRef.current, 'focus');
+    AccessibilityInfo.sendAccessibilityEvent(errorRef.current, "focus");
   }
 }, [error]);
 
-<Text ref={errorRef} accessibilityRole="alert">{error}</Text>
+<Text ref={errorRef} accessibilityRole="alert">
+  {error}
+</Text>;
 ```
 
 - In modals, keep focus inside the modal (`accessibilityViewIsModal` on iOS) and return focus to the trigger when it closes.
@@ -6151,15 +6370,18 @@ Accessibility actions let screen reader users perform actions that sighted users
   accessible
   accessibilityLabel={`Message from ${sender}`}
   accessibilityActions={[
-    { name: 'activate', label: 'Open message' },
-    { name: 'delete', label: 'Delete message' },
-    { name: 'archive', label: 'Archive' },
+    { name: "activate", label: "Open message" },
+    { name: "delete", label: "Delete message" },
+    { name: "archive", label: "Archive" },
   ]}
   onAccessibilityAction={(event) => {
     switch (event.nativeEvent.actionName) {
-      case 'activate': return openMessage();
-      case 'delete': return deleteMessage();
-      case 'archive': return archiveMessage();
+      case "activate":
+        return openMessage();
+      case "delete":
+        return deleteMessage();
+      case "archive":
+        return archiveMessage();
     }
   }}
 >
@@ -6177,10 +6399,11 @@ For content that updates without the user moving focus (a timer, a status messag
 - On iOS, there is no live region prop, so call `AccessibilityInfo.announceForAccessibility(message)` (or `announceForAccessibilityWithOptions` with `queue: true`).
 
 ```tsx
-<Text accessibilityLiveRegion="polite">{`${results.length} results`}</Text>
+<Text accessibilityLiveRegion="polite">{`${results.length} results`}</Text>;
 
 useEffect(() => {
-  if (Platform.OS === 'ios') AccessibilityInfo.announceForAccessibility(`${results.length} results`);
+  if (Platform.OS === "ios")
+    AccessibilityInfo.announceForAccessibility(`${results.length} results`);
 }, [results.length]);
 ```
 
@@ -6191,7 +6414,7 @@ Don't announce too often, for example on every keystroke. Debounce it.
 Users can turn on "Reduce Motion" (iOS) or "Remove animations" (Android). Check it and simplify animations:
 
 ```tsx
-import { useReducedMotion } from 'react-native-reanimated';
+import { useReducedMotion } from "react-native-reanimated";
 
 function Card() {
   const reduceMotion = useReducedMotion();
@@ -6232,7 +6455,7 @@ React 19's `<Activity>` component may also be used for hiding inactive content w
 React Navigation can save the navigation state and restore it on the next launch, so users come back where they left off:
 
 ```tsx
-const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1';
+const PERSISTENCE_KEY = "NAVIGATION_STATE_V1";
 
 function App() {
   const [isReady, setIsReady] = useState(__DEV__ ? false : true);
@@ -6250,7 +6473,9 @@ function App() {
   return (
     <Navigation
       initialState={initialState}
-      onStateChange={(state) => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))}
+      onStateChange={(state) =>
+        AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+      }
     />
   );
 }
@@ -6482,7 +6707,7 @@ Use a service like LaunchDarkly, Statsig, PostHog, Firebase Remote Config or Gro
 
 ```tsx
 function CheckoutScreen() {
-  const newCheckout = useFeatureFlag('new-checkout', false);
+  const newCheckout = useFeatureFlag("new-checkout", false);
   return newCheckout ? <NewCheckout /> : <OldCheckout />;
 }
 ```
@@ -6512,7 +6737,10 @@ Use `expo-notifications` (or Notifee) to schedule notifications that the OS show
 
 ```tsx
 await Notifications.scheduleNotificationAsync({
-  content: { title: 'Time to stretch', body: 'You have been sitting for an hour.' },
+  content: {
+    title: "Time to stretch",
+    body: "You have been sitting for an hour.",
+  },
   trigger: {
     type: Notifications.SchedulableTriggerInputTypes.DAILY,
     hour: 10,
@@ -6541,7 +6769,11 @@ For physical goods and services, use a payment provider SDK. The Stripe React Na
 ```tsx
 const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
-await initPaymentSheet({ paymentIntentClientSecret: clientSecret, merchantDisplayName: 'My Shop', applePay: { merchantCountryCode: 'US' } });
+await initPaymentSheet({
+  paymentIntentClientSecret: clientSecret,
+  merchantDisplayName: "My Shop",
+  applePay: { merchantCountryCode: "US" },
+});
 const { error } = await presentPaymentSheet();
 ```
 
@@ -6586,8 +6818,8 @@ Install a polyfill and import it once, at the very top of your entry file:
 
 ```ts
 // index.ts
-import 'react-native-get-random-values'; // crypto.getRandomValues for uuid and others
-import { Buffer } from 'buffer';
+import "react-native-get-random-values"; // crypto.getRandomValues for uuid and others
+import { Buffer } from "buffer";
 global.Buffer = Buffer;
 ```
 
@@ -6603,7 +6835,7 @@ Use `AbortController`. Cancel requests when a screen unmounts or a newer request
 async function fetchWithTimeout(url: string, ms = 10000, signal?: AbortSignal) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ms);
-  signal?.addEventListener('abort', () => controller.abort());
+  signal?.addEventListener("abort", () => controller.abort());
 
   try {
     const res = await fetch(url, { signal: controller.signal });
@@ -6682,12 +6914,13 @@ Each new target SDK can change behavior: edge-to-edge enforcement (Android 15), 
 Check the version with `Platform.Version` and degrade gracefully:
 
 ```ts
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
-const supportsNotificationPermission = Platform.OS === 'android' && Platform.Version >= 33;
+const supportsNotificationPermission =
+  Platform.OS === "android" && Platform.Version >= 33;
 
 const isIOS17Plus =
-  Platform.OS === 'ios' && parseInt(String(Platform.Version), 10) >= 17;
+  Platform.OS === "ios" && parseInt(String(Platform.Version), 10) >= 17;
 ```
 
 On Android, `Platform.Version` is the API level (a number). On iOS it's a version string. Prefer checking whether a feature is available (for example `await Notifications.getPermissionsAsync()`, or a library's `isAvailableAsync()`) over checking versions, because devices with the same version can differ. Also decide on a minimum OS version and set it in the native projects (Expo sets the defaults per SDK).
@@ -6697,8 +6930,8 @@ On Android, `Platform.Version` is the API level (a number). On iOS it's a versio
 Yes. A native app can show several React Native surfaces, for example a React Native screen inside a native tab and another one in a modal. With the New Architecture, they share one `ReactHost` (one JS runtime) and each surface renders its own root component registered with `AppRegistry`.
 
 ```ts
-AppRegistry.registerComponent('ProfileScreen', () => ProfileScreen);
-AppRegistry.registerComponent('SettingsScreen', () => SettingsScreen);
+AppRegistry.registerComponent("ProfileScreen", () => ProfileScreen);
+AppRegistry.registerComponent("SettingsScreen", () => SettingsScreen);
 ```
 
 Because the runtime is shared, global state and caches are shared between surfaces, which is useful in brownfield apps. Each surface gets its own initial props. Running several separate JS runtimes is possible but uses much more memory, so it's rare.
@@ -6708,12 +6941,12 @@ Because the runtime is shared, global state and caches are shared between surfac
 React Native supports the User Timing API, and the marks show up in the React Native DevTools Performance panel:
 
 ```ts
-performance.mark('checkout-start');
+performance.mark("checkout-start");
 
 await loadCheckoutData();
 
-performance.mark('checkout-ready');
-performance.measure('checkout-load', 'checkout-start', 'checkout-ready');
+performance.mark("checkout-ready");
+performance.measure("checkout-load", "checkout-start", "checkout-ready");
 ```
 
 You can read entries with `performance.getEntriesByName()` or `PerformanceObserver` and send them to your monitoring tool. `performance.now()` gives high-resolution time. This lets you measure your own flows (screen ready, list loaded) instead of only generic metrics, and compare releases.
@@ -6723,7 +6956,7 @@ You can read entries with `performance.getEntriesByName()` or `PerformanceObserv
 `setNativeProps` changes props on a native view directly, without a React render:
 
 ```ts
-inputRef.current?.setNativeProps({ text: '' });
+inputRef.current?.setNativeProps({ text: "" });
 ```
 
 It was used for performance tricks in the old architecture, for example updating a view on every scroll event. Problems: React doesn't know about the change, so the next render can overwrite it, and the state of the UI is no longer described by your components. In Fabric it is supported only for compatibility and works differently in some cases.
@@ -6836,14 +7069,14 @@ Also consider what happens on logout (delete the database and key) and in backup
 Expo UI (`@expo/ui`) lets you render real SwiftUI views on iOS and Jetpack Compose views on Android from React components:
 
 ```tsx
-import { Host, Picker, Text } from '@expo/ui/swift-ui';
-import { pickerStyle, tag } from '@expo/ui/swift-ui/modifiers';
+import { Host, Picker, Text } from "@expo/ui/swift-ui";
+import { pickerStyle, tag } from "@expo/ui/swift-ui/modifiers";
 
-const ranges = ['Day', 'Week', 'Month'];
+const ranges = ["Day", "Week", "Month"];
 
 <Host style={{ height: 40 }}>
   <Picker
-    modifiers={[pickerStyle('segmented')]}
+    modifiers={[pickerStyle("segmented")]}
     label="Range"
     selection={range}
     onSelectionChange={setRange}
@@ -6854,7 +7087,7 @@ const ranges = ['Day', 'Week', 'Month'];
       </Text>
     ))}
   </Picker>
-</Host>
+</Host>;
 ```
 
 Instead of recreating native controls with `View`s, you get the actual platform controls with their behavior and accessibility. SDK 58 added recycling lists (`List`, `LazyVStack`, `LazyColumn`) and iOS navigation components. It is a different direction from "same UI everywhere": you share logic and choose native UI per platform where it matters. The API is still changing quickly, so check the docs for the current version.
@@ -7005,12 +7238,14 @@ Even then, you can add Expo modules to a CLI project with `install-expo-modules`
 Both use the same navigation engine (Expo Router is built on React Navigation), so performance is the same.
 
 **Expo Router** is a good default when:
+
 - You use Expo.
 - You want deep links and web URLs for every screen automatically.
 - You like file-based routing (like Next.js) and typed routes.
 - You need web support with SSR, API routes or server features.
 
 **React Navigation** fits when:
+
 - You don't use Expo, or you have a brownfield app.
 - Navigation is very dynamic (screens defined at runtime, complex conditional flows).
 - You prefer configuring navigation in code.
@@ -7020,12 +7255,14 @@ Both support native stacks, tabs, drawers, modals and auth flows, so the choice 
 ### 444: When would you use Animated and when Reanimated?
 
 **Animated (core)**:
+
 - No extra dependency.
 - Good for simple animations: fades, slides, springs, scroll-linked headers with the native driver.
 - Since 0.85, can animate layout props natively with the Shared Animation Backend.
 - Gesture integration is limited.
 
 **Reanimated**:
+
 - Worklets on the UI thread for complex logic during animations and gestures.
 - Works closely with Gesture Handler for interactive UI (drag, swipe, pinch).
 - Layout animations (`entering`, `exiting`, `layout`) and CSS-like animations/transitions.

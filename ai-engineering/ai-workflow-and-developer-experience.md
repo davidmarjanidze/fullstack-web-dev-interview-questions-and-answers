@@ -687,15 +687,18 @@ Keep it short and practical. Good things to include:
 # Project notes
 
 ## Commands
+
 - Install: `pnpm install`
 - Dev server: `pnpm dev`
 - Tests: `pnpm test` (run a single file with `pnpm test path/to/file`)
 - Lint: `pnpm lint --fix`
 
 ## Structure
+
 - `apps/web` is the Next.js app, `packages/ui` is the shared component library
 
 ## Rules
+
 - Use the `logger` from `@/lib/logger`, never `console.log`
 - New API routes need a Zod schema for input
 - Do not edit files in `generated/`
@@ -1121,10 +1124,11 @@ Older VS Code versions called this feature "chat modes" with `.chatmode.md` file
 ---
 name: reviewer
 description: Reviews code for bugs and security problems without changing files.
-tools: ['read', 'search']
+tools: ["read", "search"]
 ---
 
 You are a code reviewer for this repo.
+
 - Focus on bugs, security problems, and missing tests.
 - Do not comment on style; the linter handles that.
 - Do not edit files. Reply with a list of findings and file/line references.
@@ -1308,11 +1312,7 @@ Use the tool's permission settings. In Claude Code, add deny rules to `.claude/s
 ```json
 {
   "permissions": {
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)"
-    ]
+    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
   }
 }
 ```
@@ -1737,6 +1737,7 @@ You can reference other files with `@path` syntax and Claude Code will load them
 See @README.md for an overview and @docs/architecture.md for the main design.
 
 ## Git workflow
+
 @docs/git-workflow.md
 ```
 
@@ -1877,7 +1878,7 @@ Handoffs let a custom agent show buttons at the end of its response to pass the 
 ---
 name: planner
 description: Creates an implementation plan
-tools: ['read', 'search', 'fetch']
+tools: ["read", "search", "fetch"]
 handoffs:
   - label: Start implementation
     agent: agent
@@ -2147,7 +2148,10 @@ Add a `PostToolUse` hook that runs after file edit tools:
       {
         "matcher": "Edit|Write",
         "hooks": [
-          { "type": "command", "command": "npx prettier --write \"$CLAUDE_PROJECT_DIR\"/src" }
+          {
+            "type": "command",
+            "command": "npx prettier --write \"$CLAUDE_PROJECT_DIR\"/src"
+          }
         ]
       }
     ]
@@ -2176,7 +2180,12 @@ exit 0
 {
   "hooks": {
     "PreToolUse": [
-      { "matcher": "Edit|Write", "hooks": [{ "type": "command", "command": ".claude/hooks/protect-files.sh" }] }
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/protect-files.sh" }
+        ]
+      }
     ]
   }
 }
@@ -2218,10 +2227,7 @@ In Claude Code, use `permissions` in `.claude/settings.json`:
       "Bash(git diff:*)"
     ],
     "ask": ["Bash(git push:*)"],
-    "deny": [
-      "Bash(rm -rf:*)",
-      "Read(./.env*)"
-    ]
+    "deny": ["Bash(rm -rf:*)", "Read(./.env*)"]
   }
 }
 ```
@@ -2296,17 +2302,21 @@ Write it like a good ticket for a new hire:
 
 ```markdown
 ## Problem
+
 The /orders page shows prices without currency formatting.
 
 ## Expected
+
 Use `formatMoney()` from src/lib/format.ts for all prices on the page.
 
 ## Acceptance criteria
+
 - Prices show like "$1,234.50"
 - Existing tests in OrdersPage.test.tsx pass
 - Add a test for a price over 1,000
 
 ## Files
+
 src/pages/OrdersPage.tsx
 ```
 
@@ -2551,6 +2561,7 @@ Add a section to `.github/copilot-instructions.md`, or use path-specific files f
 
 ```markdown
 ## Code review
+
 - Flag any SQL built with string concatenation.
 - Flag API routes without an auth check from `requireUser()`.
 - Flag new dependencies in package.json and ask why.
@@ -2945,10 +2956,11 @@ model: sonnet
 ---
 
 Find the answer in official docs first. Return:
+
 - The direct answer in a few lines
 - A short code example if useful
 - The URLs you used
-Say clearly if you could not confirm something.
+  Say clearly if you could not confirm something.
 ```
 
 The main agent gets a short, checked answer instead of pages of docs in its context.
@@ -3854,7 +3866,9 @@ import { z } from "zod";
 
 // Replace with a call to your real feature flag service
 async function lookupFlag(key: string): Promise<boolean> {
-  const res = await fetch(`https://flags.internal.example.com/api/flags/${key}`);
+  const res = await fetch(
+    `https://flags.internal.example.com/api/flags/${key}`,
+  );
   return (await res.json()).enabled;
 }
 
@@ -3868,8 +3882,10 @@ server.registerTool(
   },
   async ({ key }) => {
     const value = await lookupFlag(key);
-    return { content: [{ type: "text", text: JSON.stringify({ key, value }) }] };
-  }
+    return {
+      content: [{ type: "text", text: JSON.stringify({ key, value }) }],
+    };
+  },
 );
 
 await server.connect(new StdioServerTransport());
@@ -4024,6 +4040,7 @@ Write it once in `AGENTS.md` or a skill, and enforce what you can:
 
 ```markdown
 ## Definition of done
+
 - `pnpm typecheck` passes
 - `pnpm lint` passes with no new warnings
 - `pnpm test` passes; new code has tests
@@ -4071,15 +4088,19 @@ Give it the context, the options considered, and the decision, then ask for a st
 # ADR-012: Use Postgres LISTEN/NOTIFY for order status updates
 
 ## Status
+
 Accepted
 
 ## Context
+
 ...
 
 ## Decision
+
 ...
 
 ## Consequences
+
 ...
 ```
 
@@ -4104,12 +4125,19 @@ Keep it short and only include sections people actually fill in:
 # Feature: <name>
 
 ## Problem
+
 ## Users and scenarios
+
 ## Requirements
+
 - FR-001 ...
+
 ## Acceptance criteria (Given / When / Then)
+
 ## Out of scope
+
 ## Non-functional (performance, security, a11y)
+
 ## Open questions
 ```
 
@@ -4145,18 +4173,23 @@ about: A task small and clear enough for a coding agent
 ---
 
 ## Goal
+
 <one or two sentences>
 
 ## Context
+
 <links to related code, docs, designs>
 
 ## Acceptance criteria
+
 - [ ] ...
 
 ## Out of scope
+
 ...
 
 ## How to verify
+
 <commands, test names, manual steps>
 ```
 

@@ -719,7 +719,9 @@ Before modules, people grouped code under one global object to avoid name collis
 ```js
 var MyApp = MyApp || {};
 MyApp.utils = {
-  formatDate(d) { /* ... */ },
+  formatDate(d) {
+    /* ... */
+  },
 };
 MyApp.models = {};
 ```
@@ -939,7 +941,9 @@ const Status = Object.freeze({
   BANNED: "banned",
 });
 
-if (user.status === Status.ACTIVE) { /* ... */ }
+if (user.status === Status.ACTIVE) {
+  /* ... */
+}
 ```
 
 `Object.freeze` stops anyone from adding or changing values. Some people use `Symbol` values so that each enum value is unique.
@@ -1019,7 +1023,13 @@ function MouseTracker({ render }) {
   );
 }
 
-<MouseTracker render={({ x, y }) => <p>{x}, {y}</p>} />;
+<MouseTracker
+  render={({ x, y }) => (
+    <p>
+      {x}, {y}
+    </p>
+  )}
+/>;
 ```
 
 Like HOCs, it has mostly been replaced by custom hooks.
@@ -1479,12 +1489,15 @@ const fetchUser = (id) => async (dispatch) => {
 Function composition combines small functions into a new one, where the output of one becomes the input of the next.
 
 ```js
-const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x);
+const pipe =
+  (...fns) =>
+  (x) =>
+    fns.reduce((acc, fn) => fn(acc), x);
 
 const slugify = pipe(
   (s) => s.trim(),
   (s) => s.toLowerCase(),
-  (s) => s.replace(/\s+/g, "-")
+  (s) => s.replace(/\s+/g, "-"),
 );
 
 slugify("  Hello World "); // "hello-world"
@@ -1620,10 +1633,14 @@ const state = { status: "idle", data: null, error: null };
 
 function render(state) {
   switch (state.status) {
-    case "loading": return "Loading...";
-    case "error": return `Error: ${state.error.message}`;
-    case "success": return state.data.title;
-    default: return "";
+    case "loading":
+      return "Loading...";
+    case "error":
+      return `Error: ${state.error.message}`;
+    case "success":
+      return state.data.title;
+    default:
+      return "";
   }
 }
 ```
@@ -2037,7 +2054,9 @@ function memoizeAsync(fn) {
   };
 }
 
-const getUser = memoizeAsync((id) => fetch(`/api/users/${id}`).then((r) => r.json()));
+const getUser = memoizeAsync((id) =>
+  fetch(`/api/users/${id}`).then((r) => r.json()),
+);
 ```
 
 **168: How do you decorate a class method without decorator syntax?**
@@ -2135,13 +2154,16 @@ A virtual proxy delays creating an expensive object until it is actually used. T
 ```js
 function lazy(factory) {
   let instance;
-  return new Proxy({}, {
-    get(_, prop) {
-      instance ??= factory();
-      const value = instance[prop];
-      return typeof value === "function" ? value.bind(instance) : value;
+  return new Proxy(
+    {},
+    {
+      get(_, prop) {
+        instance ??= factory();
+        const value = instance[prop];
+        return typeof value === "function" ? value.bind(instance) : value;
+      },
     },
-  });
+  );
 }
 
 const chart = lazy(() => new HeavyChart()); // not created yet
@@ -2337,7 +2359,15 @@ function* naturals() {
   while (true) yield n++;
 }
 
-[...take(filter(map(naturals(), (n) => n * n), (n) => n % 2), 3)]; // [1, 9, 25]
+[
+  ...take(
+    filter(
+      map(naturals(), (n) => n * n),
+      (n) => n % 2,
+    ),
+    3,
+  ),
+]; // [1, 9, 25]
 ```
 
 This works even with infinite sequences.
@@ -2390,7 +2420,10 @@ class Folder {
   }
 }
 
-const root = new Folder("root", [new File("a.txt", 10), new Folder("img", [new File("b.png", 50)])]);
+const root = new Folder("root", [
+  new File("a.txt", 10),
+  new Folder("img", [new File("b.png", 50)]),
+]);
 root.getSize(); // 60
 ```
 
@@ -2576,7 +2609,10 @@ The `storage` event on `window` is an older way: it fires in other tabs when `lo
 Use `postMessage` and listen for `message` events. For iframes, always pass a target origin and check `event.origin` when receiving, otherwise any site could send you messages.
 
 ```js
-iframe.contentWindow.postMessage({ type: "resize" }, "https://widget.example.com");
+iframe.contentWindow.postMessage(
+  { type: "resize" },
+  "https://widget.example.com",
+);
 
 window.addEventListener("message", (e) => {
   if (e.origin !== "https://widget.example.com") return;
@@ -2640,7 +2676,9 @@ function rafThrottle(fn) {
   };
 }
 
-window.addEventListener("scroll", rafThrottle(updateParallax), { passive: true });
+window.addEventListener("scroll", rafThrottle(updateParallax), {
+  passive: true,
+});
 ```
 
 It matches the screen refresh rate and pauses in background tabs.
@@ -2662,7 +2700,9 @@ function memoizeByObject(fn) {
   };
 }
 
-const getTotals = memoizeByObject((order) => order.items.reduce((s, i) => s + i.price, 0));
+const getTotals = memoizeByObject((order) =>
+  order.items.reduce((s, i) => s + i.price, 0),
+);
 ```
 
 This only works if the object is not mutated after it is cached.
@@ -2719,7 +2759,8 @@ async function retry(fn, { attempts = 5, base = 200, max = 5000 } = {}) {
   }
 }
 
-const isRetryable = (err) => err.status === undefined || err.status >= 500 || err.status === 429;
+const isRetryable = (err) =>
+  err.status === undefined || err.status >= 500 || err.status === 429;
 ```
 
 Don't retry errors that will fail again, like 400 or 401.
@@ -2762,7 +2803,9 @@ async function mapWithLimit(items, limit, fn) {
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, worker),
+  );
   return results;
 }
 
@@ -3044,7 +3087,9 @@ class TodoView {
   }
   render(todos) {
     this.root.replaceChildren(
-      ...todos.map((t) => Object.assign(document.createElement("li"), { textContent: t.text }))
+      ...todos.map((t) =>
+        Object.assign(document.createElement("li"), { textContent: t.text }),
+      ),
     );
   }
 }
@@ -3119,7 +3164,9 @@ Use `useSyncExternalStore`, which subscribes to the store and reads a snapshot s
 import { useSyncExternalStore } from "react";
 
 function useStore(store, selector) {
-  return useSyncExternalStore(store.subscribe, () => selector(store.getState()));
+  return useSyncExternalStore(store.subscribe, () =>
+    selector(store.getState()),
+  );
 }
 
 function Counter() {
@@ -3138,7 +3185,9 @@ A selector is a function that reads or derives data from state: `const selectTot
 import { createSelector } from "reselect";
 
 const selectTodos = (s) => s.todos;
-const selectDone = createSelector([selectTodos], (todos) => todos.filter((t) => t.done));
+const selectDone = createSelector([selectTodos], (todos) =>
+  todos.filter((t) => t.done),
+);
 ```
 
 **226: What is reducer composition?**
@@ -3279,7 +3328,10 @@ function Tabs({ defaultValue, children }) {
 function Trigger({ value, children }) {
   const ctx = use(TabsContext);
   return (
-    <button aria-selected={ctx.value === value} onClick={() => ctx.setValue(value)}>
+    <button
+      aria-selected={ctx.value === value}
+      onClick={() => ctx.setValue(value)}
+    >
       {children}
     </button>
   );
@@ -3313,7 +3365,9 @@ function Card({ header, footer, children }) {
   );
 }
 
-<Card header={<h2>Title</h2>} footer={<button>OK</button>}>Body</Card>;
+<Card header={<h2>Title</h2>} footer={<button>OK</button>}>
+  Body
+</Card>;
 ```
 
 **238: What is the prop getters pattern?**
@@ -3352,8 +3406,9 @@ function defaultReducer(state, action) {
 
 function useToggle({ reducer = (state, action) => action.changes } = {}) {
   const [state, dispatch] = useReducer(
-    (state, action) => reducer(state, { ...action, changes: defaultReducer(state, action) }),
-    { on: false }
+    (state, action) =>
+      reducer(state, { ...action, changes: defaultReducer(state, action) }),
+    { on: false },
   );
   return { on: state.on, toggle: () => dispatch({ type: "toggle" }) };
 }
@@ -3391,10 +3446,12 @@ const observer = new IntersectionObserver(
       observer.unobserve(img);
     }
   },
-  { rootMargin: "200px" }
+  { rootMargin: "200px" },
 );
 
-document.querySelectorAll("img[data-src]").forEach((img) => observer.observe(img));
+document
+  .querySelectorAll("img[data-src]")
+  .forEach((img) => observer.observe(img));
 ```
 
 For simple cases, the native `loading="lazy"` attribute on `<img>` does this for you. The observer approach is still useful for custom behavior, like infinite scroll or loading components.
@@ -3453,7 +3510,9 @@ const defaults = { newCheckout: false, darkMode: true };
 let flags = { ...defaults };
 
 export async function loadFlags() {
-  const remote = await fetch("/api/flags").then((r) => r.json()).catch(() => ({}));
+  const remote = await fetch("/api/flags")
+    .then((r) => r.json())
+    .catch(() => ({}));
   flags = { ...defaults, ...remote };
 }
 
@@ -3565,18 +3624,27 @@ Represent the expression as a tree of nodes. Each node type knows how to evaluat
 ```js
 const evaluate = (node, vars) => {
   switch (node.type) {
-    case "num": return node.value;
-    case "var": return vars[node.name];
-    case "add": return evaluate(node.left, vars) + evaluate(node.right, vars);
-    case "mul": return evaluate(node.left, vars) * evaluate(node.right, vars);
-    default: throw new Error(`Unknown node: ${node.type}`);
+    case "num":
+      return node.value;
+    case "var":
+      return vars[node.name];
+    case "add":
+      return evaluate(node.left, vars) + evaluate(node.right, vars);
+    case "mul":
+      return evaluate(node.left, vars) * evaluate(node.right, vars);
+    default:
+      throw new Error(`Unknown node: ${node.type}`);
   }
 };
 
 // (price * qty) + 5
 const expr = {
   type: "add",
-  left: { type: "mul", left: { type: "var", name: "price" }, right: { type: "var", name: "qty" } },
+  left: {
+    type: "mul",
+    left: { type: "var", name: "price" },
+    right: { type: "var", name: "qty" },
+  },
   right: { type: "num", value: 5 },
 };
 
@@ -3600,7 +3668,10 @@ const canvasRenderer = (ctx) => ({
 
 const svgRenderer = (svg) => ({
   circle: (x, y, r) => {
-    svg.insertAdjacentHTML("beforeend", `<circle cx="${x}" cy="${y}" r="${r}" />`);
+    svg.insertAdjacentHTML(
+      "beforeend",
+      `<circle cx="${x}" cy="${y}" r="${r}" />`,
+    );
   },
 });
 
@@ -3625,8 +3696,14 @@ When you need a group of objects that must match each other and the group can ch
 - Theme families where buttons, inputs and icons must match.
 
 ```js
-const serverEnv = { createStorage: () => new MemoryStorage(), createLogger: () => pinoLogger };
-const browserEnv = { createStorage: () => new LocalStorage(), createLogger: () => consoleLogger };
+const serverEnv = {
+  createStorage: () => new MemoryStorage(),
+  createLogger: () => pinoLogger,
+};
+const browserEnv = {
+  createStorage: () => new LocalStorage(),
+  createLogger: () => consoleLogger,
+};
 
 function createApp(env) {
   return { storage: env.createStorage(), logger: env.createLogger() };
@@ -3656,7 +3733,7 @@ class Pool {
 
 const particles = new Pool(
   () => ({ x: 0, y: 0, vx: 0, vy: 0 }),
-  (p) => Object.assign(p, { x: 0, y: 0, vx: 0, vy: 0 })
+  (p) => Object.assign(p, { x: 0, y: 0, vx: 0, vy: 0 }),
 );
 
 const p = particles.acquire();
@@ -3678,7 +3755,8 @@ A small factory function that creates DOM elements (or virtual DOM nodes) from a
 function h(tag, props = {}, ...children) {
   const el = document.createElement(tag);
   for (const [key, value] of Object.entries(props)) {
-    if (key.startsWith("on")) el.addEventListener(key.slice(2).toLowerCase(), value);
+    if (key.startsWith("on"))
+      el.addEventListener(key.slice(2).toLowerCase(), value);
     else el.setAttribute(key, value);
   }
   el.append(...children);
@@ -3686,7 +3764,7 @@ function h(tag, props = {}, ...children) {
 }
 
 document.body.append(
-  h("button", { class: "primary", onClick: () => alert("hi") }, "Click me")
+  h("button", { class: "primary", onClick: () => alert("hi") }, "Click me"),
 );
 ```
 
@@ -3713,14 +3791,16 @@ The values are never pasted into the string, which protects against injection.
 **258: How do you build a pipeline with async steps?**
 
 ```js
-const pipeAsync = (...fns) => (input) =>
-  fns.reduce((promise, fn) => promise.then(fn), Promise.resolve(input));
+const pipeAsync =
+  (...fns) =>
+  (input) =>
+    fns.reduce((promise, fn) => promise.then(fn), Promise.resolve(input));
 
 const processUpload = pipeAsync(
   validateFile,
   resizeImage,
   uploadToStorage,
-  saveMetadata
+  saveMetadata,
 );
 
 await processUpload(file);
@@ -3753,7 +3833,8 @@ Point-free style defines functions by combining other functions, without naming 
 
 ```js
 // with arguments
-const getActiveNames = (users) => users.filter((u) => u.active).map((u) => u.name);
+const getActiveNames = (users) =>
+  users.filter((u) => u.active).map((u) => u.name);
 
 // point-free style
 const prop = (key) => (obj) => obj[key];
@@ -3926,7 +4007,8 @@ class ReconnectingSocket extends EventTarget {
     this.ws.onopen = () => {
       this.#attempt = 0;
     };
-    this.ws.onmessage = (e) => this.dispatchEvent(new MessageEvent("message", { data: e.data }));
+    this.ws.onmessage = (e) =>
+      this.dispatchEvent(new MessageEvent("message", { data: e.data }));
     this.ws.onclose = () => {
       if (this.#closed) return;
       const delay = Math.min(30_000, 1000 * 2 ** this.#attempt++);
@@ -3995,7 +4077,9 @@ class DraftService {
 
 // low level implementations
 const localStore = { save: async (k, v) => localStorage.setItem(k, v) };
-const apiStore = { save: (k, v) => fetch(`/api/kv/${k}`, { method: "PUT", body: v }) };
+const apiStore = {
+  save: (k, v) => fetch(`/api/kv/${k}`, { method: "PUT", body: v }),
+};
 
 new DraftService(localStore);
 new DraftService(apiStore);
@@ -4009,14 +4093,24 @@ A subclass (or any object that claims to follow an interface) must work wherever
 
 ```js
 class Rectangle {
-  setWidth(w) { this.width = w; }
-  setHeight(h) { this.height = h; }
-  area() { return this.width * this.height; }
+  setWidth(w) {
+    this.width = w;
+  }
+  setHeight(h) {
+    this.height = h;
+  }
+  area() {
+    return this.width * this.height;
+  }
 }
 
 class Square extends Rectangle {
-  setWidth(w) { this.width = this.height = w; }
-  setHeight(h) { this.width = this.height = h; }
+  setWidth(w) {
+    this.width = this.height = w;
+  }
+  setHeight(h) {
+    this.width = this.height = h;
+  }
 }
 
 const r = new Square();
@@ -4548,7 +4642,9 @@ function reactive(obj) {
     get(target, key, receiver) {
       track(target, key);
       const value = Reflect.get(target, key, receiver);
-      return value !== null && typeof value === "object" ? reactive(value) : value;
+      return value !== null && typeof value === "object"
+        ? reactive(value)
+        : value;
     },
     set(target, key, value, receiver) {
       const result = Reflect.set(target, key, value, receiver);
@@ -4782,7 +4878,7 @@ await res.body
       transform(line, controller) {
         if (line) controller.enqueue(JSON.parse(line));
       },
-    })
+    }),
   )
   .pipeTo(new WritableStream({ write: (entry) => render(entry) }));
 
@@ -4810,7 +4906,9 @@ Use `AbortSignal.any()`. It returns a signal that aborts when any of the given s
 
 ```js
 async function load(url, { signal } = {}) {
-  const combined = AbortSignal.any([signal, AbortSignal.timeout(10_000)].filter(Boolean));
+  const combined = AbortSignal.any(
+    [signal, AbortSignal.timeout(10_000)].filter(Boolean),
+  );
   return fetch(url, { signal: combined });
 }
 
@@ -4887,7 +4985,10 @@ function tokenBucket({ capacity, refillPerSecond }) {
 
   return function tryTake() {
     const now = Date.now();
-    tokens = Math.min(capacity, tokens + ((now - last) / 1000) * refillPerSecond);
+    tokens = Math.min(
+      capacity,
+      tokens + ((now - last) / 1000) * refillPerSecond,
+    );
     last = now;
     if (tokens < 1) return false;
     tokens -= 1;
@@ -4912,7 +5013,7 @@ await retry(() =>
     method: "POST",
     headers: { "Idempotency-Key": key },
     body: JSON.stringify(payment),
-  })
+  }),
 );
 ```
 
@@ -5053,10 +5154,18 @@ In the Actor model, each actor has private state and only communicates by messag
 ```js
 // worker.js
 import * as Comlink from "comlink";
-Comlink.expose({ heavySum: (n) => { let s = 0; for (let i = 0; i < n; i++) s += i; return s; } });
+Comlink.expose({
+  heavySum: (n) => {
+    let s = 0;
+    for (let i = 0; i < n; i++) s += i;
+    return s;
+  },
+});
 
 // main.js
-const api = Comlink.wrap(new Worker(new URL("./worker.js", import.meta.url), { type: "module" }));
+const api = Comlink.wrap(
+  new Worker(new URL("./worker.js", import.meta.url), { type: "module" }),
+);
 await api.heavySum(1e9);
 ```
 
@@ -5308,7 +5417,9 @@ function toUserId(raw: string): UserId {
   return raw as UserId;
 }
 
-function loadUser(id: UserId) { /* ... */ }
+function loadUser(id: UserId) {
+  /* ... */
+}
 
 loadUser("u_123"); // error: plain string
 loadUser(toUserId("u_123")); // ok
@@ -5469,7 +5580,7 @@ self.addEventListener("fetch", (event) => {
         return res;
       });
       return cached ?? network;
-    })
+    }),
   );
 });
 ```
@@ -5573,7 +5684,9 @@ Use Adapter and deprecation in steps:
 let warned = false;
 export function fetchUser(id, cb) {
   if (!warned && process.env.NODE_ENV !== "production") {
-    console.warn("fetchUser(id, cb) is deprecated. Use getUser(id) which returns a promise.");
+    console.warn(
+      "fetchUser(id, cb) is deprecated. Use getUser(id) which returns a promise.",
+    );
     warned = true;
   }
   getUser(id).then((u) => cb(null, u), cb);
@@ -5615,7 +5728,11 @@ export function makePlaceOrder({ orders, payments, clock }) {
   return async function placeOrder(cart, paymentInfo) {
     if (cart.items.length === 0) throw new EmptyCartError();
     const payment = await payments.charge(cart.total, paymentInfo);
-    return orders.save({ items: cart.items, paymentId: payment.id, placedAt: clock.now() });
+    return orders.save({
+      items: cart.items,
+      paymentId: payment.id,
+      placedAt: clock.now(),
+    });
   };
 }
 ```
@@ -5693,7 +5810,7 @@ function run(genFn) {
       if (result.done) return resolve(result.value);
       Promise.resolve(result.value).then(
         (v) => step("next", v),
-        (e) => step("throw", e)
+        (e) => step("throw", e),
       );
     }
     step("next");
@@ -5713,11 +5830,13 @@ redux-saga still uses generators this way, because a generator can yield plain o
 JavaScript engines (except Safari) don't do tail call optimization, so deep recursion throws `RangeError: Maximum call stack size exceeded`. A trampoline runs a recursive algorithm in a loop: the function returns a thunk for the next step instead of calling itself, and the trampoline keeps calling thunks until it gets a value.
 
 ```js
-const trampoline = (fn) => (...args) => {
-  let result = fn(...args);
-  while (typeof result === "function") result = result();
-  return result;
-};
+const trampoline =
+  (fn) =>
+  (...args) => {
+    let result = fn(...args);
+    while (typeof result === "function") result = result();
+    return result;
+  };
 
 const sumTo = trampoline(function go(n, acc = 0) {
   return n === 0 ? acc : () => go(n - 1, acc + n);
@@ -5742,7 +5861,10 @@ const Maybe = (value) => ({
   getOrElse: (fallback) => (value == null ? fallback : value),
 });
 
-Maybe(user).map((u) => u.address).map((a) => a.city).getOrElse("Unknown");
+Maybe(user)
+  .map((u) => u.address)
+  .map((a) => a.city)
+  .getOrElse("Unknown");
 ```
 
 Optional chaining (`user?.address?.city ?? "Unknown"`) covers most of this in modern JavaScript.
@@ -5770,9 +5892,16 @@ A lens is a pair of functions, a getter and an immutable setter, focused on one 
 
 ```js
 const lens = (get, set) => ({ get, set });
-const prop = (k) => lens((o) => o[k], (v, o) => ({ ...o, [k]: v }));
+const prop = (k) =>
+  lens(
+    (o) => o[k],
+    (v, o) => ({ ...o, [k]: v }),
+  );
 const compose = (a, b) =>
-  lens((o) => b.get(a.get(o)), (v, o) => a.set(b.set(v, a.get(o)), o));
+  lens(
+    (o) => b.get(a.get(o)),
+    (v, o) => a.set(b.set(v, a.get(o)), o),
+  );
 
 const city = compose(prop("address"), prop("city"));
 city.get(user);
@@ -5793,7 +5922,13 @@ When an event crosses a shadow root, it is retargeted: listeners outside see `ev
 - Have the component dispatch its own meaningful custom event with `composed: true` and `bubbles: true`.
 
 ```js
-this.dispatchEvent(new CustomEvent("item-select", { detail: { id }, bubbles: true, composed: true }));
+this.dispatchEvent(
+  new CustomEvent("item-select", {
+    detail: { id },
+    bubbles: true,
+    composed: true,
+  }),
+);
 ```
 
 The second option is better design: the component exposes an event API instead of its internals. Also, some events (like `focus`) don't bubble, and custom events don't cross shadow boundaries unless `composed` is true.
@@ -5813,7 +5948,10 @@ class RatingInput extends HTMLElement {
 
   set value(v) {
     this.#internals.setFormValue(String(v));
-    this.#internals.setValidity(v ? {} : { valueMissing: true }, "Pick a rating");
+    this.#internals.setValidity(
+      v ? {} : { valueMissing: true },
+      "Pick a rating",
+    );
   }
 }
 
@@ -5949,7 +6087,10 @@ It is Producer/Consumer plus Observer, with a small state machine per toast (ent
 
 ```js
 const routes = [
-  { pattern: new URLPattern({ pathname: "/users/:id" }), load: () => import("./user.js") },
+  {
+    pattern: new URLPattern({ pathname: "/users/:id" }),
+    load: () => import("./user.js"),
+  },
 ];
 
 async function resolve(url) {
@@ -6047,9 +6188,11 @@ Before the real library loads, the page defines a tiny stub that just records ca
 
 ```js
 // inline snippet, runs immediately
-window.acme = window.acme || function (...args) {
-  (window.acme.q = window.acme.q || []).push(args);
-};
+window.acme =
+  window.acme ||
+  function (...args) {
+    (window.acme.q = window.acme.q || []).push(args);
+  };
 acme("init", { key: "abc" });
 acme("track", "page_view");
 
@@ -6113,7 +6256,8 @@ function shared(start) {
 
   return function subscribe(listener) {
     listeners.add(listener);
-    if (count++ === 0) stop = start((value) => listeners.forEach((l) => l(value)));
+    if (count++ === 0)
+      stop = start((value) => listeners.forEach((l) => l(value)));
     return () => {
       listeners.delete(listener);
       if (--count === 0) {
@@ -6145,7 +6289,9 @@ Order changes behavior, so decide on purpose. A common order from outside to ins
 6. **Transport**: the actual `fetch`.
 
 ```js
-const get = withCache(withDedupe(withRetry(withTimeout(withAuth(fetchJson), 5000))));
+const get = withCache(
+  withDedupe(withRetry(withTimeout(withAuth(fetchJson), 5000))),
+);
 ```
 
 Putting timeout outside retry would give all attempts a single 5-second budget. Putting cache inside retry would retry cache misses unnecessarily.
@@ -6179,7 +6325,7 @@ import { createGzip } from "node:zlib";
 await pipeline(
   createReadStream("access.log"),
   createGzip(),
-  createWriteStream("access.log.gz")
+  createWriteStream("access.log.gz"),
 );
 ```
 
@@ -6276,7 +6422,8 @@ export function ServicesProvider({ services, children }) {
 
 export function useServices() {
   const services = use(ServicesContext);
-  if (!services) throw new Error("useServices must be used inside ServicesProvider");
+  if (!services)
+    throw new Error("useServices must be used inside ServicesProvider");
   return services;
 }
 
@@ -6284,7 +6431,7 @@ export function useServices() {
 render(
   <ServicesProvider services={{ api: fakeApi, clock: fakeClock }}>
     <OrderPage />
-  </ServicesProvider>
+  </ServicesProvider>,
 );
 ```
 
@@ -6311,4 +6458,3 @@ Walk through it in this order:
 5. **Limits**: when you would revisit it (team size, scale, new requirements).
 
 Interviewers care less about naming the pattern correctly and more about whether you understand why it helps here, what it costs, and when you would not use it.
-

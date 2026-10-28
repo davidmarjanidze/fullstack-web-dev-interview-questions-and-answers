@@ -470,6 +470,7 @@ The answers target current Kubernetes (1.37, released in August 2026) and the to
 - [450: What changed in Kubernetes recently that you should know about?](#450-what-changed-in-kubernetes-recently-that-you-should-know-about)
 
 ---
+
 # Easy Questions (1-150)
 
 ## 1: What is Kubernetes?
@@ -1352,7 +1353,7 @@ startupProbe:
     path: /healthz
     port: 8080
   periodSeconds: 5
-  failureThreshold: 30   # up to 150 seconds to start
+  failureThreshold: 30 # up to 150 seconds to start
 ```
 
 ## 84: What kinds of probe checks are there?
@@ -2228,7 +2229,7 @@ metadata:
 spec:
   selector:
     app: web
-    version: green   # was blue
+    version: green # was blue
   ports:
     - port: 80
       targetPort: 8080
@@ -2262,7 +2263,12 @@ Env variables never update in a running container. Mounted files update after a 
 template:
   metadata:
     annotations:
-      checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      checksum/config:
+        {
+          {
+            include (print $.Template.BasePath "/configmap.yaml") . | sha256sum,
+          },
+        }
 ```
 
 ## 163: What is the problem with subPath mounts?
@@ -2548,13 +2554,13 @@ rules:
 You can also route by header, for example send requests with `x-canary: true` to v2 for internal testers.
 
 ```yaml
-  - matches:
-      - headers:
-          - name: x-canary
-            value: "true"
-    backendRefs:
-      - name: api-v2
-        port: 80
+- matches:
+    - headers:
+        - name: x-canary
+          value: "true"
+  backendRefs:
+    - name: api-v2
+      port: 80
 ```
 
 ## 181: What is a ReferenceGrant?
@@ -2756,7 +2762,7 @@ A good way to roll it out is to start with `warn` and `audit`, fix the workloads
 ## 193: What securityContext settings should most containers have?
 
 ```yaml
-securityContext:            # Pod level
+securityContext: # Pod level
   runAsNonRoot: true
   runAsUser: 10001
   runAsGroup: 10001
@@ -2766,7 +2772,7 @@ securityContext:            # Pod level
 containers:
   - name: app
     image: my-app:1.0
-    securityContext:        # container level
+    securityContext: # container level
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
       capabilities:
@@ -3049,7 +3055,7 @@ The `partition` setting lets you update only Pods with an ordinal at or above a 
 updateStrategy:
   type: RollingUpdate
   rollingUpdate:
-    partition: 2   # only db-2 gets the new version
+    partition: 2 # only db-2 gets the new version
 ```
 
 The `OnDelete` strategy only updates a Pod when you delete it by hand.
@@ -4083,7 +4089,7 @@ egress:
   - to:
       - ipBlock:
           cidr: 0.0.0.0/0
-          except: [169.254.169.254/32]   # block the cloud metadata endpoint
+          except: [169.254.169.254/32] # block the cloud metadata endpoint
 ```
 
 ## 300: How are certificates handled inside a cluster and how do you rotate them?

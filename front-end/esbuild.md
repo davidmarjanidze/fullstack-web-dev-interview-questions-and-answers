@@ -140,6 +140,7 @@ The answers target esbuild 0.28. Since esbuild is still on 0.x versions, minor r
 - [120: How would you design a production build setup for a single-page app using only esbuild?](#120-how-would-you-design-a-production-build-setup-for-a-single-page-app-using-only-esbuild)
 
 ---
+
 # Easy Questions (1-40)
 
 ## 1: What is esbuild?
@@ -188,12 +189,12 @@ There is also `esbuild-wasm`, a WebAssembly build that runs in the browser or in
 ## 6: How do you run a build from JavaScript?
 
 ```js
-import * as esbuild from 'esbuild';
+import * as esbuild from "esbuild";
 
 await esbuild.build({
-  entryPoints: ['src/app.ts'],
+  entryPoints: ["src/app.ts"],
   bundle: true,
-  outfile: 'dist/app.js',
+  outfile: "dist/app.js",
 });
 ```
 
@@ -206,7 +207,7 @@ await esbuild.build({
 `transform` works on a single string of code. It doesn't touch the file system, doesn't resolve imports and can't bundle. It's useful when another tool already has the code in memory and just needs it converted, for example TypeScript to JavaScript or minified.
 
 ```js
-const result = await esbuild.transform('let x: number = 1', { loader: 'ts' });
+const result = await esbuild.transform("let x: number = 1", { loader: "ts" });
 console.log(result.code); // let x = 1;
 ```
 
@@ -321,8 +322,8 @@ npx esbuild app.js --bundle --loader:.png=file --loader:.svg=text --outdir=dist
 Just import it. The `json` loader is on by default for `.json` files:
 
 ```js
-import pkg from './package.json';
-import { version } from './package.json';
+import pkg from "./package.json";
+import { version } from "./package.json";
 console.log(pkg.name, version);
 ```
 
@@ -333,7 +334,7 @@ Named imports work for top-level keys, and when bundling with tree shaking, unus
 Yes. You can use a CSS file as an entry point, and esbuild follows its `@import` rules and `url()` references. You can also import CSS from JavaScript:
 
 ```js
-import './styles.css';
+import "./styles.css";
 ```
 
 When you do that, esbuild creates a separate CSS file next to the JavaScript output (for example `app.js` and `app.css`). It doesn't inject the CSS into the page; you still need a `<link>` tag for it. esbuild also minifies CSS and lowers some newer CSS syntax for older browsers.
@@ -382,9 +383,9 @@ In the JavaScript API, you create a context and call `watch()`:
 
 ```js
 const ctx = await esbuild.context({
-  entryPoints: ['app.ts'],
+  entryPoints: ["app.ts"],
   bundle: true,
-  outfile: 'out.js',
+  outfile: "out.js",
 });
 await ctx.watch();
 ```
@@ -412,19 +413,19 @@ If you need HMR, tools like Vite give you that. For CSS, you can get close to ho
 Add this to your app code (only in development):
 
 ```js
-new EventSource('/esbuild').addEventListener('change', () => location.reload());
+new EventSource("/esbuild").addEventListener("change", () => location.reload());
 ```
 
 And run esbuild with both watch and serve:
 
 ```js
 const ctx = await esbuild.context({
-  entryPoints: ['src/app.ts'],
+  entryPoints: ["src/app.ts"],
   bundle: true,
-  outdir: 'www/js',
+  outdir: "www/js",
 });
 await ctx.watch();
-await ctx.serve({ servedir: 'www' });
+await ctx.serve({ servedir: "www" });
 ```
 
 When a rebuild finishes, the server sends a `change` event on `/esbuild`, and the page reloads.
@@ -439,10 +440,10 @@ npx esbuild app.js --bundle --define:process.env.NODE_ENV=\"production\" --outfi
 
 ```js
 await esbuild.build({
-  entryPoints: ['app.js'],
+  entryPoints: ["app.js"],
   bundle: true,
-  define: { 'process.env.NODE_ENV': '"production"' },
-  outfile: 'out.js',
+  define: { "process.env.NODE_ENV": '"production"' },
+  outfile: "out.js",
 });
 ```
 
@@ -454,11 +455,13 @@ The browser has no `process.env`, so you replace those values at build time with
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/app.ts'],
+  entryPoints: ["src/app.ts"],
   bundle: true,
-  outfile: 'dist/app.js',
+  outfile: "dist/app.js",
   define: {
-    'process.env.API_URL': JSON.stringify(process.env.API_URL ?? 'http://localhost:3000'),
+    "process.env.API_URL": JSON.stringify(
+      process.env.API_URL ?? "http://localhost:3000",
+    ),
   },
 });
 ```
@@ -485,8 +488,8 @@ The usual setup is: esbuild for building, and `tsc --noEmit` for type checking, 
 Set a loader for the image extension. With the `file` loader, esbuild copies the image to the output folder and the import gives you its path:
 
 ```js
-import logo from './logo.png';
-document.querySelector('img').src = logo;
+import logo from "./logo.png";
+document.querySelector("img").src = logo;
 ```
 
 ```bash
@@ -507,9 +510,9 @@ Pass them all, and use `outdir`:
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/home.ts', 'src/admin.ts', 'src/login.ts'],
+  entryPoints: ["src/home.ts", "src/admin.ts", "src/login.ts"],
   bundle: true,
-  outdir: 'dist',
+  outdir: "dist",
 });
 ```
 
@@ -535,11 +538,11 @@ They add text to the start or end of each output file. A common use is adding a 
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/cli.ts'],
+  entryPoints: ["src/cli.ts"],
   bundle: true,
-  platform: 'node',
-  outfile: 'dist/cli.js',
-  banner: { js: '#!/usr/bin/env node' },
+  platform: "node",
+  outfile: "dist/cli.js",
+  banner: { js: "#!/usr/bin/env node" },
 });
 ```
 
@@ -567,9 +570,9 @@ By default, `build()` writes the output files to disk. With `write: false`, it k
 
 ```js
 const result = await esbuild.build({
-  entryPoints: ['app.ts'],
+  entryPoints: ["app.ts"],
   bundle: true,
-  outfile: 'out.js',
+  outfile: "out.js",
   write: false,
 });
 
@@ -609,7 +612,11 @@ That's why the docs recommend pinning an exact version and reading the changelog
 - `dispose()`: free the resources when you're done.
 
 ```js
-const ctx = await esbuild.context({ entryPoints: ['app.ts'], bundle: true, outfile: 'out.js' });
+const ctx = await esbuild.context({
+  entryPoints: ["app.ts"],
+  bundle: true,
+  outfile: "out.js",
+});
 await ctx.rebuild();
 await ctx.rebuild(); // faster, files that didn't change are not parsed again
 await ctx.dispose();
@@ -638,21 +645,26 @@ A plugin is an object with a `name` and a `setup` function. Inside `setup` you r
 
 ```js
 const envPlugin = {
-  name: 'env',
+  name: "env",
   setup(build) {
     build.onResolve({ filter: /^env$/ }, (args) => ({
       path: args.path,
-      namespace: 'env-ns',
+      namespace: "env-ns",
     }));
 
-    build.onLoad({ filter: /.*/, namespace: 'env-ns' }, () => ({
-      contents: JSON.stringify({ MODE: process.env.MODE ?? 'dev' }),
-      loader: 'json',
+    build.onLoad({ filter: /.*/, namespace: "env-ns" }, () => ({
+      contents: JSON.stringify({ MODE: process.env.MODE ?? "dev" }),
+      loader: "json",
     }));
   },
 };
 
-await esbuild.build({ entryPoints: ['app.js'], bundle: true, outfile: 'out.js', plugins: [envPlugin] });
+await esbuild.build({
+  entryPoints: ["app.js"],
+  bundle: true,
+  outfile: "out.js",
+  plugins: [envPlugin],
+});
 ```
 
 Now `import env from 'env'` in your code gives you that object.
@@ -671,12 +683,12 @@ Every module in esbuild has a path and a namespace. Normal files on disk are in 
 ```js
 build.onResolve({ filter: /^virtual:config$/ }, (args) => ({
   path: args.path,
-  namespace: 'virtual',
+  namespace: "virtual",
 }));
 
-build.onLoad({ filter: /.*/, namespace: 'virtual' }, () => ({
-  contents: 'export default { debug: true }',
-  loader: 'js',
+build.onLoad({ filter: /.*/, namespace: "virtual" }, () => ({
+  contents: "export default { debug: true }",
+  loader: "js",
 }));
 ```
 
@@ -691,7 +703,9 @@ esbuild uses the filter to decide, inside Go, whether to call your JavaScript ca
 build.onLoad({ filter: /\.ya?ml$/ }, loadYaml);
 
 // Bad: every single file goes to JavaScript
-build.onLoad({ filter: /.*/ }, (args) => { if (!args.path.endsWith('.yaml')) return; /* ... */ });
+build.onLoad({ filter: /.*/ }, (args) => {
+  if (!args.path.endsWith(".yaml")) return; /* ... */
+});
 ```
 
 The filter uses Go's regex engine, which doesn't support lookahead, lookbehind or backreferences. If your regex uses those, esbuild throws an error.
@@ -702,12 +716,16 @@ The filter uses Go's regex engine, which doesn't support lookahead, lookbehind o
 
 ```js
 const timingPlugin = {
-  name: 'timing',
+  name: "timing",
   setup(build) {
     let start;
-    build.onStart(() => { start = Date.now(); });
+    build.onStart(() => {
+      start = Date.now();
+    });
     build.onEnd((result) => {
-      console.log(`build ended with ${result.errors.length} errors in ${Date.now() - start}ms`);
+      console.log(
+        `build ended with ${result.errors.length} errors in ${Date.now() - start}ms`,
+      );
     });
   },
 };
@@ -721,7 +739,7 @@ const timingPlugin = {
 
 ```js
 build.onResolve({ filter: /^@app\// }, async (args) => {
-  const result = await build.resolve(args.path.replace('@app/', './src/'), {
+  const result = await build.resolve(args.path.replace("@app/", "./src/"), {
     kind: args.kind,
     resolveDir: args.resolveDir,
   });
@@ -746,7 +764,7 @@ esbuild reads `tsconfig.json` and respects `paths` and `baseUrl` when bundling. 
 ```
 
 ```ts
-import { formatDate } from '@/utils/date';
+import { formatDate } from "@/utils/date";
 ```
 
 There is also the `alias` option, which replaces whole package names (for example `alias: { 'lodash': 'lodash-es' }`). `alias` only works on package-style names, not relative paths, so for `@/` style paths you normally rely on `tsconfig.json`.
@@ -776,11 +794,13 @@ Files ending in `.module.css` use the `local-css` loader by default. Class names
 
 ```css
 /* button.module.css */
-.primary { background: blue; }
+.primary {
+  background: blue;
+}
 ```
 
 ```js
-import styles from './button.module.css';
+import styles from "./button.module.css";
 button.className = styles.primary; // something like "button_primary"
 ```
 
@@ -824,15 +844,15 @@ Use `entryNames`, `chunkNames` and `assetNames`. They take a template with place
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/app.ts'],
+  entryPoints: ["src/app.ts"],
   bundle: true,
   splitting: true,
-  format: 'esm',
-  outdir: 'dist',
-  entryNames: '[name]-[hash]',
-  chunkNames: 'chunks/[name]-[hash]',
-  assetNames: 'assets/[name]-[hash]',
-  loader: { '.png': 'file' },
+  format: "esm",
+  outdir: "dist",
+  entryNames: "[name]-[hash]",
+  chunkNames: "chunks/[name]-[hash]",
+  assetNames: "assets/[name]-[hash]",
+  loader: { ".png": "file" },
 });
 ```
 
@@ -844,15 +864,17 @@ esbuild doesn't create HTML files for you. Ask for a `metafile` and read the out
 
 ```js
 const result = await esbuild.build({
-  entryPoints: ['src/app.ts'],
+  entryPoints: ["src/app.ts"],
   bundle: true,
-  outdir: 'dist',
-  entryNames: '[name]-[hash]',
+  outdir: "dist",
+  entryNames: "[name]-[hash]",
   metafile: true,
 });
 
 const outputs = result.metafile.outputs;
-const js = Object.keys(outputs).find((p) => outputs[p].entryPoint === 'src/app.ts');
+const js = Object.keys(outputs).find(
+  (p) => outputs[p].entryPoint === "src/app.ts",
+);
 // write js into your index.html template
 ```
 
@@ -893,11 +915,11 @@ Use `drop`:
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/app.ts'],
+  entryPoints: ["src/app.ts"],
   bundle: true,
   minify: true,
-  drop: ['console', 'debugger'],
-  outfile: 'dist/app.js',
+  drop: ["console", "debugger"],
+  outfile: "dist/app.js",
 });
 ```
 
@@ -914,10 +936,10 @@ export const process = { env: {} };
 
 ```js
 await esbuild.build({
-  entryPoints: ['app.js'],
+  entryPoints: ["app.js"],
   bundle: true,
-  inject: ['./process-shim.js'],
-  outfile: 'out.js',
+  inject: ["./process-shim.js"],
+  outfile: "out.js",
 });
 ```
 
@@ -938,10 +960,10 @@ They control which file esbuild picks from a package's `package.json`.
 
 ```js
 await esbuild.build({
-  entryPoints: ['app.js'],
+  entryPoints: ["app.js"],
   bundle: true,
-  conditions: ['development'],
-  outfile: 'out.js',
+  conditions: ["development"],
+  outfile: "out.js",
 });
 ```
 
@@ -952,11 +974,16 @@ If a package has an `exports` field, esbuild uses it and ignores `mainFields` fo
 Run two builds and point to them from `package.json`:
 
 ```js
-const shared = { entryPoints: ['src/index.ts'], bundle: true, packages: 'external', sourcemap: true };
+const shared = {
+  entryPoints: ["src/index.ts"],
+  bundle: true,
+  packages: "external",
+  sourcemap: true,
+};
 
 await Promise.all([
-  esbuild.build({ ...shared, format: 'esm', outfile: 'dist/index.mjs' }),
-  esbuild.build({ ...shared, format: 'cjs', outfile: 'dist/index.cjs' }),
+  esbuild.build({ ...shared, format: "esm", outfile: "dist/index.mjs" }),
+  esbuild.build({ ...shared, format: "cjs", outfile: "dist/index.cjs" }),
 ]);
 ```
 
@@ -1025,17 +1052,17 @@ Put the build in a plain `build.mjs` file and run it with Node:
 
 ```js
 // build.mjs
-import * as esbuild from 'esbuild';
+import * as esbuild from "esbuild";
 
-const isProd = process.argv.includes('--prod');
+const isProd = process.argv.includes("--prod");
 
 await esbuild.build({
-  entryPoints: ['src/index.ts'],
+  entryPoints: ["src/index.ts"],
   bundle: true,
   minify: isProd,
   sourcemap: !isProd,
-  outdir: 'dist',
-  logLevel: 'info',
+  outdir: "dist",
+  logLevel: "info",
 });
 ```
 
@@ -1051,16 +1078,16 @@ ES modules don't have `__dirname`, `__filename` or `require`. If a bundled Commo
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/server.ts'],
+  entryPoints: ["src/server.ts"],
   bundle: true,
-  platform: 'node',
-  format: 'esm',
-  outfile: 'dist/server.mjs',
+  platform: "node",
+  format: "esm",
+  outfile: "dist/server.mjs",
   banner: {
     js: [
       "import { createRequire } from 'node:module';",
-      'const require = createRequire(import.meta.url);',
-    ].join('\n'),
+      "const require = createRequire(import.meta.url);",
+    ].join("\n"),
   },
 });
 ```
@@ -1101,10 +1128,12 @@ Note that recent Node.js versions can run `.ts` files on their own by stripping 
 - In the browser you must call `initialize()` first.
 
 ```js
-import * as esbuild from 'esbuild-wasm';
+import * as esbuild from "esbuild-wasm";
 
-await esbuild.initialize({ wasmURL: 'https://unpkg.com/esbuild-wasm@0.28.2/esbuild.wasm' });
-const result = await esbuild.transform('const x: number = 1', { loader: 'ts' });
+await esbuild.initialize({
+  wasmURL: "https://unpkg.com/esbuild-wasm@0.28.2/esbuild.wasm",
+});
+const result = await esbuild.transform("const x: number = 1", { loader: "ts" });
 ```
 
 It's used for online playgrounds and tools that compile code in the browser.
@@ -1121,17 +1150,17 @@ Set loaders for each file type and use `outdir`:
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/index.tsx'],
+  entryPoints: ["src/index.tsx"],
   bundle: true,
-  outdir: 'dist',
+  outdir: "dist",
   loader: {
-    '.png': 'file',
-    '.jpg': 'file',
-    '.svg': 'file',
-    '.woff2': 'file',
+    ".png": "file",
+    ".jpg": "file",
+    ".svg": "file",
+    ".woff2": "file",
   },
-  assetNames: 'assets/[name]-[hash]',
-  publicPath: '/static',
+  assetNames: "assets/[name]-[hash]",
+  publicPath: "/static",
 });
 ```
 
@@ -1154,12 +1183,12 @@ Use `outExtension`:
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/index.ts'],
+  entryPoints: ["src/index.ts"],
   bundle: true,
-  format: 'esm',
-  platform: 'node',
-  outdir: 'dist',
-  outExtension: { '.js': '.mjs' },
+  format: "esm",
+  platform: "node",
+  outdir: "dist",
+  outExtension: { ".js": ".mjs" },
 });
 ```
 
@@ -1173,8 +1202,11 @@ This is common for Node.js packages, where `.mjs` and `.cjs` tell Node how to lo
 try {
   await esbuild.build(options);
 } catch (e) {
-  const messages = await esbuild.formatMessages(e.errors, { kind: 'error', color: true });
-  console.error(messages.join('\n'));
+  const messages = await esbuild.formatMessages(e.errors, {
+    kind: "error",
+    color: true,
+  });
+  console.error(messages.join("\n"));
   process.exit(1);
 }
 ```
@@ -1187,12 +1219,12 @@ Use `logOverride` with the warning's ID (it's shown in brackets in the message, 
 
 ```js
 await esbuild.build({
-  entryPoints: ['app.ts'],
+  entryPoints: ["app.ts"],
   bundle: true,
-  outfile: 'out.js',
+  outfile: "out.js",
   logOverride: {
-    'direct-eval': 'silent',
-    'unsupported-dynamic-import': 'error',
+    "direct-eval": "silent",
+    "unsupported-dynamic-import": "error",
   },
 });
 ```
@@ -1262,7 +1294,11 @@ They are fine for small scripts or places that require a sync answer, like old `
 A context keeps the results of the last build: file contents, parsed ASTs, resolver results and so on. On `rebuild()`, esbuild checks which files changed and only parses those again. Linking and printing still run, but they are fast compared to parsing.
 
 ```js
-const ctx = await esbuild.context({ entryPoints: ['src/app.ts'], bundle: true, outdir: 'dist' });
+const ctx = await esbuild.context({
+  entryPoints: ["src/app.ts"],
+  bundle: true,
+  outdir: "dist",
+});
 const r1 = await ctx.rebuild(); // full build
 const r2 = await ctx.rebuild(); // reuses unchanged files
 ```
@@ -1285,7 +1321,7 @@ esbuild can only remove code if it's sure the code does nothing when it runs. Th
 - **`/* @__PURE__ */`** before a call says that one call can be removed if its result isn't used:
 
   ```js
-  export const Button = /* @__PURE__ */ createComponent('button');
+  export const Button = /* @__PURE__ */ createComponent("button");
   ```
 
 - **`/* #__NO_SIDE_EFFECTS__ */`** before a function declaration says every call to that function is pure.
@@ -1331,11 +1367,11 @@ Normal minification only renames local variables. `mangleProps` also renames obj
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/index.ts'],
+  entryPoints: ["src/index.ts"],
   bundle: true,
   minify: true,
   mangleProps: /^_/,
-  outfile: 'dist/index.js',
+  outfile: "dist/index.js",
 });
 ```
 
@@ -1368,14 +1404,14 @@ If the table is wrong for your case, or you want to force a choice, use `support
 
 ```js
 await esbuild.build({
-  entryPoints: ['app.js'],
+  entryPoints: ["app.js"],
   bundle: true,
-  target: 'es2022',
+  target: "es2022",
   supported: {
-    bigint: false,      // treat BigInt literals as not supported
-    'class-static-blocks': false,
+    bigint: false, // treat BigInt literals as not supported
+    "class-static-blocks": false,
   },
-  outfile: 'out.js',
+  outfile: "out.js",
 });
 ```
 
@@ -1448,27 +1484,36 @@ Things to keep in mind:
 esbuild's `serve` has no proxy option. The usual pattern is a small Node.js server in front of it that sends `/api` to your backend and everything else to esbuild:
 
 ```js
-import * as esbuild from 'esbuild';
-import http from 'node:http';
+import * as esbuild from "esbuild";
+import http from "node:http";
 
-const ctx = await esbuild.context({ entryPoints: ['src/app.ts'], bundle: true, outdir: 'www/js' });
+const ctx = await esbuild.context({
+  entryPoints: ["src/app.ts"],
+  bundle: true,
+  outdir: "www/js",
+});
 await ctx.watch();
-const { port } = await ctx.serve({ servedir: 'www', fallback: 'www/index.html' });
+const { port } = await ctx.serve({
+  servedir: "www",
+  fallback: "www/index.html",
+});
 
-http.createServer((req, res) => {
-  const target = req.url.startsWith('/api')
-    ? { hostname: 'localhost', port: 4000 }
-    : { hostname: '127.0.0.1', port };
+http
+  .createServer((req, res) => {
+    const target = req.url.startsWith("/api")
+      ? { hostname: "localhost", port: 4000 }
+      : { hostname: "127.0.0.1", port };
 
-  const proxyReq = http.request(
-    { ...target, path: req.url, method: req.method, headers: req.headers },
-    (proxyRes) => {
-      res.writeHead(proxyRes.statusCode, proxyRes.headers);
-      proxyRes.pipe(res);
-    },
-  );
-  req.pipe(proxyReq);
-}).listen(3000);
+    const proxyReq = http.request(
+      { ...target, path: req.url, method: req.method, headers: req.headers },
+      (proxyRes) => {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res);
+      },
+    );
+    req.pipe(proxyReq);
+  })
+  .listen(3000);
 ```
 
 `fallback` makes the server return `index.html` for unknown paths, which you need for single-page apps with client-side routing. `serve` also accepts `keyfile` and `certfile` for HTTPS, and an `onRequest` callback for logging.
@@ -1477,16 +1522,16 @@ http.createServer((req, res) => {
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/handler.ts'],
+  entryPoints: ["src/handler.ts"],
   bundle: true,
-  platform: 'node',
-  target: 'node22',
-  format: 'esm',
-  outfile: 'dist/handler.mjs',
+  platform: "node",
+  target: "node22",
+  format: "esm",
+  outfile: "dist/handler.mjs",
   sourcemap: true,
   minify: true,
-  external: ['@aws-sdk/*'],
-  mainFields: ['module', 'main'],
+  external: ["@aws-sdk/*"],
+  mainFields: ["module", "main"],
   banner: {
     js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);",
   },
@@ -1519,7 +1564,7 @@ To find them, search the metafile inputs for the same package in different `node
 
 ```js
 const inputs = Object.keys(result.metafile.inputs);
-console.log(inputs.filter((p) => p.includes('node_modules/react/')));
+console.log(inputs.filter((p) => p.includes("node_modules/react/")));
 ```
 
 Fixes, in order of preference:
@@ -1533,20 +1578,23 @@ Fixes, in order of preference:
 esbuild doesn't cache plugin results, so you do it yourself. Key the cache by path and something that changes with the file, like `mtime` or a content hash:
 
 ```js
-import fs from 'node:fs/promises';
+import fs from "node:fs/promises";
 
 const cache = new Map();
 
 const slowTransformPlugin = {
-  name: 'slow-transform',
+  name: "slow-transform",
   setup(build) {
     build.onLoad({ filter: /\.special\.js$/ }, async (args) => {
       const { mtimeMs } = await fs.stat(args.path);
       const cached = cache.get(args.path);
       if (cached && cached.mtimeMs === mtimeMs) return cached.result;
 
-      const source = await fs.readFile(args.path, 'utf8');
-      const result = { contents: await expensiveTransform(source), loader: 'js' };
+      const source = await fs.readFile(args.path, "utf8");
+      const result = {
+        contents: await expensiveTransform(source),
+        loader: "js",
+      };
       cache.set(args.path, { mtimeMs, result });
       return result;
     });
@@ -1623,11 +1671,11 @@ Options:
 
   ```js
   await esbuild.build({
-    entryPoints: ['src/app.ts'],
+    entryPoints: ["src/app.ts"],
     bundle: true,
-    alias: { path: 'path-browserify' },
-    inject: ['./buffer-shim.js'], // exports { Buffer } from 'buffer'
-    outfile: 'dist/app.js',
+    alias: { path: "path-browserify" },
+    inject: ["./buffer-shim.js"], // exports { Buffer } from 'buffer'
+    outfile: "dist/app.js",
   });
   ```
 
@@ -1642,16 +1690,16 @@ esbuild doesn't automatically bundle `new Worker(new URL('./worker.ts', import.m
 
 ```js
 await esbuild.build({
-  entryPoints: { app: 'src/app.ts', worker: 'src/worker.ts' },
+  entryPoints: { app: "src/app.ts", worker: "src/worker.ts" },
   bundle: true,
-  format: 'esm',
-  outdir: 'dist',
+  format: "esm",
+  outdir: "dist",
 });
 ```
 
 ```js
 // in app.ts
-const worker = new Worker('/dist/worker.js', { type: 'module' });
+const worker = new Worker("/dist/worker.js", { type: "module" });
 ```
 
 If you use hashed names, read the worker's output path from the metafile and pass it in with `define`. Another option is to build the worker first with `write: false` and inline its code as a string or a Blob URL into the main bundle, which avoids the extra request.
@@ -1661,9 +1709,9 @@ If you use hashed names, read the worker's output path from the metafile and pas
 Yes. esbuild understands the `with` syntax:
 
 ```js
-import config from './config.json' with { type: 'json' };
-import template from './email.html' with { type: 'text' };
-import wasmBytes from './module.wasm' with { type: 'bytes' };
+import config from "./config.json" with { type: "json" };
+import template from "./email.html" with { type: "text" };
+import wasmBytes from "./module.wasm" with { type: "bytes" };
 ```
 
 - `type: 'json'` uses the JSON loader.
@@ -1685,18 +1733,18 @@ if (__DEV__) {
 
 ```js
 await esbuild.build({
-  entryPoints: ['src/app.ts'],
+  entryPoints: ["src/app.ts"],
   bundle: true,
   minify: true,
-  define: { __DEV__: 'false' },
-  outfile: 'dist/app.js',
+  define: { __DEV__: "false" },
+  outfile: "dist/app.js",
 });
 ```
 
 The `if` becomes `if (false)` and is removed, and if `enableDebugPanel` isn't used anywhere else, tree shaking removes it and its imports too. `dropLabels` is another option: it removes labeled blocks, like `DEV: { ... }`, without needing a global variable:
 
 ```js
-DEV: console.log('state', state);
+DEV: console.log("state", state);
 ```
 
 ```bash
@@ -1722,7 +1770,13 @@ By default esbuild escapes non-ASCII characters, so `"ქართული"` be
 `lineLimit` splits very long lines in minified output:
 
 ```js
-await esbuild.build({ entryPoints: ['app.ts'], bundle: true, minify: true, lineLimit: 500, outfile: 'out.js' });
+await esbuild.build({
+  entryPoints: ["app.ts"],
+  bundle: true,
+  minify: true,
+  lineLimit: 500,
+  outfile: "out.js",
+});
 ```
 
 A whole bundle on one line can be slow in some editors and tools, and some old systems have line length limits. It adds a few bytes, so only use it if you hit one of those problems.
@@ -1768,16 +1822,16 @@ The Go API has the same options as the JS API, plus `api.Transform` and `api.Con
 Test runners and loaders often get one file at a time and need JavaScript back. `transform` fits that well:
 
 ```js
-import { transform } from 'esbuild';
+import { transform } from "esbuild";
 
 export async function compile(source, filename) {
   const result = await transform(source, {
-    loader: filename.endsWith('x') ? 'tsx' : 'ts',
-    format: 'cjs',
-    target: 'node22',
-    sourcemap: 'inline',
+    loader: filename.endsWith("x") ? "tsx" : "ts",
+    format: "cjs",
+    target: "node22",
+    sourcemap: "inline",
     sourcefile: filename,
-    jsx: 'automatic',
+    jsx: "automatic",
   });
   return result.code;
 }

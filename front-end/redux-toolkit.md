@@ -519,16 +519,16 @@ There is normally only one store per app.
 Use `configureStore` and pass it your reducers.
 
 ```ts
-import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './features/counter/counterSlice'
-import todosReducer from './features/todos/todosSlice'
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./features/counter/counterSlice";
+import todosReducer from "./features/todos/todosSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     todos: todosReducer,
   },
-})
+});
 ```
 
 When you pass an object to `reducer`, `configureStore` calls `combineReducers` for you.
@@ -555,33 +555,33 @@ A slice is the part of the Redux state for one feature, together with the reduce
 - `caseReducers`, `getInitialState`, `selectors` and a few other fields.
 
 ```ts
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface CounterState {
-  value: number
+  value: number;
 }
 
-const initialState: CounterState = { value: 0 }
+const initialState: CounterState = { value: 0 };
 
 const counterSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState,
   reducers: {
     increment(state) {
-      state.value += 1
+      state.value += 1;
     },
     decrement(state) {
-      state.value -= 1
+      state.value -= 1;
     },
     incrementByAmount(state, action: PayloadAction<number>) {
-      state.value += action.payload
+      state.value += action.payload;
     },
   },
-})
+});
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
-export default counterSlice.reducer
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export default counterSlice.reducer;
 ```
 
 ### 11: What is the `name` option in `createSlice` used for?
@@ -594,10 +594,10 @@ It is the value the slice state starts with. When the store is created, Redux di
 
 ```ts
 const slice = createSlice({
-  name: 'settings',
-  initialState: () => ({ theme: localStorage.getItem('theme') ?? 'light' }),
+  name: "settings",
+  initialState: () => ({ theme: localStorage.getItem("theme") ?? "light" }),
   reducers: {},
-})
+});
 ```
 
 ### 13: What is an action in Redux?
@@ -613,8 +613,8 @@ An action is a plain object that describes something that happened. It must have
 An action creator is a function that returns an action object. `createSlice` and `createAction` generate them for you.
 
 ```ts
-increment()            // { type: 'counter/increment', payload: undefined }
-incrementByAmount(5)   // { type: 'counter/incrementByAmount', payload: 5 }
+increment(); // { type: 'counter/increment', payload: undefined }
+incrementByAmount(5); // { type: 'counter/incrementByAmount', payload: 5 }
 ```
 
 ### 15: What is `payload`?
@@ -677,12 +677,12 @@ No. Immer throws an error if you modify the draft and also return a different va
 
 ```ts
 // Wrong: returns the result of the assignment
-setValue: (state, action) => (state.value = action.payload)
+setValue: (state, action) => (state.value = action.payload);
 
 // Right: wrap in braces so nothing is returned
 setValue: (state, action) => {
-  state.value = action.payload
-}
+  state.value = action.payload;
+};
 ```
 
 ### 22: How do you reset a slice to its initial state?
@@ -703,13 +703,13 @@ Primitives cannot be mutated, so you must return the new value.
 
 ```ts
 const countSlice = createSlice({
-  name: 'count',
+  name: "count",
   initialState: 0,
   reducers: {
     increment: (state) => state + 1,
     set: (_state, action: PayloadAction<number>) => action.payload,
   },
-})
+});
 ```
 
 ### 24: What is `dispatch`?
@@ -717,7 +717,7 @@ const countSlice = createSlice({
 `dispatch` is the store method you call to send an action. The store runs the root reducer with the current state and the action, saves the result as the new state, and notifies subscribers.
 
 ```ts
-store.dispatch(increment())
+store.dispatch(increment());
 ```
 
 ### 25: What is `getState`?
@@ -729,14 +729,14 @@ store.dispatch(increment())
 `Provider` comes from `react-redux`. It puts the store into React context so any component in the tree can read state and dispatch actions.
 
 ```tsx
-import { Provider } from 'react-redux'
-import { store } from './app/store'
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <App />
   </Provider>,
-)
+);
 ```
 
 ### 27: What is `useSelector`?
@@ -744,7 +744,7 @@ createRoot(document.getElementById('root')!).render(
 A React-Redux hook that reads a value from the store state. The component re-renders when the selected value changes (compared with `===` by default).
 
 ```tsx
-const count = useSelector((state: RootState) => state.counter.value)
+const count = useSelector((state: RootState) => state.counter.value);
 ```
 
 ### 28: What is `useDispatch`?
@@ -752,8 +752,8 @@ const count = useSelector((state: RootState) => state.counter.value)
 A React-Redux hook that returns the store's `dispatch` function.
 
 ```tsx
-const dispatch = useDispatch()
-return <button onClick={() => dispatch(increment())}>+</button>
+const dispatch = useDispatch();
+return <button onClick={() => dispatch(increment())}>+</button>;
 ```
 
 ### 29: What is `useStore`?
@@ -764,39 +764,39 @@ It returns the store object itself. You rarely need it in components, because re
 
 ```tsx
 // counterSlice.ts
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const counterSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState: { value: 0 },
   reducers: {
     increment(state) {
-      state.value += 1
+      state.value += 1;
     },
     decrement(state) {
-      state.value -= 1
+      state.value -= 1;
     },
   },
-})
+});
 
-export const { increment, decrement } = counterSlice.actions
-export default counterSlice.reducer
+export const { increment, decrement } = counterSlice.actions;
+export default counterSlice.reducer;
 
 // store.ts
-import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './counterSlice'
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./counterSlice";
 
-export const store = configureStore({ reducer: { counter: counterReducer } })
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export const store = configureStore({ reducer: { counter: counterReducer } });
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 // Counter.tsx
-import { useAppDispatch, useAppSelector } from './hooks'
-import { increment, decrement } from './counterSlice'
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { increment, decrement } from "./counterSlice";
 
 export function Counter() {
-  const count = useAppSelector((state) => state.counter.value)
-  const dispatch = useAppDispatch()
+  const count = useAppSelector((state) => state.counter.value);
+  const dispatch = useAppDispatch();
 
   return (
     <div>
@@ -804,7 +804,7 @@ export function Counter() {
       <span>{count}</span>
       <button onClick={() => dispatch(increment())}>+</button>
     </div>
-  )
+  );
 }
 ```
 
@@ -813,9 +813,9 @@ export function Counter() {
 A selector is a function that takes the Redux state and returns some piece of it, or a value derived from it.
 
 ```ts
-export const selectTodos = (state: RootState) => state.todos
+export const selectTodos = (state: RootState) => state.todos;
 export const selectCompletedCount = (state: RootState) =>
-  state.todos.filter((t) => t.completed).length
+  state.todos.filter((t) => t.completed).length;
 ```
 
 Keeping selectors in the slice file means components don't need to know the shape of the state.
@@ -839,7 +839,7 @@ const store = configureStore({
     posts: postsReducer,
     comments: commentsReducer,
   },
-})
+});
 // state shape: { auth, posts, comments }
 ```
 
@@ -852,8 +852,8 @@ const store = configureStore({
 Infer it from the store.
 
 ```ts
-export const store = configureStore({ reducer: { counter: counterReducer } })
-export type RootState = ReturnType<typeof store.getState>
+export const store = configureStore({ reducer: { counter: counterReducer } });
+export type RootState = ReturnType<typeof store.getState>;
 ```
 
 Inferring the type means it updates automatically when you add a slice.
@@ -861,7 +861,7 @@ Inferring the type means it updates automatically when you add a slice.
 ### 36: How do you get the `AppDispatch` type and why do you need it?
 
 ```ts
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
 ```
 
 The default `Dispatch` type does not know about thunks. `AppDispatch` includes the types added by middleware, so `dispatch(someThunk())` is typed correctly and `dispatch(...).unwrap()` works.
@@ -872,12 +872,12 @@ Since React-Redux 9 you can use `.withTypes()`:
 
 ```ts
 // hooks.ts
-import { useDispatch, useSelector, useStore } from 'react-redux'
-import type { AppDispatch, AppStore, RootState } from './store'
+import { useDispatch, useSelector, useStore } from "react-redux";
+import type { AppDispatch, AppStore, RootState } from "./store";
 
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-export const useAppSelector = useSelector.withTypes<RootState>()
-export const useAppStore = useStore.withTypes<AppStore>()
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+export const useAppSelector = useSelector.withTypes<RootState>();
+export const useAppStore = useStore.withTypes<AppStore>();
 ```
 
 Use these hooks across the app instead of the plain ones so you don't have to type `state` every time.
@@ -891,8 +891,8 @@ A browser extension that shows every dispatched action, the state after each act
 ```ts
 const store = configureStore({
   reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== 'production',
-})
+  devTools: process.env.NODE_ENV !== "production",
+});
 ```
 
 You can also pass an options object, for example `devTools: { name: 'MyApp', maxAge: 50 }`.
@@ -903,11 +903,11 @@ Middleware sits between `dispatch` and the reducer. Each dispatched action passe
 
 ```ts
 const logger: Middleware = (storeApi) => (next) => (action) => {
-  console.log('dispatching', action)
-  const result = next(action)
-  console.log('next state', storeApi.getState())
-  return result
-}
+  console.log("dispatching", action);
+  const result = next(action);
+  console.log("next state", storeApi.getState());
+  return result;
+};
 ```
 
 ### 41: Which middleware does `configureStore` add by default?
@@ -926,9 +926,8 @@ Pass a callback to `middleware`, call `getDefaultMiddleware()` and add yours wit
 ```ts
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(logger),
-})
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+});
 ```
 
 In RTK 2.0 the `middleware` option must be a callback. The old array form was removed.
@@ -942,12 +941,14 @@ In RTK 2.0 the `middleware` option must be a callback. The old array form was re
 A thunk is a function you dispatch instead of an action object. The thunk middleware calls it with `dispatch` and `getState`, so you can run async code and dispatch actions when you are done.
 
 ```ts
-export const fetchUser = (id: string): AppThunk => async (dispatch) => {
-  dispatch(userLoading())
-  const res = await fetch(`/api/users/${id}`)
-  const user = await res.json()
-  dispatch(userLoaded(user))
-}
+export const fetchUser =
+  (id: string): AppThunk =>
+  async (dispatch) => {
+    dispatch(userLoading());
+    const res = await fetch(`/api/users/${id}`);
+    const user = await res.json();
+    dispatch(userLoaded(user));
+  };
 ```
 
 ### 45: How do you type a thunk manually?
@@ -955,14 +956,14 @@ export const fetchUser = (id: string): AppThunk => async (dispatch) => {
 Define an `AppThunk` type in your store file:
 
 ```ts
-import type { Action, ThunkAction } from '@reduxjs/toolkit'
+import type { Action, ThunkAction } from "@reduxjs/toolkit";
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
   unknown,
   Action
->
+>;
 ```
 
 ### 46: What is `createAsyncThunk`?
@@ -970,10 +971,10 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 A helper for async requests. You give it an action type prefix and an async function. It returns a thunk that dispatches `pending` before the call, then `fulfilled` with the result or `rejected` with the error.
 
 ```ts
-export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-  const res = await fetch('/api/todos')
-  return (await res.json()) as Todo[]
-})
+export const fetchTodos = createAsyncThunk("todos/fetchTodos", async () => {
+  const res = await fetch("/api/todos");
+  return (await res.json()) as Todo[];
+});
 ```
 
 ### 47: Which actions does `createAsyncThunk` dispatch?
@@ -992,32 +993,32 @@ Use `extraReducers` with the builder callback.
 
 ```ts
 interface TodosState {
-  items: Todo[]
-  status: 'idle' | 'loading' | 'succeeded' | 'failed'
-  error: string | null
+  items: Todo[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
 }
 
-const initialState: TodosState = { items: [], status: 'idle', error: null }
+const initialState: TodosState = { items: [], status: "idle", error: null };
 
 const todosSlice = createSlice({
-  name: 'todos',
+  name: "todos",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchTodos.pending, (state) => {
-        state.status = 'loading'
+        state.status = "loading";
       })
       .addCase(fetchTodos.fulfilled, (state, action) => {
-        state.status = 'succeeded'
-        state.items = action.payload
+        state.status = "succeeded";
+        state.items = action.payload;
       })
       .addCase(fetchTodos.rejected, (state, action) => {
-        state.status = 'failed'
-        state.error = action.error.message ?? 'Something went wrong'
-      })
+        state.status = "failed";
+        state.error = action.error.message ?? "Something went wrong";
+      });
   },
-})
+});
 ```
 
 ### 49: What is the difference between `reducers` and `extraReducers` in `createSlice`?
@@ -1034,8 +1035,8 @@ const todosSlice = createSlice({
 It adds a reducer for one exact action type. You can pass an action creator or a type string.
 
 ```ts
-builder.addCase(userLoggedOut, () => initialState)
-builder.addCase('app/reset', () => initialState)
+builder.addCase(userLoggedOut, () => initialState);
+builder.addCase("app/reset", () => initialState);
 ```
 
 Using the action creator is better because TypeScript infers the action type from it.
@@ -1045,7 +1046,7 @@ Using the action creator is better because TypeScript infers the action type fro
 Use a single `status` field with a string union instead of several booleans:
 
 ```ts
-status: 'idle' | 'loading' | 'succeeded' | 'failed'
+status: "idle" | "loading" | "succeeded" | "failed";
 ```
 
 Booleans like `isLoading` and `isError` can end up in impossible combinations. One status field can only be in one state at a time.
@@ -1056,18 +1057,18 @@ A function from the thunk API that lets you reject with your own payload, for ex
 
 ```ts
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials: Credentials, { rejectWithValue }) => {
-    const res = await fetch('/api/login', {
-      method: 'POST',
+    const res = await fetch("/api/login", {
+      method: "POST",
       body: JSON.stringify(credentials),
-    })
+    });
     if (!res.ok) {
-      return rejectWithValue(await res.json())
+      return rejectWithValue(await res.json());
     }
-    return res.json()
+    return res.json();
   },
-)
+);
 ```
 
 In the `rejected` case, the value is in `action.payload`.
@@ -1079,12 +1080,12 @@ In the `rejected` case, the value is in `action.payload`.
 ```tsx
 const onSave = async () => {
   try {
-    const post = await dispatch(addPost(newPost)).unwrap()
-    navigate(`/posts/${post.id}`)
+    const post = await dispatch(addPost(newPost)).unwrap();
+    navigate(`/posts/${post.id}`);
   } catch (err) {
-    setError('Failed to save the post')
+    setError("Failed to save the post");
   }
-}
+};
 ```
 
 ### 55: What does `createAction` do?
@@ -1092,15 +1093,17 @@ const onSave = async () => {
 It creates an action creator for a given type.
 
 ```ts
-import { createAction } from '@reduxjs/toolkit'
+import { createAction } from "@reduxjs/toolkit";
 
-export const userLoggedOut = createAction('auth/userLoggedOut')
-export const itemAdded = createAction<{ id: string; name: string }>('cart/itemAdded')
+export const userLoggedOut = createAction("auth/userLoggedOut");
+export const itemAdded = createAction<{ id: string; name: string }>(
+  "cart/itemAdded",
+);
 
-itemAdded({ id: '1', name: 'Shoes' })
+itemAdded({ id: "1", name: "Shoes" });
 // { type: 'cart/itemAdded', payload: { id: '1', name: 'Shoes' } }
 
-itemAdded.type // 'cart/itemAdded'
+itemAdded.type; // 'cart/itemAdded'
 ```
 
 ### 56: What is a prepare callback?
@@ -1109,23 +1112,23 @@ A prepare callback lets you customize how the action is built from the arguments
 
 ```ts
 const todosSlice = createSlice({
-  name: 'todos',
+  name: "todos",
   initialState: [] as Todo[],
   reducers: {
     todoAdded: {
       reducer(state, action: PayloadAction<Todo>) {
-        state.push(action.payload)
+        state.push(action.payload);
       },
       prepare(text: string) {
         return {
           payload: { id: nanoid(), text, completed: false },
-        }
+        };
       },
     },
   },
-})
+});
 
-dispatch(todoAdded('Buy milk'))
+dispatch(todoAdded("Buy milk"));
 ```
 
 ### 57: What is `nanoid`?
@@ -1137,14 +1140,14 @@ A small function exported by RTK that generates random string IDs. It's handy fo
 A helper to write a reducer with the builder callback and Immer, without creating a slice. It's useful when the action creators are defined elsewhere.
 
 ```ts
-const increment = createAction('counter/increment')
-const incrementBy = createAction<number>('counter/incrementBy')
+const increment = createAction("counter/increment");
+const incrementBy = createAction<number>("counter/incrementBy");
 
 const counterReducer = createReducer(0, (builder) => {
   builder
     .addCase(increment, (state) => state + 1)
-    .addCase(incrementBy, (state, action) => state + action.payload)
-})
+    .addCase(incrementBy, (state, action) => state + action.payload);
+});
 ```
 
 Most of the time `createSlice` is the better choice.
@@ -1160,31 +1163,31 @@ Use RTK Query when you fetch and cache server data, which covers most API calls 
 ### 61: How do you define an API with `createApi`?
 
 ```ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface Post {
-  id: number
-  title: string
-  body: string
+  id: number;
+  title: string;
+  body: string;
 }
 
 export const api = createApi({
-  reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   endpoints: (build) => ({
     getPosts: build.query<Post[], void>({
-      query: () => 'posts',
+      query: () => "posts",
     }),
     getPost: build.query<Post, number>({
       query: (id) => `posts/${id}`,
     }),
-    addPost: build.mutation<Post, Omit<Post, 'id'>>({
-      query: (body) => ({ url: 'posts', method: 'POST', body }),
+    addPost: build.mutation<Post, Omit<Post, "id">>({
+      query: (body) => ({ url: "posts", method: "POST", body }),
     }),
   }),
-})
+});
 
-export const { useGetPostsQuery, useGetPostQuery, useAddPostMutation } = api
+export const { useGetPostsQuery, useGetPostQuery, useAddPostMutation } = api;
 ```
 
 ### 62: What is `fetchBaseQuery`?
@@ -1218,7 +1221,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
-})
+});
 ```
 
 The middleware is needed for caching, cache lifetimes, invalidation and polling.
@@ -1239,10 +1242,10 @@ Some of the most used fields:
 
 ```tsx
 function PostsList() {
-  const { data: posts = [], isLoading, isError } = useGetPostsQuery()
+  const { data: posts = [], isLoading, isError } = useGetPostsQuery();
 
-  if (isLoading) return <p>Loading...</p>
-  if (isError) return <p>Could not load posts</p>
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Could not load posts</p>;
 
   return (
     <ul>
@@ -1250,7 +1253,7 @@ function PostsList() {
         <li key={p.id}>{p.title}</li>
       ))}
     </ul>
-  )
+  );
 }
 ```
 
@@ -1267,25 +1270,25 @@ The hook returns a tuple: a trigger function and a result object.
 
 ```tsx
 function AddPostForm() {
-  const [addPost, { isLoading }] = useAddPostMutation()
-  const [title, setTitle] = useState('')
+  const [addPost, { isLoading }] = useAddPostMutation();
+  const [title, setTitle] = useState("");
 
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      await addPost({ title, body: '' }).unwrap()
-      setTitle('')
+      await addPost({ title, body: "" }).unwrap();
+      setTitle("");
     } catch (err) {
-      console.error('Failed to save post', err)
+      console.error("Failed to save post", err);
     }
-  }
+  };
 
   return (
     <form onSubmit={onSubmit}>
       <input value={title} onChange={(e) => setTitle(e.target.value)} />
       <button disabled={isLoading}>Save</button>
     </form>
-  )
+  );
 }
 ```
 
@@ -1295,19 +1298,19 @@ Tags connect queries and mutations for automatic refetching. A query says which 
 
 ```ts
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Post'],
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  tagTypes: ["Post"],
   endpoints: (build) => ({
     getPosts: build.query<Post[], void>({
-      query: () => 'posts',
-      providesTags: ['Post'],
+      query: () => "posts",
+      providesTags: ["Post"],
     }),
     addPost: build.mutation<Post, Partial<Post>>({
-      query: (body) => ({ url: 'posts', method: 'POST', body }),
-      invalidatesTags: ['Post'],
+      query: (body) => ({ url: "posts", method: "POST", body }),
+      invalidatesTags: ["Post"],
     }),
   }),
-})
+});
 ```
 
 ### 71: What is `tagTypes` for?
@@ -1330,11 +1333,11 @@ You can also invalidate tags with `dispatch(api.util.invalidateTags(['Post']))`.
 Use the `skip` option or pass `skipToken` as the argument.
 
 ```tsx
-import { skipToken } from '@reduxjs/toolkit/query/react'
+import { skipToken } from "@reduxjs/toolkit/query/react";
 
-const { data } = useGetUserQuery(userId ?? skipToken)
+const { data } = useGetUserQuery(userId ?? skipToken);
 // or
-const { data } = useGetUserQuery(userId!, { skip: !userId })
+const { data } = useGetUserQuery(userId!, { skip: !userId });
 ```
 
 `skipToken` is better with TypeScript because you don't need the `!` assertion.
@@ -1355,23 +1358,23 @@ getPosts: build.query<Post[], void>({
 A helper for storing collections of items in a normalized shape `{ ids: [], entities: {} }`. It generates reducer functions for adding, updating and removing items, and selectors for reading them.
 
 ```ts
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 interface Book {
-  id: string
-  title: string
+  id: string;
+  title: string;
 }
 
-const booksAdapter = createEntityAdapter<Book>()
+const booksAdapter = createEntityAdapter<Book>();
 
 const booksSlice = createSlice({
-  name: 'books',
+  name: "books",
   initialState: booksAdapter.getInitialState(),
   reducers: {
     bookAdded: booksAdapter.addOne,
     booksReceived: booksAdapter.setAll,
   },
-})
+});
 ```
 
 ### 76: What is normalized state?
@@ -1396,9 +1399,9 @@ An object `{ ids: [], entities: {} }`. You can pass extra fields to add them to 
 
 ```ts
 const initialState = booksAdapter.getInitialState({
-  status: 'idle' as 'idle' | 'loading',
+  status: "idle" as "idle" | "loading",
   error: null as string | null,
-})
+});
 // { ids: [], entities: {}, status: 'idle', error: null }
 ```
 
@@ -1422,9 +1425,9 @@ export const {
   selectAll: selectAllBooks,
   selectById: selectBookById,
   selectIds: selectBookIds,
-} = booksAdapter.getSelectors((state: RootState) => state.books)
+} = booksAdapter.getSelectors((state: RootState) => state.books);
 
-const book = useAppSelector((state) => selectBookById(state, bookId))
+const book = useAppSelector((state) => selectBookById(state, bookId));
 ```
 
 ### 80: What is `sortComparer` in `createEntityAdapter`?
@@ -1434,7 +1437,7 @@ A compare function that keeps the `ids` array sorted. It works like the function
 ```ts
 const booksAdapter = createEntityAdapter<Book>({
   sortComparer: (a, b) => a.title.localeCompare(b.title),
-})
+});
 ```
 
 `selectAll` will then return items in that order.
@@ -1446,7 +1449,7 @@ A function that tells the adapter which field is the ID. Use it when your items 
 ```ts
 const usersAdapter = createEntityAdapter({
   selectId: (user: User) => user.userId,
-})
+});
 ```
 
 ### 82: What is `createSelector`?
@@ -1454,16 +1457,16 @@ const usersAdapter = createEntityAdapter({
 A function from Reselect, re-exported by RTK, that creates memoized selectors. It takes input selectors and a result function. The result function only runs again when one of the inputs changes.
 
 ```ts
-import { createSelector } from '@reduxjs/toolkit'
+import { createSelector } from "@reduxjs/toolkit";
 
-const selectTodos = (state: RootState) => state.todos.items
-const selectFilter = (state: RootState) => state.todos.filter
+const selectTodos = (state: RootState) => state.todos.items;
+const selectFilter = (state: RootState) => state.todos.filter;
 
 export const selectVisibleTodos = createSelector(
   [selectTodos, selectFilter],
   (todos, filter) =>
-    filter === 'all' ? todos : todos.filter((t) => t.status === filter),
-)
+    filter === "all" ? todos : todos.filter((t) => t.status === filter),
+);
 ```
 
 ### 83: Why do selectors need memoization?
@@ -1487,7 +1490,7 @@ In development, it detects when state is mutated outside a reducer or between di
 Store a serializable form, like an ISO string or a timestamp number, and convert it when you display it.
 
 ```ts
-state.createdAt = new Date().toISOString()
+state.createdAt = new Date().toISOString();
 ```
 
 ### 88: When should you use Redux instead of React Context?
@@ -1571,7 +1574,7 @@ An option for `configureStore` to set the initial state of the store, for exampl
 const store = configureStore({
   reducer: rootReducer,
   preloadedState: { counter: { value: 10 } },
-})
+});
 ```
 
 ### 96: Can you use Redux Toolkit without React?
@@ -1584,9 +1587,9 @@ It registers a callback that runs after every dispatched action. It returns a fu
 
 ```ts
 const unsubscribe = store.subscribe(() => {
-  console.log(store.getState())
-})
-unsubscribe()
+  console.log(store.getState());
+});
+unsubscribe();
 ```
 
 ### 98: What are the three principles of Redux?
@@ -1620,7 +1623,7 @@ const store = configureStore({
     getDefaultMiddleware({
       thunk: { extraArgument: { apiClient } },
     }),
-})
+});
 ```
 
 ### 102: What does `dispatch` return when you dispatch a thunk?
@@ -1644,12 +1647,9 @@ todoToggled(state, action) {
 It builds a matcher that matches an action if it matches any of the given action creators. Use it with `addMatcher`.
 
 ```ts
-builder.addMatcher(
-  isAnyOf(todoAdded, todoDeleted, todoToggled),
-  (state) => {
-    state.lastUpdated = Date.now()
-  },
-)
+builder.addMatcher(isAnyOf(todoAdded, todoDeleted, todoToggled), (state) => {
+  state.lastUpdated = Date.now();
+});
 ```
 
 ### 105: Why is `createStore` deprecated?
@@ -1692,9 +1692,9 @@ Both create an API slice. The `/query/react` version also generates React hooks 
 A helper that adds `focus`, `visibilitychange`, `online` and `offline` event listeners and dispatches actions RTK Query uses for `refetchOnFocus` and `refetchOnReconnect`.
 
 ```ts
-import { setupListeners } from '@reduxjs/toolkit/query'
+import { setupListeners } from "@reduxjs/toolkit/query";
 
-setupListeners(store.dispatch)
+setupListeners(store.dispatch);
 ```
 
 ### 112: What is `refetchOnFocus`?
@@ -1702,7 +1702,7 @@ setupListeners(store.dispatch)
 An option that refetches subscribed queries when the browser window regains focus. You can set it on the API or per hook. It needs `setupListeners` to be called.
 
 ```ts
-useGetPostsQuery(undefined, { refetchOnFocus: true })
+useGetPostsQuery(undefined, { refetchOnFocus: true });
 ```
 
 ### 113: How do you poll data with RTK Query?
@@ -1710,7 +1710,7 @@ useGetPostsQuery(undefined, { refetchOnFocus: true })
 Use `pollingInterval` in milliseconds.
 
 ```tsx
-const { data } = useGetStatusQuery(jobId, { pollingInterval: 5000 })
+const { data } = useGetStatusQuery(jobId, { pollingInterval: 5000 });
 ```
 
 The polling stops when the component unmounts. Add `skipPollingIfUnfocused: true` to pause polling while the window is not focused.
@@ -1732,15 +1732,15 @@ Use `prepareHeaders` in `fetchBaseQuery`.
 
 ```ts
 const baseQuery = fetchBaseQuery({
-  baseUrl: '/api',
+  baseUrl: "/api",
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token
+    const token = (getState() as RootState).auth.token;
     if (token) {
-      headers.set('authorization', `Bearer ${token}`)
+      headers.set("authorization", `Bearer ${token}`);
     }
-    return headers
+    return headers;
   },
-})
+});
 ```
 
 ### 116: How do you send a POST request with a body and query params?
@@ -1781,15 +1781,15 @@ The hook's `error` can also be a `SerializedError` if something throws inside yo
 Call `.unwrap()` on the trigger result and use `try/catch`, or read `error` from the hook result.
 
 ```tsx
-const [deletePost, { error }] = useDeletePostMutation()
+const [deletePost, { error }] = useDeletePostMutation();
 
 const onDelete = async () => {
   try {
-    await deletePost(id).unwrap()
+    await deletePost(id).unwrap();
   } catch (err) {
-    toast.error('Could not delete the post')
+    toast.error("Could not delete the post");
   }
-}
+};
 ```
 
 ### 120: What is `useLazyQuery`?
@@ -1874,18 +1874,18 @@ Nothing changes. Each reducer returns its current state, so the state reference 
 Call the reducer with a state and an action and check the result.
 
 ```ts
-import reducer, { todoAdded } from './todosSlice'
+import reducer, { todoAdded } from "./todosSlice";
 
-test('adds a todo', () => {
-  const prev = { items: [] }
-  const next = reducer(prev, todoAdded({ id: '1', text: 'Test' }))
-  expect(next.items).toHaveLength(1)
-  expect(next.items[0].text).toBe('Test')
-})
+test("adds a todo", () => {
+  const prev = { items: [] };
+  const next = reducer(prev, todoAdded({ id: "1", text: "Test" }));
+  expect(next.items).toHaveLength(1);
+  expect(next.items[0].text).toBe("Test");
+});
 
-test('returns the initial state', () => {
-  expect(reducer(undefined, { type: 'unknown' })).toEqual({ items: [] })
-})
+test("returns the initial state", () => {
+  expect(reducer(undefined, { type: "unknown" })).toEqual({ items: [] });
+});
 ```
 
 ### 132: How do you test an action creator?
@@ -1894,9 +1894,9 @@ Check the object it returns.
 
 ```ts
 expect(incrementByAmount(5)).toEqual({
-  type: 'counter/incrementByAmount',
+  type: "counter/incrementByAmount",
   payload: 5,
-})
+});
 ```
 
 Usually it's more useful to test the reducer and the store together than action creators alone.
@@ -1915,8 +1915,8 @@ React-Redux 9.x. It supports React 18 and 19 and uses `useSyncExternalStore` int
 
 ```ts
 builder.addCase(fetchPost.pending, (state, action) => {
-  state.loadingId = action.meta.arg
-})
+  state.loadingId = action.meta.arg;
+});
 ```
 
 ### 136: What is `action.meta.requestId`?
@@ -1929,14 +1929,14 @@ The payload creator takes only one argument, so pass an object.
 
 ```ts
 export const fetchComments = createAsyncThunk(
-  'comments/fetch',
+  "comments/fetch",
   async ({ postId, page }: { postId: string; page: number }) => {
-    const res = await fetch(`/api/posts/${postId}/comments?page=${page}`)
-    return res.json()
+    const res = await fetch(`/api/posts/${postId}/comments?page=${page}`);
+    return res.json();
   },
-)
+);
 
-dispatch(fetchComments({ postId: '42', page: 2 }))
+dispatch(fetchComments({ postId: "42", page: 2 }));
 ```
 
 ### 138: How do you get the state inside a `createAsyncThunk`?
@@ -1945,12 +1945,12 @@ Use `getState` from the second argument.
 
 ```ts
 export const saveDraft = createAsyncThunk(
-  'editor/saveDraft',
+  "editor/saveDraft",
   async (_, { getState }) => {
-    const { editor } = getState() as RootState
-    await api.saveDraft(editor.content)
+    const { editor } = getState() as RootState;
+    await api.saveDraft(editor.content);
   },
-)
+);
 ```
 
 Using `createAsyncThunk.withTypes` avoids the type cast. That's covered in the moderate section.
@@ -1960,16 +1960,16 @@ Using `createAsyncThunk.withTypes` avoids the type cast. That's covered in the m
 Use `extraReducers`.
 
 ```ts
-import { userLoggedOut } from '../auth/authSlice'
+import { userLoggedOut } from "../auth/authSlice";
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
-  reducers: { /* ... */ },
+  reducers: {/* ... */},
   extraReducers: (builder) => {
-    builder.addCase(userLoggedOut, () => initialState)
+    builder.addCase(userLoggedOut, () => initialState);
   },
-})
+});
 ```
 
 ### 140: What does `builder.addDefaultCase` do?
@@ -2007,14 +2007,14 @@ No. RTK Query dedupes requests. Both components subscribe to the same cache entr
 Narrow the error type first:
 
 ```tsx
-const { error } = useGetPostQuery(id)
+const { error } = useGetPostQuery(id);
 
 if (error) {
-  if ('status' in error) {
-    const message = 'error' in error ? error.error : JSON.stringify(error.data)
-    return <p>Error: {message}</p>
+  if ("status" in error) {
+    const message = "error" in error ? error.error : JSON.stringify(error.data);
+    return <p>Error: {message}</p>;
   }
-  return <p>{error.message}</p>
+  return <p>{error.message}</p>;
 }
 ```
 
@@ -2029,21 +2029,21 @@ The query has data from a successful request. It stays `true` while refetching i
 Yes. Each hook manages its own cache entry and status.
 
 ```tsx
-const { data: user } = useGetUserQuery(userId)
-const { data: posts } = useGetPostsByUserQuery(userId)
+const { data: user } = useGetUserQuery(userId);
+const { data: posts } = useGetPostsByUserQuery(userId);
 ```
 
 ### 147: What is the `AppStore` type and when do you need it?
 
 ```ts
-export type AppStore = typeof store
+export type AppStore = typeof store;
 ```
 
 Or, when you create the store with a function:
 
 ```ts
-export const makeStore = () => configureStore({ reducer: rootReducer })
-export type AppStore = ReturnType<typeof makeStore>
+export const makeStore = () => configureStore({ reducer: rootReducer });
+export type AppStore = ReturnType<typeof makeStore>;
 ```
 
 You need it for typed `useStore`, test helpers and frameworks like Next.js where you create a store per request.
@@ -2053,10 +2053,10 @@ You need it for typed `useStore`, test helpers and frameworks like Next.js where
 Import the store and call `store.dispatch`.
 
 ```ts
-import { store } from './app/store'
-import { sessionExpired } from './features/auth/authSlice'
+import { store } from "./app/store";
+import { sessionExpired } from "./features/auth/authSlice";
 
-store.dispatch(sessionExpired())
+store.dispatch(sessionExpired());
 ```
 
 Be careful with importing the store directly from modules that the store itself imports. It can create circular imports. Passing the store or using the thunk extra argument is often cleaner.
@@ -2077,23 +2077,23 @@ RTK 2.0 added a `selectors` field. Each selector receives the slice state as its
 
 ```ts
 const counterSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState: { value: 0 },
   reducers: {
     increment(state) {
-      state.value += 1
+      state.value += 1;
     },
   },
   selectors: {
     selectValue: (sliceState) => sliceState.value,
     selectIsPositive: (sliceState) => sliceState.value > 0,
   },
-})
+});
 
-export const { selectValue, selectIsPositive } = counterSlice.selectors
+export const { selectValue, selectIsPositive } = counterSlice.selectors;
 
 // in a component
-const value = useAppSelector(selectValue)
+const value = useAppSelector(selectValue);
 ```
 
 The wrapped selectors look up the slice state at `rootState[slice.reducerPath]`.
@@ -2104,11 +2104,11 @@ It is the key where the slice is expected to live in the root state. It defaults
 
 ```ts
 const slice = createSlice({
-  name: 'user/settings',
-  reducerPath: 'settings',
+  name: "user/settings",
+  reducerPath: "settings",
   initialState,
   reducers: {},
-})
+});
 ```
 
 Action types use `name` (`'user/settings/...'`), while `slice.selectors` read from `state.settings`. `combineSlices` also uses `reducerPath` as the key.
@@ -2122,7 +2122,7 @@ Action types use `name` (`'user/settings/...'`), while `slice.selectors` read fr
 ```ts
 const { selectValue } = counterSlice.getSelectors(
   (state: RootState) => state.nested.counter,
-)
+);
 ```
 
 ### 154: How do selectors with extra arguments work in `slice.selectors`?
@@ -2143,20 +2143,20 @@ Instead of an object, you can pass a function that receives a `create` helper. I
 
 ```ts
 const todosSlice = createSlice({
-  name: 'todos',
+  name: "todos",
   initialState: { items: [] as Todo[] },
   reducers: (create) => ({
     deleteTodo: create.reducer<string>((state, action) => {
-      state.items = state.items.filter((t) => t.id !== action.payload)
+      state.items = state.items.filter((t) => t.id !== action.payload);
     }),
     addTodo: create.preparedReducer(
       (text: string) => ({ payload: { id: nanoid(), text, completed: false } }),
       (state, action) => {
-        state.items.push(action.payload)
+        state.items.push(action.payload);
       },
     ),
   }),
-})
+});
 ```
 
 The callback form makes TypeScript inference for prepared reducers easier, since the prepare and reducer are linked.
@@ -2166,41 +2166,45 @@ The callback form makes TypeScript inference for prepared reducers easier, since
 Use `create.asyncThunk`. It isn't included by default because it would pull `createAsyncThunk` into every bundle, so you build a custom `createSlice` with `buildCreateSlice`:
 
 ```ts
-import { asyncThunkCreator, buildCreateSlice } from '@reduxjs/toolkit'
+import { asyncThunkCreator, buildCreateSlice } from "@reduxjs/toolkit";
 
 export const createAppSlice = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
-})
+});
 
 const todosSlice = createAppSlice({
-  name: 'todos',
-  initialState: { items: [] as Todo[], loading: false, error: null as string | null },
+  name: "todos",
+  initialState: {
+    items: [] as Todo[],
+    loading: false,
+    error: null as string | null,
+  },
   reducers: (create) => ({
     fetchTodo: create.asyncThunk(
       async (id: string, thunkApi) => {
-        const res = await fetch(`/api/todos/${id}`)
-        if (!res.ok) return thunkApi.rejectWithValue('Request failed')
-        return (await res.json()) as Todo
+        const res = await fetch(`/api/todos/${id}`);
+        if (!res.ok) return thunkApi.rejectWithValue("Request failed");
+        return (await res.json()) as Todo;
       },
       {
         pending: (state) => {
-          state.loading = true
+          state.loading = true;
         },
         rejected: (state, action) => {
-          state.error = (action.payload as string) ?? 'Unknown error'
+          state.error = (action.payload as string) ?? "Unknown error";
         },
         fulfilled: (state, action) => {
-          state.items.push(action.payload)
+          state.items.push(action.payload);
         },
         settled: (state) => {
-          state.loading = false
+          state.loading = false;
         },
       },
     ),
   }),
-})
+});
 
-export const { fetchTodo } = todosSlice.actions
+export const { fetchTodo } = todosSlice.actions;
 ```
 
 `settled` runs after both `fulfilled` and `rejected`.
@@ -2210,12 +2214,12 @@ export const { fetchTodo } = todosSlice.actions
 A function added in RTK 2.0 that builds a root reducer from slices, RTK Query APIs and reducer maps. It uses each slice's `reducerPath` as the key, and the result can have more slices injected later.
 
 ```ts
-import { combineSlices } from '@reduxjs/toolkit'
+import { combineSlices } from "@reduxjs/toolkit";
 
 export const rootReducer = combineSlices(counterSlice, authSlice, api, {
   legacy: legacyReducer,
-})
-export type RootState = ReturnType<typeof rootReducer>
+});
+export type RootState = ReturnType<typeof rootReducer>;
 ```
 
 ### 158: How do you inject a slice later with `combineSlices`?
@@ -2224,12 +2228,16 @@ Call `rootReducer.inject(slice)` or `slice.injectInto(rootReducer)`. The store p
 
 ```ts
 // features/reports/reportsSlice.ts
-import { rootReducer } from '../../app/rootReducer'
+import { rootReducer } from "../../app/rootReducer";
 
-const reportsSlice = createSlice({ name: 'reports', initialState, reducers: {} })
+const reportsSlice = createSlice({
+  name: "reports",
+  initialState,
+  reducers: {},
+});
 
-export const injectedReportsSlice = reportsSlice.injectInto(rootReducer)
-export const { selectReports } = injectedReportsSlice.selectors
+export const injectedReportsSlice = reportsSlice.injectInto(rootReducer);
+export const { selectReports } = injectedReportsSlice.selectors;
 ```
 
 This lets you load reducers together with lazy-loaded routes.
@@ -2242,13 +2250,14 @@ Declare them with `withLazyLoadedSlices` and the `WithSlice` helper type. The st
 // rootReducer.ts
 export interface LazyLoadedSlices {}
 
-export const rootReducer = combineSlices(counterSlice).withLazyLoadedSlices<LazyLoadedSlices>()
+export const rootReducer =
+  combineSlices(counterSlice).withLazyLoadedSlices<LazyLoadedSlices>();
 
 // reportsSlice.ts
-declare module '../../app/rootReducer' {
+declare module "../../app/rootReducer" {
   export interface LazyLoadedSlices extends WithSlice<typeof reportsSlice> {}
 }
-const injected = reportsSlice.injectInto(rootReducer)
+const injected = reportsSlice.injectInto(rootReducer);
 ```
 
 The module augmentation keeps the root file from importing every lazy slice.
@@ -2260,7 +2269,7 @@ Selectors from an injected slice (`injectedSlice.selectors`) handle that case: i
 ```ts
 const selectReportCount = rootReducer.selector(
   (state) => state.reports.items.length,
-)
+);
 ```
 
 ### 161: What does the second argument to the `createAsyncThunk` payload creator contain?
@@ -2283,10 +2292,10 @@ const fetchItems = createAsyncThunk<
   Item[],
   void,
   { fulfilledMeta: { fromCache: boolean } }
->('items/fetch', async (_, { fulfillWithValue }) => {
-  const items = await loadItems()
-  return fulfillWithValue(items, { fromCache: false })
-})
+>("items/fetch", async (_, { fulfillWithValue }) => {
+  const items = await loadItems();
+  return fulfillWithValue(items, { fromCache: false });
+});
 ```
 
 ### 163: How do you type `createAsyncThunk` with generics?
@@ -2297,14 +2306,19 @@ The generics are `<Returned, ThunkArg, ThunkApiConfig>`.
 const updateUser = createAsyncThunk<
   User,
   { id: string; changes: Partial<User> },
-  { state: RootState; dispatch: AppDispatch; rejectValue: ApiError; extra: { apiClient: ApiClient } }
->('users/update', async ({ id, changes }, { extra, rejectWithValue }) => {
-  try {
-    return await extra.apiClient.updateUser(id, changes)
-  } catch (err) {
-    return rejectWithValue(toApiError(err))
+  {
+    state: RootState;
+    dispatch: AppDispatch;
+    rejectValue: ApiError;
+    extra: { apiClient: ApiClient };
   }
-})
+>("users/update", async ({ id, changes }, { extra, rejectWithValue }) => {
+  try {
+    return await extra.apiClient.updateUser(id, changes);
+  } catch (err) {
+    return rejectWithValue(toApiError(err));
+  }
+});
 ```
 
 ### 164: What is `createAsyncThunk.withTypes()`?
@@ -2314,17 +2328,20 @@ It creates a pre-typed version of `createAsyncThunk` so you don't have to repeat
 ```ts
 // app/withTypes.ts
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
-  state: RootState
-  dispatch: AppDispatch
-  rejectValue: string
-  extra: { apiClient: ApiClient }
-}>()
+  state: RootState;
+  dispatch: AppDispatch;
+  rejectValue: string;
+  extra: { apiClient: ApiClient };
+}>();
 
 // in a feature
-export const fetchPosts = createAppAsyncThunk('posts/fetch', async (_, { getState }) => {
-  const { posts } = getState() // typed as RootState
-  // ...
-})
+export const fetchPosts = createAppAsyncThunk(
+  "posts/fetch",
+  async (_, { getState }) => {
+    const { posts } = getState(); // typed as RootState
+    // ...
+  },
+);
 ```
 
 ### 165: What is the `condition` option of `createAsyncThunk`?
@@ -2333,16 +2350,16 @@ A function that runs before the payload creator. If it returns `false`, the thun
 
 ```ts
 export const fetchUser = createAsyncThunk(
-  'users/fetch',
+  "users/fetch",
   async (id: string) => api.getUser(id),
   {
     condition: (id, { getState }) => {
-      const { users } = getState() as RootState
-      const status = users.statusById[id]
-      if (status === 'loading' || status === 'succeeded') return false
+      const { users } = getState() as RootState;
+      const status = users.statusById[id];
+      if (status === "loading" || status === "succeeded") return false;
     },
   },
-)
+);
 ```
 
 It can also be async.
@@ -2357,17 +2374,17 @@ The promise returned from `dispatch` has an `abort()` method. It rejects the thu
 
 ```tsx
 useEffect(() => {
-  const promise = dispatch(fetchResults(query))
-  return () => promise.abort()
-}, [query, dispatch])
+  const promise = dispatch(fetchResults(query));
+  return () => promise.abort();
+}, [query, dispatch]);
 
 export const fetchResults = createAsyncThunk(
-  'search/fetchResults',
+  "search/fetchResults",
   async (query: string, { signal }) => {
-    const res = await fetch(`/api/search?q=${query}`, { signal })
-    return res.json()
+    const res = await fetch(`/api/search?q=${query}`, { signal });
+    return res.json();
   },
-)
+);
 ```
 
 ### 168: How can you tell in a reducer that a thunk was aborted?
@@ -2376,9 +2393,9 @@ The `rejected` action has `action.meta.aborted === true`, and `action.error.name
 
 ```ts
 builder.addCase(fetchResults.rejected, (state, action) => {
-  if (action.meta.aborted) return
-  state.error = action.error.message ?? null
-})
+  if (action.meta.aborted) return;
+  state.error = action.error.message ?? null;
+});
 ```
 
 ### 169: What does `serializeError` do in `createAsyncThunk`?
@@ -2386,12 +2403,12 @@ builder.addCase(fetchResults.rejected, (state, action) => {
 When the payload creator throws, RTK turns the error into a plain object with `name`, `message`, `stack` and `code` using `miniSerializeError`. Pass `serializeError` to change that, for example to keep extra fields from a custom error class.
 
 ```ts
-createAsyncThunk('x', payloadCreator, {
+createAsyncThunk("x", payloadCreator, {
   serializeError: (err) => ({
     message: (err as Error).message,
     code: (err as AppError).code,
   }),
-})
+});
 ```
 
 Using `rejectWithValue` is usually simpler.
@@ -2405,9 +2422,9 @@ A function to create the `requestId` instead of the default `nanoid`. It receive
 A function in the thunk options that returns extra fields to merge into `pending` action's `meta`. It receives `{ arg, requestId }` and `{ getState, extra }`.
 
 ```ts
-createAsyncThunk('items/fetch', payloadCreator, {
+createAsyncThunk("items/fetch", payloadCreator, {
   getPendingMeta: () => ({ startedAt: Date.now() }),
-})
+});
 ```
 
 ### 172: How do you prevent an older request from overwriting newer data?
@@ -2417,14 +2434,14 @@ Save the `requestId` when the request starts and ignore results from other reque
 ```ts
 builder
   .addCase(search.pending, (state, action) => {
-    state.currentRequestId = action.meta.requestId
-    state.loading = true
+    state.currentRequestId = action.meta.requestId;
+    state.loading = true;
   })
   .addCase(search.fulfilled, (state, action) => {
-    if (state.currentRequestId !== action.meta.requestId) return
-    state.results = action.payload
-    state.loading = false
-  })
+    if (state.currentRequestId !== action.meta.requestId) return;
+    state.results = action.payload;
+    state.loading = false;
+  });
 ```
 
 Aborting the previous promise is another option.
@@ -2436,11 +2453,11 @@ Matcher helpers for async thunk actions. With no arguments, they match any thunk
 ```ts
 builder
   .addMatcher(isPending(fetchPosts, fetchComments), (state) => {
-    state.loading = true
+    state.loading = true;
   })
   .addMatcher(isRejected, (state, action) => {
-    state.lastError = action.error.message
-  })
+    state.lastError = action.error.message;
+  });
 ```
 
 There are also `isAsyncThunkAction` and `isRejectedWithValue`.
@@ -2451,11 +2468,11 @@ It adds a reducer that runs for every action where the matcher function returns 
 
 ```ts
 builder.addMatcher(
-  (action: UnknownAction) => action.type.endsWith('/rejected'),
+  (action: UnknownAction) => action.type.endsWith("/rejected"),
   (state) => {
-    state.errorCount += 1
+    state.errorCount += 1;
   },
-)
+);
 ```
 
 ### 175: In what order must you call the builder methods?
@@ -2469,10 +2486,10 @@ It matches rejected thunk actions where the payload was set with `rejectWithValu
 ```ts
 export const rtkQueryErrorLogger: Middleware = () => (next) => (action) => {
   if (isRejectedWithValue(action)) {
-    console.warn('Async error', action.payload)
+    console.warn("Async error", action.payload);
   }
-  return next(action)
-}
+  return next(action);
+};
 ```
 
 ### 177: How do you write a typed custom middleware in RTK 2.x?
@@ -2480,16 +2497,16 @@ export const rtkQueryErrorLogger: Middleware = () => (next) => (action) => {
 In Redux 5 the `action` and `next` are typed as `unknown`, so you narrow the action before reading it.
 
 ```ts
-import type { Middleware } from '@reduxjs/toolkit'
-import { isAction } from '@reduxjs/toolkit'
+import type { Middleware } from "@reduxjs/toolkit";
+import { isAction } from "@reduxjs/toolkit";
 
 export const analyticsMiddleware: Middleware<{}, RootState> =
   (storeApi) => (next) => (action) => {
-    if (isAction(action) && action.type.startsWith('cart/')) {
-      track(action.type, storeApi.getState().cart.items.length)
+    if (isAction(action) && action.type.startsWith("cart/")) {
+      track(action.type, storeApi.getState().cart.items.length);
     }
-    return next(action)
-  }
+    return next(action);
+  };
 ```
 
 Using `someAction.match(action)` gives you a fully typed payload.
@@ -2517,10 +2534,22 @@ middleware: (getDefaultMiddleware) =>
 `redux-persist` dispatches actions with functions in them, so ignore those action types in the serializability check.
 
 ```ts
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-const persistedReducer = persistReducer({ key: 'root', storage, whitelist: ['auth'] }, rootReducer)
+const persistedReducer = persistReducer(
+  { key: "root", storage, whitelist: ["auth"] },
+  rootReducer,
+);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -2530,9 +2559,9 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-})
+});
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 ```
 
 Usually you should not persist the RTK Query cache.
@@ -2542,10 +2571,10 @@ Usually you should not persist the RTK Query cache.
 ```ts
 getDefaultMiddleware({
   immutableCheck: {
-    ignoredPaths: ['bigData.rows'],
+    ignoredPaths: ["bigData.rows"],
     warnAfter: 128,
   },
-})
+});
 ```
 
 For very large states it can be slow in development. Ignore the large paths or turn it off with `immutableCheck: false`.
@@ -2555,12 +2584,12 @@ For very large states it can be slow in development. Ignore the large paths or t
 `Tuple` is an array subclass that keeps the type of each item. `getDefaultMiddleware()` returns one. TypeScript loses per-item types with plain arrays, so the store's `dispatch` type wouldn't know about thunks. If you build the list yourself, wrap it in `Tuple`:
 
 ```ts
-import { Tuple } from '@reduxjs/toolkit'
+import { Tuple } from "@reduxjs/toolkit";
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: () => new Tuple(thunk, logger),
-})
+});
 ```
 
 ### 182: How do you add a store enhancer in RTK 2.x?
@@ -2570,8 +2599,9 @@ Use the `enhancers` callback with `getDefaultEnhancers`.
 ```ts
 const store = configureStore({
   reducer: rootReducer,
-  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(sentryEnhancer),
-})
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers().concat(sentryEnhancer),
+});
 ```
 
 Don't drop the defaults. They include `applyMiddleware` and `autoBatchEnhancer`, and without them your middleware won't run.
@@ -2613,16 +2643,17 @@ export const makeStore = (apiClient = realApiClient) =>
   configureStore({
     reducer: rootReducer,
     middleware: (gDM) => gDM({ thunk: { extraArgument: { apiClient } } }),
-  })
+  });
 
 // thunk
-export const loadUser = createAppAsyncThunk('user/load', async (id: string, { extra }) =>
-  extra.apiClient.getUser(id),
-)
+export const loadUser = createAppAsyncThunk(
+  "user/load",
+  async (id: string, { extra }) => extra.apiClient.getUser(id),
+);
 
 // test
-const store = makeStore(fakeApiClient)
-await store.dispatch(loadUser('1'))
+const store = makeStore(fakeApiClient);
+await store.dispatch(loadUser("1"));
 ```
 
 ### 186: What is the listener middleware?
@@ -2630,22 +2661,22 @@ await store.dispatch(loadUser('1'))
 `createListenerMiddleware` creates a middleware that runs "effect" callbacks when matching actions are dispatched. It is RTK's simpler alternative to sagas and observables for reactive side effects.
 
 ```ts
-import { createListenerMiddleware } from '@reduxjs/toolkit'
+import { createListenerMiddleware } from "@reduxjs/toolkit";
 
-export const listenerMiddleware = createListenerMiddleware()
+export const listenerMiddleware = createListenerMiddleware();
 
 listenerMiddleware.startListening({
   actionCreator: todoAdded,
   effect: async (action, listenerApi) => {
-    await saveToServer(action.payload)
-    listenerApi.dispatch(todoSaved(action.payload.id))
+    await saveToServer(action.payload);
+    listenerApi.dispatch(todoSaved(action.payload.id));
   },
-})
+});
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (gDM) => gDM().prepend(listenerMiddleware.middleware),
-})
+});
 ```
 
 ### 187: What are the ways to choose which actions a listener runs for?
@@ -2664,9 +2695,9 @@ startListening({
   predicate: (action, currentState, previousState) =>
     currentState.settings.theme !== previousState.settings.theme,
   effect: (action, api) => {
-    localStorage.setItem('theme', api.getState().settings.theme)
+    localStorage.setItem("theme", api.getState().settings.theme);
   },
-})
+});
 ```
 
 ### 188: What does the `listenerApi` give you inside an effect?
@@ -2694,11 +2725,11 @@ Cancel previous runs and wait.
 startAppListening({
   actionCreator: searchTextChanged,
   effect: async (action, listenerApi) => {
-    listenerApi.cancelActiveListeners()
-    await listenerApi.delay(300)
-    listenerApi.dispatch(searchApi.endpoints.search.initiate(action.payload))
+    listenerApi.cancelActiveListeners();
+    await listenerApi.delay(300);
+    listenerApi.dispatch(searchApi.endpoints.search.initiate(action.payload));
   },
-})
+});
 ```
 
 If a new action comes in during the delay, the previous effect is cancelled and its `delay` throws a `TaskAbortError`, which the middleware handles quietly.
@@ -2712,11 +2743,11 @@ Both pause the effect until something happens.
 
 ```ts
 effect: async (action, listenerApi) => {
-  const result = await listenerApi.take(paymentConfirmed.match, 30_000)
+  const result = await listenerApi.take(paymentConfirmed.match, 30_000);
   if (!result) {
-    listenerApi.dispatch(paymentTimedOut())
+    listenerApi.dispatch(paymentTimedOut());
   }
-}
+};
 ```
 
 ### 192: How do you add a listener from a component?
@@ -2730,9 +2761,9 @@ useEffect(() => {
       actionCreator: notificationReceived,
       effect: (action) => showToast(action.payload.message),
     }),
-  )
-  return unsubscribe
-}, [dispatch])
+  );
+  return unsubscribe;
+}, [dispatch]);
 ```
 
 ### 193: How do you type the listener middleware?
@@ -2740,14 +2771,14 @@ useEffect(() => {
 Create pre-typed versions of `startListening` and `addListener`.
 
 ```ts
-export const listenerMiddleware = createListenerMiddleware()
+export const listenerMiddleware = createListenerMiddleware();
 
 export const startAppListening = listenerMiddleware.startListening.withTypes<
   RootState,
   AppDispatch
->()
+>();
 
-export const addAppListener = addListener.withTypes<RootState, AppDispatch>()
+export const addAppListener = addListener.withTypes<RootState, AppDispatch>();
 ```
 
 ### 194: How do you remove a listener?
@@ -2790,19 +2821,19 @@ Use `setAll` when a response is the full list, and `setMany` when it's one page 
 ### 198: How do you combine an entity adapter with `createAsyncThunk`?
 
 ```ts
-const postsAdapter = createEntityAdapter<Post>()
+const postsAdapter = createEntityAdapter<Post>();
 
 const initialState = postsAdapter.getInitialState({
-  status: 'idle' as 'idle' | 'loading' | 'failed',
-})
+  status: "idle" as "idle" | "loading" | "failed",
+});
 
-export const fetchPosts = createAppAsyncThunk('posts/fetch', async () => {
-  const res = await fetch('/api/posts')
-  return (await res.json()) as Post[]
-})
+export const fetchPosts = createAppAsyncThunk("posts/fetch", async () => {
+  const res = await fetch("/api/posts");
+  return (await res.json()) as Post[];
+});
 
 const postsSlice = createSlice({
-  name: 'posts',
+  name: "posts",
   initialState,
   reducers: {
     postAdded: postsAdapter.addOne,
@@ -2810,14 +2841,14 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state) => {
-        state.status = 'loading'
+        state.status = "loading";
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
-        state.status = 'idle'
-        postsAdapter.setAll(state, action.payload)
-      })
+        state.status = "idle";
+        postsAdapter.setAll(state, action.payload);
+      });
   },
-})
+});
 ```
 
 ### 199: Are the adapter selectors memoized?
@@ -2830,15 +2861,15 @@ In RTK 2.0 the adapter infers the ID type from `selectId`. `EntityState` takes t
 
 ```ts
 interface Product {
-  sku: number
-  name: string
+  sku: number;
+  name: string;
 }
 
 const productsAdapter = createEntityAdapter({
   selectId: (p: Product) => p.sku,
-})
+});
 
-type ProductsState = EntityState<Product, number>
+type ProductsState = EntityState<Product, number>;
 ```
 
 ### 201: What are input selectors and output selectors in `createSelector`?
@@ -2856,9 +2887,9 @@ Arguments are passed to every input selector. Add an input selector that returns
 export const selectPostsByUser = createSelector(
   [selectAllPosts, (state: RootState, userId: string) => userId],
   (posts, userId) => posts.filter((p) => p.userId === userId),
-)
+);
 
-const posts = useAppSelector((state) => selectPostsByUser(state, userId))
+const posts = useAppSelector((state) => selectPostsByUser(state, userId));
 ```
 
 ### 203: What changed in Reselect 5 memoization?
@@ -2866,12 +2897,12 @@ const posts = useAppSelector((state) => selectPostsByUser(state, userId))
 Reselect 5 uses `weakMapMemoize` by default instead of a cache of size 1. It keeps a cache tree keyed by the arguments, so calling the same selector with different arguments (for example from several components with different IDs) doesn't keep throwing away the cache. Old behavior is still available as `lruMemoize`.
 
 ```ts
-import { createSelector, lruMemoize } from '@reduxjs/toolkit'
+import { createSelector, lruMemoize } from "@reduxjs/toolkit";
 
 const selectX = createSelector([selectA], (a) => compute(a), {
   memoize: lruMemoize,
   memoizeOptions: { maxSize: 10 },
-})
+});
 ```
 
 ### 204: What is `createSelector.withTypes()`?
@@ -2879,12 +2910,12 @@ const selectX = createSelector([selectA], (a) => compute(a), {
 It creates a version of `createSelector` with the state type set, so you don't have to type `state` in every input selector.
 
 ```ts
-export const createAppSelector = createSelector.withTypes<RootState>()
+export const createAppSelector = createSelector.withTypes<RootState>();
 
 export const selectTodoCount = createAppSelector(
   [(state) => state.todos.items],
   (items) => items.length,
-)
+);
 ```
 
 ### 205: What dev checks do Reselect 5 and React-Redux 9 run on selectors?
@@ -2904,13 +2935,13 @@ Doing the work in an input selector instead of the result function:
 const selectDone = createSelector(
   [(state: RootState) => state.todos.filter((t) => t.done)],
   (done) => done.length,
-)
+);
 
 // Right
 const selectDone = createSelector(
   [(state: RootState) => state.todos],
   (todos) => todos.filter((t) => t.done).length,
-)
+);
 ```
 
 ### 207: What is `createDraftSafeSelector`?
@@ -2922,12 +2953,12 @@ A version of `createSelector` that works correctly when called with an Immer dra
 When your selector returns a new object built from several fields, and you don't want to use `createSelector`.
 
 ```tsx
-import { shallowEqual } from 'react-redux'
+import { shallowEqual } from "react-redux";
 
 const { name, email } = useAppSelector(
   (state) => ({ name: state.user.name, email: state.user.email }),
   shallowEqual,
-)
+);
 ```
 
 Often it's simpler to call `useSelector` twice.
@@ -3071,7 +3102,7 @@ const { post } = useGetPostsQuery(undefined, {
   selectFromResult: ({ data }) => ({
     post: data?.find((p) => p.id === postId),
   }),
-})
+});
 ```
 
 If you return a new derived array, use a memoized selector so the reference stays stable.
@@ -3085,7 +3116,7 @@ It controls whether a query refetches when a component mounts or the argument ch
 - A number - refetch if the cached data is older than that many seconds.
 
 ```ts
-useGetNotificationsQuery(undefined, { refetchOnMountOrArgChange: 30 })
+useGetNotificationsQuery(undefined, { refetchOnMountOrArgChange: 30 });
 ```
 
 ### 220: What is `injectEndpoints`?
@@ -3094,17 +3125,17 @@ It adds endpoints to an existing API later, usually from another file. This lets
 
 ```ts
 // features/users/usersApi.ts
-import { api } from '../../services/api'
+import { api } from "../../services/api";
 
 export const usersApi = api.injectEndpoints({
   endpoints: (build) => ({
     getUsers: build.query<User[], void>({
-      query: () => 'users',
+      query: () => "users",
     }),
   }),
-})
+});
 
-export const { useGetUsersQuery } = usersApi
+export const { useGetUsersQuery } = usersApi;
 ```
 
 ### 221: What is `enhanceEndpoints`?
@@ -3113,12 +3144,12 @@ It changes options on existing endpoints, like adding tags. This is most useful 
 
 ```ts
 const enhancedApi = generatedApi.enhanceEndpoints({
-  addTagTypes: ['User'],
+  addTagTypes: ["User"],
   endpoints: {
-    getUsers: { providesTags: ['User'] },
-    updateUser: { invalidatesTags: ['User'] },
+    getUsers: { providesTags: ["User"] },
+    updateUser: { invalidatesTags: ["User"] },
   },
-})
+});
 ```
 
 ### 222: What is `queryFn`?
@@ -3158,22 +3189,22 @@ getPost: build.query<Post, number>({
 Wrap the base query with `retry`.
 
 ```ts
-import { retry } from '@reduxjs/toolkit/query/react'
+import { retry } from "@reduxjs/toolkit/query/react";
 
-const baseQueryWithRetry = retry(fetchBaseQuery({ baseUrl: '/api' }), {
+const baseQueryWithRetry = retry(fetchBaseQuery({ baseUrl: "/api" }), {
   maxRetries: 3,
-})
+});
 
 export const api = createApi({
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({
-    getPosts: build.query<Post[], void>({ query: () => 'posts' }),
+    getPosts: build.query<Post[], void>({ query: () => "posts" }),
     login: build.mutation<Token, Credentials>({
-      query: (body) => ({ url: 'login', method: 'POST', body }),
+      query: (body) => ({ url: "login", method: "POST", body }),
       extraOptions: { maxRetries: 0 },
     }),
   }),
-})
+});
 ```
 
 It uses exponential backoff. Inside a custom base query, `retry.fail(error)` stops retrying right away.
@@ -3183,24 +3214,44 @@ It uses exponential backoff. Inside a custom base query, `retry.fail(error)` sto
 A base query is a function `(args, api, extraOptions) => { data } | { error }`.
 
 ```ts
-import type { BaseQueryFn } from '@reduxjs/toolkit/query'
-import axios, { type AxiosError, type AxiosRequestConfig } from 'axios'
+import type { BaseQueryFn } from "@reduxjs/toolkit/query";
+import axios, { type AxiosError, type AxiosRequestConfig } from "axios";
 
 const axiosBaseQuery =
-  ({ baseUrl }: { baseUrl: string }): BaseQueryFn<
-    { url: string; method?: AxiosRequestConfig['method']; data?: unknown; params?: unknown },
+  ({
+    baseUrl,
+  }: {
+    baseUrl: string;
+  }): BaseQueryFn<
+    {
+      url: string;
+      method?: AxiosRequestConfig["method"];
+      data?: unknown;
+      params?: unknown;
+    },
     unknown,
     { status?: number; data?: unknown }
   > =>
-  async ({ url, method = 'GET', data, params }, { signal }) => {
+  async ({ url, method = "GET", data, params }, { signal }) => {
     try {
-      const result = await axios({ url: baseUrl + url, method, data, params, signal })
-      return { data: result.data }
+      const result = await axios({
+        url: baseUrl + url,
+        method,
+        data,
+        params,
+        signal,
+      });
+      return { data: result.data };
     } catch (err) {
-      const error = err as AxiosError
-      return { error: { status: error.response?.status, data: error.response?.data ?? error.message } }
+      const error = err as AxiosError;
+      return {
+        error: {
+          status: error.response?.status,
+          data: error.response?.data ?? error.message,
+        },
+      };
     }
-  }
+  };
 ```
 
 Pass `signal` so RTK Query can cancel requests.
@@ -3227,9 +3278,9 @@ Set `credentials: 'include'` so the browser sends cookies on cross-origin reques
 
 ```ts
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://api.example.com',
-  credentials: 'include',
-})
+  baseUrl: "https://api.example.com",
+  credentials: "include",
+});
 ```
 
 ### 228: How do you upload a file with RTK Query?
@@ -3267,10 +3318,14 @@ By default every `useMutation` call has its own result. With `fixedCacheKey`, al
 
 ```tsx
 // Save button
-const [saveDraft, { isLoading }] = useSaveDraftMutation({ fixedCacheKey: 'save-draft' })
+const [saveDraft, { isLoading }] = useSaveDraftMutation({
+  fixedCacheKey: "save-draft",
+});
 
 // Status bar somewhere else
-const [, { isLoading: isSaving, isError }] = useSaveDraftMutation({ fixedCacheKey: 'save-draft' })
+const [, { isLoading: isSaving, isError }] = useSaveDraftMutation({
+  fixedCacheKey: "save-draft",
+});
 ```
 
 ### 231: What does `reset` do on a mutation result?
@@ -3278,14 +3333,14 @@ const [, { isLoading: isSaving, isError }] = useSaveDraftMutation({ fixedCacheKe
 It clears the mutation's result back to the uninitialized state, removing `data` and `error`. Use it after showing a success message or when the user closes a form.
 
 ```tsx
-const [addPost, { isSuccess, reset }] = useAddPostMutation()
+const [addPost, { isSuccess, reset }] = useAddPostMutation();
 
 useEffect(() => {
   if (isSuccess) {
-    const timer = setTimeout(reset, 3000)
-    return () => clearTimeout(timer)
+    const timer = setTimeout(reset, 3000);
+    return () => clearTimeout(timer);
   }
-}, [isSuccess, reset])
+}, [isSuccess, reset]);
 ```
 
 ### 232: How do you read cached query data outside of a hook?
@@ -3293,14 +3348,14 @@ useEffect(() => {
 Use the endpoint's `select` method. It creates a selector for a given argument.
 
 ```ts
-const selectPostsResult = api.endpoints.getPosts.select()
+const selectPostsResult = api.endpoints.getPosts.select();
 
 const selectPostsData = createSelector(
   [selectPostsResult],
   (result) => result.data ?? [],
-)
+);
 
-const posts = selectPostsData(store.getState())
+const posts = selectPostsData(store.getState());
 ```
 
 Reading doesn't start a request. If nothing fetched it yet, `data` is `undefined`.
@@ -3310,11 +3365,11 @@ Reading doesn't start a request. If nothing fetched it yet, `data` is `undefined
 Dispatch `initiate`. It returns a promise-like object that also adds a cache subscription.
 
 ```ts
-const promise = store.dispatch(api.endpoints.getPost.initiate(5))
+const promise = store.dispatch(api.endpoints.getPost.initiate(5));
 try {
-  const post = await promise.unwrap()
+  const post = await promise.unwrap();
 } finally {
-  promise.unsubscribe()
+  promise.unsubscribe();
 }
 ```
 
@@ -3325,7 +3380,12 @@ Call `unsubscribe()` when you are done, or pass `{ subscribe: false }` if you on
 For queries: `subscribe`, `forceRefetch`, `subscriptionOptions` (like `pollingInterval`) and for infinite queries `direction`. For mutations: `fixedCacheKey` and `track`.
 
 ```ts
-dispatch(api.endpoints.getPosts.initiate(undefined, { forceRefetch: true, subscribe: false }))
+dispatch(
+  api.endpoints.getPosts.initiate(undefined, {
+    forceRefetch: true,
+    subscribe: false,
+  }),
+);
 ```
 
 ### 235: What are `useQueryState` and `useQuerySubscription`?
@@ -3342,7 +3402,7 @@ You get them from `api.endpoints.getPosts.useQueryState(arg)`. `useQueryState` i
 Dispatch `api.util.invalidateTags`.
 
 ```ts
-dispatch(api.util.invalidateTags([{ type: 'Post', id: 'LIST' }]))
+dispatch(api.util.invalidateTags([{ type: "Post", id: "LIST" }]));
 ```
 
 It's useful after a websocket message tells you data changed, or from a listener.
@@ -3353,9 +3413,9 @@ Dispatch `api.util.resetApiState()`. This removes all queries and mutations from
 
 ```ts
 const logout = (): AppThunk => (dispatch) => {
-  dispatch(loggedOut())
-  dispatch(api.util.resetApiState())
-}
+  dispatch(loggedOut());
+  dispatch(api.util.resetApiState());
+};
 ```
 
 ### 238: What is `ApiProvider`?
@@ -3363,11 +3423,11 @@ const logout = (): AppThunk => (dispatch) => {
 A component that creates a small Redux store just for an RTK Query API. Use it only when your app doesn't have a Redux store and you only want RTK Query.
 
 ```tsx
-import { ApiProvider } from '@reduxjs/toolkit/query/react'
+import { ApiProvider } from "@reduxjs/toolkit/query/react";
 
 <ApiProvider api={api}>
   <App />
-</ApiProvider>
+</ApiProvider>;
 ```
 
 Don't use it together with an existing Redux `Provider`. Add the API to your store instead.
@@ -3381,8 +3441,8 @@ From the endpoint name and the serialized query argument, for example `getPost(5
 Pass `skipToken` to the second query until the first one has the value you need.
 
 ```tsx
-const { data: user } = useGetUserQuery(userId)
-const { data: projects } = useGetProjectsQuery(user?.orgId ?? skipToken)
+const { data: user } = useGetUserQuery(userId);
+const { data: projects } = useGetProjectsQuery(user?.orgId ?? skipToken);
 ```
 
 ### 241: What is the difference between `skip: true` and `skipToken`?
@@ -3437,12 +3497,12 @@ It controls when invalidated queries refetch.
 A promise-like object with `unwrap()`, `abort()`, `unsubscribe()`, `refetch()` and the `arg`. The second argument `preferCacheValue` returns cached data without a request if it exists.
 
 ```tsx
-const [getUser] = useLazyGetUserQuery()
+const [getUser] = useLazyGetUserQuery();
 
 const onSelect = async (id: string) => {
-  const user = await getUser(id, true).unwrap()
-  openProfile(user)
-}
+  const user = await getUser(id, true).unwrap();
+  openProfile(user);
+};
 ```
 
 ### 247: What are infinite queries in RTK Query?
@@ -3467,22 +3527,25 @@ The generics are `<PageResult, QueryArg, PageParam>`.
 ```tsx
 function PokemonList({ type }: { type: string }) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useGetPokemonInfiniteQuery(type)
+    useGetPokemonInfiniteQuery(type);
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <p>Loading...</p>;
 
-  const allPokemon = data?.pages.flat() ?? []
+  const allPokemon = data?.pages.flat() ?? [];
 
   return (
     <>
       {allPokemon.map((p) => (
         <div key={p.id}>{p.name}</div>
       ))}
-      <button disabled={!hasNextPage || isFetchingNextPage} onClick={() => fetchNextPage()}>
-        {isFetchingNextPage ? 'Loading...' : 'Load more'}
+      <button
+        disabled={!hasNextPage || isFetchingNextPage}
+        onClick={() => fetchNextPage()}
+      >
+        {isFetchingNextPage ? "Loading..." : "Load more"}
       </button>
     </>
-  )
+  );
 }
 ```
 
@@ -3526,14 +3589,14 @@ These can be set on `createApi` or per endpoint.
 ```ts
 // openapi-config.ts
 const config = {
-  schemaFile: 'https://api.example.com/openapi.json',
-  apiFile: './src/store/emptyApi.ts',
-  apiImport: 'emptySplitApi',
-  outputFile: './src/store/petApi.ts',
-  exportName: 'petApi',
+  schemaFile: "https://api.example.com/openapi.json",
+  apiFile: "./src/store/emptyApi.ts",
+  apiImport: "emptySplitApi",
+  outputFile: "./src/store/petApi.ts",
+  exportName: "petApi",
   hooks: true,
-}
-export default config
+};
+export default config;
 ```
 
 ```bash
@@ -3548,38 +3611,42 @@ Export a function that creates a new store, so each test gets a clean one.
 
 ```ts
 // store.ts
-const rootReducer = combineSlices(counterSlice, api)
-export type RootState = ReturnType<typeof rootReducer>
+const rootReducer = combineSlices(counterSlice, api);
+export type RootState = ReturnType<typeof rootReducer>;
 
 export const setupStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: rootReducer,
     preloadedState,
     middleware: (gDM) => gDM().concat(api.middleware),
-  })
+  });
 
-export type AppStore = ReturnType<typeof setupStore>
+export type AppStore = ReturnType<typeof setupStore>;
 ```
 
 ### 254: How do you write a `renderWithProviders` test helper?
 
 ```tsx
-import { render, type RenderOptions } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render, type RenderOptions } from "@testing-library/react";
+import { Provider } from "react-redux";
 
-interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: Partial<RootState>
-  store?: AppStore
+interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
+  preloadedState?: Partial<RootState>;
+  store?: AppStore;
 }
 
 export function renderWithProviders(
   ui: React.ReactElement,
-  { preloadedState = {}, store = setupStore(preloadedState), ...renderOptions }: ExtendedRenderOptions = {},
+  {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    ...renderOptions
+  }: ExtendedRenderOptions = {},
 ) {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
-  )
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
+  );
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
 ```
 
@@ -3612,12 +3679,12 @@ test('shows posts', async () => {
 Dispatch it against a real store and check the resulting state, with the network mocked by MSW or the API client passed through the extra argument.
 
 ```ts
-test('fetchTodos stores items', async () => {
-  const store = setupStore()
-  await store.dispatch(fetchTodos())
-  expect(store.getState().todos.items).toHaveLength(2)
-  expect(store.getState().todos.status).toBe('succeeded')
-})
+test("fetchTodos stores items", async () => {
+  const store = setupStore();
+  await store.dispatch(fetchTodos());
+  expect(store.getState().todos.items).toHaveLength(2);
+  expect(store.getState().todos.status).toBe("succeeded");
+});
 ```
 
 You can also check the returned action: `const action = await store.dispatch(fetchTodos()); expect(fetchTodos.fulfilled.match(action)).toBe(true)`.
@@ -3632,23 +3699,27 @@ export const makeStore = () =>
   configureStore({
     reducer: rootReducer,
     middleware: (gDM) => gDM().concat(api.middleware),
-  })
-export type AppStore = ReturnType<typeof makeStore>
-export type RootState = ReturnType<AppStore['getState']>
-export type AppDispatch = AppStore['dispatch']
+  });
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
 
 // app/StoreProvider.tsx
-'use client'
-import { useRef } from 'react'
-import { Provider } from 'react-redux'
-import { makeStore, type AppStore } from '../lib/store'
+("use client");
+import { useRef } from "react";
+import { Provider } from "react-redux";
+import { makeStore, type AppStore } from "../lib/store";
 
-export default function StoreProvider({ children }: { children: React.ReactNode }) {
-  const storeRef = useRef<AppStore | null>(null)
+export default function StoreProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const storeRef = useRef<AppStore | null>(null);
   if (!storeRef.current) {
-    storeRef.current = makeStore()
+    storeRef.current = makeStore();
   }
-  return <Provider store={storeRef.current}>{children}</Provider>
+  return <Provider store={storeRef.current}>{children}</Provider>;
 }
 ```
 
@@ -3659,13 +3730,19 @@ Wrap the app in `StoreProvider` from the root layout. Server Components should n
 Give `StoreProvider` a prop and dispatch it once when the store is created.
 
 ```tsx
-export default function StoreProvider({ count, children }: { count: number; children: React.ReactNode }) {
-  const storeRef = useRef<AppStore | null>(null)
+export default function StoreProvider({
+  count,
+  children,
+}: {
+  count: number;
+  children: React.ReactNode;
+}) {
+  const storeRef = useRef<AppStore | null>(null);
   if (!storeRef.current) {
-    storeRef.current = makeStore()
-    storeRef.current.dispatch(initializeCount(count))
+    storeRef.current = makeStore();
+    storeRef.current.dispatch(initializeCount(count));
   }
-  return <Provider store={storeRef.current}>{children}</Provider>
+  return <Provider store={storeRef.current}>{children}</Provider>;
 }
 ```
 
@@ -3683,14 +3760,14 @@ Step by step, without rewriting everything at once:
 
 ```tsx
 // Before
-const mapState = (state: RootState) => ({ todos: state.todos })
-const mapDispatch = { toggleTodo }
-export default connect(mapState, mapDispatch)(TodoList)
+const mapState = (state: RootState) => ({ todos: state.todos });
+const mapDispatch = { toggleTodo };
+export default connect(mapState, mapDispatch)(TodoList);
 
 // After
 export default function TodoList() {
-  const todos = useAppSelector((state) => state.todos)
-  const dispatch = useAppDispatch()
+  const todos = useAppSelector((state) => state.todos);
+  const dispatch = useAppDispatch();
   // dispatch(toggleTodo(id))
 }
 ```
@@ -3702,14 +3779,14 @@ export default function TodoList() {
 Wrap the root reducer and return `undefined` state for the logout action, so each slice reducer falls back to its initial state.
 
 ```ts
-const appReducer = combineSlices(authSlice, cartSlice, api)
+const appReducer = combineSlices(authSlice, cartSlice, api);
 
 export const rootReducer: typeof appReducer = (state, action) => {
   if (loggedOut.match(action)) {
-    return appReducer(undefined, action)
+    return appReducer(undefined, action);
   }
-  return appReducer(state, action)
-}
+  return appReducer(state, action);
+};
 ```
 
 Another option is for each slice to handle `loggedOut` in its own `extraReducers`, which is more explicit. For RTK Query, also dispatch `api.util.resetApiState()`.
@@ -3800,9 +3877,9 @@ For deep data, a library like `normalizr` can help.
 The item might not be loaded yet or might have been deleted, so always handle that case in the UI.
 
 ```tsx
-const post = useAppSelector((state) => selectPostById(state, postId))
+const post = useAppSelector((state) => selectPostById(state, postId));
 if (!post) {
-  return <p>Post not found</p>
+  return <p>Post not found</p>;
 }
 ```
 
@@ -3812,8 +3889,8 @@ It creates a matcher that only matches when all the given matchers match.
 
 ```ts
 const isRejectedPostAction = isAllOf(isRejected, (action: UnknownAction) =>
-  action.type.startsWith('posts/'),
-)
+  action.type.startsWith("posts/"),
+);
 ```
 
 ### 273: What does `isAsyncThunkAction` do?
@@ -3821,9 +3898,12 @@ const isRejectedPostAction = isAllOf(isRejected, (action: UnknownAction) =>
 It matches any action dispatched by a `createAsyncThunk` thunk (pending, fulfilled or rejected). With arguments, it only matches those thunks.
 
 ```ts
-builder.addMatcher(isAsyncThunkAction(fetchPosts, savePost), (state, action) => {
-  state.lastRequestId = action.meta.requestId
-})
+builder.addMatcher(
+  isAsyncThunkAction(fetchPosts, savePost),
+  (state, action) => {
+    state.lastRequestId = action.meta.requestId;
+  },
+);
 ```
 
 ### 274: What does the action creator check middleware catch?
@@ -3831,8 +3911,8 @@ builder.addMatcher(isAsyncThunkAction(fetchPosts, savePost), (state, action) => 
 It warns in development when you dispatch the action creator function instead of calling it:
 
 ```ts
-dispatch(increment)    // warning
-dispatch(increment())  // correct
+dispatch(increment); // warning
+dispatch(increment()); // correct
 ```
 
 Without the check, the thunk middleware would call `increment` as if it were a thunk, and nothing obvious would happen.
@@ -3843,18 +3923,21 @@ Every endpoint has matchers: `matchPending`, `matchFulfilled` and `matchRejected
 
 ```ts
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: { token: null as string | null, user: null as User | null },
   reducers: {
     loggedOut: () => ({ token: null, user: null }),
   },
   extraReducers: (builder) => {
-    builder.addMatcher(api.endpoints.login.matchFulfilled, (state, { payload }) => {
-      state.token = payload.token
-      state.user = payload.user
-    })
+    builder.addMatcher(
+      api.endpoints.login.matchFulfilled,
+      (state, { payload }) => {
+        state.token = payload.token;
+        state.user = payload.user;
+      },
+    );
   },
-})
+});
 ```
 
 ### 276: How do you stop polling when a condition is met?
@@ -3862,12 +3945,12 @@ const authSlice = createSlice({
 Make `pollingInterval` depend on the data.
 
 ```tsx
-const [stopped, setStopped] = useState(false)
-const { data } = useGetJobQuery(jobId, { pollingInterval: stopped ? 0 : 2000 })
+const [stopped, setStopped] = useState(false);
+const { data } = useGetJobQuery(jobId, { pollingInterval: stopped ? 0 : 2000 });
 
 useEffect(() => {
-  if (data?.status === 'done') setStopped(true)
-}, [data])
+  if (data?.status === "done") setStopped(true);
+}, [data]);
 ```
 
 Setting the interval to `0` turns polling off.
@@ -3923,10 +4006,10 @@ Yes. `api.endpoints.getPosts.useQuery()` is the same hook as `useGetPostsQuery()
 Use `void` as the argument type. The hook can then be called with no arguments.
 
 ```ts
-getPosts: build.query<Post[], void>({ query: () => 'posts' })
+getPosts: build.query<Post[], void>({ query: () => "posts" });
 
-useGetPostsQuery()
-useGetPostsQuery(undefined, { pollingInterval: 3000 })
+useGetPostsQuery();
+useGetPostsQuery(undefined, { pollingInterval: 3000 });
 ```
 
 ### 282: How do you set defaults for all endpoints in an API?
@@ -3935,14 +4018,14 @@ Pass them to `createApi`. Endpoints and hooks can override them.
 
 ```ts
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   keepUnusedDataFor: 120,
   refetchOnFocus: true,
   refetchOnReconnect: true,
   refetchOnMountOrArgChange: 30,
-  tagTypes: ['Post', 'User'],
+  tagTypes: ["Post", "User"],
   endpoints: () => ({}),
-})
+});
 ```
 
 ### 283: How do you download a file with RTK Query?
@@ -3975,13 +4058,15 @@ downloadReport: build.mutation<null, string>({
 The mutation result has `originalArgs`, which holds the arguments of the last call.
 
 ```tsx
-const [deletePost, { isLoading, originalArgs }] = useDeletePostMutation()
+const [deletePost, { isLoading, originalArgs }] = useDeletePostMutation();
 
-{posts.map((p) => (
-  <button key={p.id} onClick={() => deletePost(p.id)}>
-    {isLoading && originalArgs === p.id ? 'Deleting...' : 'Delete'}
-  </button>
-))}
+{
+  posts.map((p) => (
+    <button key={p.id} onClick={() => deletePost(p.id)}>
+      {isLoading && originalArgs === p.id ? "Deleting..." : "Delete"}
+    </button>
+  ));
+}
 ```
 
 ### 285: How do you create a memoized selector for derived RTK Query data inside a component?
@@ -3993,18 +4078,21 @@ function UserPosts({ userId }: { userId: string }) {
   const selectPostsForUser = useMemo(
     () =>
       createSelector(
-        [(res: { data?: Post[] }) => res.data, (_res: unknown, id: string) => id],
+        [
+          (res: { data?: Post[] }) => res.data,
+          (_res: unknown, id: string) => id,
+        ],
         (data, id) => data?.filter((p) => p.userId === id) ?? [],
       ),
     [],
-  )
+  );
 
   const { postsForUser } = useGetPostsQuery(undefined, {
     selectFromResult: (result) => ({
       ...result,
       postsForUser: selectPostsForUser(result, userId),
     }),
-  })
+  });
 }
 ```
 
@@ -4018,36 +4106,36 @@ Wrap `createSlice` in a function. Keep the types generic so the result is still 
 
 ```ts
 interface GenericState<T> {
-  data?: T
-  status: 'idle' | 'loading' | 'finished' | 'error'
+  data?: T;
+  status: "idle" | "loading" | "finished" | "error";
 }
 
 export const createGenericSlice = <
   T,
   Reducers extends SliceCaseReducers<GenericState<T>>,
 >({
-  name = '',
+  name = "",
   initialState,
   reducers,
 }: {
-  name: string
-  initialState: GenericState<T>
-  reducers: ValidateSliceCaseReducers<GenericState<T>, Reducers>
+  name: string;
+  initialState: GenericState<T>;
+  reducers: ValidateSliceCaseReducers<GenericState<T>, Reducers>;
 }) =>
   createSlice({
     name,
     initialState,
     reducers: {
       start(state) {
-        state.status = 'loading'
+        state.status = "loading";
       },
       success(state: GenericState<T>, action: PayloadAction<T>) {
-        state.data = action.payload
-        state.status = 'finished'
+        state.data = action.payload;
+        state.status = "finished";
       },
       ...reducers,
     },
-  })
+  });
 ```
 
 ### 288: When should you split state into multiple slices?
@@ -4060,12 +4148,12 @@ Define it once and handle it in each slice's `extraReducers`.
 
 ```ts
 // app/actions.ts
-export const appReset = createAction('app/reset')
+export const appReset = createAction("app/reset");
 
 // in each slice
 extraReducers: (builder) => {
-  builder.addCase(appReset, () => initialState)
-}
+  builder.addCase(appReset, () => initialState);
+};
 ```
 
 Or define it in one slice and import it into others.
@@ -4076,19 +4164,19 @@ Use a matcher in a UI slice.
 
 ```ts
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState: { pendingRequests: 0 },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addMatcher(isPending, (state) => {
-        state.pendingRequests += 1
+        state.pendingRequests += 1;
       })
       .addMatcher(isAnyOf(isFulfilled, isRejected), (state) => {
-        state.pendingRequests -= 1
-      })
+        state.pendingRequests -= 1;
+      });
   },
-})
+});
 ```
 
 Show a global spinner when `pendingRequests > 0`.
@@ -4100,11 +4188,11 @@ Use a middleware (or listener) with `isRejectedWithValue`.
 ```ts
 export const errorToastMiddleware: Middleware = () => (next) => (action) => {
   if (isRejectedWithValue(action)) {
-    const payload = action.payload as { data?: { message?: string } }
-    toast.error(payload.data?.message ?? 'Request failed')
+    const payload = action.payload as { data?: { message?: string } };
+    toast.error(payload.data?.message ?? "Request failed");
   }
-  return next(action)
-}
+  return next(action);
+};
 ```
 
 `rejectWithValue` covers server error responses. Errors thrown in your own code show up as `isRejected` without a value.
@@ -4119,13 +4207,13 @@ Declare an interface and type the variable, or use `as` on the initial value. Ot
 
 ```ts
 interface AuthState {
-  user: User | null
-  status: 'idle' | 'loading'
+  user: User | null;
+  status: "idle" | "loading";
 }
 
-const initialState: AuthState = { user: null, status: 'idle' }
+const initialState: AuthState = { user: null, status: "idle" };
 
-const authSlice = createSlice({ name: 'auth', initialState, reducers: {} })
+const authSlice = createSlice({ name: "auth", initialState, reducers: {} });
 ```
 
 ### 294: What is `AnyAction` and why should you stop using it?
@@ -4138,7 +4226,8 @@ The type of action creators made by `createAction` and `createSlice`. You rarely
 
 ```ts
 function logWhen<P>(creator: PayloadActionCreator<P>) {
-  return (action: UnknownAction) => creator.match(action) && console.log(action.payload)
+  return (action: UnknownAction) =>
+    creator.match(action) && console.log(action.payload);
 }
 ```
 
@@ -4152,16 +4241,16 @@ Store status by ID.
 
 ```ts
 interface UsersState {
-  statusById: Record<string, 'idle' | 'loading' | 'failed' | 'succeeded'>
+  statusById: Record<string, "idle" | "loading" | "failed" | "succeeded">;
 }
 
 builder
   .addCase(fetchUser.pending, (state, action) => {
-    state.statusById[action.meta.arg] = 'loading'
+    state.statusById[action.meta.arg] = "loading";
   })
   .addCase(fetchUser.fulfilled, (state, action) => {
-    state.statusById[action.meta.arg] = 'succeeded'
-  })
+    state.statusById[action.meta.arg] = "succeeded";
+  });
 ```
 
 RTK Query does this automatically per cache entry.
@@ -4171,20 +4260,21 @@ RTK Query does this automatically per cache entry.
 Read it as the preloaded state and save it with a listener.
 
 ```ts
-const saved = localStorage.getItem('settings')
+const saved = localStorage.getItem("settings");
 
 export const store = configureStore({
   reducer: rootReducer,
   preloadedState: saved ? { settings: JSON.parse(saved) } : undefined,
   middleware: (gDM) => gDM().prepend(listenerMiddleware.middleware),
-})
+});
 
 startAppListening({
-  predicate: (_action, current, previous) => current.settings !== previous.settings,
+  predicate: (_action, current, previous) =>
+    current.settings !== previous.settings,
   effect: (_action, api) => {
-    localStorage.setItem('settings', JSON.stringify(api.getState().settings))
+    localStorage.setItem("settings", JSON.stringify(api.getState().settings));
   },
-})
+});
 ```
 
 ### 299: What is the difference between `createAsyncThunk` returning a value and calling `fulfillWithValue`?
@@ -4291,41 +4381,44 @@ Two promises given to `onCacheEntryAdded`:
 Wrap the base query. On a 401, call the refresh endpoint, save the new token and retry. A mutex stops several parallel requests from all refreshing at once.
 
 ```ts
-import { Mutex } from 'async-mutex'
+import { Mutex } from "async-mutex";
 
-const mutex = new Mutex()
-const rawBaseQuery = fetchBaseQuery({ baseUrl: '/api', prepareHeaders })
+const mutex = new Mutex();
+const rawBaseQuery = fetchBaseQuery({ baseUrl: "/api", prepareHeaders });
 
-export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =
-  async (args, api, extraOptions) => {
-    await mutex.waitForUnlock()
-    let result = await rawBaseQuery(args, api, extraOptions)
+export const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  await mutex.waitForUnlock();
+  let result = await rawBaseQuery(args, api, extraOptions);
 
-    if (result.error?.status === 401) {
-      if (!mutex.isLocked()) {
-        const release = await mutex.acquire()
-        try {
-          const refresh = await rawBaseQuery(
-            { url: 'auth/refresh', method: 'POST' },
-            api,
-            extraOptions,
-          )
-          if (refresh.data) {
-            api.dispatch(tokenReceived(refresh.data as TokenResponse))
-            result = await rawBaseQuery(args, api, extraOptions)
-          } else {
-            api.dispatch(loggedOut())
-          }
-        } finally {
-          release()
+  if (result.error?.status === 401) {
+    if (!mutex.isLocked()) {
+      const release = await mutex.acquire();
+      try {
+        const refresh = await rawBaseQuery(
+          { url: "auth/refresh", method: "POST" },
+          api,
+          extraOptions,
+        );
+        if (refresh.data) {
+          api.dispatch(tokenReceived(refresh.data as TokenResponse));
+          result = await rawBaseQuery(args, api, extraOptions);
+        } else {
+          api.dispatch(loggedOut());
         }
-      } else {
-        await mutex.waitForUnlock()
-        result = await rawBaseQuery(args, api, extraOptions)
+      } finally {
+        release();
       }
+    } else {
+      await mutex.waitForUnlock();
+      result = await rawBaseQuery(args, api, extraOptions);
     }
-    return result
   }
+  return result;
+};
 ```
 
 ### 308: How do you call two different backends from one API?
@@ -4333,11 +4426,17 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
 Use a base query that picks the target based on the args, or use `queryFn` for the odd endpoints. Both still share one cache and one set of tags.
 
 ```ts
-const usersBaseQuery = fetchBaseQuery({ baseUrl: 'https://users.example.com' })
-const billingBaseQuery = fetchBaseQuery({ baseUrl: 'https://billing.example.com' })
+const usersBaseQuery = fetchBaseQuery({ baseUrl: "https://users.example.com" });
+const billingBaseQuery = fetchBaseQuery({
+  baseUrl: "https://billing.example.com",
+});
 
-const multiBaseQuery: BaseQueryFn<FetchArgs & { service?: 'users' | 'billing' }> = (args, api, extra) =>
-  args.service === 'billing' ? billingBaseQuery(args, api, extra) : usersBaseQuery(args, api, extra)
+const multiBaseQuery: BaseQueryFn<
+  FetchArgs & { service?: "users" | "billing" }
+> = (args, api, extra) =>
+  args.service === "billing"
+    ? billingBaseQuery(args, api, extra)
+    : usersBaseQuery(args, api, extra);
 ```
 
 If the two services don't share data or tags at all, two separate `createApi` instances are also fine.
@@ -4347,24 +4446,27 @@ If the two services don't share data or tags at all, two separate `createApi` in
 Write or use a GraphQL base query. There is an official one built on `graphql-request`:
 
 ```ts
-import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query'
-import { gql } from 'graphql-request'
+import { graphqlRequestBaseQuery } from "@rtk-query/graphql-request-base-query";
+import { gql } from "graphql-request";
 
 export const api = createApi({
-  baseQuery: graphqlRequestBaseQuery({ url: '/graphql' }),
+  baseQuery: graphqlRequestBaseQuery({ url: "/graphql" }),
   endpoints: (build) => ({
     getPosts: build.query<GetPostsResponse, { page: number }>({
       query: ({ page }) => ({
         document: gql`
           query GetPosts($page: Int) {
-            posts(page: $page) { id title }
+            posts(page: $page) {
+              id
+              title
+            }
           }
         `,
         variables: { page },
       }),
     }),
   }),
-})
+});
 ```
 
 GraphQL Codegen also has a plugin that generates RTK Query endpoints from your operations.
@@ -4374,10 +4476,20 @@ GraphQL Codegen also has a plugin that generates RTK Query endpoints from your o
 `createApi` is built from modules: `coreModule` (cache and thunks) and `reactHooksModule` (hooks). `buildCreateApi` lets you build your own `createApi`. A common reason is using a custom React-Redux context, so the hooks read from the right store:
 
 ```ts
-import { buildCreateApi, coreModule, reactHooksModule } from '@reduxjs/toolkit/query/react'
-import { createDispatchHook, createSelectorHook, createStoreHook } from 'react-redux'
+import {
+  buildCreateApi,
+  coreModule,
+  reactHooksModule,
+} from "@reduxjs/toolkit/query/react";
+import {
+  createDispatchHook,
+  createSelectorHook,
+  createStoreHook,
+} from "react-redux";
 
-export const MyContext = React.createContext<ReactReduxContextValue | null>(null)
+export const MyContext = React.createContext<ReactReduxContextValue | null>(
+  null,
+);
 
 export const createApi = buildCreateApi(
   coreModule(),
@@ -4388,7 +4500,7 @@ export const createApi = buildCreateApi(
       useStore: createStoreHook(MyContext),
     },
   }),
-)
+);
 ```
 
 ### 311: What happens if `injectEndpoints` adds an endpoint name that already exists?
@@ -4397,9 +4509,9 @@ By default the existing definition is kept and a warning is logged in developmen
 
 ```ts
 api.injectEndpoints({
-  endpoints: (build) => ({ /* ... */ }),
-  overrideExisting: process.env.NODE_ENV === 'development',
-})
+  endpoints: (build) => ({/* ... */}),
+  overrideExisting: process.env.NODE_ENV === "development",
+});
 ```
 
 ### 312: How do you code split both reducers and API endpoints for a lazy route?
@@ -4408,17 +4520,19 @@ Put both injections in the lazy-loaded module. When the route chunk loads, the s
 
 ```ts
 // features/admin/index.ts (loaded with React.lazy)
-import { rootReducer } from '../../app/rootReducer'
-import { api } from '../../services/api'
-import { adminSlice } from './adminSlice'
+import { rootReducer } from "../../app/rootReducer";
+import { api } from "../../services/api";
+import { adminSlice } from "./adminSlice";
 
-adminSlice.injectInto(rootReducer)
+adminSlice.injectInto(rootReducer);
 
 export const adminApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getAuditLog: build.query<AuditEntry[], void>({ query: () => 'admin/audit' }),
+    getAuditLog: build.query<AuditEntry[], void>({
+      query: () => "admin/audit",
+    }),
   }),
-})
+});
 ```
 
 The API's reducer and middleware are added once in the main bundle. Only the endpoint definitions are split.
@@ -4428,17 +4542,17 @@ The API's reducer and middleware are added once in the main bundle. Only the end
 An RTK 2.0 API that lets you add middleware after the store is created, for code-split features.
 
 ```ts
-import { createDynamicMiddleware } from '@reduxjs/toolkit'
+import { createDynamicMiddleware } from "@reduxjs/toolkit";
 
-export const dynamicMiddleware = createDynamicMiddleware()
+export const dynamicMiddleware = createDynamicMiddleware();
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (gDM) => gDM().prepend(dynamicMiddleware.middleware),
-})
+});
 
 // later, in a lazy-loaded feature
-dynamicMiddleware.addMiddleware(featureMiddleware)
+dynamicMiddleware.addMiddleware(featureMiddleware);
 ```
 
 Adding the same middleware twice is ignored, so it's safe to call from module top level. You can also dispatch `dynamicMiddleware.withMiddleware(mw)`, which adds it and returns the extended `dispatch`.
@@ -4448,14 +4562,14 @@ Adding the same middleware twice is ignored, so it's safe to call from module to
 Import from `@reduxjs/toolkit/react`. That version adds `createDispatchWithMiddlewareHook`, which adds the middleware and gives you a typed `dispatch`.
 
 ```ts
-import { createDynamicMiddleware } from '@reduxjs/toolkit/react'
+import { createDynamicMiddleware } from "@reduxjs/toolkit/react";
 
-export const dynamicMiddleware = createDynamicMiddleware()
+export const dynamicMiddleware = createDynamicMiddleware();
 export const useDispatchWithAnalytics =
-  dynamicMiddleware.createDispatchWithMiddlewareHook(analyticsMiddleware)
+  dynamicMiddleware.createDispatchWithMiddlewareHook(analyticsMiddleware);
 
 function Checkout() {
-  const dispatch = useDispatchWithAnalytics()
+  const dispatch = useDispatchWithAnalytics();
   // ...
 }
 ```
@@ -4470,16 +4584,16 @@ startAppListening({
   effect: async (action, listenerApi) => {
     const task = listenerApi.fork(async (forkApi) => {
       while (true) {
-        await forkApi.delay(5000)
-        const status = await forkApi.pause(api.fetchStatus())
-        listenerApi.dispatch(statusReceived(status))
+        await forkApi.delay(5000);
+        const status = await forkApi.pause(api.fetchStatus());
+        listenerApi.dispatch(statusReceived(status));
       }
-    })
+    });
 
-    await listenerApi.condition(pollingStopped.match)
-    task.cancel()
+    await listenerApi.condition(pollingStopped.match);
+    task.cancel();
   },
-})
+});
 ```
 
 The task's `result` promise resolves to `{ status: 'ok', value }`, `{ status: 'rejected', error }` or `{ status: 'cancelled', error }`.
@@ -4494,10 +4608,10 @@ The error that cancellation-aware methods throw when the effect or fork is cance
 
 ```ts
 try {
-  await listenerApi.delay(1000)
+  await listenerApi.delay(1000);
 } catch (err) {
-  if (err instanceof TaskAbortError) return
-  throw err
+  if (err instanceof TaskAbortError) return;
+  throw err;
 }
 ```
 
@@ -4510,9 +4624,9 @@ Errors thrown in an effect don't break the dispatch. They are passed to `onError
 ```ts
 export const listenerMiddleware = createListenerMiddleware({
   onError: (error, errorInfo) => {
-    Sentry.captureException(error, { extra: { raisedBy: errorInfo.raisedBy } })
+    Sentry.captureException(error, { extra: { raisedBy: errorInfo.raisedBy } });
   },
-})
+});
 ```
 
 `raisedBy` tells you whether the error came from the effect or the predicate.
@@ -4529,10 +4643,10 @@ Call `listenerApi.unsubscribe()` at the start of the effect.
 startAppListening({
   actionCreator: appLoaded,
   effect: async (action, listenerApi) => {
-    listenerApi.unsubscribe()
-    await initAnalytics()
+    listenerApi.unsubscribe();
+    await initAnalytics();
   },
-})
+});
 ```
 
 You can call `listenerApi.subscribe()` later to turn it back on. That makes "wait for X, do Y, then listen again" flows possible.
@@ -4545,26 +4659,28 @@ Use `take` and `condition` to wait for steps, and `cancelActiveListeners` to mak
 startAppListening({
   actionCreator: checkoutStarted,
   effect: async (action, listenerApi) => {
-    listenerApi.cancelActiveListeners()
+    listenerApi.cancelActiveListeners();
 
     const paymentResult = await listenerApi.take(
       isAnyOf(paymentSucceeded, paymentFailed),
       5 * 60_000,
-    )
+    );
     if (!paymentResult) {
-      listenerApi.dispatch(checkoutTimedOut())
-      return
+      listenerApi.dispatch(checkoutTimedOut());
+      return;
     }
 
-    const [paymentAction] = paymentResult
+    const [paymentAction] = paymentResult;
     if (paymentSucceeded.match(paymentAction)) {
-      await listenerApi.pause(orderService.confirm(paymentAction.payload.orderId))
-      listenerApi.dispatch(checkoutCompleted())
+      await listenerApi.pause(
+        orderService.confirm(paymentAction.payload.orderId),
+      );
+      listenerApi.dispatch(checkoutCompleted());
     } else {
-      listenerApi.dispatch(checkoutFailed())
+      listenerApi.dispatch(checkoutFailed());
     }
   },
-})
+});
 ```
 
 ### 322: How do you throttle with the listener middleware?
@@ -4575,28 +4691,28 @@ Ignore new actions while the effect is "cooling down". One way is to unsubscribe
 startAppListening({
   actionCreator: scrollPositionChanged,
   effect: async (action, listenerApi) => {
-    listenerApi.unsubscribe()
-    saveScrollPosition(action.payload)
-    await listenerApi.delay(500)
-    listenerApi.subscribe()
+    listenerApi.unsubscribe();
+    saveScrollPosition(action.payload);
+    await listenerApi.delay(500);
+    listenerApi.subscribe();
   },
-})
+});
 ```
 
 ### 323: How do Redux-Saga effects map to the listener middleware?
 
-| Saga | Listener |
-| --- | --- |
-| `takeEvery` | a normal `startListening` |
-| `takeLatest` | `cancelActiveListeners()` at the start of the effect |
-| `takeLeading` | `unsubscribe()` at the start, `subscribe()` at the end |
-| `take` | `listenerApi.take` |
-| `call` | `await` (or `listenerApi.pause` for cancellation) |
-| `put` | `listenerApi.dispatch` |
-| `select` | `listenerApi.getState` |
-| `fork` / `cancel` | `listenerApi.fork` / `task.cancel()` |
-| `delay` | `listenerApi.delay` |
-| `race` | `Promise.race` with `take` or `condition` |
+| Saga              | Listener                                               |
+| ----------------- | ------------------------------------------------------ |
+| `takeEvery`       | a normal `startListening`                              |
+| `takeLatest`      | `cancelActiveListeners()` at the start of the effect   |
+| `takeLeading`     | `unsubscribe()` at the start, `subscribe()` at the end |
+| `take`            | `listenerApi.take`                                     |
+| `call`            | `await` (or `listenerApi.pause` for cancellation)      |
+| `put`             | `listenerApi.dispatch`                                 |
+| `select`          | `listenerApi.getState`                                 |
+| `fork` / `cancel` | `listenerApi.fork` / `task.cancel()`                   |
+| `delay`           | `listenerApi.delay`                                    |
+| `race`            | `Promise.race` with `take` or `condition`              |
 
 The listener middleware uses async/await instead of generators, so it's easier to type and read.
 
@@ -4628,17 +4744,17 @@ On the client, create the store with that `preloadedState`. The hooks find the d
 A `createApi` option that tells RTK Query how to find its state inside a "hydrate" action from another library, like `next-redux-wrapper` (`HYDRATE`) or `redux-persist` (`REHYDRATE`).
 
 ```ts
-import { HYDRATE } from 'next-redux-wrapper'
+import { HYDRATE } from "next-redux-wrapper";
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
-      return (action as any).payload[reducerPath]
+      return (action as any).payload[reducerPath];
     }
   },
   endpoints: () => ({}),
-})
+});
 ```
 
 RTK Query then merges the hydrated entries correctly instead of you overwriting its state.
@@ -4752,9 +4868,11 @@ async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
 It applies Immer patches to a cache entry. `updateQueryData` returns `patches` and `inversePatches`, so you can store them and apply them later, for example to build undo/redo or to replay changes from another tab.
 
 ```ts
-const { inversePatches } = dispatch(api.util.updateQueryData('getTodos', undefined, recipe))
+const { inversePatches } = dispatch(
+  api.util.updateQueryData("getTodos", undefined, recipe),
+);
 // later
-dispatch(api.util.patchQueryData('getTodos', undefined, inversePatches))
+dispatch(api.util.patchQueryData("getTodos", undefined, inversePatches));
 ```
 
 ### 335: What is the `updateProvided` argument of `updateQueryData`?
@@ -4762,9 +4880,16 @@ dispatch(api.util.patchQueryData('getTodos', undefined, inversePatches))
 By default, manual cache updates don't recalculate the entry's provided tags. If your update adds or removes items (and so changes which tags the entry should provide), pass `true` as the fourth argument so `providesTags` runs again. Otherwise later invalidations might miss the new items.
 
 ```ts
-dispatch(api.util.updateQueryData('getPosts', undefined, (draft) => {
-  draft.push(newPost)
-}, true))
+dispatch(
+  api.util.updateQueryData(
+    "getPosts",
+    undefined,
+    (draft) => {
+      draft.push(newPost);
+    },
+    true,
+  ),
+);
 ```
 
 ### 336: What is `api.util.selectInvalidatedBy`?
@@ -4772,7 +4897,9 @@ dispatch(api.util.updateQueryData('getPosts', undefined, (draft) => {
 A selector that returns the cache entries that would be invalidated by a list of tags, without invalidating them. Each item has `endpointName`, `originalArgs` and `queryCacheKey`.
 
 ```ts
-const entries = api.util.selectInvalidatedBy(getState(), [{ type: 'Post', id: 5 }])
+const entries = api.util.selectInvalidatedBy(getState(), [
+  { type: "Post", id: 5 },
+]);
 // [{ endpointName: 'getPost', originalArgs: 5, queryCacheKey: 'getPost(5)' }, ...]
 ```
 
@@ -4781,7 +4908,7 @@ const entries = api.util.selectInvalidatedBy(getState(), [{ type: 'Post', id: 5 
 It returns all arguments currently in the cache for one endpoint. It's a simpler option than `selectInvalidatedBy` when you know the endpoint name.
 
 ```ts
-const pagesInCache = api.util.selectCachedArgsForQuery(getState(), 'getPosts')
+const pagesInCache = api.util.selectCachedArgsForQuery(getState(), "getPosts");
 // [{ page: 1 }, { page: 2 }]
 ```
 
@@ -4808,15 +4935,15 @@ Have the list component select only IDs and pass the ID to each row. Each row se
 function PostList() {
   const { ids } = useGetPostsQuery(undefined, {
     selectFromResult: ({ data }) => ({ ids: data?.ids ?? emptyIds }),
-  })
-  return ids.map((id) => <PostRow key={id} id={id} />)
+  });
+  return ids.map((id) => <PostRow key={id} id={id} />);
 }
 
 function PostRow({ id }: { id: number }) {
   const { post } = useGetPostsQuery(undefined, {
     selectFromResult: ({ data }) => ({ post: data?.entities[id] }),
-  })
-  return <div>{post?.title}</div>
+  });
+  return <div>{post?.title}</div>;
 }
 ```
 
@@ -4827,21 +4954,21 @@ This assumes the data is normalized with an entity adapter in `transformResponse
 Use `prepareAutoBatched` as the prepare callback. It adds `meta[SHOULD_AUTOBATCH] = true`.
 
 ```ts
-import { prepareAutoBatched } from '@reduxjs/toolkit'
+import { prepareAutoBatched } from "@reduxjs/toolkit";
 
 const cursorSlice = createSlice({
-  name: 'cursor',
+  name: "cursor",
   initialState: { x: 0, y: 0 },
   reducers: {
     cursorMoved: {
       reducer(state, action: PayloadAction<{ x: number; y: number }>) {
-        state.x = action.payload.x
-        state.y = action.payload.y
+        state.x = action.payload.x;
+        state.y = action.payload.y;
       },
       prepare: prepareAutoBatched<{ x: number; y: number }>(),
     },
   },
-})
+});
 ```
 
 The reducer still runs right away. Only the subscriber notification is delayed, so the UI updates once per frame instead of once per action. Any normal action dispatched in the meantime flushes the notification immediately.
@@ -4876,20 +5003,22 @@ Yes. Immer freezes the produced state with `Object.freeze` by default, in develo
 Use `BaseQueryFn<Args, Result, Error, DefinitionExtraOptions, Meta>`.
 
 ```ts
-import type { BaseQueryFn } from '@reduxjs/toolkit/query'
+import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 
-type Args = { url: string; method?: string; body?: unknown }
-type ApiError = { status: number; message: string }
-type Meta = { requestId: string }
+type Args = { url: string; method?: string; body?: unknown };
+type ApiError = { status: number; message: string };
+type Meta = { requestId: string };
 
-const customBaseQuery: BaseQueryFn<Args, unknown, ApiError, { retries?: number }, Meta> = async (
-  args,
-  api,
-  extraOptions,
-) => {
+const customBaseQuery: BaseQueryFn<
+  Args,
+  unknown,
+  ApiError,
+  { retries?: number },
+  Meta
+> = async (args, api, extraOptions) => {
   // ...
-  return { data: {}, meta: { requestId: '...' } }
-}
+  return { data: {}, meta: { requestId: "..." } };
+};
 ```
 
 The `Error` type becomes the `error` type in hooks, `extraOptions` type is checked on each endpoint, and `Meta` is passed to `transformResponse` and lifecycle callbacks.
@@ -4899,29 +5028,33 @@ The `Error` type becomes the `error` type in hooks, `extraOptions` type is check
 Write type guards and use them everywhere you show errors.
 
 ```ts
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
-export function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {
-  return typeof error === 'object' && error != null && 'status' in error
+export function isFetchBaseQueryError(
+  error: unknown,
+): error is FetchBaseQueryError {
+  return typeof error === "object" && error != null && "status" in error;
 }
 
-export function isErrorWithMessage(error: unknown): error is { message: string } {
+export function isErrorWithMessage(
+  error: unknown,
+): error is { message: string } {
   return (
-    typeof error === 'object' &&
+    typeof error === "object" &&
     error != null &&
-    'message' in error &&
-    typeof (error as { message: unknown }).message === 'string'
-  )
+    "message" in error &&
+    typeof (error as { message: unknown }).message === "string"
+  );
 }
 
 try {
-  await addPost(body).unwrap()
+  await addPost(body).unwrap();
 } catch (err) {
   if (isFetchBaseQueryError(err)) {
-    const msg = 'error' in err ? err.error : JSON.stringify(err.data)
-    showError(msg)
+    const msg = "error" in err ? err.error : JSON.stringify(err.data);
+    showError(msg);
   } else if (isErrorWithMessage(err)) {
-    showError(err.message)
+    showError(err.message);
   }
 }
 ```
@@ -4931,14 +5064,17 @@ try {
 Use the exported helper types, like `TypedUseQueryHookResult`, `TypedUseQueryStateResult` and `TypedUseMutationResult`.
 
 ```ts
-import type { TypedUseQueryHookResult } from '@reduxjs/toolkit/query/react'
+import type { TypedUseQueryHookResult } from "@reduxjs/toolkit/query/react";
 
-type PostsResult = TypedUseQueryHookResult<Post[], void, typeof baseQuery>
+type PostsResult = TypedUseQueryHookResult<Post[], void, typeof baseQuery>;
 
 export function usePublishedPosts(): PostsResult & { published: Post[] } {
-  const result = useGetPostsQuery()
-  const published = useMemo(() => result.data?.filter((p) => p.published) ?? [], [result.data])
-  return { ...result, published }
+  const result = useGetPostsQuery();
+  const published = useMemo(
+    () => result.data?.filter((p) => p.published) ?? [],
+    [result.data],
+  );
+  return { ...result, published };
 }
 ```
 
@@ -4947,21 +5083,24 @@ export function usePublishedPosts(): PostsResult & { published: Post[] } {
 The first generic of `Middleware` describes the dispatch extension. `configureStore` adds it to the store's `dispatch` type when the middleware is in a `Tuple`.
 
 ```ts
-type PromiseDispatch = (action: Promise<UnknownAction>) => Promise<UnknownAction>
+type PromiseDispatch = (
+  action: Promise<UnknownAction>,
+) => Promise<UnknownAction>;
 
-const promiseMiddleware: Middleware<PromiseDispatch, RootState> = (api) => (next) => (action) => {
-  if (action instanceof Promise) {
-    return action.then((resolved) => api.dispatch(resolved))
-  }
-  return next(action)
-}
+const promiseMiddleware: Middleware<PromiseDispatch, RootState> =
+  (api) => (next) => (action) => {
+    if (action instanceof Promise) {
+      return action.then((resolved) => api.dispatch(resolved));
+    }
+    return next(action);
+  };
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: (gDM) => gDM().concat(promiseMiddleware),
-})
+});
 
-store.dispatch(Promise.resolve(increment())) // typed
+store.dispatch(Promise.resolve(increment())); // typed
 ```
 
 Avoid importing `RootState` in a way that makes the types circular. If that happens, type the state in the middleware with only the fields it needs.
@@ -4972,26 +5111,26 @@ Pass an `extra` object to `createListenerMiddleware` and add it to `withTypes`.
 
 ```ts
 interface ListenerExtra {
-  analytics: AnalyticsClient
-  storage: StorageService
+  analytics: AnalyticsClient;
+  storage: StorageService;
 }
 
 export const listenerMiddleware = createListenerMiddleware({
   extra: { analytics, storage } satisfies ListenerExtra,
-})
+});
 
 export const startAppListening = listenerMiddleware.startListening.withTypes<
   RootState,
   AppDispatch,
   ListenerExtra
->()
+>();
 
 startAppListening({
   actionCreator: orderPlaced,
   effect: (action, { extra }) => {
-    extra.analytics.track('order_placed', action.payload)
+    extra.analytics.track("order_placed", action.payload);
   },
-})
+});
 ```
 
 In tests you create the middleware with fake services.
@@ -5029,20 +5168,20 @@ Don't import the store into the API module directly, since the store usually imp
 
 ```ts
 // apiClient.ts
-let store: AppStore | undefined
+let store: AppStore | undefined;
 
 export const injectStore = (s: AppStore) => {
-  store = s
-}
+  store = s;
+};
 
 apiClient.interceptors.request.use((config) => {
-  const token = store?.getState().auth.token
-  if (token) config.headers.Authorization = `Bearer ${token}`
-  return config
-})
+  const token = store?.getState().auth.token;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 // main.tsx
-injectStore(store)
+injectStore(store);
 ```
 
 Inside thunks and listeners prefer `getState` and `dispatch` from their arguments.
@@ -5052,12 +5191,16 @@ Inside thunks and listeners prefer `getState` and `dispatch` from their argument
 Either wrap the base query (see question 307), or use a middleware that watches rejected actions.
 
 ```ts
-export const unauthorizedMiddleware: Middleware = (api) => (next) => (action) => {
-  if (isRejectedWithValue(action) && (action.payload as FetchBaseQueryError)?.status === 401) {
-    api.dispatch(loggedOut())
-  }
-  return next(action)
-}
+export const unauthorizedMiddleware: Middleware =
+  (api) => (next) => (action) => {
+    if (
+      isRejectedWithValue(action) &&
+      (action.payload as FetchBaseQueryError)?.status === 401
+    ) {
+      api.dispatch(loggedOut());
+    }
+    return next(action);
+  };
 ```
 
 The base query approach is better when you want to refresh the token and retry. The middleware approach is simpler when a 401 always means "log out".
@@ -5068,13 +5211,13 @@ Keep the promise and abort it.
 
 ```tsx
 function Search() {
-  const dispatch = useAppDispatch()
-  const promiseRef = useRef<{ abort: () => void } | null>(null)
+  const dispatch = useAppDispatch();
+  const promiseRef = useRef<{ abort: () => void } | null>(null);
 
   const onChange = (q: string) => {
-    promiseRef.current?.abort()
-    promiseRef.current = dispatch(searchProducts(q))
-  }
+    promiseRef.current?.abort();
+    promiseRef.current = dispatch(searchProducts(q));
+  };
   // ...
 }
 ```
@@ -5090,9 +5233,9 @@ In development, Strict Mode mounts, unmounts and mounts components again, so eff
 
 ```ts
 useEffect(() => {
-  const promise = dispatch(fetchTodos())
-  return () => promise.abort()
-}, [dispatch])
+  const promise = dispatch(fetchTodos());
+  return () => promise.abort();
+}, [dispatch]);
 ```
 
 ### 356: How does `useSelector` work internally?
@@ -5109,9 +5252,9 @@ Use `store.replaceReducer` when the reducer module changes. With Vite:
 
 ```ts
 if (import.meta.hot) {
-  import.meta.hot.accept('./rootReducer', (newModule) => {
-    if (newModule) store.replaceReducer(newModule.rootReducer)
-  })
+  import.meta.hot.accept("./rootReducer", (newModule) => {
+    if (newModule) store.replaceReducer(newModule.rootReducer);
+  });
 }
 ```
 
@@ -5129,7 +5272,7 @@ It creates a custom `createSlice` with extra "creators" that become available in
 const selectDashboardSummary = rootReducer.selector((state) => ({
   reports: state.reports.items.length,
   alerts: state.alerts.unread,
-}))
+}));
 ```
 
 Remember to memoize if the selector returns a new object.
@@ -5139,10 +5282,10 @@ Remember to memoize if the selector returns a new object.
 No. They are just wrapped to find the slice state. If a selector returns derived data like a filtered array, wrap the logic in `createSelector` yourself.
 
 ```ts
-const selectTodos = (state: TodosState) => state.items
+const selectTodos = (state: TodosState) => state.items;
 
 const todosSlice = createSlice({
-  name: 'todos',
+  name: "todos",
   initialState,
   reducers: {},
   selectors: {
@@ -5150,7 +5293,7 @@ const todosSlice = createSlice({
       items.filter((t) => t.completed),
     ),
   },
-})
+});
 ```
 
 Since the wrapped version calls your selector with the slice state each time, memoization still works as long as the slice state reference doesn't change.
@@ -5175,17 +5318,17 @@ RTK 2.x ships modern ESM with `exports` in `package.json`, plus a CJS build. Bun
 Import from `@reduxjs/toolkit/query`, add the API to a store, and use the endpoint thunks and selectors.
 
 ```ts
-const sub = store.dispatch(api.endpoints.getPosts.initiate())
-const selectPosts = api.endpoints.getPosts.select()
+const sub = store.dispatch(api.endpoints.getPosts.initiate());
+const selectPosts = api.endpoints.getPosts.select();
 
 const unsubscribeStore = store.subscribe(() => {
-  const { data, isLoading } = selectPosts(store.getState())
-  render(data, isLoading)
-})
+  const { data, isLoading } = selectPosts(store.getState());
+  render(data, isLoading);
+});
 
 // on teardown
-sub.unsubscribe()
-unsubscribeStore()
+sub.unsubscribe();
+unsubscribeStore();
 ```
 
 Community packages exist that wrap this into framework-style hooks or signals.
@@ -5220,22 +5363,25 @@ With `'delayed'`, invalidated queries refetch only after all pending queries and
 `setupListeners` uses browser events by default. Pass a custom handler that uses `AppState` and `NetInfo`.
 
 ```ts
-import { AppState } from 'react-native'
-import NetInfo from '@react-native-community/netinfo'
+import { AppState } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 
-setupListeners(store.dispatch, (dispatch, { onFocus, onFocusLost, onOnline, onOffline }) => {
-  const appStateSub = AppState.addEventListener('change', (state) => {
-    if (state === 'active') dispatch(onFocus())
-    else dispatch(onFocusLost())
-  })
-  const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
-    dispatch(state.isConnected ? onOnline() : onOffline())
-  })
-  return () => {
-    appStateSub.remove()
-    unsubscribeNetInfo()
-  }
-})
+setupListeners(
+  store.dispatch,
+  (dispatch, { onFocus, onFocusLost, onOnline, onOffline }) => {
+    const appStateSub = AppState.addEventListener("change", (state) => {
+      if (state === "active") dispatch(onFocus());
+      else dispatch(onFocusLost());
+    });
+    const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+      dispatch(state.isConnected ? onOnline() : onOffline());
+    });
+    return () => {
+      appStateSub.remove();
+      unsubscribeNetInfo();
+    };
+  },
+);
 ```
 
 ### 371: Can you cancel an in-flight RTK Query request?
@@ -5243,12 +5389,12 @@ setupListeners(store.dispatch, (dispatch, { onFocus, onFocusLost, onOnline, onOf
 Yes, through the promise from `initiate` or a lazy trigger: `promise.abort()`. The `useQuery` hooks don't abort when a component unmounts. The request is left to finish so the result can be cached for the next user of that data. If you need cancellation, use the lazy hook and abort in an effect cleanup.
 
 ```tsx
-const [trigger] = useLazySearchQuery()
+const [trigger] = useLazySearchQuery();
 
 useEffect(() => {
-  const request = trigger(term)
-  return () => request.abort()
-}, [term, trigger])
+  const request = trigger(term);
+  return () => request.abort();
+}, [term, trigger]);
 ```
 
 ### 372: How do you support cancellation in a `queryFn`?
@@ -5284,11 +5430,16 @@ Avoid storing long-lived secrets in `localStorage` when you can use httpOnly coo
 Combine a root reducer reset with the API reset.
 
 ```ts
-export const logout = createAppAsyncThunk('auth/logout', async (_, { dispatch }) => {
-  await dispatch(api.endpoints.logout.initiate()).unwrap().catch(() => {})
-  dispatch(loggedOut())
-  dispatch(api.util.resetApiState())
-})
+export const logout = createAppAsyncThunk(
+  "auth/logout",
+  async (_, { dispatch }) => {
+    await dispatch(api.endpoints.logout.initiate())
+      .unwrap()
+      .catch(() => {});
+    dispatch(loggedOut());
+    dispatch(api.util.resetApiState());
+  },
+);
 ```
 
 With the root reducer resetting all slices on `loggedOut` (question 261), and `resetApiState` clearing the cache. Also cancel long-running listeners and close sockets that were started for the user, for example by having them `take(loggedOut.match)`.
@@ -5302,14 +5453,14 @@ With the root reducer resetting all slices on `loggedOut` (question 261), and `r
 
 ```tsx
 function TodoList() {
-  const ids = useAppSelector(selectTodoIds)
-  return ids.map((id) => <TodoRow key={id} id={id} />)
+  const ids = useAppSelector(selectTodoIds);
+  return ids.map((id) => <TodoRow key={id} id={id} />);
 }
 
 const TodoRow = memo(function TodoRow({ id }: { id: string }) {
-  const todo = useAppSelector((state) => selectTodoById(state, id))
-  return <li>{todo.text}</li>
-})
+  const todo = useAppSelector((state) => selectTodoById(state, id));
+  return <li>{todo.text}</li>;
+});
 ```
 
 Updating one todo then re-renders one row.
@@ -5330,11 +5481,13 @@ const makeSelectCommentsForPost = () =>
   createSelector(
     [selectAllComments, (_state: RootState, postId: string) => postId],
     (comments, postId) => comments.filter((c) => c.postId === postId),
-  )
+  );
 
 function Comments({ postId }: { postId: string }) {
-  const selectCommentsForPost = useMemo(makeSelectCommentsForPost, [])
-  const comments = useAppSelector((state) => selectCommentsForPost(state, postId))
+  const selectCommentsForPost = useMemo(makeSelectCommentsForPost, []);
+  const comments = useAppSelector((state) =>
+    selectCommentsForPost(state, postId),
+  );
 }
 ```
 
@@ -5346,33 +5499,52 @@ Wrap a slice reducer in a higher-order reducer that keeps past and future states
 
 ```ts
 interface History<T> {
-  past: T[]
-  present: T
-  future: T[]
+  past: T[];
+  present: T;
+  future: T[];
 }
 
-export const undo = createAction('history/undo')
-export const redo = createAction('history/redo')
+export const undo = createAction("history/undo");
+export const redo = createAction("history/redo");
 
-export function undoable<T>(reducer: Reducer<T>, limit = 50): Reducer<History<T>> {
-  const initial: History<T> = { past: [], present: reducer(undefined, { type: '@@INIT' }), future: [] }
+export function undoable<T>(
+  reducer: Reducer<T>,
+  limit = 50,
+): Reducer<History<T>> {
+  const initial: History<T> = {
+    past: [],
+    present: reducer(undefined, { type: "@@INIT" }),
+    future: [],
+  };
 
   return (state = initial, action) => {
-    const { past, present, future } = state
+    const { past, present, future } = state;
 
     if (undo.match(action)) {
-      if (past.length === 0) return state
-      return { past: past.slice(0, -1), present: past[past.length - 1], future: [present, ...future] }
+      if (past.length === 0) return state;
+      return {
+        past: past.slice(0, -1),
+        present: past[past.length - 1],
+        future: [present, ...future],
+      };
     }
     if (redo.match(action)) {
-      if (future.length === 0) return state
-      return { past: [...past, present], present: future[0], future: future.slice(1) }
+      if (future.length === 0) return state;
+      return {
+        past: [...past, present],
+        present: future[0],
+        future: future.slice(1),
+      };
     }
 
-    const newPresent = reducer(present, action)
-    if (newPresent === present) return state
-    return { past: [...past, present].slice(-limit), present: newPresent, future: [] }
-  }
+    const newPresent = reducer(present, action);
+    if (newPresent === present) return state;
+    return {
+      past: [...past, present].slice(-limit),
+      present: newPresent,
+      future: [],
+    };
+  };
 }
 ```
 
@@ -5383,26 +5555,28 @@ Because states are immutable, keeping old ones is cheap thanks to structural sha
 An enhancer wraps `createStore` and returns a store with changed behavior.
 
 ```ts
-import type { StoreEnhancer } from '@reduxjs/toolkit'
+import type { StoreEnhancer } from "@reduxjs/toolkit";
 
-export const timingEnhancer: StoreEnhancer = (createStore) => (reducer, preloadedState) => {
-  const store = createStore(reducer, preloadedState)
+export const timingEnhancer: StoreEnhancer =
+  (createStore) => (reducer, preloadedState) => {
+    const store = createStore(reducer, preloadedState);
 
-  const dispatch: typeof store.dispatch = (action) => {
-    const start = performance.now()
-    const result = store.dispatch(action)
-    const time = performance.now() - start
-    if (time > 16) console.warn('Slow dispatch', action, time)
-    return result
-  }
+    const dispatch: typeof store.dispatch = (action) => {
+      const start = performance.now();
+      const result = store.dispatch(action);
+      const time = performance.now() - start;
+      if (time > 16) console.warn("Slow dispatch", action, time);
+      return result;
+    };
 
-  return { ...store, dispatch }
-}
+    return { ...store, dispatch };
+  };
 
 configureStore({
   reducer: rootReducer,
-  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(timingEnhancer),
-})
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers().concat(timingEnhancer),
+});
 ```
 
 Most things can be done with middleware instead, which is simpler. Enhancers are for changing `getState`, `subscribe` or the store itself.
@@ -5432,25 +5606,29 @@ Run the socket in a listener (or a long-lived `onCacheEntryAdded`) and dispatch 
 startAppListening({
   actionCreator: socketMessageReceived,
   effect: (action, { dispatch, getState }) => {
-    const msg = action.payload
-    if (msg.kind !== 'post-updated') return
+    const msg = action.payload;
+    if (msg.kind !== "post-updated") return;
 
-    const affected = api.util.selectInvalidatedBy(getState(), [{ type: 'Post', id: msg.post.id }])
+    const affected = api.util.selectInvalidatedBy(getState(), [
+      { type: "Post", id: msg.post.id },
+    ]);
     for (const { endpointName, originalArgs } of affected) {
-      if (endpointName === 'getPost') {
-        dispatch(api.util.updateQueryData('getPost', originalArgs, () => msg.post))
-      }
-      if (endpointName === 'getPosts') {
+      if (endpointName === "getPost") {
         dispatch(
-          api.util.updateQueryData('getPosts', originalArgs, (draft) => {
-            const i = draft.findIndex((p) => p.id === msg.post.id)
-            if (i !== -1) draft[i] = msg.post
+          api.util.updateQueryData("getPost", originalArgs, () => msg.post),
+        );
+      }
+      if (endpointName === "getPosts") {
+        dispatch(
+          api.util.updateQueryData("getPosts", originalArgs, (draft) => {
+            const i = draft.findIndex((p) => p.id === msg.post.id);
+            if (i !== -1) draft[i] = msg.post;
           }),
-        )
+        );
       }
     }
   },
-})
+});
 ```
 
 If the message only says "something changed", invalidating the tag is simpler.
@@ -5495,8 +5673,8 @@ builder.addCase(saveTodo.fulfilled, (state, action) => {
   todosAdapter.updateOne(state, {
     id: action.meta.arg.tempId,
     changes: { id: action.payload.id, savedAt: action.payload.savedAt },
-  })
-})
+  });
+});
 ```
 
 Any other state that stores the temp ID (like a "selected item") needs to be updated too.
@@ -5507,16 +5685,16 @@ The draft has the shape `{ pages, pageParams }`, so find the item inside the pag
 
 ```ts
 dispatch(
-  api.util.updateQueryData('getFeed', undefined, (draft) => {
+  api.util.updateQueryData("getFeed", undefined, (draft) => {
     for (const page of draft.pages) {
-      const post = page.items.find((p) => p.id === id)
+      const post = page.items.find((p) => p.id === id);
       if (post) {
-        post.liked = true
-        break
+        post.liked = true;
+        break;
       }
     }
   }),
-)
+);
 ```
 
 Don't change `pageParams` unless you also change which pages are loaded.
@@ -5537,8 +5715,8 @@ Keep UI state (filters, sorting, selected IDs, current page) in a slice, and use
 
 ```tsx
 function ProductsPage() {
-  const filters = useAppSelector(selectProductFilters)
-  const { data, isFetching } = useGetProductsQuery(filters)
+  const filters = useAppSelector(selectProductFilters);
+  const { data, isFetching } = useGetProductsQuery(filters);
   // ...
 }
 ```
@@ -5569,12 +5747,12 @@ When the payload creator throws, RTK runs the error through `miniSerializeError`
 ```ts
 async (arg, { rejectWithValue }) => {
   try {
-    return (await client.post('/orders', arg)).data
+    return (await client.post("/orders", arg)).data;
   } catch (err) {
-    const error = err as AxiosError<{ fieldErrors: Record<string, string> }>
-    return rejectWithValue(error.response?.data ?? { fieldErrors: {} })
+    const error = err as AxiosError<{ fieldErrors: Record<string, string> }>;
+    return rejectWithValue(error.response?.data ?? { fieldErrors: {} });
   }
-}
+};
 ```
 
 ### 390: What does a thunk return when `condition` cancels it?
@@ -5587,15 +5765,15 @@ Combine the thunk `signal` with a timeout signal.
 
 ```ts
 export const fetchReport = createAppAsyncThunk(
-  'reports/fetch',
+  "reports/fetch",
   async (id: string, { signal }) => {
     const res = await fetch(`/api/reports/${id}`, {
       signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
-    })
-    if (!res.ok) throw new Error(`Request failed: ${res.status}`)
-    return (await res.json()) as Report
+    });
+    if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+    return (await res.json()) as Report;
   },
-)
+);
 ```
 
 `AbortSignal.any` and `AbortSignal.timeout` are available in modern browsers and Node 20+.
@@ -5624,17 +5802,19 @@ export const makeStore = (req?: IncomingMessage) =>
   configureStore({
     reducer: rootReducer,
     middleware: (gDM) =>
-      gDM({ thunk: { extraArgument: { cookie: req?.headers.cookie } } }).concat(api.middleware),
-  })
+      gDM({ thunk: { extraArgument: { cookie: req?.headers.cookie } } }).concat(
+        api.middleware,
+      ),
+  });
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.API_URL,
   prepareHeaders: (headers, { extra }) => {
-    const cookie = (extra as { cookie?: string })?.cookie
-    if (cookie) headers.set('cookie', cookie)
-    return headers
+    const cookie = (extra as { cookie?: string })?.cookie;
+    if (cookie) headers.set("cookie", cookie);
+    return headers;
   },
-})
+});
 ```
 
 The `extra` value in `prepareHeaders` is the thunk extra argument, so each request-scoped store can carry its own headers.
@@ -5648,7 +5828,7 @@ The `extra` value in `prepareHeaders` is the thunk extra argument, so each reque
 They are mostly used in SSR (wait for everything before rendering) and in tests (wait for requests to settle).
 
 ```ts
-await Promise.all(store.dispatch(api.util.getRunningMutationsThunk()))
+await Promise.all(store.dispatch(api.util.getRunningMutationsThunk()));
 ```
 
 ### 395: How do you keep tests isolated when using RTK Query?
@@ -5663,19 +5843,27 @@ await Promise.all(store.dispatch(api.util.getRunningMutationsThunk()))
 Create a fresh middleware and store per test, add the listener, dispatch actions and check the results.
 
 ```ts
-test('saves settings when the theme changes', async () => {
-  const storage = { set: vi.fn() }
-  const listenerMiddleware = createListenerMiddleware({ extra: { storage } })
-  addSettingsListeners(listenerMiddleware.startListening.withTypes<RootState, AppDispatch, Extra>())
+test("saves settings when the theme changes", async () => {
+  const storage = { set: vi.fn() };
+  const listenerMiddleware = createListenerMiddleware({ extra: { storage } });
+  addSettingsListeners(
+    listenerMiddleware.startListening.withTypes<
+      RootState,
+      AppDispatch,
+      Extra
+    >(),
+  );
 
   const store = configureStore({
     reducer: rootReducer,
     middleware: (gDM) => gDM().prepend(listenerMiddleware.middleware),
-  })
+  });
 
-  store.dispatch(themeChanged('dark'))
-  await vi.waitFor(() => expect(storage.set).toHaveBeenCalledWith('theme', 'dark'))
-})
+  store.dispatch(themeChanged("dark"));
+  await vi.waitFor(() =>
+    expect(storage.set).toHaveBeenCalledWith("theme", "dark"),
+  );
+});
 ```
 
 Export a function that registers listeners (like `addSettingsListeners`) so tests can attach them to a new middleware.
@@ -5685,18 +5873,18 @@ Export a function that registers listeners (like `addSettingsListeners`) so test
 Use `renderHook` with a Provider wrapper and MSW.
 
 ```tsx
-test('useGetPostsQuery returns posts', async () => {
-  const store = setupStore()
+test("useGetPostsQuery returns posts", async () => {
+  const store = setupStore();
   const wrapper = ({ children }: { children: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
-  )
+  );
 
-  const { result } = renderHook(() => useGetPostsQuery(), { wrapper })
+  const { result } = renderHook(() => useGetPostsQuery(), { wrapper });
 
-  expect(result.current.isLoading).toBe(true)
-  await waitFor(() => expect(result.current.isSuccess).toBe(true))
-  expect(result.current.data).toHaveLength(2)
-})
+  expect(result.current.isLoading).toBe(true);
+  await waitFor(() => expect(result.current.isSuccess).toBe(true));
+  expect(result.current.data).toHaveLength(2);
+});
 ```
 
 Most of the time testing the component that uses the hook gives more value.
@@ -5713,11 +5901,14 @@ Most of the time testing the component that uses the hook gives more value.
 `RootState` from `combineSlices(...).withLazyLoadedSlices<...>()` marks lazy slices as optional, so `preloadedState` can include or leave them out.
 
 ```ts
-export const rootReducer = combineSlices(authSlice, api).withLazyLoadedSlices<LazyLoadedSlices>()
-export type RootState = ReturnType<typeof rootReducer>
+export const rootReducer = combineSlices(
+  authSlice,
+  api,
+).withLazyLoadedSlices<LazyLoadedSlices>();
+export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = (preloadedState?: Partial<RootState>) =>
-  configureStore({ reducer: rootReducer, preloadedState })
+  configureStore({ reducer: rootReducer, preloadedState });
 ```
 
 When you preload a lazy slice's state before injecting it, the slice reducer gets that state on injection instead of the initial state.
@@ -5740,22 +5931,25 @@ No. Server Components render once on the server and can't use hooks or subscribe
 startAppListening({
   actionCreator: jobStarted,
   effect: async (action, listenerApi) => {
-    listenerApi.cancelActiveListeners()
-    let delayMs = 1000
+    listenerApi.cancelActiveListeners();
+    let delayMs = 1000;
 
     while (true) {
-      await listenerApi.delay(delayMs)
+      await listenerApi.delay(delayMs);
       const result = await listenerApi.dispatch(
-        api.endpoints.getJob.initiate(action.payload.jobId, { subscribe: false, forceRefetch: true }),
-      )
-      if (result.data?.status === 'done' || result.data?.status === 'failed') {
-        listenerApi.dispatch(jobFinished(result.data))
-        return
+        api.endpoints.getJob.initiate(action.payload.jobId, {
+          subscribe: false,
+          forceRefetch: true,
+        }),
+      );
+      if (result.data?.status === "done" || result.data?.status === "failed") {
+        listenerApi.dispatch(jobFinished(result.data));
+        return;
       }
-      delayMs = Math.min(delayMs * 2, 30_000)
+      delayMs = Math.min(delayMs * 2, 30_000);
     }
   },
-})
+});
 ```
 
 Dispatching `jobStarted` again cancels the old loop. `delay` throws when cancelled, which ends the loop.
@@ -5768,20 +5962,22 @@ Start the socket in a listener on login and stop it on logout.
 startAppListening({
   actionCreator: loggedIn,
   effect: async (action, listenerApi) => {
-    listenerApi.cancelActiveListeners()
-    const socket = new WebSocket(`wss://example.com?token=${action.payload.token}`)
+    listenerApi.cancelActiveListeners();
+    const socket = new WebSocket(
+      `wss://example.com?token=${action.payload.token}`,
+    );
 
     socket.onmessage = (event) => {
-      listenerApi.dispatch(socketMessageReceived(JSON.parse(event.data)))
-    }
+      listenerApi.dispatch(socketMessageReceived(JSON.parse(event.data)));
+    };
 
     try {
-      await listenerApi.take(loggedOut.match)
+      await listenerApi.take(loggedOut.match);
     } finally {
-      socket.close()
+      socket.close();
     }
   },
-})
+});
 ```
 
 The `finally` also runs if the effect is cancelled, so the socket is always closed.
@@ -5791,21 +5987,24 @@ The `finally` also runs if the effect is cancelled, so the socket is always clos
 Use `BroadcastChannel` in a listener. Send actions out, and dispatch actions that come in, marking them so they aren't sent back.
 
 ```ts
-const channel = new BroadcastChannel('app-sync')
-const syncedActions = isAnyOf(loggedOut, themeChanged, cartUpdated)
+const channel = new BroadcastChannel("app-sync");
+const syncedActions = isAnyOf(loggedOut, themeChanged, cartUpdated);
 
 startAppListening({
   matcher: syncedActions,
   effect: (action) => {
     if (!(action as { meta?: { fromOtherTab?: boolean } }).meta?.fromOtherTab) {
-      channel.postMessage(action)
+      channel.postMessage(action);
     }
   },
-})
+});
 
 channel.onmessage = (event) => {
-  store.dispatch({ ...event.data, meta: { ...event.data.meta, fromOtherTab: true } })
-}
+  store.dispatch({
+    ...event.data,
+    meta: { ...event.data.meta, fromOtherTab: true },
+  });
+};
 ```
 
 Only sync serializable, event-style actions, not RTK Query internals.
@@ -5825,13 +6024,15 @@ RTK doesn't have built-in offline support, so this is custom code. Keep it small
 Don't put them in the store. Keep them in a separate cache (an in-memory `Map`, IndexedDB, or object URLs) and store only a serializable reference, like an ID or URL, in Redux.
 
 ```ts
-const fileCache = new Map<string, File>()
+const fileCache = new Map<string, File>();
 
-export const fileSelected = (file: File): AppThunk => (dispatch) => {
-  const id = nanoid()
-  fileCache.set(id, file)
-  dispatch(uploadQueued({ id, name: file.name, size: file.size }))
-}
+export const fileSelected =
+  (file: File): AppThunk =>
+  (dispatch) => {
+    const id = nanoid();
+    fileCache.set(id, file);
+    dispatch(uploadQueued({ id, name: file.name, size: file.size }));
+  };
 ```
 
 This keeps the DevTools, serializability checks and persistence working.
@@ -5848,7 +6049,7 @@ export const selectPostsWithAuthors = createAppSelector(
       ...post,
       author: users[post.authorId],
     })),
-)
+);
 ```
 
 The result only recomputes when posts or users change. If one user's name changes, the whole list is rebuilt, so for very large lists it's better to denormalize per row (each row selects its post and author).
@@ -5858,7 +6059,7 @@ The result only recomputes when posts or users change. If one user's name change
 A Reselect helper that builds one memoized selector from an object of selectors. The result object keeps the same reference until one of the values changes.
 
 ```ts
-import { createStructuredSelector } from 'reselect'
+import { createStructuredSelector } from "reselect";
 
 const selectHeaderData = createStructuredSelector(
   {
@@ -5867,9 +6068,9 @@ const selectHeaderData = createStructuredSelector(
     theme: selectTheme,
   },
   createAppSelector,
-)
+);
 
-const { user, unreadCount, theme } = useAppSelector(selectHeaderData)
+const { user, unreadCount, theme } = useAppSelector(selectHeaderData);
 ```
 
 RTK doesn't re-export it, so import it from `reselect`.
@@ -5879,11 +6080,11 @@ RTK doesn't re-export it, so import it from `reselect`.
 Reselect selectors have debugging helpers:
 
 ```ts
-selectVisibleTodos(state)
-selectVisibleTodos(state)
-console.log(selectVisibleTodos.recomputations()) // 1 if memoized correctly
-console.log(selectVisibleTodos.dependencyRecomputations())
-selectVisibleTodos.resetRecomputations()
+selectVisibleTodos(state);
+selectVisibleTodos(state);
+console.log(selectVisibleTodos.recomputations()); // 1 if memoized correctly
+console.log(selectVisibleTodos.dependencyRecomputations());
+selectVisibleTodos.resetRecomputations();
 ```
 
 The dev mode checks also warn if input selectors return new references. React DevTools Profiler can show which components re-render after an action.
@@ -5989,22 +6190,24 @@ Decide which errors are "expected" (validation, not found) and handled locally, 
 Normalize the error into field errors and set them on the form.
 
 ```tsx
-const [register] = useRegisterMutation()
+const [register] = useRegisterMutation();
 
 const onSubmit = async (values: FormValues) => {
   try {
-    await register(values).unwrap()
+    await register(values).unwrap();
   } catch (err) {
     if (isFetchBaseQueryError(err) && err.status === 422) {
-      const { fieldErrors } = err.data as { fieldErrors: Record<string, string> }
+      const { fieldErrors } = err.data as {
+        fieldErrors: Record<string, string>;
+      };
       Object.entries(fieldErrors).forEach(([field, message]) =>
         setError(field as keyof FormValues, { message }),
-      )
+      );
     } else {
-      setError('root', { message: 'Something went wrong' })
+      setError("root", { message: "Something went wrong" });
     }
   }
-}
+};
 ```
 
 Form state itself stays in the form library, not in Redux.
@@ -6021,9 +6224,17 @@ Form state itself stays in the form library, not in Redux.
 Reducers are pure, so you can build a state from a list of actions with `reduce` and assert on the result.
 
 ```ts
-const actions = [todoAdded('a'), todoAdded('b'), todoToggled('a'), completedCleared()]
-const finalState = actions.reduce(todosReducer, todosReducer(undefined, { type: 'init' }))
-expect(selectTodoTexts({ todos: finalState } as RootState)).toEqual(['b'])
+const actions = [
+  todoAdded("a"),
+  todoAdded("b"),
+  todoToggled("a"),
+  completedCleared(),
+];
+const finalState = actions.reduce(
+  todosReducer,
+  todosReducer(undefined, { type: "init" }),
+);
+expect(selectTodoTexts({ todos: finalState } as RootState)).toEqual(["b"]);
 ```
 
 You can also export an action log from the DevTools to reproduce a bug as a test.
@@ -6054,37 +6265,49 @@ A simplified version:
 function createAsyncThunkSimplified(typePrefix, payloadCreator) {
   const pending = createAction(`${typePrefix}/pending`, (requestId, arg) => ({
     payload: undefined,
-    meta: { requestId, arg, requestStatus: 'pending' },
-  }))
-  const fulfilled = createAction(`${typePrefix}/fulfilled`, (payload, requestId, arg) => ({
-    payload,
-    meta: { requestId, arg, requestStatus: 'fulfilled' },
-  }))
-  const rejected = createAction(`${typePrefix}/rejected`, (error, requestId, arg, payload) => ({
-    payload,
-    error: miniSerializeError(error),
-    meta: { requestId, arg, requestStatus: 'rejected' },
-  }))
+    meta: { requestId, arg, requestStatus: "pending" },
+  }));
+  const fulfilled = createAction(
+    `${typePrefix}/fulfilled`,
+    (payload, requestId, arg) => ({
+      payload,
+      meta: { requestId, arg, requestStatus: "fulfilled" },
+    }),
+  );
+  const rejected = createAction(
+    `${typePrefix}/rejected`,
+    (error, requestId, arg, payload) => ({
+      payload,
+      error: miniSerializeError(error),
+      meta: { requestId, arg, requestStatus: "rejected" },
+    }),
+  );
 
   return (arg) => (dispatch, getState, extra) => {
-    const requestId = nanoid()
-    const controller = new AbortController()
+    const requestId = nanoid();
+    const controller = new AbortController();
     const promise = (async () => {
-      dispatch(pending(requestId, arg))
+      dispatch(pending(requestId, arg));
       try {
-        const result = await payloadCreator(arg, { dispatch, getState, extra, requestId, signal: controller.signal })
-        return dispatch(fulfilled(result, requestId, arg))
+        const result = await payloadCreator(arg, {
+          dispatch,
+          getState,
+          extra,
+          requestId,
+          signal: controller.signal,
+        });
+        return dispatch(fulfilled(result, requestId, arg));
       } catch (err) {
-        return dispatch(rejected(err, requestId, arg))
+        return dispatch(rejected(err, requestId, arg));
       }
-    })()
+    })();
     return Object.assign(promise, {
       abort: () => controller.abort(),
       requestId,
       arg,
       unwrap: () => promise.then(unwrapResult),
-    })
-  }
+    });
+  };
 }
 ```
 
@@ -6107,15 +6330,20 @@ So only the changed path gets new references, which is exactly what `useSelector
 ```ts
 function applyMiddleware(...middlewares) {
   return (createStore) => (reducer, preloadedState) => {
-    const store = createStore(reducer, preloadedState)
+    const store = createStore(reducer, preloadedState);
     let dispatch = () => {
-      throw new Error('Dispatching while constructing your middleware is not allowed.')
-    }
-    const middlewareAPI = { getState: store.getState, dispatch: (...args) => dispatch(...args) }
-    const chain = middlewares.map((middleware) => middleware(middlewareAPI))
-    dispatch = compose(...chain)(store.dispatch)
-    return { ...store, dispatch }
-  }
+      throw new Error(
+        "Dispatching while constructing your middleware is not allowed.",
+      );
+    };
+    const middlewareAPI = {
+      getState: store.getState,
+      dispatch: (...args) => dispatch(...args),
+    };
+    const chain = middlewares.map((middleware) => middleware(middlewareAPI));
+    dispatch = compose(...chain)(store.dispatch);
+    return { ...store, dispatch };
+  };
 }
 ```
 
@@ -6127,12 +6355,14 @@ It is a few lines:
 
 ```ts
 function createThunkMiddleware(extraArgument) {
-  return ({ dispatch, getState }) => (next) => (action) => {
-    if (typeof action === 'function') {
-      return action(dispatch, getState, extraArgument)
-    }
-    return next(action)
-  }
+  return ({ dispatch, getState }) =>
+    (next) =>
+    (action) => {
+      if (typeof action === "function") {
+        return action(dispatch, getState, extraArgument);
+      }
+      return next(action);
+    };
 }
 ```
 
@@ -6221,10 +6451,14 @@ Add breadcrumbs from a middleware, and include a sanitized state snapshot when e
 ```ts
 export const breadcrumbMiddleware: Middleware = () => (next) => (action) => {
   if (isAction(action)) {
-    Sentry.addBreadcrumb({ category: 'redux', message: action.type, level: 'info' })
+    Sentry.addBreadcrumb({
+      category: "redux",
+      message: action.type,
+      level: "info",
+    });
   }
-  return next(action)
-}
+  return next(action);
+};
 ```
 
 Log only the type, not the payload, unless you are sure the payload has no personal data. Sentry also has a Redux enhancer that does this with options for sanitizing.
@@ -6300,9 +6534,9 @@ bulkArchive: build.mutation<{ archivedIds: string[] }, string[]>({
 Use `getRunningQueryThunk`.
 
 ```ts
-const running = dispatch(api.util.getRunningQueryThunk('getPost', postId))
+const running = dispatch(api.util.getRunningQueryThunk("getPost", postId));
 if (running) {
-  await running
+  await running;
 }
 ```
 
@@ -6314,18 +6548,20 @@ Spread `adapter.getSelectors()` (with no argument) into `selectors`. The slice w
 
 ```ts
 const todosSlice = createSlice({
-  name: 'todos',
+  name: "todos",
   initialState: todosAdapter.getInitialState(),
   reducers: { todoAdded: todosAdapter.addOne },
   selectors: {
     ...todosAdapter.getSelectors(),
-    selectOpenCount: (state) => state.ids.filter((id) => !state.entities[id].completed).length,
+    selectOpenCount: (state) =>
+      state.ids.filter((id) => !state.entities[id].completed).length,
   },
-})
+});
 
-export const { selectAll: selectAllTodos, selectById: selectTodoById } = todosSlice.selectors
+export const { selectAll: selectAllTodos, selectById: selectTodoById } =
+  todosSlice.selectors;
 
-const todo = useAppSelector((state) => selectTodoById(state, id))
+const todo = useAppSelector((state) => selectTodoById(state, id));
 ```
 
 ### 446: How do you write a reusable helper for list tags?

@@ -3342,7 +3342,7 @@ Fixes:
 # GitHub Actions
 - uses: actions/checkout@v6
   with:
-    fetch-depth: 0       # full history
+    fetch-depth: 0 # full history
 ```
 
 Or fetch only what you need:

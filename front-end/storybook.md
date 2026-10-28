@@ -110,6 +110,7 @@ The answers target Storybook 10 (ESM-only, `storybook/test`, the Vitest addon, `
 - [90: When is Storybook not worth it?](#90-when-is-storybook-not-worth-it)
 
 ---
+
 # Easy Questions (1-30)
 
 ## 1: What is Storybook?
@@ -134,7 +135,7 @@ A story is one rendered state of a component. For a `Button` you might have `Pri
 
 ```tsx
 export const Disabled: Story = {
-  args: { label: 'Save', disabled: true },
+  args: { label: "Save", disabled: true },
 };
 ```
 
@@ -177,8 +178,8 @@ CSF (Component Story Format) is the format Storybook uses for story files. It is
 - each **named export** is a story.
 
 ```tsx
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from './Button';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Button } from "./Button";
 
 const meta = {
   component: Button,
@@ -188,7 +189,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: { label: 'Button', variant: 'primary' },
+  args: { label: "Button", variant: "primary" },
 };
 ```
 
@@ -216,7 +217,7 @@ Args are the inputs of a story, usually the component's props. Storybook passes 
 ```tsx
 export const LongLabel: Story = {
   args: {
-    label: 'This is a very long button label that might wrap',
+    label: "This is a very long button label that might wrap",
   },
 };
 ```
@@ -234,7 +235,7 @@ It's handy for checking edge cases fast (long text, empty values, odd combinatio
 The Actions panel shows when a callback prop (like `onClick`) is called and with which arguments. The usual way is to pass `fn()` from `storybook/test`:
 
 ```tsx
-import { fn } from 'storybook/test';
+import { fn } from "storybook/test";
 
 const meta = {
   component: Button,
@@ -272,7 +273,7 @@ Parameters are static settings for a story. They don't change while you look at 
 ```tsx
 export const FullPage: Story = {
   parameters: {
-    layout: 'fullscreen', // 'centered' | 'padded' | 'fullscreen'
+    layout: "fullscreen", // 'centered' | 'padded' | 'fullscreen'
   },
 };
 ```
@@ -307,7 +308,7 @@ You turn it on with a tag, either for one component or for everything in `previe
 ```tsx
 const meta = {
   component: Button,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof Button>;
 ```
 
@@ -319,7 +320,7 @@ If you set `title` on meta, that is used. Slashes create groups:
 
 ```tsx
 const meta = {
-  title: 'Forms/Inputs/TextField',
+  title: "Forms/Inputs/TextField",
   component: TextField,
 } satisfies Meta<typeof TextField>;
 ```
@@ -332,8 +333,8 @@ By default the export name is turned into words: `WithIcon` becomes "With Icon".
 
 ```tsx
 export const WithIcon: Story = {
-  name: 'With leading icon',
-  args: { icon: 'plus' },
+  name: "With leading icon",
+  args: { icon: "plus" },
 };
 ```
 
@@ -352,7 +353,7 @@ Use the viewport tool in the toolbar. It resizes the preview iframe to preset si
 ```tsx
 export const Mobile: Story = {
   globals: {
-    viewport: { value: 'mobile1', isRotated: false },
+    viewport: { value: "mobile1", isRotated: false },
   },
 };
 ```
@@ -377,7 +378,7 @@ parameters: {
 
 ```tsx
 export const OnDark: Story = {
-  globals: { backgrounds: { value: 'dark' } },
+  globals: { backgrounds: { value: "dark" } },
 };
 ```
 
@@ -388,16 +389,16 @@ This is useful for components that need to work on both light and dark surfaces.
 Write one story per state and pass the props that produce it. That keeps every state easy to find and easy to test.
 
 ```tsx
-export const Loading: Story = { args: { status: 'loading' } };
+export const Loading: Story = { args: { status: "loading" } };
 
-export const Empty: Story = { args: { status: 'success', items: [] } };
+export const Empty: Story = { args: { status: "success", items: [] } };
 
 export const Error: Story = {
-  args: { status: 'error', errorMessage: 'Could not load orders' },
+  args: { status: "error", errorMessage: "Could not load orders" },
 };
 
 export const WithData: Story = {
-  args: { status: 'success', items: mockOrders },
+  args: { status: "success", items: mockOrders },
 };
 ```
 
@@ -408,13 +409,13 @@ If the component fetches its own data, you mock the request (for example with MS
 A play function is code that runs after a story renders. You use it to interact with the component (click, type, tab) and to check the result. That turns a story into an interaction test.
 
 ```tsx
-import { expect } from 'storybook/test';
+import { expect } from "storybook/test";
 
 export const FilledForm: Story = {
   play: async ({ canvas, userEvent }) => {
-    await userEvent.type(canvas.getByLabelText('Email'), 'jane@example.com');
-    await userEvent.click(canvas.getByRole('button', { name: 'Sign in' }));
-    await expect(canvas.getByText('Welcome back')).toBeInTheDocument();
+    await userEvent.type(canvas.getByLabelText("Email"), "jane@example.com");
+    await userEvent.click(canvas.getByRole("button", { name: "Sign in" }));
+    await expect(canvas.getByText("Welcome back")).toBeInTheDocument();
   },
 };
 ```
@@ -432,8 +433,8 @@ The framework package sets up the renderer and the builder (Vite or Webpack) for
 MDX is Markdown with JSX inside it. In Storybook you use `.mdx` files to write custom documentation pages: guides, design token pages, usage notes, or a component page with text between examples.
 
 ```mdx
-import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
-import * as ButtonStories from './Button.stories';
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ButtonStories from "./Button.stories";
 
 <Meta of={ButtonStories} />
 
@@ -467,7 +468,7 @@ Use `staticDirs` in `main.ts`:
 ```ts
 // .storybook/main.ts
 const config: StorybookConfig = {
-  staticDirs: ['../public'],
+  staticDirs: ["../public"],
   // or map a folder to a path:
   // staticDirs: [{ from: '../src/assets', to: '/assets' }],
 };
@@ -481,8 +482,8 @@ Import them in `.storybook/preview.ts`, the same way your app's entry file does:
 
 ```ts
 // .storybook/preview.ts
-import '../src/styles/globals.css';
-import '@fontsource/inter';
+import "../src/styles/globals.css";
+import "@fontsource/inter";
 ```
 
 For fonts loaded with a `<link>` tag, put the tag in `.storybook/preview-head.html`. If the components look different in Storybook than in the app, missing global styles are the first thing to check.
@@ -514,7 +515,7 @@ In CSF2 every story was a function, and you made variants by cloning a template:
 // CSF2 (legacy)
 const Template = (args) => <Button {...args} />;
 export const Primary = Template.bind({});
-Primary.args = { label: 'Button', primary: true };
+Primary.args = { label: "Button", primary: true };
 ```
 
 In CSF3 a story is an object. If you don't give a `render` function, Storybook renders `meta.component` with the args for you:
@@ -522,7 +523,7 @@ In CSF3 a story is an object. If you don't give a `render` function, Storybook r
 ```tsx
 // CSF3
 export const Primary: Story = {
-  args: { label: 'Button', primary: true },
+  args: { label: "Button", primary: true },
 };
 ```
 
@@ -542,7 +543,7 @@ A later level overrides keys from an earlier one, but keeps the keys it doesn't 
 ```tsx
 const meta = {
   component: Alert,
-  args: { title: 'Heads up', dismissible: true },
+  args: { title: "Heads up", dismissible: true },
 } satisfies Meta<typeof Alert>;
 
 export const NotDismissible: Story = {
@@ -559,15 +560,15 @@ const meta = {
   component: Icon,
   argTypes: {
     size: {
-      control: { type: 'range', min: 12, max: 64, step: 4 },
+      control: { type: "range", min: 12, max: 64, step: 4 },
     },
-    color: { control: 'color' },
+    color: { control: "color" },
     name: {
-      control: 'select',
-      options: ['home', 'search', 'settings'],
+      control: "select",
+      options: ["home", "search", "settings"],
     },
     badge: {
-      options: ['none', 'dot', 'count'],
+      options: ["none", "dot", "count"],
       mapping: {
         none: undefined,
         dot: <Dot />,
@@ -625,7 +626,7 @@ Keep passing `args` through, otherwise Controls won't affect the story. If you n
 Write a `play` function that uses `userEvent` to act like a user and `expect` to check the result. Both come from `storybook/test`, and the `canvas` (Testing Library queries scoped to the story) and `userEvent` are passed in the play context:
 
 ```tsx
-import { expect, fn } from 'storybook/test';
+import { expect, fn } from "storybook/test";
 
 const meta = {
   component: LoginForm,
@@ -635,13 +636,13 @@ export default meta;
 
 export const SubmitsValues: Story = {
   play: async ({ args, canvas, userEvent }) => {
-    await userEvent.type(canvas.getByLabelText('Email'), 'jane@example.com');
-    await userEvent.type(canvas.getByLabelText('Password'), 'secret123');
-    await userEvent.click(canvas.getByRole('button', { name: /sign in/i }));
+    await userEvent.type(canvas.getByLabelText("Email"), "jane@example.com");
+    await userEvent.type(canvas.getByLabelText("Password"), "secret123");
+    await userEvent.click(canvas.getByRole("button", { name: /sign in/i }));
 
     await expect(args.onSubmit).toHaveBeenCalledWith({
-      email: 'jane@example.com',
-      password: 'secret123',
+      email: "jane@example.com",
+      password: "secret123",
     });
   },
 };
@@ -694,9 +695,9 @@ Add a decorator that wraps the story in the provider. If every component needs i
 
 ```tsx
 // .storybook/preview.tsx
-import type { Preview } from '@storybook/react-vite';
-import { ThemeProvider } from '../src/theme';
-import { MemoryRouter } from 'react-router';
+import type { Preview } from "@storybook/react-vite";
+import { ThemeProvider } from "../src/theme";
+import { MemoryRouter } from "react-router";
 
 const preview: Preview = {
   decorators: [
@@ -724,16 +725,16 @@ Globals are values that apply to the whole Storybook, not to one story, for exam
 const preview: Preview = {
   globalTypes: {
     theme: {
-      description: 'Color theme',
+      description: "Color theme",
       toolbar: {
-        title: 'Theme',
-        icon: 'circlehollow',
-        items: ['light', 'dark'],
+        title: "Theme",
+        icon: "circlehollow",
+        items: ["light", "dark"],
         dynamicTitle: true,
       },
     },
   },
-  initialGlobals: { theme: 'light' },
+  initialGlobals: { theme: "light" },
   decorators: [
     (Story, context) => (
       <ThemeProvider theme={context.globals.theme}>
@@ -762,7 +763,7 @@ Loaders are async functions that run before a story renders. Their result is ava
 export const WithUser: Story = {
   loaders: [
     async () => ({
-      user: await (await fetch('/mocks/user.json')).json(),
+      user: await (await fetch("/mocks/user.json")).json(),
     }),
   ],
   render: (args, { loaded: { user } }) => <Profile {...args} user={user} />,
@@ -776,14 +777,14 @@ They're useful for loading data or doing async setup that the render function ne
 `beforeEach` runs before each story renders (and before the play function). You can set it in `preview.ts`, on meta or on a story. If it returns a function, Storybook runs that function as cleanup when you leave the story or rerun it.
 
 ```tsx
-import { mocked } from 'storybook/test';
-import { getCurrentUser } from '../lib/session';
+import { mocked } from "storybook/test";
+import { getCurrentUser } from "../lib/session";
 
 const meta = {
   component: Header,
   beforeEach: async () => {
-    mocked(getCurrentUser).mockReturnValue({ name: 'Jane' });
-    localStorage.setItem('sidebar', 'collapsed');
+    mocked(getCurrentUser).mockReturnValue({ name: "Jane" });
+    localStorage.setItem("sidebar", "collapsed");
 
     return () => {
       localStorage.clear();
@@ -800,7 +801,7 @@ The most common way is MSW (Mock Service Worker) with `msw-storybook-addon`. MSW
 
 ```tsx
 // .storybook/preview.ts
-import { initialize, mswLoader } from 'msw-storybook-addon';
+import { initialize, mswLoader } from "msw-storybook-addon";
 
 initialize();
 
@@ -811,13 +812,15 @@ const preview: Preview = {
 
 ```tsx
 // UserList.stories.tsx
-import { http, HttpResponse, delay } from 'msw';
+import { http, HttpResponse, delay } from "msw";
 
 export const Success: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get('/api/users', () => HttpResponse.json([{ id: 1, name: 'Jane' }])),
+        http.get("/api/users", () =>
+          HttpResponse.json([{ id: 1, name: "Jane" }]),
+        ),
       ],
     },
   },
@@ -827,8 +830,8 @@ export const Slow: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.get('/api/users', async () => {
-          await delay('infinite');
+        http.get("/api/users", async () => {
+          await delay("infinite");
         }),
       ],
     },
@@ -891,7 +894,7 @@ A `!` removes a tag. For example, a story that only exists for testing and shoul
 
 ```tsx
 export const KeyboardNavigationTest: Story = {
-  tags: ['!dev', '!autodocs'],
+  tags: ["!dev", "!autodocs"],
   play: async ({ canvas, userEvent }) => {
     // ...
   },
@@ -937,7 +940,7 @@ type ButtonProps = {
   /** Text shown inside the button */
   label: string;
   /** Visual style of the button */
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
 };
 ```
 
@@ -949,18 +952,18 @@ Use portable stories. `composeStories` takes a story file and returns components
 
 ```tsx
 // Button.test.tsx
-import { composeStories } from '@storybook/react-vite';
-import { render, screen } from '@testing-library/react';
-import * as stories from './Button.stories';
+import { composeStories } from "@storybook/react-vite";
+import { render, screen } from "@testing-library/react";
+import * as stories from "./Button.stories";
 
 const { Primary, Disabled } = composeStories(stories);
 
-test('primary button shows its label', () => {
+test("primary button shows its label", () => {
   render(<Primary />);
-  expect(screen.getByRole('button', { name: 'Button' })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Button" })).toBeInTheDocument();
 });
 
-test('runs the story play function', async () => {
+test("runs the story play function", async () => {
   await Disabled.run();
 });
 ```
@@ -973,17 +976,17 @@ Use `viteFinal` or `webpackFinal` in `main.ts`. Storybook passes its config and 
 
 ```ts
 // .storybook/main.ts
-import type { StorybookConfig } from '@storybook/react-vite';
-import { mergeConfig } from 'vite';
-import { fileURLToPath } from 'node:url';
+import type { StorybookConfig } from "@storybook/react-vite";
+import { mergeConfig } from "vite";
+import { fileURLToPath } from "node:url";
 
 const config: StorybookConfig = {
-  framework: '@storybook/react-vite',
-  stories: ['../src/**/*.stories.@(ts|tsx)'],
+  framework: "@storybook/react-vite",
+  stories: ["../src/**/*.stories.@(ts|tsx)"],
   async viteFinal(config) {
     return mergeConfig(config, {
       resolve: {
-        alias: { '@': fileURLToPath(new URL('../src', import.meta.url)) },
+        alias: { "@": fileURLToPath(new URL("../src", import.meta.url)) },
       },
     });
   },
@@ -1018,7 +1021,7 @@ export const ActiveLink: Story = {
   parameters: {
     nextjs: {
       appDirectory: true,
-      navigation: { pathname: '/settings/profile' },
+      navigation: { pathname: "/settings/profile" },
     },
   },
 };
@@ -1031,18 +1034,20 @@ Storybook mocks the router, so calls like `router.push` show up in the Actions p
 You use `@storybook/angular`. Dependencies are provided with decorators: `moduleMetadata` for imports and declarations, `applicationConfig` for app-level providers.
 
 ```ts
-import type { Meta, StoryObj } from '@storybook/angular';
-import { applicationConfig, moduleMetadata } from '@storybook/angular';
-import { provideHttpClient } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { UserCardComponent } from './user-card.component';
-import { AvatarComponent } from '../avatar/avatar.component';
+import type { Meta, StoryObj } from "@storybook/angular";
+import { applicationConfig, moduleMetadata } from "@storybook/angular";
+import { provideHttpClient } from "@angular/common/http";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { UserCardComponent } from "./user-card.component";
+import { AvatarComponent } from "../avatar/avatar.component";
 
 const meta: Meta<UserCardComponent> = {
   component: UserCardComponent,
   decorators: [
     moduleMetadata({ imports: [AvatarComponent] }),
-    applicationConfig({ providers: [provideHttpClient(), provideAnimations()] }),
+    applicationConfig({
+      providers: [provideHttpClient(), provideAnimations()],
+    }),
   ],
 };
 export default meta;
@@ -1050,7 +1055,7 @@ export default meta;
 type Story = StoryObj<UserCardComponent>;
 
 export const Default: Story = {
-  args: { name: 'Jane Doe', role: 'Admin' },
+  args: { name: "Jane Doe", role: "Admin" },
 };
 ```
 
@@ -1061,18 +1066,13 @@ Inputs map to args and outputs show up as actions. Storybook runs through Angula
 Use the `useArgs` hook from `storybook/preview-api`. It's common for controlled components, where the component calls `onChange` and the story has to update the `value` arg so the UI and Controls stay in sync:
 
 ```tsx
-import { useArgs } from 'storybook/preview-api';
+import { useArgs } from "storybook/preview-api";
 
 export const Controlled: Story = {
   args: { checked: false },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
-    return (
-      <Switch
-        {...args}
-        onChange={(checked) => updateArgs({ checked })}
-      />
-    );
+    return <Switch {...args} onChange={(checked) => updateArgs({ checked })} />;
   },
 };
 ```
@@ -1084,17 +1084,17 @@ Using a named function for `render` keeps hook lint rules happy.
 Create a theme in `.storybook/manager.ts`:
 
 ```ts
-import { addons } from 'storybook/manager-api';
-import { create } from 'storybook/theming';
+import { addons } from "storybook/manager-api";
+import { create } from "storybook/theming";
 
 addons.setConfig({
   theme: create({
-    base: 'light',
-    brandTitle: 'Acme Design System',
-    brandUrl: 'https://acme.example.com',
-    brandImage: '/logo.svg',
-    colorPrimary: '#0055ff',
-    colorSecondary: '#0055ff',
+    base: "light",
+    brandTitle: "Acme Design System",
+    brandUrl: "https://acme.example.com",
+    brandImage: "/logo.svg",
+    colorPrimary: "#0055ff",
+    colorSecondary: "#0055ff",
   }),
 });
 ```
@@ -1138,11 +1138,11 @@ Yes, `eslint-plugin-storybook`. It catches common mistakes, for example a missin
 
 ```js
 // eslint.config.js
-import storybook from 'eslint-plugin-storybook';
+import storybook from "eslint-plugin-storybook";
 
 export default [
   // ...your other configs
-  ...storybook.configs['flat/recommended'],
+  ...storybook.configs["flat/recommended"],
 ];
 ```
 
@@ -1212,32 +1212,32 @@ Storybook 10 added `sb.mock`, which is based on Vitest's mocking. You register m
 
 ```ts
 // .storybook/preview.ts
-import { sb } from 'storybook/test';
+import { sb } from "storybook/test";
 
 // replace every export with a spy that does nothing
-sb.mock(import('../src/lib/analytics.ts'));
+sb.mock(import("../src/lib/analytics.ts"));
 
 // keep the real code, but record calls
-sb.mock(import('../src/lib/session.ts'), { spy: true });
+sb.mock(import("../src/lib/session.ts"), { spy: true });
 
 // use the file from ../src/lib/__mocks__/api.ts if it exists
-sb.mock(import('../src/lib/api.ts'));
+sb.mock(import("../src/lib/api.ts"));
 ```
 
 Then in a story you change the behavior per story:
 
 ```tsx
-import { expect, mocked } from 'storybook/test';
-import { getCurrentUser } from '../lib/session';
-import { trackEvent } from '../lib/analytics';
+import { expect, mocked } from "storybook/test";
+import { getCurrentUser } from "../lib/session";
+import { trackEvent } from "../lib/analytics";
 
 export const LoggedIn: Story = {
   beforeEach: () => {
-    mocked(getCurrentUser).mockReturnValue({ id: '1', name: 'Jane' });
+    mocked(getCurrentUser).mockReturnValue({ id: "1", name: "Jane" });
   },
   play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Upgrade' }));
-    await expect(trackEvent).toHaveBeenCalledWith('upgrade_clicked');
+    await userEvent.click(canvas.getByRole("button", { name: "Upgrade" }));
+    await expect(trackEvent).toHaveBeenCalledWith("upgrade_clicked");
   },
 };
 ```
@@ -1270,20 +1270,20 @@ CSF Factories is a newer way to write stories with full type safety. Instead of 
 
 ```ts
 // .storybook/main.ts
-import { defineMain } from '@storybook/react-vite/node';
+import { defineMain } from "@storybook/react-vite/node";
 
 export default defineMain({
-  framework: '@storybook/react-vite',
-  stories: ['../src/**/*.stories.@(ts|tsx)'],
-  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],
+  framework: "@storybook/react-vite",
+  stories: ["../src/**/*.stories.@(ts|tsx)"],
+  addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
 });
 ```
 
 ```ts
 // .storybook/preview.ts
-import { definePreview } from '@storybook/react-vite';
-import addonDocs from '@storybook/addon-docs';
-import addonA11y from '@storybook/addon-a11y';
+import { definePreview } from "@storybook/react-vite";
+import addonDocs from "@storybook/addon-docs";
+import addonA11y from "@storybook/addon-a11y";
 
 export default definePreview({
   addons: [addonDocs(), addonA11y()],
@@ -1292,13 +1292,13 @@ export default definePreview({
 
 ```tsx
 // Button.stories.tsx
-import preview from '../../.storybook/preview';
-import { Button } from './Button';
+import preview from "../../.storybook/preview";
+import { Button } from "./Button";
 
-const meta = preview.meta({ component: Button, args: { label: 'Button' } });
+const meta = preview.meta({ component: Button, args: { label: "Button" } });
 
-export const Primary = meta.story({ args: { variant: 'primary' } });
-export const PrimaryLarge = Primary.extend({ args: { size: 'large' } });
+export const Primary = meta.story({ args: { variant: "primary" } });
+export const PrimaryLarge = Primary.extend({ args: { size: "large" } });
 ```
 
 Benefits: addon parameters are typed (because addons are passed to `definePreview`), you can extend a story instead of spreading args by hand, and stories can be used in tests without `composeStories`. In Storybook 10 it's in preview status, it started with React and is spreading to other frameworks, and the plan is to make it the default in Storybook 11. Regular CSF3 keeps working, and there's an automigration to convert files.
@@ -1313,12 +1313,12 @@ Storybook 10 ships only ES modules. Things to know:
 
 ```ts
 // old (CJS)
-const path = require('path');
-config.resolve.alias['@'] = path.resolve(__dirname, '../src');
+const path = require("path");
+config.resolve.alias["@"] = path.resolve(__dirname, "../src");
 
 // new (ESM)
-import { fileURLToPath } from 'node:url';
-config.resolve.alias['@'] = fileURLToPath(new URL('../src', import.meta.url));
+import { fileURLToPath } from "node:url";
+config.resolve.alias["@"] = fileURLToPath(new URL("../src", import.meta.url));
 ```
 
 Most of this is handled by `npx storybook@latest upgrade`, but custom addons and config helpers written in CommonJS need to be converted by hand.
@@ -1328,8 +1328,8 @@ Most of this is handled by `npx storybook@latest upgrade`, but custom addons and
 Normally the story renders first and then the play function runs. If you destructure `mount` from the context, Storybook waits and lets you decide when to render. That lets you run setup that depends on the test itself before the component appears:
 
 ```tsx
-import { expect, mocked } from 'storybook/test';
-import { getFeatureFlags } from '../lib/flags';
+import { expect, mocked } from "storybook/test";
+import { getFeatureFlags } from "../lib/flags";
 
 export const NewCheckoutFlow: Story = {
   play: async ({ mount, userEvent }) => {
@@ -1337,8 +1337,8 @@ export const NewCheckoutFlow: Story = {
 
     const canvas = await mount();
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Checkout' }));
-    await expect(canvas.getByText('Step 1 of 2')).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("button", { name: "Checkout" }));
+    await expect(canvas.getByText("Step 1 of 2")).toBeInTheDocument();
   },
 };
 ```
@@ -1404,9 +1404,9 @@ With Chromatic you use **modes**. A mode is a set of globals (theme, viewport, l
 // .storybook/modes.ts
 // viewport names must match the viewport options in your preview config
 export const allModes = {
-  'light desktop': { theme: 'light', viewport: 'desktop' },
-  'dark desktop': { theme: 'dark', viewport: 'desktop' },
-  'light mobile': { theme: 'light', viewport: 'mobile1' },
+  "light desktop": { theme: "light", viewport: "desktop" },
+  "dark desktop": { theme: "dark", viewport: "desktop" },
+  "light mobile": { theme: "light", viewport: "mobile1" },
 };
 ```
 
@@ -1432,21 +1432,21 @@ An addon usually has a manager part (UI in the Storybook interface) and sometime
 
 ```tsx
 // .storybook/addons/design-notes/manager.tsx
-import React from 'react';
-import { addons, types, useParameter } from 'storybook/manager-api';
-import { AddonPanel } from 'storybook/internal/components';
+import React from "react";
+import { addons, types, useParameter } from "storybook/manager-api";
+import { AddonPanel } from "storybook/internal/components";
 
-const ADDON_ID = 'acme/design-notes';
+const ADDON_ID = "acme/design-notes";
 
 function Notes() {
-  const notes = useParameter<string>('designNotes', 'No notes for this story.');
+  const notes = useParameter<string>("designNotes", "No notes for this story.");
   return <div style={{ padding: 16 }}>{notes}</div>;
 }
 
 addons.register(ADDON_ID, () => {
   addons.add(`${ADDON_ID}/panel`, {
     type: types.PANEL,
-    title: 'Design notes',
+    title: "Design notes",
     render: ({ active }) => (
       <AddonPanel active={!!active}>
         <Notes />
@@ -1482,9 +1482,9 @@ That makes it easy to turn features off for a single story:
 ```tsx
 export const ThirdPartyEmbed: Story = {
   parameters: {
-    a11y: { test: 'off' },              // known issue in the vendor iframe
+    a11y: { test: "off" }, // known issue in the vendor iframe
     chromatic: { disableSnapshot: true }, // content changes on every load
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
 };
 ```
@@ -1538,8 +1538,8 @@ Keep each story isolated and repeatable:
 const meta = {
   component: CookieBanner,
   beforeEach: () => {
-    localStorage.removeItem('cookie-consent');
-    return () => localStorage.removeItem('cookie-consent');
+    localStorage.removeItem("cookie-consent");
+    return () => localStorage.removeItem("cookie-consent");
   },
 } satisfies Meta<typeof CookieBanner>;
 ```
@@ -1598,7 +1598,7 @@ export function OrderPage() {
 
 // OrderView.stories.tsx: plain props, easy states
 export const Shipped: Story = {
-  args: { status: 'success', order: mockShippedOrder },
+  args: { status: "success", order: mockShippedOrder },
 };
 ```
 
@@ -1616,12 +1616,12 @@ Page-level stories with everything mocked are valuable, but keep a few of them f
 The recommended pattern:
 
 ```tsx
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from './Button';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Button } from "./Button";
 
 const meta = {
   component: Button,
-  args: { label: 'Button' },
+  args: { label: "Button" },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -1630,7 +1630,7 @@ type Story = StoryObj<typeof meta>;
 // label is required on Button, but it's already set on meta,
 // so TypeScript doesn't ask for it here
 export const Primary: Story = {
-  args: { variant: 'primary' },
+  args: { variant: "primary" },
 };
 ```
 
@@ -1695,22 +1695,22 @@ Add a `locale` global with a toolbar switch, and a decorator that sets up your i
 const preview: Preview = {
   globalTypes: {
     locale: {
-      description: 'Language',
+      description: "Language",
       toolbar: {
-        icon: 'globe',
+        icon: "globe",
         items: [
-          { value: 'en', title: 'English' },
-          { value: 'ka', title: 'Georgian' },
-          { value: 'ar', title: 'Arabic' },
+          { value: "en", title: "English" },
+          { value: "ka", title: "Georgian" },
+          { value: "ar", title: "Arabic" },
         ],
       },
     },
   },
-  initialGlobals: { locale: 'en' },
+  initialGlobals: { locale: "en" },
   decorators: [
     (Story, context) => {
       const locale = context.globals.locale;
-      document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
       document.documentElement.lang = locale;
       return (
         <I18nProvider locale={locale}>

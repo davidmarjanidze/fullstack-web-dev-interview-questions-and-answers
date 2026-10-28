@@ -629,8 +629,8 @@ jobs:
 
 ```yaml
 steps:
-  - uses: actions/checkout@v6   # an action
-  - run: npm test               # a shell command
+  - uses: actions/checkout@v6 # an action
+  - run: npm test # a shell command
 ```
 
 A step can have one or the other, not both. Use `with` to pass inputs to an action, and `env` to pass environment variables to either.
@@ -662,9 +662,9 @@ Actions from verified creators have a badge, but even then you should read what 
 You add `@` and a ref after the action name. The ref can be a tag, a branch or a commit SHA.
 
 ```yaml
-- uses: actions/checkout@v6                                         # major version tag
-- uses: actions/checkout@v6.0.1                                     # exact version tag
-- uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8   # full commit SHA
+- uses: actions/checkout@v6 # major version tag
+- uses: actions/checkout@v6.0.1 # exact version tag
+- uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # full commit SHA
 ```
 
 A major tag like `v6` moves to the latest v6 release, so you get fixes automatically. A full commit SHA can never change, so it is the safest option for third-party actions. Avoid branches like `@main` because the code can change at any time.
@@ -721,7 +721,7 @@ on:
   push:
     branches:
       - main
-      - 'release/**'
+      - "release/**"
 ```
 
 ## 22: How do you trigger a workflow on pull requests?
@@ -758,7 +758,7 @@ Use the `schedule` event with a cron expression. Times are in UTC.
 ```yaml
 on:
   schedule:
-    - cron: '0 3 * * *'   # every day at 03:00 UTC
+    - cron: "0 3 * * *" # every day at 03:00 UTC
 ```
 
 The five fields are minute, hour, day of month, month and day of week. The shortest interval allowed is every 5 minutes. Scheduled runs always use the latest commit on the default branch, and they can be delayed when GitHub is under heavy load.
@@ -772,10 +772,10 @@ on:
   push:
     branches:
       - main
-      - 'feature/**'
+      - "feature/**"
   pull_request:
     branches-ignore:
-      - 'docs/**'
+      - "docs/**"
 ```
 
 For `push`, the filter checks the branch that was pushed. For `pull_request`, it checks the base (target) branch.
@@ -788,12 +788,12 @@ Use `paths` or `paths-ignore`.
 on:
   push:
     paths:
-      - 'src/**'
-      - 'package.json'
+      - "src/**"
+      - "package.json"
   pull_request:
     paths-ignore:
-      - '**.md'
-      - 'docs/**'
+      - "**.md"
+      - "docs/**"
 ```
 
 If you use both `branches` and `paths` on the same event, both filters must match for the workflow to run.
@@ -808,8 +808,8 @@ You can't use both for the same event. If you need to include some branches and 
 on:
   push:
     branches:
-      - 'release/**'
-      - '!release/**-alpha'
+      - "release/**"
+      - "!release/**-alpha"
 ```
 
 Order matters here. A later pattern can override an earlier one.
@@ -822,7 +822,7 @@ Use `tags` under the `push` event.
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 ```
 
 This runs when you push a tag like `v1.2.0`. In the run, `github.ref` will be `refs/tags/v1.2.0` and `github.ref_name` will be `v1.2.0`.
@@ -852,7 +852,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: '0 6 * * 1'
+    - cron: "0 6 * * 1"
 ```
 
 Inside the workflow you can check `github.event_name` to do different things depending on what started it.
@@ -1356,13 +1356,13 @@ GitHub provides official setup actions for the common languages. They all work i
 ```yaml
 - uses: actions/setup-python@v6
   with:
-    python-version: '3.13'
+    python-version: "3.13"
     cache: pip
 
 - uses: actions/setup-java@v5
   with:
     distribution: temurin
-    java-version: '21'
+    java-version: "21"
 
 - uses: actions/setup-go@v6
   with:
@@ -1392,7 +1392,7 @@ When the key matches an existing cache, the files are restored. At the end of th
 - uses: actions/setup-node@v6
   with:
     node-version: 24
-    cache: npm   # or yarn, pnpm
+    cache: npm # or yarn, pnpm
 ```
 
 It builds the cache key from the lock file, so the cache is refreshed when dependencies change. It caches the download folder (like `~/.npm`), not `node_modules`, so you still run `npm ci`, but it's much faster. Recent versions can also turn on npm caching automatically when `package.json` has a `packageManager` field.
@@ -1555,10 +1555,10 @@ That move can break builds because tool versions change. If you need stability, 
 Linux (Ubuntu), Windows Server and macOS. There are x64 and ARM64 images for Linux and Windows, and macOS runs on Apple silicon (ARM64), with Intel images for older needs.
 
 ```yaml
-runs-on: ubuntu-latest       # Linux x64
-runs-on: ubuntu-24.04-arm    # Linux ARM64
-runs-on: windows-latest      # Windows x64
-runs-on: macos-latest        # macOS ARM64
+runs-on: ubuntu-latest # Linux x64
+runs-on: ubuntu-24.04-arm # Linux ARM64
+runs-on: windows-latest # Windows x64
+runs-on: macos-latest # macOS ARM64
 ```
 
 The full list of labels and their exact versions is in the `actions/runner-images` repository.
@@ -1602,8 +1602,8 @@ It's the tab in a GitHub repository where you see all workflows and their runs. 
 - Strings usually don't need quotes, but quote values with `*`, `:` or a leading `!`, and quote things like `'3.10'` that would otherwise be read as a number.
 
 ```yaml
-python-version: 3.10    # read as 3.1
-python-version: '3.10'  # correct
+python-version: 3.10 # read as 3.1
+python-version: "3.10" # correct
 ```
 
 ## 89: What are common YAML mistakes in workflow files?
@@ -1960,7 +1960,7 @@ on:
     inputs:
       node-version:
         type: string
-        default: '24'
+        default: "24"
 ```
 
 ```yaml
@@ -1969,7 +1969,7 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
     with:
-      node-version: '22'
+      node-version: "22"
 ```
 
 It's a good way to keep one standard CI or deploy pipeline and use it in many repositories.
@@ -2397,8 +2397,8 @@ jobs:
     env:
       MODE: job
     steps:
-      - run: echo $MODE        # job
-      - run: echo $MODE        # step
+      - run: echo $MODE # job
+      - run: echo $MODE # step
         env:
           MODE: step
 ```
@@ -2792,7 +2792,7 @@ jobs:
   ci:
     uses: my-org/shared-workflows/.github/workflows/node-ci.yml@v3
     with:
-      node-version: '24'
+      node-version: "24"
 ```
 
 The called workflow's repository must be public, or it must be internal or private and allow access from other repositories in its Actions settings. Pin a tag or a commit SHA, because a branch ref lets every change in the shared repository affect your pipeline right away.
@@ -2860,13 +2860,13 @@ runs:
 
 ```js
 // src/index.js
-import * as core from '@actions/core';
+import * as core from "@actions/core";
 
 try {
-  const who = core.getInput('who', { required: true });
+  const who = core.getInput("who", { required: true });
   const greeting = `Hello, ${who}!`;
   core.info(greeting);
-  core.setOutput('greeting', greeting);
+  core.setOutput("greeting", greeting);
 } catch (error) {
   core.setFailed(error.message);
 }
@@ -2883,17 +2883,17 @@ They are packages from the Actions toolkit for writing JavaScript actions.
 `@actions/github` gives you an authenticated Octokit client and the `context` object with event data.
 
 ```js
-import * as core from '@actions/core';
-import * as github from '@actions/github';
+import * as core from "@actions/core";
+import * as github from "@actions/github";
 
-const token = core.getInput('token');
+const token = core.getInput("token");
 const octokit = github.getOctokit(token);
 const { owner, repo } = github.context.repo;
 await octokit.rest.issues.createComment({
   owner,
   repo,
   issue_number: github.context.issue.number,
-  body: 'Thanks for the PR!',
+  body: "Thanks for the PR!",
 });
 ```
 
@@ -3377,7 +3377,7 @@ Use the GitHub CLI, which is preinstalled. The job needs `contents: write`.
 ```yaml
 on:
   push:
-    tags: ['v*']
+    tags: ["v*"]
 
 permissions:
   contents: write
@@ -3560,7 +3560,7 @@ Job-level `concurrency` applies to one job. The rest of the workflow can still r
 ```yaml
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true   # cancel old CI runs for this branch
+  cancel-in-progress: true # cancel old CI runs for this branch
 
 jobs:
   test:
@@ -3571,7 +3571,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     concurrency:
-      group: deploy-staging   # only one staging deploy at a time across all branches
+      group: deploy-staging # only one staging deploy at a time across all branches
     steps:
       - run: ./deploy.sh staging
 ```
@@ -3770,12 +3770,12 @@ It's meant for tasks that don't need to run the pull request's code, like adding
 
 ## 221: What is the difference between pull_request and pull_request_target?
 
-| | `pull_request` | `pull_request_target` |
-| --- | --- | --- |
-| Workflow file from | the pull request merge commit | the default branch |
-| Default checkout | the PR merge commit | the default branch |
-| Secrets for forks | no | yes |
-| Token for forks | read-only | can have write access |
+|                    | `pull_request`                | `pull_request_target` |
+| ------------------ | ----------------------------- | --------------------- |
+| Workflow file from | the pull request merge commit | the default branch    |
+| Default checkout   | the PR merge commit           | the default branch    |
+| Secrets for forks  | no                            | yes                   |
+| Token for forks    | read-only                     | can have write access |
 
 Using `pull_request_target` and then checking out and running the pull request's code (like `npm install` or `npm test`) is a well-known way to get secrets stolen. An attacker only needs to open a pull request with a modified `package.json` script.
 
@@ -4535,7 +4535,7 @@ steps:
     with:
       node-version: 24
       registry-url: https://npm.pkg.github.com
-      scope: '@my-org'
+      scope: "@my-org"
   - run: npm ci
     env:
       NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -4713,12 +4713,12 @@ Draft releases don't trigger `published`. If you publish packages, react to `pub
 on:
   push:
     branches:
-      - 'release/**'
-      - '!release/**-rc'
+      - "release/**"
+      - "!release/**-rc"
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+.[0-9]+"
     paths:
-      - 'src/**/*.ts'
+      - "src/**/*.ts"
 ```
 
 Patterns that start with `*`, `[` or `!` must be quoted in YAML. Patterns are checked in order, so a later pattern can override an earlier one.
@@ -4884,7 +4884,7 @@ Use `actions/stale` on a schedule.
 ```yaml
 on:
   schedule:
-    - cron: '30 1 * * *'
+    - cron: "30 1 * * *"
 
 permissions:
   issues: write
@@ -4913,10 +4913,10 @@ Use `actions/labeler` with a config file that maps labels to file patterns.
 # .github/labeler.yml
 frontend:
   - changed-files:
-      - any-glob-to-any-file: 'apps/web/**'
+      - any-glob-to-any-file: "apps/web/**"
 backend:
   - changed-files:
-      - any-glob-to-any-file: 'apps/api/**'
+      - any-glob-to-any-file: "apps/api/**"
 ```
 
 ```yaml
@@ -4946,7 +4946,7 @@ on:
     branches: [main]
   pull_request:
   schedule:
-    - cron: '20 4 * * 1'
+    - cron: "20 4 * * 1"
 
 permissions:
   contents: read
@@ -5075,7 +5075,7 @@ services:
     image: postgres:17
     env:
       POSTGRES_PASSWORD: test
-    ports: ['5432:5432']
+    ports: ["5432:5432"]
     options: --health-cmd pg_isready --health-interval 5s --health-retries 10
 
 steps:
@@ -5300,7 +5300,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - run: npm ci && npm test   # runs the attacker's package.json scripts
+      - run: npm ci && npm test # runs the attacker's package.json scripts
 ```
 
 The fix: run untrusted code only in `pull_request` workflows (no secrets, read-only token). If a privileged follow-up is needed, use a separate `workflow_run` workflow that only handles data, never runs pull request code, and validates whatever it reads from artifacts.
@@ -5540,7 +5540,9 @@ Create one cloud role per environment and match the `environment` part of the su
 ```json
 {
   "Effect": "Allow",
-  "Principal": { "Federated": "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com" },
+  "Principal": {
+    "Federated": "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+  },
   "Action": "sts:AssumeRoleWithWebIdentity",
   "Condition": {
     "StringEquals": {
@@ -5828,8 +5830,8 @@ Look at the timing of the cache steps in the logs and compare runs with and with
 ```yaml
 - uses: actions/checkout@v6
   with:
-    fetch-depth: 1                  # only the current commit (default)
-    filter: blob:none               # partial clone, file contents fetched on demand
+    fetch-depth: 1 # only the current commit (default)
+    filter: blob:none # partial clone, file contents fetched on demand
     sparse-checkout: |
       apps/api
       packages/shared
@@ -5959,7 +5961,7 @@ inputs:
 runs:
   using: docker
   image: Dockerfile
-  args: ['--verbose']
+  args: ["--verbose"]
 ```
 
 ```bash
@@ -5972,14 +5974,14 @@ Because hyphens in variable names are hard to read in shell, many action authors
 
 ## 365: What are the trade-offs between JavaScript, Docker and composite actions?
 
-| | JavaScript | Docker | Composite |
-| --- | --- | --- | --- |
-| Start time | fast | slow (build or pull image) | fast |
-| OS support | Linux, Windows, macOS | Linux only | depends on the steps |
-| Language | JS/TS | any | shell plus other actions |
-| Dependencies | must be bundled | in the image | must be on the runner |
-| Pre/post hooks | yes | yes | no |
-| Maintenance | Node.js runtime upgrades | image updates | lowest |
+|                | JavaScript               | Docker                     | Composite                |
+| -------------- | ------------------------ | -------------------------- | ------------------------ |
+| Start time     | fast                     | slow (build or pull image) | fast                     |
+| OS support     | Linux, Windows, macOS    | Linux only                 | depends on the steps     |
+| Language       | JS/TS                    | any                        | shell plus other actions |
+| Dependencies   | must be bundled          | in the image               | must be on the runner    |
+| Pre/post hooks | yes                      | yes                        | no                       |
+| Maintenance    | Node.js runtime upgrades | image updates              | lowest                   |
 
 Choose composite for glue logic, JavaScript for logic that calls APIs or needs cross-platform support, and Docker when you need a specific toolchain that's hard to install on the runner.
 
@@ -5989,13 +5991,13 @@ Use `core.saveState` and `core.getState`. Values are stored as strings and are o
 
 ```js
 // main.js
-import * as core from '@actions/core';
+import * as core from "@actions/core";
 const tempDir = await createTempEnvironment();
-core.saveState('tempDir', tempDir);
+core.saveState("tempDir", tempDir);
 
 // post.js
-import * as core from '@actions/core';
-const tempDir = core.getState('tempDir');
+import * as core from "@actions/core";
+const tempDir = core.getState("tempDir");
 if (tempDir) {
   await removeTempEnvironment(tempDir);
 }
@@ -6061,12 +6063,14 @@ A good test: re-run the whole workflow after it succeeded. It should succeed aga
 ## 373: What does a re-run reuse from the original run, and what does it not?
 
 **Reused:**
+
 - The same commit SHA and ref.
 - The same event payload (`github.event`).
 - The same workflow file version, including reusable workflows (pinned to the SHA from the original run).
 - The same `run_id` and `run_number`. `run_attempt` increases.
 
 **Not reused:**
+
 - Secrets and variables: the current values are used.
 - `GITHUB_TOKEN`: a new one is created.
 - Action tags: resolved again, so a moved tag can give different code.
@@ -6223,7 +6227,7 @@ steps:
       role: ci-deploy
       secrets: |
         secret/data/prod/db password | DB_PASSWORD
-  - run: ./migrate.sh   # DB_PASSWORD is set as env and masked
+  - run: ./migrate.sh # DB_PASSWORD is set as env and masked
 ```
 
 AWS Secrets Manager, Azure Key Vault and Google Secret Manager work the same way after their OIDC login action. This keeps secrets in one place with its own access policies, audit logs and rotation, and GitHub only stores the role name.
@@ -6679,9 +6683,9 @@ This is why string outputs like `'true'` should be compared with the string `'tr
 - Job and step outputs are always strings, so passing a boolean through them turns it into `'true'`/`'false'`.
 
 ```yaml
-if: inputs.deploy                          # boolean, correct
-if: github.event.inputs.deploy == 'true'   # string comparison, correct
-if: needs.check.outputs.deploy == 'true'   # outputs are strings
+if: inputs.deploy # boolean, correct
+if: github.event.inputs.deploy == 'true' # string comparison, correct
+if: needs.check.outputs.deploy == 'true' # outputs are strings
 ```
 
 Use `fromJSON()` to turn a `'true'` or `'false'` string back into a boolean when you need one.
@@ -6691,25 +6695,25 @@ Use `fromJSON()` to turn a `'true'` or `'false'` string back into a boolean when
 Because only part of the value is inside `${{ }}`. GitHub replaces the expression and gets a string like `staging == 'prod'`, which is a non-empty string, and a non-empty string is truthy.
 
 ```yaml
-if: ${{ inputs.env }} == 'prod'      # wrong, always true
-if: ${{ inputs.env == 'prod' }}      # correct
-if: inputs.env == 'prod'             # correct
+if: ${{ inputs.env }} == 'prod' # wrong, always true
+if: ${{ inputs.env == 'prod' }} # correct
+if: inputs.env == 'prod' # correct
 ```
 
 The rule: in `if`, either write the whole expression without `${{ }}`, or put the whole expression inside it. `actionlint` warns about this mistake.
 
 ## 421: How does github.ref differ between events?
 
-| Event | `github.ref` | `github.sha` |
-| --- | --- | --- |
-| `push` to branch | `refs/heads/<branch>` | pushed commit |
-| `push` of tag | `refs/tags/<tag>` | tagged commit |
-| `pull_request` | `refs/pull/<n>/merge` | merge commit |
-| `pull_request_target` | default branch ref | last commit on default branch |
-| `workflow_dispatch` | branch or tag chosen | its latest commit |
-| `schedule` | default branch | its latest commit |
-| `release` | `refs/tags/<tag>` | tagged commit |
-| `workflow_run` | default branch | its latest commit |
+| Event                 | `github.ref`          | `github.sha`                  |
+| --------------------- | --------------------- | ----------------------------- |
+| `push` to branch      | `refs/heads/<branch>` | pushed commit                 |
+| `push` of tag         | `refs/tags/<tag>`     | tagged commit                 |
+| `pull_request`        | `refs/pull/<n>/merge` | merge commit                  |
+| `pull_request_target` | default branch ref    | last commit on default branch |
+| `workflow_dispatch`   | branch or tag chosen  | its latest commit             |
+| `schedule`            | default branch        | its latest commit             |
+| `release`             | `refs/tags/<tag>`     | tagged commit                 |
+| `workflow_run`        | default branch        | its latest commit             |
 
 Code that checks `github.ref == 'refs/heads/main'` therefore behaves differently per event. In `workflow_run`, use `github.event.workflow_run.head_branch` and `head_sha` to know what the first workflow ran on.
 
@@ -6807,7 +6811,7 @@ updates:
       default-days: 7
     groups:
       actions:
-        patterns: ['*']
+        patterns: ["*"]
 ```
 
 ## 429: How would you design CI/CD for a full stack app (frontend, backend, database)?
@@ -6884,7 +6888,7 @@ A release train ships whatever is ready on a fixed schedule, for example every T
 ```yaml
 on:
   schedule:
-    - cron: '0 9 * * 2'
+    - cron: "0 9 * * 2"
   workflow_dispatch:
 
 permissions:

@@ -326,7 +326,7 @@ The answers target modern Angular (v21 and later) with standalone components, si
 - [306: What is es-module-shims?](#306-what-is-es-module-shims)
 - [307: How does Native Federation make a shared package available to a remote built separately?](#307-how-does-native-federation-make-a-shared-package-available-to-a-remote-built-separately)
 - [308: How does webpack Module Federation share dependencies internally?](#308-how-does-webpack-module-federation-share-dependencies-internally)
-- [309: What are __webpack_init_sharing__ and __webpack_share_scopes__?](#309-what-are-__webpack_init_sharing__-and-__webpack_share_scopes__)
+- [309: What are **webpack_init_sharing** and **webpack_share_scopes**?](#309-what-are-__webpack_init_sharing__-and-__webpack_share_scopes__)
 - [310: How would you build a simplified loadRemoteModule for Native Federation by hand?](#310-how-would-you-build-a-simplified-loadremotemodule-for-native-federation-by-hand)
 - [311: Why does the remote's exposed code run against the host's import map instead of its own?](#311-why-does-the-remotes-exposed-code-run-against-the-hosts-import-map-instead-of-its-own)
 - [312: How does Angular's esbuild builder output affect micro frontends?](#312-how-does-angulars-esbuild-builder-output-affect-micro-frontends)
@@ -582,15 +582,22 @@ A `dynamic-host` reads the list of remotes from a JSON manifest at runtime. That
 It is the config file Native Federation reads at build time. It says what the app is called, which files it exposes (for remotes) and which npm packages are shared.
 
 ```js
-import { withNativeFederation, shareAll } from '@angular-architects/native-federation/config';
+import {
+  withNativeFederation,
+  shareAll,
+} from "@angular-architects/native-federation/config";
 
 export default withNativeFederation({
-  name: 'mfe1',
+  name: "mfe1",
   exposes: {
-    './Component': './projects/mfe1/src/app/app.component.ts',
+    "./Component": "./projects/mfe1/src/app/app.component.ts",
   },
   shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
+    ...shareAll({
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    }),
   },
 });
 ```
@@ -651,12 +658,12 @@ The host downloads this file first, then uses it to build an import map and load
 
 ```ts
 // host: main.ts
-import { initFederation } from '@angular-architects/native-federation';
+import { initFederation } from "@angular-architects/native-federation";
 
-initFederation('/assets/federation.manifest.json')
-  .catch(err => console.error(err))
-  .then(() => import('./bootstrap'))
-  .catch(err => console.error(err));
+initFederation("/assets/federation.manifest.json")
+  .catch((err) => console.error(err))
+  .then(() => import("./bootstrap"))
+  .catch((err) => console.error(err));
 ```
 
 It reads the remote metadata, builds an import map for the shared packages, and only then the app is bootstrapped.
@@ -672,9 +679,9 @@ So `main.ts` first calls `initFederation()` and then does a dynamic `import('./b
 `loadRemoteModule` loads an exposed file from a remote at runtime and returns a promise with its exports.
 
 ```ts
-import { loadRemoteModule } from '@angular-architects/native-federation';
+import { loadRemoteModule } from "@angular-architects/native-federation";
 
-const m = await loadRemoteModule('mfe1', './Component');
+const m = await loadRemoteModule("mfe1", "./Component");
 // m.AppComponent is now available
 ```
 
@@ -685,14 +692,14 @@ You usually call it inside a lazy route, but you can call it from anywhere, for 
 Use `loadComponent` with `loadRemoteModule`:
 
 ```ts
-import { Routes } from '@angular/router';
-import { loadRemoteModule } from '@angular-architects/native-federation';
+import { Routes } from "@angular/router";
+import { loadRemoteModule } from "@angular-architects/native-federation";
 
 export const routes: Routes = [
   {
-    path: 'flights',
+    path: "flights",
     loadComponent: () =>
-      loadRemoteModule('mfe1', './Component').then(m => m.AppComponent),
+      loadRemoteModule("mfe1", "./Component").then((m) => m.AppComponent),
   },
 ];
 ```
@@ -811,14 +818,16 @@ It is used for micro frontends when the host is not Angular or when you want to 
 Use `createApplication` and `createCustomElement`:
 
 ```ts
-import { createApplication } from '@angular/platform-browser';
-import { createCustomElement } from '@angular/elements';
-import { CartWidgetComponent } from './cart-widget.component';
+import { createApplication } from "@angular/platform-browser";
+import { createCustomElement } from "@angular/elements";
+import { CartWidgetComponent } from "./cart-widget.component";
 
 (async () => {
   const app = await createApplication({ providers: [] });
-  const element = createCustomElement(CartWidgetComponent, { injector: app.injector });
-  customElements.define('cart-widget', element);
+  const element = createCustomElement(CartWidgetComponent, {
+    injector: app.injector,
+  });
+  customElements.define("cart-widget", element);
 })();
 ```
 
@@ -872,11 +881,11 @@ An import map is a browser feature that tells the browser where to find a module
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "@angular/core": "/shared/angular-core.js"
+  {
+    "imports": {
+      "@angular/core": "/shared/angular-core.js"
+    }
   }
-}
 </script>
 ```
 
@@ -905,7 +914,7 @@ The names must be unique across the whole system. If two remotes use the same na
 It is the public key a remote gives to one of its files in `exposes`. The host uses this key, not the real file path, to load the file.
 
 ```ts
-loadRemoteModule('mfe1', './Component');
+loadRemoteModule("mfe1", "./Component");
 ```
 
 The leading `./` is just a convention from Module Federation. Keeping these names stable is important because changing them breaks the host.
@@ -927,15 +936,22 @@ This adds a `webpack.config.js`, switches the builder to one that can use a cust
 ## 53: What does a webpack.config.js for an Angular remote look like?
 
 ```js
-const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
+const {
+  shareAll,
+  withModuleFederationPlugin,
+} = require("@angular-architects/module-federation/webpack");
 
 module.exports = withModuleFederationPlugin({
-  name: 'mfe1',
+  name: "mfe1",
   exposes: {
-    './Component': './projects/mfe1/src/app/app.component.ts',
+    "./Component": "./projects/mfe1/src/app/app.component.ts",
   },
   shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
+    ...shareAll({
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    }),
   },
 });
 ```
@@ -1099,12 +1115,12 @@ Dispatch a `CustomEvent` on `window` and listen for it in the other app:
 
 ```ts
 // in the cart micro frontend
-window.dispatchEvent(new CustomEvent('cart:updated', { detail: { count: 3 } }));
+window.dispatchEvent(new CustomEvent("cart:updated", { detail: { count: 3 } }));
 
 // in the shell
-window.addEventListener('cart:updated', (e: Event) => {
+window.addEventListener("cart:updated", (e: Event) => {
   const { count } = (e as CustomEvent<{ count: number }>).detail;
-  console.log('items in cart', count);
+  console.log("items in cart", count);
 });
 ```
 
@@ -1121,7 +1137,7 @@ Before adding a shared store, check whether the data can just live in the URL.
 Yes. If the service lives in a shared library that is marked as shared in the federation config, and it is `providedIn: 'root'`, then all micro frontends get the same instance because they share the same root injector.
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuthService {
   readonly user = signal<User | null>(null);
 }
@@ -1141,11 +1157,15 @@ Native Federation reads the path mappings from `tsconfig.json` and can share the
 
 ```js
 export default withNativeFederation({
-  name: 'shell',
+  name: "shell",
   shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
+    ...shareAll({
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    }),
   },
-  sharedMappings: ['@my-org/auth'],
+  sharedMappings: ["@my-org/auth"],
 });
 ```
 
@@ -1171,9 +1191,17 @@ The shell has the top-level routes. Each micro frontend gets a path prefix and t
 
 ```ts
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'orders', loadChildren: () => loadRemoteModule('orders', './routes').then(m => m.routes) },
-  { path: 'account', loadChildren: () => loadRemoteModule('account', './routes').then(m => m.routes) },
+  { path: "", component: HomeComponent },
+  {
+    path: "orders",
+    loadChildren: () =>
+      loadRemoteModule("orders", "./routes").then((m) => m.routes),
+  },
+  {
+    path: "account",
+    loadChildren: () =>
+      loadRemoteModule("account", "./routes").then((m) => m.routes),
+  },
 ];
 ```
 
@@ -1201,7 +1229,7 @@ Load it with `loadRemoteModule` and render it with `NgComponentOutlet` or `ViewC
 
 ```ts
 @Component({
-  selector: 'app-mini-cart-slot',
+  selector: "app-mini-cart-slot",
   imports: [NgComponentOutlet],
   template: `
     @if (cmp(); as c) {
@@ -1213,7 +1241,9 @@ export class MiniCartSlotComponent {
   cmp = signal<Type<unknown> | null>(null);
 
   constructor() {
-    loadRemoteModule('cart', './MiniCart').then(m => this.cmp.set(m.MiniCartComponent));
+    loadRemoteModule("cart", "./MiniCart").then((m) =>
+      this.cmp.set(m.MiniCartComponent),
+    );
   }
 }
 ```
@@ -1297,11 +1327,12 @@ For the browser it all looks like one site, but each team still deploys its own 
 With a dynamic host, keep a manifest per environment and pick the right one at deploy time or at startup:
 
 ```ts
-const manifest = location.hostname === 'localhost'
-  ? '/assets/federation.manifest.json'
-  : '/assets/federation.manifest.prod.json';
+const manifest =
+  location.hostname === "localhost"
+    ? "/assets/federation.manifest.json"
+    : "/assets/federation.manifest.prod.json";
 
-initFederation(manifest).then(() => import('./bootstrap'));
+initFederation(manifest).then(() => import("./bootstrap"));
 ```
 
 Many teams instead write the manifest during deployment, or serve it from a small config API, so the same build works everywhere.
@@ -1312,8 +1343,8 @@ Yes. Instead of the manifest path you can pass an object with the remote names a
 
 ```ts
 initFederation({
-  mfe1: 'http://localhost:4201/remoteEntry.json',
-}).then(() => import('./bootstrap'));
+  mfe1: "http://localhost:4201/remoteEntry.json",
+}).then(() => import("./bootstrap"));
 ```
 
 This is useful when you already got the list from an API.
@@ -1342,13 +1373,13 @@ Types are removed at build time, so this adds nothing to the bundle, but it give
 `loadRemoteModule` gives you an untyped result because TypeScript can't see the remote's code at build time. You can add the type yourself with a shared interface:
 
 ```ts
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
 
 interface FlightsRemote {
   routes: Routes;
 }
 
-const m = (await loadRemoteModule('mfe1', './routes')) as FlightsRemote;
+const m = (await loadRemoteModule("mfe1", "./routes")) as FlightsRemote;
 ```
 
 Keep these interfaces in a shared contracts library so both teams use the same one. Some tools (like Module Federation 2.0) can generate types for remotes automatically.
@@ -1423,12 +1454,13 @@ It changes the `build` and `serve` targets to use the `@angular-architects/nativ
 It's the file that starts Angular. It contains what `main.ts` used to have:
 
 ```ts
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
+import { bootstrapApplication } from "@angular/platform-browser";
+import { appConfig } from "./app/app.config";
+import { AppComponent } from "./app/app.component";
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, appConfig).catch((err) =>
+  console.error(err),
+);
 ```
 
 `main.ts` only sets up federation and then imports this file dynamically.
@@ -1436,12 +1468,12 @@ bootstrapApplication(AppComponent, appConfig)
 ## 106: What does a remote's main.ts look like with Native Federation?
 
 ```ts
-import { initFederation } from '@angular-architects/native-federation';
+import { initFederation } from "@angular-architects/native-federation";
 
 initFederation()
-  .catch(err => console.error(err))
-  .then(() => import('./bootstrap'))
-  .catch(err => console.error(err));
+  .catch((err) => console.error(err))
+  .then(() => import("./bootstrap"))
+  .catch((err) => console.error(err));
 ```
 
 The remote calls `initFederation()` with no arguments because it doesn't load other remotes. It still needs it so shared packages are set up the same way when it runs on its own.
@@ -1490,8 +1522,8 @@ It means the remote makes its `Routes` array available to the host:
 ```ts
 // projects/mfe1/src/app/app.routes.ts
 export const routes: Routes = [
-  { path: '', component: FlightSearchComponent },
-  { path: ':id', component: FlightDetailsComponent },
+  { path: "", component: FlightSearchComponent },
+  { path: ":id", component: FlightDetailsComponent },
 ];
 ```
 
@@ -1514,9 +1546,9 @@ A route can have its own `providers`, which creates a new injector for that rout
 ```ts
 export const routes: Routes = [
   {
-    path: '',
+    path: "",
     providers: [FlightService, provideHttpClient()],
-    children: [{ path: '', component: FlightSearchComponent }],
+    children: [{ path: "", component: FlightSearchComponent }],
   },
 ];
 ```
@@ -1540,7 +1572,7 @@ The fix is to choose one owner for each piece of data and share it through a sha
 The usual way is a shared auth service in a shared library, provided in root. The shell logs the user in and sets the user; remotes read it:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuthStore {
   private readonly _user = signal<User | null>(null);
   readonly user = this._user.asReadonly();
@@ -1608,11 +1640,14 @@ interface RemoteConfig {
   exposedModule: string;
 }
 
-const remotes: RemoteConfig[] = await fetch('/assets/remotes.json').then(r => r.json());
+const remotes: RemoteConfig[] = await fetch("/assets/remotes.json").then((r) =>
+  r.json(),
+);
 
-const routes: Routes = remotes.map(r => ({
+const routes: Routes = remotes.map((r) => ({
   path: r.path,
-  loadChildren: () => loadRemoteModule(r.name, r.exposedModule).then(m => m.routes),
+  loadChildren: () =>
+    loadRemoteModule(r.name, r.exposedModule).then((m) => m.routes),
 }));
 ```
 
@@ -1661,9 +1696,12 @@ export class CartBadgeComponent {
   count = signal(0);
 
   constructor() {
-    const handler = (e: Event) => this.count.set((e as CustomEvent).detail.count);
-    window.addEventListener('cart:updated', handler);
-    inject(DestroyRef).onDestroy(() => window.removeEventListener('cart:updated', handler));
+    const handler = (e: Event) =>
+      this.count.set((e as CustomEvent).detail.count);
+    window.addEventListener("cart:updated", handler);
+    inject(DestroyRef).onDestroy(() =>
+      window.removeEventListener("cart:updated", handler),
+    );
   }
 }
 ```
@@ -1859,15 +1897,30 @@ You still get the benefit of sharing when versions match, and you avoid errors w
 Use the `share` helper (or write the entries by hand) for the packages you want:
 
 ```js
-import { withNativeFederation, share } from '@angular-architects/native-federation/config';
+import {
+  withNativeFederation,
+  share,
+} from "@angular-architects/native-federation/config";
 
 export default withNativeFederation({
-  name: 'mfe1',
+  name: "mfe1",
   shared: share({
-    '@angular/core': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-    '@angular/common': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-    '@angular/router': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-    rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+    "@angular/core": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    },
+    "@angular/common": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    },
+    "@angular/router": {
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    },
+    rxjs: { singleton: true, strictVersion: true, requiredVersion: "auto" },
   }),
 });
 ```
@@ -1886,8 +1939,14 @@ With `ignoreUnusedDeps` enabled, Native Federation checks which shared packages 
 
 ```js
 export default withNativeFederation({
-  name: 'mfe1',
-  shared: { ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }) },
+  name: "mfe1",
+  shared: {
+    ...shareAll({
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    }),
+  },
   features: {
     ignoreUnusedDeps: true,
   },
@@ -1949,14 +2008,21 @@ That only works if the remote is fully isolated, for example as a web component 
 It looks like a remote's config but without `exposes`:
 
 ```js
-import { withNativeFederation, shareAll } from '@angular-architects/native-federation/config';
+import {
+  withNativeFederation,
+  shareAll,
+} from "@angular-architects/native-federation/config";
 
 export default withNativeFederation({
-  name: 'shell',
+  name: "shell",
   shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
+    ...shareAll({
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    }),
   },
-  skip: ['rxjs/ajax', 'rxjs/fetch', 'rxjs/testing', 'rxjs/webSocket'],
+  skip: ["rxjs/ajax", "rxjs/fetch", "rxjs/testing", "rxjs/webSocket"],
 });
 ```
 
@@ -1994,7 +2060,7 @@ With `NgComponentOutlet` you can pass inputs directly:
 
 ```html
 @if (cmp(); as c) {
-  <ng-container *ngComponentOutlet="c; inputs: { productId: productId() }" />
+<ng-container *ngComponentOutlet="c; inputs: { productId: productId() }" />
 }
 ```
 
@@ -2002,7 +2068,7 @@ With `ViewContainerRef`:
 
 ```ts
 const ref = this.vcr.createComponent(m.ProductCardComponent);
-ref.setInput('productId', 42);
+ref.setInput("productId", 42);
 ```
 
 Use `setInput` instead of setting the property directly so change detection and signal inputs work.
@@ -2013,7 +2079,7 @@ With `ViewContainerRef`, subscribe to the output on the instance:
 
 ```ts
 const ref = this.vcr.createComponent(m.AddToCartButtonComponent);
-ref.setInput('productId', 42);
+ref.setInput("productId", 42);
 const sub = ref.instance.added.subscribe((qty: number) => this.onAdded(qty));
 ref.onDestroy(() => sub.unsubscribe());
 ```
@@ -2025,12 +2091,12 @@ Signal-based `output()` and `@Output()` with `EventEmitter` both have `subscribe
 Since Angular 20, `createComponent` accepts `bindings`, so you can connect inputs and outputs at creation time:
 
 ```ts
-import { inputBinding, outputBinding } from '@angular/core';
+import { inputBinding, outputBinding } from "@angular/core";
 
 this.vcr.createComponent(m.AddToCartButtonComponent, {
   bindings: [
-    inputBinding('productId', this.productId),
-    outputBinding<number>('added', qty => this.onAdded(qty)),
+    inputBinding("productId", this.productId),
+    outputBinding<number>("added", (qty) => this.onAdded(qty)),
   ],
 });
 ```
@@ -2059,8 +2125,12 @@ Put its route outside the layout route:
 
 ```ts
 export const routes: Routes = [
-  { path: 'checkout', loadChildren: () => loadRemoteModule('checkout', './routes').then(m => m.routes) },
-  { path: '', component: MainLayoutComponent, children: [/* normal pages */] },
+  {
+    path: "checkout",
+    loadChildren: () =>
+      loadRemoteModule("checkout", "./routes").then((m) => m.routes),
+  },
+  { path: "", component: MainLayoutComponent, children: [/* normal pages */] },
 ];
 ```
 
@@ -2091,7 +2161,7 @@ The remote should own feature-specific checks, like "the user needs the `orders:
 Use the router with the full path. Since remotes loaded with `loadChildren` share the shell's router, normal navigation works:
 
 ```ts
-inject(Router).navigateByUrl('/orders/123');
+inject(Router).navigateByUrl("/orders/123");
 ```
 
 In templates you can use `routerLink="/orders/123"`. Use absolute paths, because relative paths are relative to the current remote.
@@ -2109,7 +2179,9 @@ When each web component micro frontend has its own router, listen to URL changes
 ```ts
 // inside the web component app
 const router = inject(Router);
-window.addEventListener('popstate', () => router.navigateByUrl(location.pathname + location.search));
+window.addEventListener("popstate", () =>
+  router.navigateByUrl(location.pathname + location.search),
+);
 ```
 
 Libraries like `@angular-architects/module-federation-tools` used to include helpers for this. It's one reason why many teams prefer loading Angular remotes through federation routes instead.
@@ -2128,7 +2200,9 @@ Things the shell normally provides, like the current user, should be replaced wi
 
 ```ts
 TestBed.configureTestingModule({
-  providers: [{ provide: AuthStore, useValue: { user: signal({ id: 1, name: 'Test' }) } }],
+  providers: [
+    { provide: AuthStore, useValue: { user: signal({ id: 1, name: "Test" }) } },
+  ],
 });
 ```
 
@@ -2137,7 +2211,7 @@ TestBed.configureTestingModule({
 Replace remote loading with local stubs. One way is to wrap `loadRemoteModule` in a small service and mock it in tests:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class RemoteLoader {
   load<T>(remote: string, module: string): Promise<T> {
     return loadRemoteModule(remote, module);
@@ -2231,10 +2305,12 @@ export class AppComponent {
   loading = signal(false);
 
   constructor() {
-    inject(Router).events.pipe(takeUntilDestroyed()).subscribe(e => {
-      if (e instanceof RouteConfigLoadStart) this.loading.set(true);
-      if (e instanceof RouteConfigLoadEnd) this.loading.set(false);
-    });
+    inject(Router)
+      .events.pipe(takeUntilDestroyed())
+      .subscribe((e) => {
+        if (e instanceof RouteConfigLoadStart) this.loading.set(true);
+        if (e instanceof RouteConfigLoadEnd) this.loading.set(false);
+      });
   }
 }
 ```
@@ -2246,12 +2322,16 @@ Then show a spinner or progress bar when `loading()` is true.
 Wrap the load in a small retry helper:
 
 ```ts
-async function loadWithRetry<T>(remote: string, module: string, retries = 2): Promise<T> {
+async function loadWithRetry<T>(
+  remote: string,
+  module: string,
+  retries = 2,
+): Promise<T> {
   try {
     return await loadRemoteModule(remote, module);
   } catch (err) {
     if (retries === 0) throw err;
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 1000));
     return loadWithRetry(remote, module, retries - 1);
   }
 }
@@ -2308,9 +2388,11 @@ You can also run the shell from a deployed environment and point just one remote
 Some teams add a developer-only override, for example a value in `localStorage`:
 
 ```ts
-const overrides = JSON.parse(localStorage.getItem('mf-overrides') ?? '{}');
-const manifest = await fetch('/assets/federation.manifest.json').then(r => r.json());
-initFederation({ ...manifest, ...overrides }).then(() => import('./bootstrap'));
+const overrides = JSON.parse(localStorage.getItem("mf-overrides") ?? "{}");
+const manifest = await fetch("/assets/federation.manifest.json").then((r) =>
+  r.json(),
+);
+initFederation({ ...manifest, ...overrides }).then(() => import("./bootstrap"));
 ```
 
 Then you set `{"cart": "http://localhost:4203/remoteEntry.json"}` in DevTools. Only enable this for non-production environments or trusted users, since it lets the page load code from any URL.
@@ -2332,7 +2414,7 @@ Use CSS custom properties (variables) for colors, spacing and fonts, defined onc
 :root {
   --color-primary: #1d4ed8;
   --space-md: 16px;
-  --font-body: 'Inter', sans-serif;
+  --font-body: "Inter", sans-serif;
 }
 ```
 
@@ -2387,7 +2469,7 @@ A common bug is a remote using `/assets/logo.png`, which works when it runs alon
 Build asset URLs from the remote's own base URL instead of the page's URL. One simple way is to use `import.meta.url` in the remote code:
 
 ```ts
-const logoUrl = new URL('../assets/logo.png', import.meta.url).href;
+const logoUrl = new URL("../assets/logo.png", import.meta.url).href;
 ```
 
 This resolves relative to the JavaScript file, which lives on the remote's server. Another option is to serve all remotes under one domain with clear paths and use full paths like `/mfe/cart/assets/logo.png`.
@@ -2403,13 +2485,13 @@ This resolves relative to the JavaScript file, which lives on the remote's serve
 Put the service in a shared library and mark that library as shared in the federation config:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class CartState {
   private readonly items = signal<CartItem[]>([]);
   readonly count = computed(() => this.items().length);
 
   add(item: CartItem) {
-    this.items.update(list => [...list, item]);
+    this.items.update((list) => [...list, item]);
   }
 }
 ```
@@ -2430,14 +2512,14 @@ Keep shared services small, with one owning team, and treat their API as a versi
 `BroadcastChannel` sends messages between all scripts on the same origin, including other tabs:
 
 ```ts
-const channel = new BroadcastChannel('auth');
+const channel = new BroadcastChannel("auth");
 
 // on logout
-channel.postMessage({ type: 'logout' });
+channel.postMessage({ type: "logout" });
 
 // in any micro frontend or tab
-channel.onmessage = e => {
-  if (e.data.type === 'logout') location.href = '/login';
+channel.onmessage = (e) => {
+  if (e.data.type === "logout") location.href = "/login";
 };
 ```
 
@@ -2449,15 +2531,18 @@ Put it in the shared contracts library:
 
 ```ts
 export interface AppEvents {
-  'cart:updated': { count: number };
-  'user:logout': void;
+  "cart:updated": { count: number };
+  "user:logout": void;
 }
 
 export function emit<K extends keyof AppEvents>(type: K, detail: AppEvents[K]) {
   window.dispatchEvent(new CustomEvent(type, { detail }));
 }
 
-export function on<K extends keyof AppEvents>(type: K, fn: (detail: AppEvents[K]) => void) {
+export function on<K extends keyof AppEvents>(
+  type: K,
+  fn: (detail: AppEvents[K]) => void,
+) {
   const handler = (e: Event) => fn((e as CustomEvent<AppEvents[K]>).detail);
   window.addEventListener(type, handler);
   return () => window.removeEventListener(type, handler);
@@ -2487,9 +2572,11 @@ For web component micro frontends, the host passes data in with attributes (stri
 ```
 
 ```ts
-const card = document.querySelector('product-card')!;
-(card as any).product = { id: 42, name: 'Shoes' };
-card.addEventListener('addToCart', e => console.log((e as CustomEvent).detail));
+const card = document.querySelector("product-card")!;
+(card as any).product = { id: 42, name: "Shoes" };
+card.addEventListener("addToCart", (e) =>
+  console.log((e as CustomEvent).detail),
+);
 ```
 
 Angular Elements maps component inputs to attributes and properties, and outputs to custom events.
@@ -2510,8 +2597,8 @@ Load the element's script and add `CUSTOM_ELEMENTS_SCHEMA` to the component that
 ```ts
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.type = 'module';
+    const script = document.createElement("script");
+    script.type = "module";
     script.src = src;
     script.onload = () => resolve();
     script.onerror = reject;
@@ -2520,15 +2607,18 @@ function loadScript(src: string): Promise<void> {
 }
 
 @Component({
-  selector: 'app-product-page',
+  selector: "app-product-page",
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: `<product-card [productId]="id()" (addToCart)="onAdd($event)"></product-card>`,
+  template: `<product-card
+    [productId]="id()"
+    (addToCart)="onAdd($event)"
+  ></product-card>`,
 })
 export class ProductPageComponent {
   id = input.required<number>();
 
   constructor() {
-    loadScript('https://cdn.example.com/product-card/main.js');
+    loadScript("https://cdn.example.com/product-card/main.js");
   }
 
   onAdd(e: Event) {
@@ -2551,7 +2641,7 @@ You expose a file that registers the custom element, load it with `loadRemoteMod
 
 ```ts
 // remote exposes './web-components' which calls customElements.define('mfe-react', ...)
-await loadRemoteModule('reactMfe', './web-components');
+await loadRemoteModule("reactMfe", "./web-components");
 ```
 
 This lets you load micro frontends from other frameworks (or other Angular versions) through federation, while the browser handles rendering through the custom element.
@@ -2572,8 +2662,8 @@ It's not actively developed for new Angular versions anymore. You will still see
 
 ```ts
 @Component({
-  selector: 'app-wc-remote',
-  template: '',
+  selector: "app-wc-remote",
+  template: "",
 })
 export class WebComponentRemoteComponent {
   remoteName = input.required<string>();
@@ -2585,7 +2675,9 @@ export class WebComponentRemoteComponent {
   constructor() {
     afterNextRender(async () => {
       await loadRemoteModule(this.remoteName(), this.exposedModule());
-      this.host.nativeElement.appendChild(document.createElement(this.elementName()));
+      this.host.nativeElement.appendChild(
+        document.createElement(this.elementName()),
+      );
     });
   }
 }
@@ -2598,12 +2690,12 @@ You can use it in routes with `data` or with route inputs to show any web compon
 The root config is the main HTML page and script in single-spa. It registers each micro frontend with a name, a loading function and an "active when" rule:
 
 ```js
-import { registerApplication, start } from 'single-spa';
+import { registerApplication, start } from "single-spa";
 
 registerApplication({
-  name: '@org/orders',
-  app: () => System.import('@org/orders'),
-  activeWhen: ['/orders'],
+  name: "@org/orders",
+  app: () => System.import("@org/orders"),
+  activeWhen: ["/orders"],
 });
 
 start();
@@ -2616,14 +2708,17 @@ single-spa mounts and unmounts each app as the URL changes.
 `single-spa-angular` connects an Angular app to single-spa. It gives your Angular app the `bootstrap`, `mount` and `unmount` lifecycle functions single-spa needs, and handles starting and destroying the Angular app.
 
 ```ts
-import { singleSpaAngular, getSingleSpaExtraProviders } from 'single-spa-angular';
+import {
+  singleSpaAngular,
+  getSingleSpaExtraProviders,
+} from "single-spa-angular";
 
 const lifecycles = singleSpaAngular({
   bootstrapFunction: () =>
     bootstrapApplication(AppComponent, {
       providers: [...appConfig.providers, getSingleSpaExtraProviders()],
     }),
-  template: '<app-root />',
+  template: "<app-root />",
   NgZone,
   Router,
 });
@@ -2695,14 +2790,18 @@ Tools like the Module Federation Chrome DevTools extension use it to show what's
 ## 235: How do you load a remote with the Module Federation 2.0 runtime API?
 
 ```ts
-import { createInstance } from '@module-federation/enhanced/runtime';
+import { createInstance } from "@module-federation/enhanced/runtime";
 
 const mf = createInstance({
-  name: 'shell',
-  remotes: [{ name: 'cart', entry: 'https://cdn.example.com/cart/mf-manifest.json' }],
+  name: "shell",
+  remotes: [
+    { name: "cart", entry: "https://cdn.example.com/cart/mf-manifest.json" },
+  ],
 });
 
-const mod = await mf.loadRemote<{ MiniCartComponent: Type<unknown> }>('cart/MiniCart');
+const mod = await mf.loadRemote<{ MiniCartComponent: Type<unknown> }>(
+  "cart/MiniCart",
+);
 ```
 
 Older versions of the runtime used the global `init` and `loadRemote` functions instead of `createInstance`. Check your version's docs.
@@ -2713,7 +2812,7 @@ Use `registerRemotes` on the instance:
 
 ```ts
 mf.registerRemotes([
-  { name: 'orders', entry: 'https://cdn.example.com/orders/mf-manifest.json' },
+  { name: "orders", entry: "https://cdn.example.com/orders/mf-manifest.json" },
 ]);
 ```
 
@@ -2800,10 +2899,10 @@ That may load a lot of code users never need, so a custom strategy that preloads
 ## 245: How do you write a custom preloading strategy for remotes?
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class FlagPreloadingStrategy implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<unknown>): Observable<unknown> {
-    return route.data?.['preload'] ? load() : of(null);
+    return route.data?.["preload"] ? load() : of(null);
   }
 }
 
@@ -2867,7 +2966,7 @@ If Angular is shared and remotes are loaded as routes into the shell, they use t
 
 ```ts
 export const appConfig: ApplicationConfig = {
-  providers: [{ provide: LOCALE_ID, useValue: 'de-DE' }],
+  providers: [{ provide: LOCALE_ID, useValue: "de-DE" }],
 };
 ```
 
@@ -2891,7 +2990,7 @@ export function provideFlightsFeature(): (Provider | EnvironmentProviders)[] {
 
 // remote: app.routes.ts (exposed)
 export const routes: Routes = [
-  { path: '', providers: [provideFlightsFeature()], children: [/* ... */] },
+  { path: "", providers: [provideFlightsFeature()], children: [/* ... */] },
 ];
 
 // remote: app.config.ts (standalone only)
@@ -2909,7 +3008,12 @@ It creates a new `HttpClient` for that part of the app, with its own interceptor
 If you do need extra interceptors in a remote, use `withRequestsMadeViaParent()` so requests also go through the parent's interceptors:
 
 ```ts
-providers: [provideHttpClient(withInterceptors([flightsInterceptor]), withRequestsMadeViaParent())]
+providers: [
+  provideHttpClient(
+    withInterceptors([flightsInterceptor]),
+    withRequestsMadeViaParent(),
+  ),
+];
 ```
 
 ## 255: How do you add a remote's NgRx feature state when loaded into the shell?
@@ -2919,9 +3023,9 @@ Provide the feature state on the remote's routes:
 ```ts
 export const routes: Routes = [
   {
-    path: '',
+    path: "",
     providers: [provideState(ordersFeature), provideEffects(OrdersEffects)],
-    children: [{ path: '', component: OrdersListComponent }],
+    children: [{ path: "", component: OrdersListComponent }],
   },
 ];
 ```
@@ -2938,7 +3042,7 @@ export const OrdersStore = signalStore(
 );
 
 // in the remote's route
-providers: [OrdersStore]
+providers: [OrdersStore];
 ```
 
 This keeps remotes more independent.
@@ -2948,9 +3052,9 @@ This keeps remotes more independent.
 Put the data loading in a shared service that caches the result, for example with a signal or `shareReplay`, and make sure the service is a singleton:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class UserProfileService {
-  readonly profile = httpResource<UserProfile>(() => '/api/me');
+  readonly profile = httpResource<UserProfile>(() => "/api/me");
 }
 ```
 
@@ -2967,7 +3071,7 @@ Often the simplest safe approach is to do a full page reload or redirect to the 
 The shell loads the user's permissions once after login and puts them in a shared auth service. Remotes check them with helper functions or directives from a shared library:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class Permissions {
   private readonly perms = signal<Set<string>>(new Set());
   has(p: string) {
@@ -2995,9 +3099,9 @@ It keeps teams independent end to end: one team owns the micro frontend and its 
 Fetch a config JSON from the remote's own location, not the shell's. Use `import.meta.url` to build the URL:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class OrdersConfig {
-  private readonly url = new URL('./config.json', import.meta.url).href;
+  private readonly url = new URL("./config.json", import.meta.url).href;
   readonly config = httpResource<{ apiUrl: string }>(() => this.url);
 }
 ```
@@ -3045,7 +3149,7 @@ That's usually what you want for auth headers, error handling and logging.
 The shell owns the toast UI and a notification service in a shared library. Remotes call the service:
 
 ```ts
-inject(NotificationService).success('Order saved');
+inject(NotificationService).success("Order saved");
 ```
 
 If the library is not shared, use a custom event like `notify` that the shell listens for. Either way, there's one place showing toasts, so they look and stack the same.
@@ -3093,7 +3197,7 @@ Use the route `title` property in the remote's routes. Angular's `TitleStrategy`
 
 ```ts
 export const routes: Routes = [
-  { path: '', title: 'My orders', component: OrdersListComponent },
+  { path: "", title: "My orders", component: OrdersListComponent },
 ];
 ```
 
@@ -3237,9 +3341,9 @@ Add a wildcard route at the end of the remote's routes:
 
 ```ts
 export const routes: Routes = [
-  { path: '', component: OrdersListComponent },
-  { path: ':id', component: OrderDetailsComponent },
-  { path: '**', component: OrdersNotFoundComponent },
+  { path: "", component: OrdersListComponent },
+  { path: ":id", component: OrderDetailsComponent },
+  { path: "**", component: OrdersNotFoundComponent },
 ];
 ```
 
@@ -3250,7 +3354,7 @@ And keep a top-level `**` route in the shell for URLs that don't match any remot
 Set up analytics once in the shell, for example tracking page views on `NavigationEnd`. Give remotes a small shared tracking service (or event) for custom events:
 
 ```ts
-inject(Analytics).track('order_submitted', { orderId });
+inject(Analytics).track("order_submitted", { orderId });
 ```
 
 This avoids every remote loading its own analytics script and makes sure events use the same names and format.
@@ -3266,8 +3370,8 @@ The shell team should also test full pages, because focus handling and landmarks
 After a route change, move focus to the main content or its heading, so screen reader and keyboard users know the page changed. The shell can do this on `NavigationEnd` for every remote:
 
 ```ts
-router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
-  document.querySelector<HTMLElement>('main h1')?.focus();
+router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
+  document.querySelector<HTMLElement>("main h1")?.focus();
 });
 ```
 
@@ -3313,7 +3417,9 @@ Since the host loads every remote's `remoteEntry.json` during `initFederation`, 
 Build the manifest per user, for example from an API that checks roles:
 
 ```ts
-const remotes = await fetch('/api/my-remotes', { credentials: 'include' }).then(r => r.json());
+const remotes = await fetch("/api/my-remotes", { credentials: "include" }).then(
+  (r) => r.json(),
+);
 await initFederation(remotes);
 ```
 
@@ -3348,9 +3454,9 @@ Put loading and error states inside this component so every slot behaves the sam
 
 ```html
 @defer (on viewport) {
-  <app-remote-slot remote="recommendations" module="./Carousel" />
+<app-remote-slot remote="recommendations" module="./Carousel" />
 } @placeholder {
-  <div class="carousel-placeholder"></div>
+<div class="carousel-placeholder"></div>
 }
 ```
 
@@ -3417,15 +3523,15 @@ Each container (host or remote) registers its shared modules in a "share scope",
 
 This happens through webpack's own runtime functions (`__webpack_init_sharing__`, `container.init`, `container.get`), not through browser import maps.
 
-## 309: What are __webpack_init_sharing__ and __webpack_share_scopes__?
+## 309: What are **webpack_init_sharing** and **webpack_share_scopes**?
 
 They are webpack Module Federation runtime internals. `__webpack_init_sharing__('default')` fills the default share scope with the host's shared modules, and `__webpack_share_scopes__.default` is the object that holds them. Loading a remote manually used to look like:
 
 ```js
-await __webpack_init_sharing__('default');
+await __webpack_init_sharing__("default");
 const container = window.mfe1;
 await container.init(__webpack_share_scopes__.default);
-const factory = await container.get('./Component');
+const factory = await container.get("./Component");
 const module = factory();
 ```
 
@@ -3437,9 +3543,9 @@ The core idea is small:
 
 ```ts
 async function loadRemote(remoteEntryUrl: string, exposed: string) {
-  const info = await fetch(remoteEntryUrl).then(r => r.json());
+  const info = await fetch(remoteEntryUrl).then((r) => r.json());
   const entry = info.exposes.find((e: { key: string }) => e.key === exposed);
-  const base = remoteEntryUrl.substring(0, remoteEntryUrl.lastIndexOf('/') + 1);
+  const base = remoteEntryUrl.substring(0, remoteEntryUrl.lastIndexOf("/") + 1);
   return import(/* @vite-ignore */ base + entry.outFileName);
 }
 ```
@@ -3485,8 +3591,8 @@ A waterfall happens when the browser finds out about files one at a time: `remot
 
 ```ts
 function preloadModule(url: string) {
-  const link = document.createElement('link');
-  link.rel = 'modulepreload';
+  const link = document.createElement("link");
+  link.rel = "modulepreload";
   link.href = url;
   document.head.appendChild(link);
 }
@@ -3514,11 +3620,14 @@ Fixes: keep old files for a while, catch load errors and offer a reload, or dete
 Poll the remote's `remoteEntry.json` (or a small `version.json`) every few minutes and compare a version or hash with the one loaded at startup:
 
 ```ts
-setInterval(async () => {
-  const res = await fetch('/mfe/cart/version.json', { cache: 'no-store' });
-  const { version } = await res.json();
-  if (version !== loadedVersion) showReloadBanner();
-}, 5 * 60 * 1000);
+setInterval(
+  async () => {
+    const res = await fetch("/mfe/cart/version.json", { cache: "no-store" });
+    const { version } = await res.json();
+    if (version !== loadedVersion) showReloadBanner();
+  },
+  5 * 60 * 1000,
+);
 ```
 
 Show a "new version available, reload" banner instead of reloading automatically, so users don't lose work.
@@ -3531,8 +3640,8 @@ This error means a dynamic `import()` failed, often because of a deployment (old
 export class ChunkErrorHandler implements ErrorHandler {
   handleError(error: unknown) {
     const msg = String((error as Error)?.message ?? error);
-    if (msg.includes('Failed to fetch dynamically imported module')) {
-      if (confirm('A new version is available. Reload now?')) location.reload();
+    if (msg.includes("Failed to fetch dynamically imported module")) {
+      if (confirm("A new version is available. Reload now?")) location.reload();
       return;
     }
     console.error(error);
@@ -3601,8 +3710,12 @@ The downside is that the shell must be updated for any shared package change. Ma
 Add a CI step in each remote's pipeline that downloads the current production shell's `remoteEntry.json` (or a version list) and compares the remote's shared package versions against it:
 
 ```ts
-const shell = await fetch('https://app.example.com/remoteEntry.json').then(r => r.json());
-const remote = JSON.parse(fs.readFileSync('dist/cart/browser/remoteEntry.json', 'utf8'));
+const shell = await fetch("https://app.example.com/remoteEntry.json").then(
+  (r) => r.json(),
+);
+const remote = JSON.parse(
+  fs.readFileSync("dist/cart/browser/remoteEntry.json", "utf8"),
+);
 // compare remote.shared[*].requiredVersion with shell.shared[*].version using semver.satisfies
 ```
 
@@ -3671,18 +3784,31 @@ Angular forms need a `ControlValueAccessor` to talk to the element. Create a sma
 
 ```ts
 @Directive({
-  selector: 'ds-input[formControlName], ds-input[formControl], ds-input[ngModel]',
-  host: { '(input)': 'onChange($event.target.value)', '(blur)': 'onTouched()' },
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: DsInputValueAccessor, multi: true }],
+  selector:
+    "ds-input[formControlName], ds-input[formControl], ds-input[ngModel]",
+  host: { "(input)": "onChange($event.target.value)", "(blur)": "onTouched()" },
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: DsInputValueAccessor,
+      multi: true,
+    },
+  ],
 })
 export class DsInputValueAccessor implements ControlValueAccessor {
   private el = inject(ElementRef<HTMLElement & { value: string }>);
   onChange: (v: string) => void = () => {};
   onTouched: () => void = () => {};
 
-  writeValue(v: string) { this.el.nativeElement.value = v ?? ''; }
-  registerOnChange(fn: (v: string) => void) { this.onChange = fn; }
-  registerOnTouched(fn: () => void) { this.onTouched = fn; }
+  writeValue(v: string) {
+    this.el.nativeElement.value = v ?? "";
+  }
+  registerOnChange(fn: (v: string) => void) {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: () => void) {
+    this.onTouched = fn;
+  }
 }
 ```
 
@@ -3703,8 +3829,8 @@ If you add it back after it was destroyed, a new component instance is created a
 `customElements.define` throws if the name is already used. In micro frontends, this happens if a remote is loaded twice or two remotes bundle the same element. Guard it:
 
 ```ts
-if (!customElements.get('cart-widget')) {
-  customElements.define('cart-widget', element);
+if (!customElements.get("cart-widget")) {
+  customElements.define("cart-widget", element);
 }
 ```
 
@@ -3733,8 +3859,8 @@ React 19 passes properties to custom elements and supports custom events better 
 Expose functions that bootstrap and destroy the app on a given element:
 
 ```ts
-import { createApplication } from '@angular/platform-browser';
-import { createComponent } from '@angular/core';
+import { createApplication } from "@angular/platform-browser";
+import { createComponent } from "@angular/core";
 
 export async function mount(host: HTMLElement) {
   const app = await createApplication({ providers: [] });
@@ -3781,7 +3907,7 @@ Load and create the component inside try/catch, and show a fallback on failure:
 
 ```ts
 @Component({
-  selector: 'app-safe-remote',
+  selector: "app-safe-remote",
   template: `
     @if (failed()) {
       <p class="remote-error">This part is not available right now.</p>
@@ -3794,7 +3920,7 @@ export class SafeRemoteComponent {
   module = input.required<string>();
   exportName = input.required<string>();
   failed = signal(false);
-  slot = viewChild.required('slot', { read: ViewContainerRef });
+  slot = viewChild.required("slot", { read: ViewContainerRef });
 
   constructor() {
     afterNextRender(async () => {
@@ -3887,11 +4013,14 @@ Use `postMessage` with explicit origins on both sides:
 
 ```ts
 // parent
-iframe.contentWindow!.postMessage({ type: 'init', userId: 42 }, 'https://legacy.example.com');
+iframe.contentWindow!.postMessage(
+  { type: "init", userId: 42 },
+  "https://legacy.example.com",
+);
 
-window.addEventListener('message', e => {
-  if (e.origin !== 'https://legacy.example.com') return;
-  if (e.data?.type === 'resize') iframe.style.height = `${e.data.height}px`;
+window.addEventListener("message", (e) => {
+  if (e.origin !== "https://legacy.example.com") return;
+  if (e.data?.type === "resize") iframe.style.height = `${e.data.height}px`;
 });
 ```
 
@@ -3912,22 +4041,26 @@ The shell is a single point of failure, so it deserves extra care.
 Load the manifest yourself, check each remote and only pass the reachable ones:
 
 ```ts
-const manifest: Record<string, string> = await fetch('/assets/federation.manifest.json').then(r => r.json());
+const manifest: Record<string, string> = await fetch(
+  "/assets/federation.manifest.json",
+).then((r) => r.json());
 
 const checks = await Promise.allSettled(
   Object.entries(manifest).map(async ([name, url]) => {
-    const res = await fetch(url, { method: 'HEAD' });
+    const res = await fetch(url, { method: "HEAD" });
     if (!res.ok) throw new Error(name);
     return [name, url] as const;
   }),
 );
 
 const available = Object.fromEntries(
-  checks.filter(c => c.status === 'fulfilled').map(c => (c as PromiseFulfilledResult<readonly [string, string]>).value),
+  checks
+    .filter((c) => c.status === "fulfilled")
+    .map((c) => (c as PromiseFulfilledResult<readonly [string, string]>).value),
 );
 
 await initFederation(available).catch(console.error);
-await import('./bootstrap');
+await import("./bootstrap");
 ```
 
 Routes for missing remotes then fail at load time and show their fallback, while the rest of the app works. This adds requests at startup, so weigh it against your setup.
@@ -3975,8 +4108,20 @@ Drive the menu from the remote registry. Each remote's entry includes menu data:
 
 ```json
 [
-  { "name": "orders", "path": "orders", "label": "Orders", "icon": "receipt", "permission": "orders:read" },
-  { "name": "cart", "path": "cart", "label": "Cart", "icon": "cart", "permission": null }
+  {
+    "name": "orders",
+    "path": "orders",
+    "label": "Orders",
+    "icon": "receipt",
+    "permission": "orders:read"
+  },
+  {
+    "name": "cart",
+    "path": "cart",
+    "label": "Cart",
+    "icon": "cart",
+    "permission": null
+  }
 ]
 ```
 
@@ -3987,12 +4132,12 @@ The shell builds routes and menu items from this list and hides items the user d
 Use an "extension point" pattern. The shell defines named slots (like `header-actions`), and remotes register components for them through the registry or a shared service:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ExtensionRegistry {
   private readonly slots = signal<Record<string, Type<unknown>[]>>({});
 
   register(slot: string, cmp: Type<unknown>) {
-    this.slots.update(s => ({ ...s, [slot]: [...(s[slot] ?? []), cmp] }));
+    this.slots.update((s) => ({ ...s, [slot]: [...(s[slot] ?? []), cmp] }));
   }
 
   get(slot: string) {
@@ -4064,7 +4209,7 @@ Incremental hydration lets parts of a server-rendered page stay "dehydrated" unt
 
 ```html
 @defer (hydrate on viewport) {
-  <app-remote-slot remote="reviews" module="./Reviews" />
+<app-remote-slot remote="reviews" module="./Reviews" />
 }
 ```
 
@@ -4128,18 +4273,18 @@ For micro frontends, the shell could publish a test like "remote `cart` exposes 
 Write a test that imports the exposed file the same way the shell would use it:
 
 ```ts
-import { routes } from './app.routes';
+import { routes } from "./app.routes";
 
-describe('exposed routes', () => {
-  it('has the agreed entry route', () => {
-    expect(routes.some(r => r.path === '')).toBe(true);
+describe("exposed routes", () => {
+  it("has the agreed entry route", () => {
+    expect(routes.some((r) => r.path === "")).toBe(true);
   });
 
-  it('can render the entry page', async () => {
+  it("can render the entry page", async () => {
     TestBed.configureTestingModule({ providers: [provideRouter(routes)] });
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/');
-    expect(harness.routeNativeElement?.textContent).toContain('Orders');
+    await harness.navigateByUrl("/");
+    expect(harness.routeNativeElement?.textContent).toContain("Orders");
   });
 });
 ```
@@ -4151,11 +4296,14 @@ This checks the public contract without running federation.
 Use the dynamic manifest. In the test setup, point the shell to a specific version of each remote:
 
 ```ts
-await page.addInitScript(overrides => {
-  localStorage.setItem('mf-overrides', JSON.stringify(overrides));
-}, { cart: 'https://cdn.example.com/cart/pr-123/remoteEntry.json' });
+await page.addInitScript(
+  (overrides) => {
+    localStorage.setItem("mf-overrides", JSON.stringify(overrides));
+  },
+  { cart: "https://cdn.example.com/cart/pr-123/remoteEntry.json" },
+);
 
-await page.goto('https://staging.example.com');
+await page.goto("https://staging.example.com");
 ```
 
 This lets each pull request in a remote run end-to-end tests inside a real shell, with its own preview build.
@@ -4188,10 +4336,12 @@ Avoid keeping important cross-micro-frontend state only in memory, since a reloa
 Use one owner that loads the data once and exposes the in-progress request:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class SessionService {
   private readonly http = inject(HttpClient);
-  readonly session$ = this.http.get<Session>('/api/session').pipe(shareReplay({ bufferSize: 1, refCount: false }));
+  readonly session$ = this.http
+    .get<Session>("/api/session")
+    .pipe(shareReplay({ bufferSize: 1, refCount: false }));
 }
 ```
 
@@ -4238,9 +4388,9 @@ Because `import.meta.url` resolves relative to the remote's own JavaScript file,
 Browsers only allow `new Worker(url)` for same-origin URLs. If the remote's files are on a different origin, a common workaround is to create a small same-origin blob that imports the real worker script:
 
 ```ts
-const workerUrl = new URL('./app.worker.js', import.meta.url).href;
-const blob = new Blob([`import '${workerUrl}';`], { type: 'text/javascript' });
-const worker = new Worker(URL.createObjectURL(blob), { type: 'module' });
+const workerUrl = new URL("./app.worker.js", import.meta.url).href;
+const blob = new Blob([`import '${workerUrl}';`], { type: "text/javascript" });
+const worker = new Worker(URL.createObjectURL(blob), { type: "module" });
 ```
 
 The remote's server still needs CORS headers. Serving everything from one domain avoids this.
@@ -4269,7 +4419,7 @@ If a theme change requires all remotes to rebuild, your theming setup is too tig
 
 ## 392: What is the impact of shared singletons on the ability of remotes to run standalone?
 
-When standalone, the remote provides all its shared packages itself, so it works fine. Problems come from shared *services* that expect the shell to set them up, like an auth store the shell fills after login.
+When standalone, the remote provides all its shared packages itself, so it works fine. Problems come from shared _services_ that expect the shell to set them up, like an auth store the shell fills after login.
 
 Remotes should handle the "not set up" case: show a dev login, use a mock user in development, or set up the service themselves when they detect they are running alone.
 
@@ -4281,7 +4431,7 @@ Options:
 - Provide an injection token in the shell (like `IN_SHELL`) and inject it with `{ optional: true }` in the remote.
 
 ```ts
-export const IN_SHELL = new InjectionToken<boolean>('IN_SHELL');
+export const IN_SHELL = new InjectionToken<boolean>("IN_SHELL");
 
 // shell: providers: [{ provide: IN_SHELL, useValue: true }]
 // remote:
@@ -4315,7 +4465,7 @@ This is a common surprise when a shared library is accidentally bundled into a r
 You can make the library store its singleton on `globalThis` with a well-known key:
 
 ```ts
-const KEY = Symbol.for('@my-org/event-bus');
+const KEY = Symbol.for("@my-org/event-bus");
 
 export function getEventBus(): EventBus {
   const g = globalThis as any;
@@ -4346,7 +4496,7 @@ interface ExternalStore<T> {
 
 export function fromExternalStore<T>(store: ExternalStore<T>): Signal<T> {
   const s = signal(store.get());
-  const unsubscribe = store.subscribe(v => s.set(v));
+  const unsubscribe = store.subscribe((v) => s.set(v));
   inject(DestroyRef).onDestroy(unsubscribe);
   return s.asReadonly();
 }
@@ -4479,10 +4629,10 @@ This turns the remote into a reusable product, with a clear API to its hosts.
 Use the manifest or registry. For users in group B, return a different remote (or a different version) for the same name or route:
 
 ```ts
-const variant = await fetch('/api/experiments/checkout').then(r => r.json());
+const variant = await fetch("/api/experiments/checkout").then((r) => r.json());
 const manifest = {
   ...baseManifest,
-  checkout: variant === 'B' ? CHECKOUT_B_URL : CHECKOUT_A_URL,
+  checkout: variant === "B" ? CHECKOUT_B_URL : CHECKOUT_A_URL,
 };
 await initFederation(manifest);
 ```
@@ -4631,7 +4781,10 @@ Remotes shouldn't assume a specific layout width or position. Use responsive lay
 }
 
 @container (min-width: 600px) {
-  .orders-list { display: grid; grid-template-columns: 1fr 1fr; }
+  .orders-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 ```
 
@@ -4702,7 +4855,7 @@ Provide a different implementation in the remote's route providers:
 ```ts
 export const routes: Routes = [
   {
-    path: '',
+    path: "",
     providers: [{ provide: Logger, useClass: OrdersLogger }],
     children: [/* ... */],
   },
@@ -4716,10 +4869,20 @@ Components in the remote now get `OrdersLogger`, while the rest of the app still
 The CMS returns a page description with a list of blocks, each mapped to a remote and exposed component:
 
 ```json
-{ "blocks": [
-  { "remote": "marketing", "module": "./Hero", "inputs": { "title": "Sale" } },
-  { "remote": "catalog", "module": "./ProductGrid", "inputs": { "category": "shoes" } }
-] }
+{
+  "blocks": [
+    {
+      "remote": "marketing",
+      "module": "./Hero",
+      "inputs": { "title": "Sale" }
+    },
+    {
+      "remote": "catalog",
+      "module": "./ProductGrid",
+      "inputs": { "category": "shoes" }
+    }
+  ]
+}
 ```
 
 A page component loops over blocks, loads each with `loadRemoteModule` and renders it with `NgComponentOutlet` and its inputs. Validate the CMS data and only allow known remotes and modules.

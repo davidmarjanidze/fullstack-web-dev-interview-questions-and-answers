@@ -2647,8 +2647,8 @@ Listen for `SIGTERM`, stop accepting new work, finish what is in progress and th
 ```js
 const server = app.listen(3000);
 
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, closing server');
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, closing server");
   server.close(() => {
     // close DB pools, flush queues, etc.
     process.exit(0);
@@ -2958,9 +2958,9 @@ docker compose down -v
 Testcontainers is a library (for Java, Node.js, Go, Python, .NET and others) that starts real Docker containers from your test code, for example a Postgres or Kafka, and removes them after the test.
 
 ```js
-import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { PostgreSqlContainer } from "@testcontainers/postgresql";
 
-const pg = await new PostgreSqlContainer('postgres:17').start();
+const pg = await new PostgreSqlContainer("postgres:17").start();
 const url = pg.getConnectionUri();
 // run tests against url
 await pg.stop();
@@ -3272,9 +3272,7 @@ Docker picks subnets for new networks from default pools (like `172.17.0.0/16` a
 
 ```json
 {
-  "default-address-pools": [
-    { "base": "10.200.0.0/16", "size": 24 }
-  ]
+  "default-address-pools": [{ "base": "10.200.0.0/16", "size": 24 }]
 }
 ```
 
@@ -4576,12 +4574,12 @@ Combine this with `mode=max` remote cache in CI. Dependency install is cached un
 
 ## 364: What are the trade-offs between Alpine, slim, distroless and scratch?
 
-| Base | Size | Shell | libc | Notes |
-|------|------|-------|------|-------|
-| Alpine | very small | yes | musl | Native module issues, different DNS resolver behavior |
-| Debian slim | small | yes | glibc | Most compatible, easy to debug |
-| Distroless | small | no | glibc | Fewer CVEs, harder to debug |
-| scratch | tiny | no | none | Only for static binaries |
+| Base        | Size       | Shell | libc  | Notes                                                 |
+| ----------- | ---------- | ----- | ----- | ----------------------------------------------------- |
+| Alpine      | very small | yes   | musl  | Native module issues, different DNS resolver behavior |
+| Debian slim | small      | yes   | glibc | Most compatible, easy to debug                        |
+| Distroless  | small      | no    | glibc | Fewer CVEs, harder to debug                           |
+| scratch     | tiny       | no    | none  | Only for static binaries                              |
 
 For most apps, `-slim` or distroless are good defaults. Pick Alpine when size matters a lot and you have tested your dependencies with musl.
 

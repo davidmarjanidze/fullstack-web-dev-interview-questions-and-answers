@@ -185,11 +185,11 @@ No, not yet. Chrome for Android and iOS are not supported, and neither are Chrom
 Use feature detection. Each API is a global class, so you check if the name exists:
 
 ```js
-if ('Summarizer' in self) {
+if ("Summarizer" in self) {
   // The Summarizer API exists in this browser
 }
 
-if ('LanguageModel' in self) {
+if ("LanguageModel" in self) {
   // The Prompt API exists
 }
 ```
@@ -207,7 +207,7 @@ It returns a promise that resolves to one of four strings:
 
 ```js
 const status = await Summarizer.availability();
-if (status === 'unavailable') {
+if (status === "unavailable") {
   showFallback();
 }
 ```
@@ -217,7 +217,7 @@ if (status === 'unavailable') {
 Each API has a static async `create()` method. You pass options, and it returns an object you use for the actual work:
 
 ```js
-const summarizer = await Summarizer.create({ type: 'tldr' });
+const summarizer = await Summarizer.create({ type: "tldr" });
 const summary = await summarizer.summarize(articleText);
 ```
 
@@ -235,10 +235,10 @@ Pass a `monitor` function to `create()` and listen for the `downloadprogress` ev
 
 ```js
 const translator = await Translator.create({
-  sourceLanguage: 'en',
-  targetLanguage: 'de',
+  sourceLanguage: "en",
+  targetLanguage: "de",
   monitor(m) {
-    m.addEventListener('downloadprogress', (e) => {
+    m.addEventListener("downloadprogress", (e) => {
       progressBar.value = e.loaded * 100;
     });
   },
@@ -251,11 +251,11 @@ It translates text between two languages on the device. You create a translator 
 
 ```js
 const translator = await Translator.create({
-  sourceLanguage: 'en',
-  targetLanguage: 'fr',
+  sourceLanguage: "en",
+  targetLanguage: "fr",
 });
 
-const result = await translator.translate('Where is the next bus stop?');
+const result = await translator.translate("Where is the next bus stop?");
 console.log(result);
 ```
 
@@ -267,7 +267,7 @@ It tells you which language some text is written in. It's useful before translat
 
 ```js
 const detector = await LanguageDetector.create();
-const results = await detector.detect('Hallo und herzlich willkommen!');
+const results = await detector.detect("Hallo und herzlich willkommen!");
 console.log(results[0].detectedLanguage); // "de"
 ```
 
@@ -289,13 +289,13 @@ It makes summaries of text. You choose what kind of summary you want when you cr
 
 ```js
 const summarizer = await Summarizer.create({
-  type: 'key-points',
-  format: 'markdown',
-  length: 'medium',
+  type: "key-points",
+  format: "markdown",
+  length: "medium",
 });
 
 const summary = await summarizer.summarize(
-  document.querySelector('article').innerText
+  document.querySelector("article").innerText,
 );
 ```
 
@@ -313,9 +313,9 @@ Common uses are summarizing articles, long reviews, chat threads or support tick
 It writes new text based on a short description of what you want. For example, you give it "Write a polite email asking my landlord to fix the heating" and it returns a draft.
 
 ```js
-const writer = await Writer.create({ tone: 'formal' });
+const writer = await Writer.create({ tone: "formal" });
 const draft = await writer.write(
-  'Ask my landlord to fix the heating this week.'
+  "Ask my landlord to fix the heating this week.",
 );
 ```
 
@@ -324,9 +324,9 @@ const draft = await writer.write(
 It takes text the user already wrote and changes it: shorter or longer, more formal or more casual, or a different format.
 
 ```js
-const rewriter = await Rewriter.create({ tone: 'more-casual' });
+const rewriter = await Rewriter.create({ tone: "more-casual" });
 const result = await rewriter.rewrite(
-  'We regret to inform you that the meeting has been postponed.'
+  "We regret to inform you that the meeting has been postponed.",
 );
 ```
 
@@ -342,7 +342,9 @@ It's the general-purpose API. You get a session with Gemini Nano and send it you
 
 ```js
 const session = await LanguageModel.create();
-const answer = await session.prompt('Give me three name ideas for a coffee shop.');
+const answer = await session.prompt(
+  "Give me three name ideas for a coffee shop.",
+);
 console.log(answer);
 ```
 
@@ -354,10 +356,12 @@ It checks text for grammar, spelling and punctuation mistakes and returns the co
 
 ```js
 const proofreader = await Proofreader.create({
-  expectedInputLanguages: ['en'],
+  expectedInputLanguages: ["en"],
 });
 
-const result = await proofreader.proofread('I seen him yesterday at the store.');
+const result = await proofreader.proofread(
+  "I seen him yesterday at the store.",
+);
 console.log(result.correctedInput);
 console.log(result.corrections);
 ```
@@ -367,7 +371,7 @@ console.log(result.corrections);
 Non-streaming methods like `summarize()`, `write()` or `prompt()` return a promise with the full text when the model is done. Streaming methods like `summarizeStreaming()`, `writeStreaming()` or `promptStreaming()` return a stream you read chunk by chunk with `for await`:
 
 ```js
-const stream = session.promptStreaming('Write a short poem about rain.');
+const stream = session.promptStreaming("Write a short poem about rain.");
 for await (const chunk of stream) {
   output.textContent += chunk;
 }
@@ -390,7 +394,7 @@ You can also pass an `AbortSignal` as `signal` to `create()`. Aborting it destro
 An origin trial lets you use an experimental feature on your real site for a limited number of Chrome versions. You register your origin on the Chrome Origin Trials page, get a token, and add it to your pages:
 
 ```html
-<meta http-equiv="origin-trial" content="YOUR_TOKEN_HERE">
+<meta http-equiv="origin-trial" content="YOUR_TOKEN_HERE" />
 ```
 
 You can also send it in an `Origin-Trial` HTTP header. When the trial ends, the feature stops working on your site unless it has shipped as stable.
@@ -425,12 +429,12 @@ Availability depends on the options. A summarizer for English might be `"availab
 
 ```js
 const options = {
-  type: 'key-points',
-  expectedInputLanguages: ['ja'],
-  outputLanguage: 'ja',
+  type: "key-points",
+  expectedInputLanguages: ["ja"],
+  outputLanguage: "ja",
 };
 
-if ((await Summarizer.availability(options)) !== 'unavailable') {
+if ((await Summarizer.availability(options)) !== "unavailable") {
   const summarizer = await Summarizer.create(options);
 }
 ```
@@ -441,20 +445,20 @@ A common pattern is to check on page load and decide what to show, then create t
 
 ```js
 async function setupSummarizeButton() {
-  if (!('Summarizer' in self)) return hideButton();
+  if (!("Summarizer" in self)) return hideButton();
 
   const status = await Summarizer.availability();
-  if (status === 'unavailable') return useServerFallback();
+  if (status === "unavailable") return useServerFallback();
 
   button.hidden = false;
-  if (status !== 'available') {
-    button.textContent = 'Summarize (needs a one-time download)';
+  if (status !== "available") {
+    button.textContent = "Summarize (needs a one-time download)";
   }
 
-  button.addEventListener('click', async () => {
+  button.addEventListener("click", async () => {
     const summarizer = await Summarizer.create({
       monitor(m) {
-        m.addEventListener('downloadprogress', (e) => showProgress(e.loaded));
+        m.addEventListener("downloadprogress", (e) => showProgress(e.loaded));
       },
     });
     output.textContent = await summarizer.summarize(getArticleText());
@@ -468,12 +472,12 @@ This way users with no support never see a broken button, and users who need a d
 
 `length` is `short` (default), `medium` or `long`, and what it means depends on `type`. These are upper limits, so results can be shorter:
 
-| Type | short | medium | long |
-|---|---|---|---|
-| `tldr` | 1 sentence | 3 sentences | 5 sentences |
-| `teaser` | 1 sentence | 3 sentences | 5 sentences |
-| `key-points` | 3 bullets | 5 bullets | 7 bullets |
-| `headline` | 12 words | 17 words | 22 words |
+| Type         | short      | medium      | long        |
+| ------------ | ---------- | ----------- | ----------- |
+| `tldr`       | 1 sentence | 3 sentences | 5 sentences |
+| `teaser`     | 1 sentence | 3 sentences | 5 sentences |
+| `key-points` | 3 bullets  | 5 bullets   | 7 bullets   |
+| `headline`   | 12 words   | 17 words    | 22 words    |
 
 ## 34: What is the difference between `sharedContext` and `context`?
 
@@ -481,11 +485,11 @@ This way users with no support never see a broken button, and users who need a d
 
 ```js
 const summarizer = await Summarizer.create({
-  sharedContext: 'These are customer reviews for a hiking shoe store.',
+  sharedContext: "These are customer reviews for a hiking shoe store.",
 });
 
 const summary = await summarizer.summarize(reviewText, {
-  context: 'This review is for the Trail Runner X model.',
+  context: "This review is for the Trail Runner X model.",
 });
 ```
 
@@ -496,7 +500,7 @@ Writer and Rewriter work the same way. Both are extra text the model reads, so k
 Send only the text that matters. Strip HTML tags, navigation, ads, cookie banners and comments. `element.innerText` is a simple way to get only the visible text of the main content:
 
 ```js
-const text = document.querySelector('main article').innerText;
+const text = document.querySelector("main article").innerText;
 const summary = await summarizer.summarize(text);
 ```
 
@@ -528,7 +532,7 @@ Use `translateStreaming()` so the user sees the translation as it's produced:
 
 ```js
 const stream = translator.translateStreaming(longText);
-let result = '';
+let result = "";
 for await (const chunk of stream) {
   result += chunk;
   output.textContent = result;
@@ -546,15 +550,15 @@ async function translateToUserLanguage(text) {
   const detector = await LanguageDetector.create();
   const [top] = await detector.detect(text);
 
-  if (!top || top.confidence < 0.7 || top.detectedLanguage === 'und') {
+  if (!top || top.confidence < 0.7 || top.detectedLanguage === "und") {
     return text; // not sure, leave it as is
   }
 
-  const targetLanguage = navigator.language.split('-')[0];
+  const targetLanguage = navigator.language.split("-")[0];
   if (top.detectedLanguage === targetLanguage) return text;
 
   const options = { sourceLanguage: top.detectedLanguage, targetLanguage };
-  if ((await Translator.availability(options)) === 'unavailable') return text;
+  if ((await Translator.availability(options)) === "unavailable") return text;
 
   const translator = await Translator.create(options);
   return translator.translate(text);
@@ -580,13 +584,17 @@ Use `initialPrompts` in `create()`. The first message can have the `system` role
 ```js
 const session = await LanguageModel.create({
   initialPrompts: [
-    { role: 'system', content: 'You classify support tickets as "billing", "bug" or "other". Reply with one word.' },
-    { role: 'user', content: 'I was charged twice this month.' },
-    { role: 'assistant', content: 'billing' },
+    {
+      role: "system",
+      content:
+        'You classify support tickets as "billing", "bug" or "other". Reply with one word.',
+    },
+    { role: "user", content: "I was charged twice this month." },
+    { role: "assistant", content: "billing" },
   ],
 });
 
-const label = await session.prompt('The app crashes when I upload a photo.');
+const label = await session.prompt("The app crashes when I upload a photo.");
 ```
 
 The system prompt stays for the whole session.
@@ -597,8 +605,8 @@ A session remembers everything sent and received in it. Each `prompt()` call add
 
 ```js
 const session = await LanguageModel.create();
-await session.prompt('My name is Ana and I like hiking.');
-const reply = await session.prompt('Suggest a weekend plan for me.');
+await session.prompt("My name is Ana and I like hiking.");
+const reply = await session.prompt("Suggest a weekend plan for me.");
 ```
 
 If you want to add messages without getting a reply, use `append()`. It's useful for adding context ahead of time, like an image the user just uploaded, so the next `prompt()` is faster.
@@ -609,18 +617,17 @@ Pass a JSON Schema as `responseConstraint`. The model's output is forced to matc
 
 ```js
 const schema = {
-  type: 'object',
+  type: "object",
   properties: {
-    sentiment: { type: 'string', enum: ['positive', 'neutral', 'negative'] },
-    score: { type: 'number' },
+    sentiment: { type: "string", enum: ["positive", "neutral", "negative"] },
+    score: { type: "number" },
   },
-  required: ['sentiment', 'score'],
+  required: ["sentiment", "score"],
 };
 
-const result = await session.prompt(
-  `Analyze this review: "${reviewText}"`,
-  { responseConstraint: schema }
-);
+const result = await session.prompt(`Analyze this review: "${reviewText}"`, {
+  responseConstraint: schema,
+});
 
 const data = JSON.parse(result);
 ```
@@ -633,8 +640,8 @@ Yes, it can also be a regular expression. The output will then match that patter
 
 ```js
 const answer = await session.prompt(
-  'Is this email spam? Answer yes or no.\n\n' + emailText,
-  { responseConstraint: /^(yes|no)$/ }
+  "Is this email spam? Answer yes or no.\n\n" + emailText,
+  { responseConstraint: /^(yes|no)$/ },
 );
 ```
 
@@ -648,12 +655,12 @@ If you use it, describe the expected format in your prompt yourself. Otherwise t
 
 It lets you write the start of the model's answer yourself. You add an `assistant` message with `prefix: true` as the last message, and the model continues from there:
 
-```js
+````js
 const result = await session.prompt([
-  { role: 'user', content: 'Create a TOML config for a web server.' },
-  { role: 'assistant', content: '```toml\n', prefix: true },
+  { role: "user", content: "Create a TOML config for a web server." },
+  { role: "assistant", content: "```toml\n", prefix: true },
 ]);
-```
+````
 
 This pushes the model into a specific format without a full schema.
 
@@ -668,7 +675,7 @@ stopButton.onclick = () => controller.abort();
 try {
   const result = await writer.write(task, { signal: controller.signal });
 } catch (err) {
-  if (err.name !== 'AbortError') throw err;
+  if (err.name !== "AbortError") throw err;
 }
 ```
 
@@ -694,8 +701,8 @@ Older Chrome versions and older articles use `inputUsage`, `inputQuota` and `mea
 When a new prompt doesn't fit, Chrome drops the oldest prompt/response pairs to make room and fires a `contextoverflow` event. The system prompt is always kept.
 
 ```js
-session.addEventListener('contextoverflow', () => {
-  console.warn('Older messages were removed from the session');
+session.addEventListener("contextoverflow", () => {
+  console.warn("Older messages were removed from the session");
 });
 ```
 
@@ -736,19 +743,16 @@ Declare image input with `expectedInputs` when creating the session, then send a
 
 ```js
 const session = await LanguageModel.create({
-  expectedInputs: [
-    { type: 'text', languages: ['en'] },
-    { type: 'image' },
-  ],
+  expectedInputs: [{ type: "text", languages: ["en"] }, { type: "image" }],
 });
 
 const file = fileInput.files[0];
 const answer = await session.prompt([
   {
-    role: 'user',
+    role: "user",
     content: [
-      { type: 'text', value: 'Write alt text for this image.' },
-      { type: 'image', value: file },
+      { type: "text", value: "Write alt text for this image." },
+      { type: "image", value: file },
     ],
   },
 ]);
@@ -768,7 +772,7 @@ Audio input needs a GPU, so check `availability()` with the same `expectedInputs
 
 ```js
 function renderWithHighlights(text, corrections) {
-  let html = '';
+  let html = "";
   let last = 0;
   for (const c of corrections) {
     html += escapeHtml(text.slice(last, c.startIndex));
@@ -788,9 +792,9 @@ They tell the browser which languages you'll send and which language you want ba
 
 ```js
 const writer = await Writer.create({
-  expectedInputLanguages: ['en', 'es'],
-  expectedContextLanguages: ['en'],
-  outputLanguage: 'es',
+  expectedInputLanguages: ["en", "es"],
+  expectedContextLanguages: ["en"],
+  outputLanguage: "es",
 });
 ```
 
@@ -801,8 +805,8 @@ Passing them also lets Chrome download only the language parts it needs.
 Summarizer and Writer return Markdown by default. Convert it to HTML with a Markdown library and sanitize it before putting it in the page, because model output is untrusted text:
 
 ```js
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 output.innerHTML = DOMPurify.sanitize(marked.parse(summary));
 ```
@@ -814,7 +818,10 @@ If you don't want to render Markdown, ask for `format: 'plain-text'` and use `te
 By default they work in top-level windows and same-origin iframes. A cross-origin iframe needs permission from the parent page with the `allow` attribute:
 
 ```html
-<iframe src="https://widget.example.com" allow="summarizer; translator"></iframe>
+<iframe
+  src="https://widget.example.com"
+  allow="summarizer; translator"
+></iframe>
 ```
 
 The permission policy names are `translator`, `language-detector`, `summarizer`, `writer`, `rewriter`, `language-model` (Prompt API) and `proofreader`.
@@ -832,7 +839,9 @@ Since Chrome 138 the Prompt API works in extensions without an origin trial. You
 ```js
 // popup.js
 const session = await LanguageModel.create({
-  initialPrompts: [{ role: 'system', content: 'You summarize web pages in 3 bullet points.' }],
+  initialPrompts: [
+    { role: "system", content: "You summarize web pages in 3 bullet points." },
+  ],
 });
 const summary = await session.prompt(pageText);
 ```
@@ -879,18 +888,21 @@ Put the AI calls behind one small interface, and pick the backend at runtime:
 
 ```js
 async function summarize(text) {
-  if ('Summarizer' in self && (await Summarizer.availability()) === 'available') {
-    const s = await Summarizer.create({ type: 'tldr' });
+  if (
+    "Summarizer" in self &&
+    (await Summarizer.availability()) === "available"
+  ) {
+    const s = await Summarizer.create({ type: "tldr" });
     try {
       return await s.summarize(text);
     } finally {
       s.destroy();
     }
   }
-  const res = await fetch('/api/summarize', {
-    method: 'POST',
+  const res = await fetch("/api/summarize", {
+    method: "POST",
     body: JSON.stringify({ text }),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
   });
   return (await res.json()).summary;
 }
@@ -911,10 +923,13 @@ Check the size with `measureInputUsage()` and compare it with `inputQuota`. If i
 ```js
 async function summarizeLong(summarizer, paragraphs) {
   const chunks = [];
-  let current = '';
+  let current = "";
   for (const p of paragraphs) {
-    const candidate = current ? current + '\n\n' + p : p;
-    if (current && (await summarizer.measureInputUsage(candidate)) > summarizer.inputQuota) {
+    const candidate = current ? current + "\n\n" + p : p;
+    if (
+      current &&
+      (await summarizer.measureInputUsage(candidate)) > summarizer.inputQuota
+    ) {
       chunks.push(current);
       current = p;
     } else {
@@ -927,7 +942,7 @@ async function summarizeLong(summarizer, paragraphs) {
 
   const partials = [];
   for (const chunk of chunks) partials.push(await summarizer.summarize(chunk));
-  return summarizer.summarize(partials.join('\n'));
+  return summarizer.summarize(partials.join("\n"));
 }
 ```
 
@@ -1097,14 +1112,23 @@ Fix it by calling `create()` directly from a click or key handler, and check `na
 
 ```js
 const base = await LanguageModel.create({
-  initialPrompts: [{ role: 'system', content: 'Classify product reviews. Categories: shipping, quality, price, support, other.' }],
+  initialPrompts: [
+    {
+      role: "system",
+      content:
+        "Classify product reviews. Categories: shipping, quality, price, support, other.",
+    },
+  ],
 });
 
 async function classify(review) {
   const session = await base.clone();
   try {
     return await session.prompt(review, {
-      responseConstraint: { type: 'string', enum: ['shipping', 'quality', 'price', 'support', 'other'] },
+      responseConstraint: {
+        type: "string",
+        enum: ["shipping", "quality", "price", "support", "other"],
+      },
     });
   } finally {
     session.destroy();
@@ -1131,15 +1155,15 @@ On privacy, on-device image processing is a big plus. Users can ask about photos
 
 ## 88: How do these APIs compare with cloud LLM APIs like the Claude or OpenAI APIs?
 
-| | Built-in AI | Cloud LLM API |
-|---|---|---|
-| Model size and quality | small, weaker | large, much stronger |
-| Cost | free for you | pay per token |
-| Privacy | data stays on device | data goes to the provider |
-| Availability | some desktop Chrome users | any client with a network |
-| Context size | small | very large |
-| Model control | Chrome picks the version | you pick the model |
-| Offline | yes, after download | no |
+|                        | Built-in AI               | Cloud LLM API             |
+| ---------------------- | ------------------------- | ------------------------- |
+| Model size and quality | small, weaker             | large, much stronger      |
+| Cost                   | free for you              | pay per token             |
+| Privacy                | data stays on device      | data goes to the provider |
+| Availability           | some desktop Chrome users | any client with a network |
+| Context size           | small                     | very large                |
+| Model control          | Chrome picks the version  | you pick the model        |
+| Offline                | yes, after download       | no                        |
 
 They don't replace each other. Built-in AI is good for cheap, private, small tasks, while cloud APIs are for hard tasks and must-work features.
 
@@ -1157,9 +1181,12 @@ try {
   result = await summarizer.summarize(text);
 } catch (err) {
   switch (err.name) {
-    case 'QuotaExceededError': return summarizeInChunks(text);
-    case 'AbortError': return;
-    default: return serverFallback(text);
+    case "QuotaExceededError":
+      return summarizeInChunks(text);
+    case "AbortError":
+      return;
+    default:
+      return serverFallback(text);
   }
 }
 ```

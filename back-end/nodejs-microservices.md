@@ -487,14 +487,14 @@ A monolith is not bad by itself. It is simpler to build, test, deploy and debug.
 
 ## 3: What is the difference between a monolith and microservices?
 
-| | Monolith | Microservices |
-|---|---|---|
-| Deployment | One unit | Many units, each deployed on its own |
-| Database | Usually one shared database | Usually one database per service |
-| Communication | Function calls in memory | Network calls (HTTP, gRPC, messages) |
-| Scaling | Scale the whole app | Scale only the services that need it |
-| Failure | One crash can stop everything | A failure can be limited to one service |
-| Complexity | Lower at the start | Higher, because of the network and distributed data |
+|               | Monolith                      | Microservices                                       |
+| ------------- | ----------------------------- | --------------------------------------------------- |
+| Deployment    | One unit                      | Many units, each deployed on its own                |
+| Database      | Usually one shared database   | Usually one database per service                    |
+| Communication | Function calls in memory      | Network calls (HTTP, gRPC, messages)                |
+| Scaling       | Scale the whole app           | Scale only the services that need it                |
+| Failure       | One crash can stop everything | A failure can be limited to one service             |
+| Complexity    | Lower at the start            | Higher, because of the network and distributed data |
 
 The main trade-off: microservices give teams more independence, but you pay for it with network problems, harder debugging and data consistency issues.
 
@@ -816,12 +816,12 @@ Since network partitions will happen in real systems, the practical choice is be
 A health check is an endpoint or command that tells the platform whether a service instance is working. Load balancers and orchestrators like Kubernetes call it regularly and stop sending traffic to, or restart, instances that fail.
 
 ```js
-import express from 'express';
+import express from "express";
 
 const app = express();
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
 app.listen(3000);
@@ -884,7 +884,7 @@ const port = Number(process.env.PORT ?? 3000);
 const dbUrl = process.env.DATABASE_URL;
 
 if (!dbUrl) {
-  throw new Error('DATABASE_URL is required');
+  throw new Error("DATABASE_URL is required");
 }
 ```
 
@@ -899,7 +899,7 @@ node --env-file=.env src/server.js
 ```
 
 ```js
-import process from 'node:process';
+import process from "node:process";
 
 process.loadEnvFile(); // loads ./.env by default
 ```
@@ -937,11 +937,11 @@ Common tools: the ELK stack (Elasticsearch, Logstash, Kibana), OpenSearch, Grafa
 Structured logging means writing logs as data, usually JSON, instead of plain text sentences. Each log line has fields you can filter and search on.
 
 ```js
-import pino from 'pino';
+import pino from "pino";
 
-const logger = pino({ base: { service: 'orders' } });
+const logger = pino({ base: { service: "orders" } });
 
-logger.info({ orderId: 'o_123', userId: 'u_42' }, 'order created');
+logger.info({ orderId: "o_123", userId: "u_42" }, "order created");
 // {"level":30,"time":...,"service":"orders","orderId":"o_123","userId":"u_42","msg":"order created"}
 ```
 
@@ -978,14 +978,14 @@ Prometheus is an open source monitoring system that collects metrics by scraping
 In Node.js, the `prom-client` package exposes metrics in the Prometheus format.
 
 ```js
-import express from 'express';
-import client from 'prom-client';
+import express from "express";
+import client from "prom-client";
 
 client.collectDefaultMetrics();
 const app = express();
 
-app.get('/metrics', async (req, res) => {
-  res.set('Content-Type', client.register.contentType);
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", client.register.contentType);
   res.send(await client.register.metrics());
 });
 ```
@@ -1005,7 +1005,7 @@ Without a timeout, a call to a slow or stuck service can wait forever. Each wait
 Every outgoing network call should have a timeout. With the built-in `fetch` in Node.js, you can use `AbortSignal.timeout()`:
 
 ```js
-const res = await fetch('http://inventory:3000/stock/42', {
+const res = await fetch("http://inventory:3000/stock/42", {
   signal: AbortSignal.timeout(2000),
 });
 ```
@@ -1202,7 +1202,7 @@ paths:
           required: true
           schema: { type: string }
       responses:
-        '200':
+        "200":
           description: The order
 ```
 
@@ -1266,23 +1266,27 @@ Fastify is a Node.js web framework focused on low overhead. Reasons people pick 
 - Good TypeScript support
 
 ```js
-import Fastify from 'fastify';
+import Fastify from "fastify";
 
 const app = Fastify({ logger: true });
 
-app.get('/orders/:id', {
-  schema: {
-    params: {
-      type: 'object',
-      properties: { id: { type: 'string' } },
-      required: ['id'],
+app.get(
+  "/orders/:id",
+  {
+    schema: {
+      params: {
+        type: "object",
+        properties: { id: { type: "string" } },
+        required: ["id"],
+      },
     },
   },
-}, async (request) => {
-  return { id: request.params.id, status: 'paid' };
-});
+  async (request) => {
+    return { id: request.params.id, status: "paid" };
+  },
+);
 
-await app.listen({ port: 3000, host: '0.0.0.0' });
+await app.listen({ port: 3000, host: "0.0.0.0" });
 ```
 
 ## 82: Why do you need to listen on 0.0.0.0 inside a container?
@@ -1296,19 +1300,19 @@ Listening on `0.0.0.0` (or `::` for IPv6) accepts connections on all interfaces.
 NestJS has a `@nestjs/microservices` package that lets you build services that communicate over a transport other than HTTP. You define message handlers with decorators, and NestJS takes care of the transport.
 
 ```ts
-import { Controller } from '@nestjs/common';
-import { MessagePattern, EventPattern, Payload } from '@nestjs/microservices';
+import { Controller } from "@nestjs/common";
+import { MessagePattern, EventPattern, Payload } from "@nestjs/microservices";
 
 @Controller()
 export class OrdersController {
-  @MessagePattern('get_order')
+  @MessagePattern("get_order")
   getOrder(@Payload() id: string) {
-    return { id, status: 'paid' };
+    return { id, status: "paid" };
   }
 
-  @EventPattern('order_created')
+  @EventPattern("order_created")
   handleOrderCreated(@Payload() data: { id: string }) {
-    console.log('new order', data.id);
+    console.log("new order", data.id);
   }
 }
 ```
@@ -1372,7 +1376,7 @@ It limits the impact of a bad release to a small group of users. Tools like Argo
 A feature flag is a switch in the code that turns a feature on or off at runtime without deploying again.
 
 ```js
-if (await flags.isEnabled('new-checkout', { userId })) {
+if (await flags.isEnabled("new-checkout", { userId })) {
   return newCheckout(cart);
 }
 return oldCheckout(cart);
@@ -1391,13 +1395,13 @@ Without it, every deployment or scale-down would cut off active requests and cou
 `SIGTERM` is the signal that orchestrators like Kubernetes and Docker send to ask a process to stop. By default Node.js exits right away, so you need to handle it yourself.
 
 ```js
-import http from 'node:http';
+import http from "node:http";
 
 const server = http.createServer(handler);
 server.listen(3000);
 
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down');
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, shutting down");
   server.close(() => {
     process.exit(0);
   });
@@ -1488,16 +1492,20 @@ If a topic has 6 partitions and you run 3 consumers in the group, each gets 2 pa
 BullMQ is a job queue library for Node.js built on Redis. You add jobs to a queue, and workers process them, with support for retries, delays, priorities, rate limits, repeatable jobs and job dependencies (flows).
 
 ```js
-import { Queue, Worker } from 'bullmq';
+import { Queue, Worker } from "bullmq";
 
-const connection = { host: 'localhost', port: 6379 };
-const emails = new Queue('emails', { connection });
+const connection = { host: "localhost", port: 6379 };
+const emails = new Queue("emails", { connection });
 
-await emails.add('welcome', { userId: 'u_42' }, { attempts: 3 });
+await emails.add("welcome", { userId: "u_42" }, { attempts: 3 });
 
-new Worker('emails', async (job) => {
-  await sendWelcomeEmail(job.data.userId);
-}, { connection });
+new Worker(
+  "emails",
+  async (job) => {
+    await sendWelcomeEmail(job.data.userId);
+  },
+  { connection },
+);
 ```
 
 It is a good choice for background work inside one service or a small group of Node.js services. For events shared across many teams, a real broker like Kafka or RabbitMQ is more common.
@@ -1646,9 +1654,9 @@ Most teams keep only a few end-to-end tests for the most important flows, like s
 Testcontainers is a library that starts real Docker containers (PostgreSQL, Redis, Kafka, RabbitMQ and others) from your test code and removes them after the tests. The Node.js version is the `testcontainers` npm package, with modules like `@testcontainers/postgresql`.
 
 ```js
-import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { PostgreSqlContainer } from "@testcontainers/postgresql";
 
-const container = await new PostgreSqlContainer('postgres:17').start();
+const container = await new PostgreSqlContainer("postgres:17").start();
 const url = container.getConnectionUri();
 // run migrations and tests against url
 await container.stop();
@@ -1717,11 +1725,11 @@ In microservices, a dedicated real-time service (or gateway) often holds the Web
 Server-Sent Events (SSE) let a server push a stream of text events to the browser over a normal HTTP connection. The browser uses the `EventSource` API and reconnects automatically.
 
 ```js
-app.get('/events', (req, res) => {
-  res.set({ 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' });
+app.get("/events", (req, res) => {
+  res.set({ "Content-Type": "text/event-stream", "Cache-Control": "no-cache" });
   res.flushHeaders();
   const timer = setInterval(() => res.write(`data: ${Date.now()}\n\n`), 1000);
-  req.on('close', () => clearInterval(timer));
+  req.on("close", () => clearInterval(timer));
 });
 ```
 
@@ -1782,7 +1790,7 @@ Between services that call each other constantly, reusing connections lowers lat
 The built-in `fetch` is available globally since Node 18 and is stable since Node 21. It is the simplest choice today.
 
 ```js
-const res = await fetch('http://users:3000/users/42', {
+const res = await fetch("http://users:3000/users/42", {
   headers: { authorization: `Bearer ${token}` },
   signal: AbortSignal.timeout(2000),
 });
@@ -1805,7 +1813,7 @@ You cannot use a single auto-increment counter across services, so IDs are usual
 - **Snowflake-style IDs:** 64-bit numbers with a timestamp, machine ID and sequence.
 
 ```js
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from "node:crypto";
 
 const orderId = randomUUID();
 ```
@@ -1943,7 +1951,7 @@ It only removes type annotations. It does not type check, and it does not suppor
 Stop taking new work, finish the current work, close connections, then exit. Add a hard timeout in case something hangs.
 
 ```js
-import http from 'node:http';
+import http from "node:http";
 
 const server = http.createServer(app);
 server.listen(3000);
@@ -1953,10 +1961,10 @@ let shuttingDown = false;
 async function shutdown(signal) {
   if (shuttingDown) return;
   shuttingDown = true;
-  logger.info({ signal }, 'shutting down');
+  logger.info({ signal }, "shutting down");
 
   const forceExit = setTimeout(() => {
-    logger.error('shutdown timed out, forcing exit');
+    logger.error("shutdown timed out, forcing exit");
     process.exit(1);
   }, 25_000);
   forceExit.unref();
@@ -1970,13 +1978,13 @@ async function shutdown(signal) {
     await redis.quit();
     process.exit(0);
   } catch (err) {
-    logger.error({ err }, 'error during shutdown');
+    logger.error({ err }, "error during shutdown");
     process.exit(1);
   }
 }
 
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
 ```
 
 Keep the hard timeout below the Kubernetes `terminationGracePeriodSeconds` (30 seconds by default). Since Node 19, `server.close()` also closes idle keep-alive connections, and `server.closeAllConnections()` can force the rest.
@@ -1988,12 +1996,12 @@ Liveness should only check that the process can respond. Readiness should check 
 ```js
 let ready = false;
 
-app.get('/livez', (req, res) => res.sendStatus(200));
+app.get("/livez", (req, res) => res.sendStatus(200));
 
-app.get('/readyz', async (req, res) => {
+app.get("/readyz", async (req, res) => {
   if (!ready || shuttingDown) return res.sendStatus(503);
   try {
-    await db.query('SELECT 1');
+    await db.query("SELECT 1");
     res.sendStatus(200);
   } catch {
     res.sendStatus(503);
@@ -2052,11 +2060,16 @@ The `sleep` action is built into newer Kubernetes versions. On older ones, peopl
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function isRetryable(err, res) {
-  if (err) return err.name === 'TimeoutError' || err.cause?.code === 'ECONNRESET';
+  if (err)
+    return err.name === "TimeoutError" || err.cause?.code === "ECONNRESET";
   return [429, 502, 503, 504].includes(res.status);
 }
 
-export async function fetchWithRetry(url, options = {}, { retries = 3, baseMs = 100, maxMs = 2000 } = {}) {
+export async function fetchWithRetry(
+  url,
+  options = {},
+  { retries = 3, baseMs = 100, maxMs = 2000 } = {},
+) {
   for (let attempt = 0; ; attempt++) {
     let res, err;
     try {
@@ -2094,7 +2107,7 @@ Ways to avoid it:
 The `opossum` library wraps any async function:
 
 ```js
-import CircuitBreaker from 'opossum';
+import CircuitBreaker from "opossum";
 
 async function getRecommendations(userId) {
   const res = await fetch(`http://recs:3000/users/${userId}`, {
@@ -2105,16 +2118,16 @@ async function getRecommendations(userId) {
 }
 
 const breaker = new CircuitBreaker(getRecommendations, {
-  timeout: 1500,                // count as failure if slower than this
+  timeout: 1500, // count as failure if slower than this
   errorThresholdPercentage: 50, // open when half of calls fail
-  resetTimeout: 10_000,         // try again after 10 seconds
-  volumeThreshold: 10,          // need at least 10 calls before opening
+  resetTimeout: 10_000, // try again after 10 seconds
+  volumeThreshold: 10, // need at least 10 calls before opening
 });
 
 breaker.fallback(() => []);
-breaker.on('open', () => logger.warn('recs circuit open'));
+breaker.on("open", () => logger.warn("recs circuit open"));
 
-const recs = await breaker.fire('u_42');
+const recs = await breaker.fire("u_42");
 ```
 
 Create one breaker per downstream dependency and reuse it, so it can track failures across requests. Export its state as a metric so you can see when it opens.
@@ -2126,7 +2139,7 @@ Deadline propagation means passing the remaining time budget of a request down t
 This stops services from doing work for a request that the caller has already given up on. gRPC has this built in with deadlines. For HTTP, you can send a header like `x-request-deadline` with an absolute timestamp and create an `AbortSignal` from it:
 
 ```js
-const deadline = Number(req.get('x-request-deadline')) || Date.now() + 3000;
+const deadline = Number(req.get("x-request-deadline")) || Date.now() + 3000;
 const remaining = Math.max(0, deadline - Date.now() - 50);
 const signal = AbortSignal.timeout(remaining);
 ```
@@ -2136,14 +2149,16 @@ const signal = AbortSignal.timeout(remaining);
 The built-in `fetch` uses undici's global dispatcher. You can replace it with an `Agent` that has settings suited to service-to-service traffic:
 
 ```js
-import { Agent, setGlobalDispatcher } from 'undici';
+import { Agent, setGlobalDispatcher } from "undici";
 
-setGlobalDispatcher(new Agent({
-  connections: 50,          // max connections per origin
-  keepAliveTimeout: 10_000,
-  keepAliveMaxTimeout: 60_000,
-  connectTimeout: 2_000,
-}));
+setGlobalDispatcher(
+  new Agent({
+    connections: 50, // max connections per origin
+    keepAliveTimeout: 10_000,
+    keepAliveMaxTimeout: 60_000,
+    connectTimeout: 2_000,
+  }),
+);
 ```
 
 Too few connections and requests queue up inside your process. Too many and you can overload the downstream service. Also make sure the client's keep-alive timeout is shorter than the server's, otherwise the client may reuse a socket the server just closed and get `ECONNRESET`.
@@ -2166,10 +2181,13 @@ message Order { string id = 1; string status = 2; int64 total = 3; }
 ```
 
 ```js
-import grpc from '@grpc/grpc-js';
-import protoLoader from '@grpc/proto-loader';
+import grpc from "@grpc/grpc-js";
+import protoLoader from "@grpc/proto-loader";
 
-const def = protoLoader.loadSync('orders.proto', { keepCase: true, longs: String });
+const def = protoLoader.loadSync("orders.proto", {
+  keepCase: true,
+  longs: String,
+});
 const proto = grpc.loadPackageDefinition(def).orders;
 
 const server = new grpc.Server();
@@ -2177,15 +2195,22 @@ server.addService(proto.Orders.service, {
   GetOrder(call, callback) {
     const order = findOrder(call.request.id);
     if (!order) {
-      return callback({ code: grpc.status.NOT_FOUND, message: 'order not found' });
+      return callback({
+        code: grpc.status.NOT_FOUND,
+        message: "order not found",
+      });
     }
     callback(null, order);
   },
 });
 
-server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), (err) => {
-  if (err) throw err;
-});
+server.bindAsync(
+  "0.0.0.0:50051",
+  grpc.ServerCredentials.createInsecure(),
+  (err) => {
+    if (err) throw err;
+  },
+);
 ```
 
 For typed code, many teams generate TypeScript from the `.proto` with tools like `ts-proto` or Buf instead of loading it at runtime.
@@ -2193,14 +2218,17 @@ For typed code, many teams generate TypeScript from the `.proto` with tools like
 ## 161: How do you call a gRPC service with a deadline?
 
 ```js
-const client = new proto.Orders('orders:50051', grpc.credentials.createInsecure());
+const client = new proto.Orders(
+  "orders:50051",
+  grpc.credentials.createInsecure(),
+);
 
 client.GetOrder(
-  { id: 'o_123' },
+  { id: "o_123" },
   { deadline: Date.now() + 2000 },
   (err, order) => {
     if (err?.code === grpc.status.DEADLINE_EXCEEDED) {
-      logger.warn('orders service too slow');
+      logger.warn("orders service too slow");
       return;
     }
     if (err) throw err;
@@ -2230,19 +2258,19 @@ In Node.js, streaming calls are exposed as Node streams, so you can use `on('dat
 
 gRPC has its own status codes. Common mappings when you put a REST gateway in front:
 
-| gRPC | HTTP |
-|---|---|
-| `OK` | 200 |
-| `INVALID_ARGUMENT` | 400 |
-| `UNAUTHENTICATED` | 401 |
-| `PERMISSION_DENIED` | 403 |
-| `NOT_FOUND` | 404 |
-| `ALREADY_EXISTS`, `ABORTED` | 409 |
-| `RESOURCE_EXHAUSTED` | 429 |
-| `UNIMPLEMENTED` | 501 |
-| `UNAVAILABLE` | 503 |
-| `DEADLINE_EXCEEDED` | 504 |
-| `INTERNAL`, `UNKNOWN` | 500 |
+| gRPC                        | HTTP |
+| --------------------------- | ---- |
+| `OK`                        | 200  |
+| `INVALID_ARGUMENT`          | 400  |
+| `UNAUTHENTICATED`           | 401  |
+| `PERMISSION_DENIED`         | 403  |
+| `NOT_FOUND`                 | 404  |
+| `ALREADY_EXISTS`, `ABORTED` | 409  |
+| `RESOURCE_EXHAUSTED`        | 429  |
+| `UNIMPLEMENTED`             | 501  |
+| `UNAVAILABLE`               | 503  |
+| `DEADLINE_EXCEEDED`         | 504  |
+| `INTERNAL`, `UNKNOWN`       | 500  |
 
 `UNAVAILABLE` is the code that clients usually treat as safe to retry.
 
@@ -2277,26 +2305,30 @@ Fixes:
 Use a confirm channel, durable queues and persistent messages, and wait for the broker to confirm.
 
 ```js
-import amqp from 'amqplib';
+import amqp from "amqplib";
 
 const conn = await amqp.connect(process.env.AMQP_URL);
 const ch = await conn.createConfirmChannel();
 
-await ch.assertExchange('orders', 'topic', { durable: true });
+await ch.assertExchange("orders", "topic", { durable: true });
 
 export function publish(routingKey, event) {
   return new Promise((resolve, reject) => {
     ch.publish(
-      'orders',
+      "orders",
       routingKey,
       Buffer.from(JSON.stringify(event)),
-      { persistent: true, contentType: 'application/json', messageId: event.id },
+      {
+        persistent: true,
+        contentType: "application/json",
+        messageId: event.id,
+      },
       (err) => (err ? reject(err) : resolve()),
     );
   });
 }
 
-await publish('order.created', { id: crypto.randomUUID(), orderId: 'o_123' });
+await publish("order.created", { id: crypto.randomUUID(), orderId: "o_123" });
 ```
 
 Without confirms, `publish` only writes to a local buffer, and a message can be lost if the connection drops. If `publish` returns `false`, the buffer is full, and you should wait for the `drain` event before sending more.
@@ -2307,21 +2339,21 @@ Set a prefetch limit, ack only after processing and decide what to do with failu
 
 ```js
 const ch = await conn.createChannel();
-await ch.assertQueue('email.order-created', {
+await ch.assertQueue("email.order-created", {
   durable: true,
-  arguments: { 'x-queue-type': 'quorum', 'x-dead-letter-exchange': 'dlx' },
+  arguments: { "x-queue-type": "quorum", "x-dead-letter-exchange": "dlx" },
 });
-await ch.bindQueue('email.order-created', 'orders', 'order.created');
+await ch.bindQueue("email.order-created", "orders", "order.created");
 await ch.prefetch(10);
 
-await ch.consume('email.order-created', async (msg) => {
+await ch.consume("email.order-created", async (msg) => {
   if (!msg) return; // consumer was cancelled by the broker
   try {
     const event = JSON.parse(msg.content.toString());
     await sendOrderEmail(event);
     ch.ack(msg);
   } catch (err) {
-    logger.error({ err }, 'failed to handle message');
+    logger.error({ err }, "failed to handle message");
     ch.nack(msg, false, false); // do not requeue, send to the dead letter exchange
   }
 });
@@ -2339,11 +2371,11 @@ A common way is a retry queue with a TTL that dead-letters back to the main exch
 4. After N retries, the consumer sends it to the final DLQ instead.
 
 ```js
-await ch.assertQueue('orders.retry', {
+await ch.assertQueue("orders.retry", {
   durable: true,
   arguments: {
-    'x-message-ttl': 30_000,
-    'x-dead-letter-exchange': 'orders',
+    "x-message-ttl": 30_000,
+    "x-dead-letter-exchange": "orders",
   },
 });
 ```
@@ -2363,19 +2395,22 @@ For durable business messages, quorum queues are the recommended choice. Classic
 With `kafkajs`:
 
 ```js
-import { Kafka } from 'kafkajs';
+import { Kafka } from "kafkajs";
 
-const kafka = new Kafka({ clientId: 'orders-service', brokers: ['kafka:9092'] });
+const kafka = new Kafka({
+  clientId: "orders-service",
+  brokers: ["kafka:9092"],
+});
 const producer = kafka.producer({ idempotent: true });
 await producer.connect();
 
 await producer.send({
-  topic: 'orders',
+  topic: "orders",
   messages: [
     {
       key: order.id,
-      value: JSON.stringify({ type: 'order.created', data: order }),
-      headers: { 'event-id': crypto.randomUUID() },
+      value: JSON.stringify({ type: "order.created", data: order }),
+      headers: { "event-id": crypto.randomUUID() },
     },
   ],
 });
@@ -2388,9 +2423,9 @@ Confluent's `@confluentinc/kafka-javascript` offers a KafkaJS-compatible API on 
 ## 171: How do you consume messages from Kafka and commit offsets?
 
 ```js
-const consumer = kafka.consumer({ groupId: 'email-service' });
+const consumer = kafka.consumer({ groupId: "email-service" });
 await consumer.connect();
-await consumer.subscribe({ topics: ['orders'], fromBeginning: false });
+await consumer.subscribe({ topics: ["orders"], fromBeginning: false });
 
 await consumer.run({
   eachMessage: async ({ topic, partition, message }) => {
@@ -2442,27 +2477,43 @@ Use pub/sub for things where missing a message is fine, like cache invalidation 
 ## 176: How do you use Redis Streams with consumer groups in Node.js?
 
 ```js
-import { Redis } from 'ioredis';
+import { Redis } from "ioredis";
 
 const redis = new Redis(process.env.REDIS_URL);
 
 // producer
-await redis.xadd('orders', '*', 'type', 'order.created', 'data', JSON.stringify(order));
+await redis.xadd(
+  "orders",
+  "*",
+  "type",
+  "order.created",
+  "data",
+  JSON.stringify(order),
+);
 
 // consumer (create the group once)
-await redis.xgroup('CREATE', 'orders', 'email', '$', 'MKSTREAM').catch(() => {});
+await redis
+  .xgroup("CREATE", "orders", "email", "$", "MKSTREAM")
+  .catch(() => {});
 
 while (running) {
   const res = await redis.xreadgroup(
-    'GROUP', 'email', process.env.HOSTNAME,
-    'COUNT', 10, 'BLOCK', 5000,
-    'STREAMS', 'orders', '>',
+    "GROUP",
+    "email",
+    process.env.HOSTNAME,
+    "COUNT",
+    10,
+    "BLOCK",
+    5000,
+    "STREAMS",
+    "orders",
+    ">",
   );
   if (!res) continue;
   for (const [, entries] of res) {
     for (const [id, fields] of entries) {
       await handle(fields);
-      await redis.xack('orders', 'email', id);
+      await redis.xack("orders", "email", id);
     }
   }
 }
@@ -2473,24 +2524,34 @@ Messages that were read but never acked stay in the pending list. Use `XAUTOCLAI
 ## 177: How do you configure retries and concurrency in BullMQ?
 
 ```js
-import { Queue, Worker } from 'bullmq';
+import { Queue, Worker } from "bullmq";
 
-const connection = { host: 'redis', port: 6379, maxRetriesPerRequest: null };
-const queue = new Queue('invoices', { connection });
+const connection = { host: "redis", port: 6379, maxRetriesPerRequest: null };
+const queue = new Queue("invoices", { connection });
 
-await queue.add('generate', { orderId: 'o_123' }, {
-  jobId: 'invoice:o_123',            // dedupe: same id is not added twice
-  attempts: 5,
-  backoff: { type: 'exponential', delay: 1000 },
-  removeOnComplete: 1000,
-  removeOnFail: 5000,
-});
+await queue.add(
+  "generate",
+  { orderId: "o_123" },
+  {
+    jobId: "invoice:o_123", // dedupe: same id is not added twice
+    attempts: 5,
+    backoff: { type: "exponential", delay: 1000 },
+    removeOnComplete: 1000,
+    removeOnFail: 5000,
+  },
+);
 
-const worker = new Worker('invoices', async (job) => {
-  await generateInvoice(job.data.orderId);
-}, { connection, concurrency: 5 });
+const worker = new Worker(
+  "invoices",
+  async (job) => {
+    await generateInvoice(job.data.orderId);
+  },
+  { connection, concurrency: 5 },
+);
 
-worker.on('failed', (job, err) => logger.error({ jobId: job?.id, err }, 'job failed'));
+worker.on("failed", (job, err) =>
+  logger.error({ jobId: job?.id, err }, "job failed"),
+);
 ```
 
 `concurrency` is how many jobs one worker processes at the same time. Workers require `maxRetriesPerRequest: null` on the Redis connection. Clean up finished jobs with `removeOnComplete` and `removeOnFail`, or Redis memory keeps growing.
@@ -2502,18 +2563,18 @@ Write the business row and the event in one transaction:
 ```js
 const client = await pool.connect();
 try {
-  await client.query('BEGIN');
+  await client.query("BEGIN");
   const { rows } = await client.query(
-    'INSERT INTO orders (id, user_id, total) VALUES ($1, $2, $3) RETURNING *',
+    "INSERT INTO orders (id, user_id, total) VALUES ($1, $2, $3) RETURNING *",
     [orderId, userId, total],
   );
   await client.query(
-    'INSERT INTO outbox (id, topic, key, payload) VALUES ($1, $2, $3, $4)',
-    [randomUUID(), 'orders', orderId, { type: 'order.created', data: rows[0] }],
+    "INSERT INTO outbox (id, topic, key, payload) VALUES ($1, $2, $3, $4)",
+    [randomUUID(), "orders", orderId, { type: "order.created", data: rows[0] }],
   );
-  await client.query('COMMIT');
+  await client.query("COMMIT");
 } catch (err) {
-  await client.query('ROLLBACK');
+  await client.query("ROLLBACK");
   throw err;
 } finally {
   client.release();
@@ -2526,7 +2587,7 @@ A relay then publishes pending rows:
 async function relayOnce() {
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
     const { rows } = await client.query(
       `SELECT * FROM outbox WHERE sent_at IS NULL
        ORDER BY created_at LIMIT 100 FOR UPDATE SKIP LOCKED`,
@@ -2534,15 +2595,24 @@ async function relayOnce() {
     for (const row of rows) {
       await producer.send({
         topic: row.topic,
-        messages: [{ key: row.key, value: JSON.stringify(row.payload), headers: { 'event-id': row.id } }],
+        messages: [
+          {
+            key: row.key,
+            value: JSON.stringify(row.payload),
+            headers: { "event-id": row.id },
+          },
+        ],
       });
     }
     if (rows.length) {
-      await client.query('UPDATE outbox SET sent_at = now() WHERE id = ANY($1)', [rows.map((r) => r.id)]);
+      await client.query(
+        "UPDATE outbox SET sent_at = now() WHERE id = ANY($1)",
+        [rows.map((r) => r.id)],
+      );
     }
-    await client.query('COMMIT');
+    await client.query("COMMIT");
   } catch (err) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     throw err;
   } finally {
     client.release();
@@ -2565,17 +2635,20 @@ Start with polling. Move to CDC when volume or latency needs it.
 The inbox pattern is the consumer side of the outbox. When a message arrives, the consumer stores its ID in an `inbox` (or `processed_messages`) table in the same transaction as the business change. If the same message arrives again, the insert fails on the unique key and the consumer skips it.
 
 ```js
-await client.query('BEGIN');
+await client.query("BEGIN");
 const { rowCount } = await client.query(
-  'INSERT INTO processed_messages (id) VALUES ($1) ON CONFLICT DO NOTHING',
+  "INSERT INTO processed_messages (id) VALUES ($1) ON CONFLICT DO NOTHING",
   [eventId],
 );
 if (rowCount === 0) {
-  await client.query('ROLLBACK');
+  await client.query("ROLLBACK");
   return; // already processed
 }
-await client.query('UPDATE stock SET reserved = reserved + $1 WHERE sku = $2', [qty, sku]);
-await client.query('COMMIT');
+await client.query("UPDATE stock SET reserved = reserved + $1 WHERE sku = $2", [
+  qty,
+  sku,
+]);
+await client.query("COMMIT");
 ```
 
 This makes a non-idempotent operation (like incrementing a counter) safe with at-least-once delivery.
@@ -2586,11 +2659,11 @@ In **choreography**, there is no central controller. Each service listens to eve
 
 In **orchestration**, a central orchestrator (a service or workflow engine) tells each service what to do with commands and waits for replies. It keeps the state of the saga.
 
-| | Choreography | Orchestration |
-|---|---|---|
-| Coupling | Low, services only know events | Orchestrator knows all steps |
-| Visibility | Flow is spread across services | Flow is in one place |
-| Good for | Short, simple flows | Long flows with many steps and compensations |
+|            | Choreography                   | Orchestration                                |
+| ---------- | ------------------------------ | -------------------------------------------- |
+| Coupling   | Low, services only know events | Orchestrator knows all steps                 |
+| Visibility | Flow is spread across services | Flow is in one place                         |
+| Good for   | Short, simple flows            | Long flows with many steps and compensations |
 
 ## 182: How would you implement a simple orchestrated saga in Node.js?
 
@@ -2598,9 +2671,21 @@ Keep the saga state in a database so it survives restarts, and run each step wit
 
 ```js
 const steps = [
-  { name: 'reserveStock', run: (ctx) => inventory.reserve(ctx), undo: (ctx) => inventory.release(ctx) },
-  { name: 'chargeCard', run: (ctx) => payments.charge(ctx), undo: (ctx) => payments.refund(ctx) },
-  { name: 'createShipment', run: (ctx) => shipping.create(ctx), undo: (ctx) => shipping.cancel(ctx) },
+  {
+    name: "reserveStock",
+    run: (ctx) => inventory.reserve(ctx),
+    undo: (ctx) => inventory.release(ctx),
+  },
+  {
+    name: "chargeCard",
+    run: (ctx) => payments.charge(ctx),
+    undo: (ctx) => payments.refund(ctx),
+  },
+  {
+    name: "createShipment",
+    run: (ctx) => shipping.create(ctx),
+    undo: (ctx) => shipping.cancel(ctx),
+  },
 ];
 
 export async function runOrderSaga(ctx) {
@@ -2629,22 +2714,30 @@ This is fine for learning, but real sagas need to resume after a crash and handl
 With Fastify and `@fastify/http-proxy`:
 
 ```js
-import Fastify from 'fastify';
-import proxy from '@fastify/http-proxy';
+import Fastify from "fastify";
+import proxy from "@fastify/http-proxy";
 
 const app = Fastify({ logger: true });
 
-app.addHook('onRequest', async (req, reply) => {
-  if (req.url.startsWith('/public')) return;
+app.addHook("onRequest", async (req, reply) => {
+  if (req.url.startsWith("/public")) return;
   const user = await verifyToken(req.headers.authorization);
-  if (!user) return reply.code(401).send({ error: 'unauthorized' });
-  req.headers['x-user-id'] = user.sub;
+  if (!user) return reply.code(401).send({ error: "unauthorized" });
+  req.headers["x-user-id"] = user.sub;
 });
 
-app.register(proxy, { upstream: 'http://users:3000', prefix: '/api/users', rewritePrefix: '/users' });
-app.register(proxy, { upstream: 'http://orders:3000', prefix: '/api/orders', rewritePrefix: '/orders' });
+app.register(proxy, {
+  upstream: "http://users:3000",
+  prefix: "/api/users",
+  rewritePrefix: "/users",
+});
+app.register(proxy, {
+  upstream: "http://orders:3000",
+  prefix: "/api/orders",
+  rewritePrefix: "/orders",
+});
 
-await app.listen({ port: 8080, host: '0.0.0.0' });
+await app.listen({ port: 8080, host: "0.0.0.0" });
 ```
 
 With Express, `http-proxy-middleware` does the same job. For most production systems, a dedicated gateway like Kong, Envoy or a cloud gateway is easier to run, and a custom Node gateway or BFF is used where you need custom logic.
@@ -2654,14 +2747,14 @@ With Express, `http-proxy-middleware` does the same job. For most production sys
 The counters must be shared, so they are kept in Redis. With Fastify, `@fastify/rate-limit` supports a Redis store:
 
 ```js
-import rateLimit from '@fastify/rate-limit';
-import { Redis } from 'ioredis';
+import rateLimit from "@fastify/rate-limit";
+import { Redis } from "ioredis";
 
 await app.register(rateLimit, {
   max: 100,
-  timeWindow: '1 minute',
+  timeWindow: "1 minute",
   redis: new Redis(process.env.REDIS_URL),
-  keyGenerator: (req) => req.headers['x-api-key'] ?? req.ip,
+  keyGenerator: (req) => req.headers["x-api-key"] ?? req.ip,
 });
 ```
 
@@ -2671,7 +2764,7 @@ For Express there is `express-rate-limit` with `rate-limit-redis`. A simple fixe
 const key = `rl:${clientId}:${Math.floor(Date.now() / 60_000)}`;
 const count = await redis.incr(key);
 if (count === 1) await redis.expire(key, 60);
-if (count > 100) return res.status(429).set('Retry-After', '60').end();
+if (count > 100) return res.status(429).set("Retry-After", "60").end();
 ```
 
 ## 185: What are the common rate limiting algorithms?
@@ -2689,18 +2782,20 @@ Token bucket is popular for APIs because it allows small bursts while limiting t
 Use the `jose` library and fetch the identity provider's public keys from its JWKS endpoint. The keys are cached and refreshed when the provider rotates them.
 
 ```js
-import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { createRemoteJWKSet, jwtVerify } from "jose";
 
-const JWKS = createRemoteJWKSet(new URL('https://auth.example.com/.well-known/jwks.json'));
+const JWKS = createRemoteJWKSet(
+  new URL("https://auth.example.com/.well-known/jwks.json"),
+);
 
 export async function authenticate(req, res, next) {
-  const token = req.get('authorization')?.replace(/^Bearer /, '');
+  const token = req.get("authorization")?.replace(/^Bearer /, "");
   if (!token) return res.sendStatus(401);
   try {
     const { payload } = await jwtVerify(token, JWKS, {
-      issuer: 'https://auth.example.com/',
-      audience: 'orders-api',
-      algorithms: ['RS256'],
+      issuer: "https://auth.example.com/",
+      audience: "orders-api",
+      algorithms: ["RS256"],
     });
     req.user = payload;
     next();
@@ -2732,20 +2827,23 @@ let cached = null;
 export async function getServiceToken() {
   if (cached && cached.expiresAt > Date.now() + 30_000) return cached.token;
 
-  const res = await fetch('https://auth.example.com/oauth/token', {
-    method: 'POST',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  const res = await fetch("https://auth.example.com/oauth/token", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
-      grant_type: 'client_credentials',
+      grant_type: "client_credentials",
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
-      audience: 'inventory-api',
+      audience: "inventory-api",
     }),
     signal: AbortSignal.timeout(3000),
   });
   if (!res.ok) throw new Error(`token request failed: ${res.status}`);
   const body = await res.json();
-  cached = { token: body.access_token, expiresAt: Date.now() + body.expires_in * 1000 };
+  cached = {
+    token: body.access_token,
+    expiresAt: Date.now() + body.expires_in * 1000,
+  };
   return cached.token;
 }
 ```
@@ -2755,21 +2853,21 @@ Asking for a new token on every call puts heavy load on the identity provider an
 ## 189: How do you set up Pino logging for a microservice?
 
 ```js
-import pino from 'pino';
+import pino from "pino";
 
 export const logger = pino({
-  level: process.env.LOG_LEVEL ?? 'info',
-  base: { service: 'orders', version: process.env.APP_VERSION },
+  level: process.env.LOG_LEVEL ?? "info",
+  base: { service: "orders", version: process.env.APP_VERSION },
   redact: {
-    paths: ['req.headers.authorization', 'password', '*.cardNumber'],
-    censor: '[redacted]',
+    paths: ["req.headers.authorization", "password", "*.cardNumber"],
+    censor: "[redacted]",
   },
   timestamp: pino.stdTimeFunctions.isoTime,
 });
 
-const log = logger.child({ orderId: 'o_123' });
-log.info('payment started');
-log.error({ err }, 'payment failed');
+const log = logger.child({ orderId: "o_123" });
+log.info("payment started");
+log.error({ err }, "payment failed");
 ```
 
 Child loggers add fields to every line without repeating them. `redact` stops secrets and personal data from reaching logs. In development, pipe the output through `pino-pretty` instead of changing the code. With Express, `pino-http` logs every request with its duration and status.
@@ -2779,14 +2877,14 @@ Child loggers add fields to every line without repeating them. `redact` stops se
 `AsyncLocalStorage` from `node:async_hooks` keeps a value available through all async calls started from one place, without passing it as an argument. It is used to keep per-request context like the request ID, user ID or tenant ID.
 
 ```js
-import { AsyncLocalStorage } from 'node:async_hooks';
-import { randomUUID } from 'node:crypto';
+import { AsyncLocalStorage } from "node:async_hooks";
+import { randomUUID } from "node:crypto";
 
 export const context = new AsyncLocalStorage();
 
 app.use((req, res, next) => {
-  const requestId = req.get('x-request-id') ?? randomUUID();
-  res.set('x-request-id', requestId);
+  const requestId = req.get("x-request-id") ?? randomUUID();
+  res.set("x-request-id", requestId);
   context.run({ requestId }, next);
 });
 
@@ -2805,13 +2903,19 @@ Read it from the incoming request (or create one), store it in the request conte
 export async function callService(url, init = {}) {
   const headers = new Headers(init.headers);
   const requestId = currentRequestId();
-  if (requestId) headers.set('x-request-id', requestId);
-  return fetch(url, { ...init, headers, signal: init.signal ?? AbortSignal.timeout(2000) });
+  if (requestId) headers.set("x-request-id", requestId);
+  return fetch(url, {
+    ...init,
+    headers,
+    signal: init.signal ?? AbortSignal.timeout(2000),
+  });
 }
 
 await producer.send({
-  topic: 'orders',
-  messages: [{ key, value, headers: { 'x-request-id': currentRequestId() ?? '' } }],
+  topic: "orders",
+  messages: [
+    { key, value, headers: { "x-request-id": currentRequestId() ?? "" } },
+  ],
 });
 ```
 
@@ -2823,20 +2927,20 @@ Create an instrumentation file and load it before the app with `--import`.
 
 ```js
 // instrumentation.mjs
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { resourceFromAttributes } from '@opentelemetry/resources';
-import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
+import { NodeSDK } from "@opentelemetry/sdk-node";
+import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { resourceFromAttributes } from "@opentelemetry/resources";
+import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
 const sdk = new NodeSDK({
-  resource: resourceFromAttributes({ [ATTR_SERVICE_NAME]: 'orders' }),
+  resource: resourceFromAttributes({ [ATTR_SERVICE_NAME]: "orders" }),
   traceExporter: new OTLPTraceExporter(),
   instrumentations: [getNodeAutoInstrumentations()],
 });
 
 sdk.start();
-process.on('SIGTERM', () => sdk.shutdown());
+process.on("SIGTERM", () => sdk.shutdown());
 ```
 
 ```bash
@@ -2849,16 +2953,16 @@ It must load first so that it can patch modules like `http`, `pg` and `express` 
 ## 193: How do you create custom spans with OpenTelemetry?
 
 ```js
-import { trace, SpanStatusCode } from '@opentelemetry/api';
+import { trace, SpanStatusCode } from "@opentelemetry/api";
 
-const tracer = trace.getTracer('orders');
+const tracer = trace.getTracer("orders");
 
 export async function calculatePrice(cart) {
-  return tracer.startActiveSpan('calculatePrice', async (span) => {
+  return tracer.startActiveSpan("calculatePrice", async (span) => {
     try {
-      span.setAttribute('cart.items', cart.items.length);
+      span.setAttribute("cart.items", cart.items.length);
       const price = await doPricing(cart);
-      span.setAttribute('cart.total', price.total);
+      span.setAttribute("cart.total", price.total);
       return price;
     } catch (err) {
       span.recordException(err);
@@ -2890,19 +2994,23 @@ OTEL_TRACES_SAMPLER_ARG=0.1
 ## 195: How do you measure HTTP request duration with prom-client?
 
 ```js
-import client from 'prom-client';
+import client from "prom-client";
 
 const httpDuration = new client.Histogram({
-  name: 'http_server_request_duration_seconds',
-  help: 'HTTP request duration',
-  labelNames: ['method', 'route', 'status'],
+  name: "http_server_request_duration_seconds",
+  help: "HTTP request duration",
+  labelNames: ["method", "route", "status"],
   buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5],
 });
 
 app.use((req, res, next) => {
   const end = httpDuration.startTimer();
-  res.on('finish', () => {
-    end({ method: req.method, route: req.route?.path ?? 'unknown', status: res.statusCode });
+  res.on("finish", () => {
+    end({
+      method: req.method,
+      route: req.route?.path ?? "unknown",
+      status: res.statusCode,
+    });
   });
   next();
 });
@@ -3005,19 +3113,21 @@ A single Node.js process mostly uses one core for JavaScript, plus some threads 
 Parse the environment with a schema and fail fast with a clear message:
 
 ```js
-import { z } from 'zod';
+import { z } from "zod";
 
 const Env = z.object({
-  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  NODE_ENV: z
+    .enum(["development", "test", "production"])
+    .default("development"),
   PORT: z.coerce.number().int().default(3000),
   DATABASE_URL: z.string().url(),
-  KAFKA_BROKERS: z.string().transform((s) => s.split(',')),
-  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
+  KAFKA_BROKERS: z.string().transform((s) => s.split(",")),
+  LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
 });
 
 const parsed = Env.safeParse(process.env);
 if (!parsed.success) {
-  console.error('Invalid configuration', parsed.error.flatten().fieldErrors);
+  console.error("Invalid configuration", parsed.error.flatten().fieldErrors);
   process.exit(1);
 }
 
@@ -3029,30 +3139,41 @@ The rest of the code imports `config` instead of reading `process.env` directly.
 ## 204: How do you validate request bodies in an Express service?
 
 ```js
-import express from 'express';
-import { z } from 'zod';
+import express from "express";
+import { z } from "zod";
 
 const CreateOrder = z.object({
   userId: z.string().min(1),
-  items: z.array(z.object({
-    sku: z.string(),
-    quantity: z.number().int().positive(),
-  })).min(1),
+  items: z
+    .array(
+      z.object({
+        sku: z.string(),
+        quantity: z.number().int().positive(),
+      }),
+    )
+    .min(1),
 });
 
 const validate = (schema) => (req, res, next) => {
   const result = schema.safeParse(req.body);
   if (!result.success) {
-    return res.status(400).json({ title: 'Invalid request', errors: result.error.issues });
+    return res
+      .status(400)
+      .json({ title: "Invalid request", errors: result.error.issues });
   }
   req.body = result.data;
   next();
 };
 
-app.post('/orders', express.json({ limit: '100kb' }), validate(CreateOrder), async (req, res) => {
-  const order = await createOrder(req.body);
-  res.status(201).json(order);
-});
+app.post(
+  "/orders",
+  express.json({ limit: "100kb" }),
+  validate(CreateOrder),
+  async (req, res) => {
+    const order = await createOrder(req.body);
+    res.status(201).json(order);
+  },
+);
 ```
 
 Validate at the edge of each service, keep the parsed result and work only with it. Also set a body size limit, so a huge payload cannot use up memory.
@@ -3064,15 +3185,17 @@ In Express 4, if an `async` route handler threw or returned a rejected promise, 
 Express 5 handles this for you: rejected promises from handlers and middleware are passed to the error handler automatically.
 
 ```js
-app.get('/orders/:id', async (req, res) => {
+app.get("/orders/:id", async (req, res) => {
   const order = await ordersRepo.find(req.params.id); // if this throws, Express 5 calls the error handler
   if (!order) return res.sendStatus(404);
   res.json(order);
 });
 
 app.use((err, req, res, next) => {
-  req.log?.error({ err }, 'request failed');
-  res.status(err.status ?? 500).json({ title: err.expose ? err.message : 'Internal Server Error' });
+  req.log?.error({ err }, "request failed");
+  res
+    .status(err.status ?? 500)
+    .json({ title: err.expose ? err.message : "Internal Server Error" });
 });
 ```
 
@@ -3102,13 +3225,13 @@ class AppError extends Error {
 Since Node 15, an unhandled promise rejection crashes the process by default, the same as an uncaught exception. That is usually the right behaviour: after an unexpected error, the process may be in a broken state.
 
 ```js
-process.on('uncaughtException', (err) => {
-  logger.fatal({ err }, 'uncaught exception');
+process.on("uncaughtException", (err) => {
+  logger.fatal({ err }, "uncaught exception");
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason) => {
-  logger.fatal({ err: reason }, 'unhandled rejection');
+process.on("unhandledRejection", (reason) => {
+  logger.fatal({ err: reason }, "unhandled rejection");
   process.exit(1);
 });
 ```
@@ -3150,23 +3273,30 @@ It also checks compatibility rules. For example, with backward compatibility, a 
 On the consumer side, you describe the interaction and test your client against a mock provider:
 
 ```js
-import { PactV3, MatchersV3 } from '@pact-foundation/pact';
+import { PactV3, MatchersV3 } from "@pact-foundation/pact";
 
-const provider = new PactV3({ consumer: 'web-bff', provider: 'orders-service' });
+const provider = new PactV3({
+  consumer: "web-bff",
+  provider: "orders-service",
+});
 
-it('gets an order', async () => {
+it("gets an order", async () => {
   provider
-    .given('order o_123 exists')
-    .uponReceiving('a request for order o_123')
-    .withRequest({ method: 'GET', path: '/orders/o_123' })
+    .given("order o_123 exists")
+    .uponReceiving("a request for order o_123")
+    .withRequest({ method: "GET", path: "/orders/o_123" })
     .willRespondWith({
       status: 200,
-      body: { id: 'o_123', status: MatchersV3.string('paid'), total: MatchersV3.integer(4999) },
+      body: {
+        id: "o_123",
+        status: MatchersV3.string("paid"),
+        total: MatchersV3.integer(4999),
+      },
     });
 
   await provider.executeTest(async (mockServer) => {
-    const order = await getOrder(mockServer.url, 'o_123');
-    expect(order.id).toBe('o_123');
+    const order = await getOrder(mockServer.url, "o_123");
+    expect(order.id).toBe("o_123");
   });
 });
 ```
@@ -3178,25 +3308,32 @@ This produces a contract file that is published to a Pact Broker. The orders ser
 Start a real Kafka with Testcontainers, produce a message and check the result:
 
 ```js
-import { KafkaContainer } from '@testcontainers/kafka';
-import { Kafka } from 'kafkajs';
+import { KafkaContainer } from "@testcontainers/kafka";
+import { Kafka } from "kafkajs";
 
 let container, kafka;
 
 beforeAll(async () => {
-  container = await new KafkaContainer('confluentinc/cp-kafka:7.7.0').withKraft().start();
-  kafka = new Kafka({ brokers: [`${container.getHost()}:${container.getMappedPort(9093)}`] });
+  container = await new KafkaContainer("confluentinc/cp-kafka:7.7.0")
+    .withKraft()
+    .start();
+  kafka = new Kafka({
+    brokers: [`${container.getHost()}:${container.getMappedPort(9093)}`],
+  });
 }, 120_000);
 
 afterAll(() => container.stop());
 
-it('reserves stock when an order is created', async () => {
+it("reserves stock when an order is created", async () => {
   await startConsumer(kafka);
   const producer = kafka.producer();
   await producer.connect();
-  await producer.send({ topic: 'orders', messages: [{ key: 'o_1', value: JSON.stringify(orderCreated) }] });
+  await producer.send({
+    topic: "orders",
+    messages: [{ key: "o_1", value: JSON.stringify(orderCreated) }],
+  });
 
-  await waitFor(async () => expect(await stockRepo.reserved('sku_1')).toBe(2));
+  await waitFor(async () => expect(await stockRepo.reserved("sku_1")).toBe(2));
 });
 ```
 
@@ -3210,15 +3347,16 @@ Since processing is async, use a polling helper like `waitFor` with a timeout in
 - **WireMock or Pact stub servers:** run a real fake HTTP server, useful for component tests in Docker.
 
 ```js
-import { MockAgent, setGlobalDispatcher } from 'undici';
+import { MockAgent, setGlobalDispatcher } from "undici";
 
 const agent = new MockAgent();
 agent.disableNetConnect();
 setGlobalDispatcher(agent);
 
-agent.get('http://users:3000')
-  .intercept({ path: '/users/42', method: 'GET' })
-  .reply(200, { id: '42', name: 'Ana' });
+agent
+  .get("http://users:3000")
+  .intercept({ path: "/users/42", method: "GET" })
+  .reply(200, { id: "42", name: "Ana" });
 ```
 
 Mocks only prove your code works with what you think the other service returns. Pair them with contract tests so the mocks stay honest.
@@ -3235,7 +3373,7 @@ export async function getProduct(id) {
 
   const product = await db.products.findById(id);
   if (product) {
-    await redis.set(key, JSON.stringify(product), 'EX', 300);
+    await redis.set(key, JSON.stringify(product), "EX", 300);
   }
   return product;
 }
@@ -3274,7 +3412,10 @@ const inflight = new Map();
 
 export function getOnce(key, load) {
   if (!inflight.has(key)) {
-    inflight.set(key, load().finally(() => inflight.delete(key)));
+    inflight.set(
+      key,
+      load().finally(() => inflight.delete(key)),
+    );
   }
   return inflight.get(key);
 }
@@ -3285,11 +3426,12 @@ export function getOnce(key, load) {
 Yes. A service can return `Cache-Control`, `ETag` and `Last-Modified` headers, and callers or proxies can use them.
 
 ```js
-app.get('/products/:id', async (req, res) => {
+app.get("/products/:id", async (req, res) => {
   const product = await getProduct(req.params.id);
-  res.set('Cache-Control', 'max-age=60');
-  res.set('ETag', `"${product.version}"`);
-  if (req.get('if-none-match') === `"${product.version}"`) return res.sendStatus(304);
+  res.set("Cache-Control", "max-age=60");
+  res.set("ETag", `"${product.version}"`);
+  if (req.get("if-none-match") === `"${product.version}"`)
+    return res.sendStatus(304);
   res.json(product);
 });
 ```
@@ -3299,12 +3441,12 @@ The caller sends `If-None-Match` on the next request and gets a small `304 Not M
 ## 218: How do you implement a simple distributed lock with Redis?
 
 ```js
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from "node:crypto";
 
 export async function withLock(redis, key, ttlMs, fn) {
   const token = randomUUID();
-  const ok = await redis.set(key, token, 'PX', ttlMs, 'NX');
-  if (ok !== 'OK') return false; // someone else holds the lock
+  const ok = await redis.set(key, token, "PX", ttlMs, "NX");
+  if (ok !== "OK") return false; // someone else holds the lock
 
   try {
     await fn();
@@ -3313,7 +3455,9 @@ export async function withLock(redis, key, ttlMs, fn) {
     // delete only if we still own the lock
     await redis.eval(
       "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end",
-      1, key, token,
+      1,
+      key,
+      token,
     );
   }
 }
@@ -3363,15 +3507,15 @@ const [product, reviews, recs] = await Promise.allSettled([
   recsClient.forProduct(id),
 ]);
 
-if (product.status === 'rejected') {
+if (product.status === "rejected") {
   throw product.reason; // product is required
 }
 
 res.json({
   ...product.value,
-  reviews: reviews.status === 'fulfilled' ? reviews.value : null,
-  recommendations: recs.status === 'fulfilled' ? recs.value : [],
-  partial: reviews.status === 'rejected' || recs.status === 'rejected',
+  reviews: reviews.status === "fulfilled" ? reviews.value : null,
+  recommendations: recs.status === "fulfilled" ? recs.value : [],
+  partial: reviews.status === "rejected" || recs.status === "rejected",
 });
 ```
 
@@ -3423,9 +3567,9 @@ There is no single right answer for the whole system. Pick per interaction, but 
 NestJS supports hybrid applications, where one app serves HTTP and also listens on one or more microservice transports.
 
 ```ts
-import { NestFactory } from '@nestjs/core';
-import { Transport, MicroserviceOptions } from '@nestjs/microservices';
-import { AppModule } from './app.module';
+import { NestFactory } from "@nestjs/core";
+import { Transport, MicroserviceOptions } from "@nestjs/microservices";
+import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -3434,7 +3578,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [process.env.AMQP_URL],
-      queue: 'orders_queue',
+      queue: "orders_queue",
       queueOptions: { durable: true },
       noAck: false,
     },
@@ -3455,13 +3599,13 @@ With `noAck: false`, you ack messages yourself through the `RmqContext` in the h
 - `client.emit(pattern, data)` is fire-and-forget. It publishes an event and does not wait for a result. It is handled by `@EventPattern`.
 
 ```ts
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom } from "rxjs";
 
 const order = await firstValueFrom(
-  this.ordersClient.send('get_order', id).pipe(timeout(2000)),
+  this.ordersClient.send("get_order", id).pipe(timeout(2000)),
 );
 
-this.ordersClient.emit('order_viewed', { id, userId });
+this.ordersClient.emit("order_viewed", { id, userId });
 ```
 
 `send` is lazy: nothing is sent until you subscribe, for example with `firstValueFrom`. Always add a `timeout` operator, since by default it can wait a long time.
@@ -3472,8 +3616,8 @@ this.ordersClient.emit('order_viewed', { id, userId });
 app.connectMicroservice<MicroserviceOptions>({
   transport: Transport.KAFKA,
   options: {
-    client: { clientId: 'inventory', brokers: ['kafka:9092'] },
-    consumer: { groupId: 'inventory-consumer' },
+    client: { clientId: "inventory", brokers: ["kafka:9092"] },
+    consumer: { groupId: "inventory-consumer" },
   },
 });
 ```
@@ -3481,8 +3625,11 @@ app.connectMicroservice<MicroserviceOptions>({
 ```ts
 @Controller()
 export class InventoryController {
-  @EventPattern('orders.created')
-  async onOrderCreated(@Payload() order: OrderCreated, @Ctx() ctx: KafkaContext) {
+  @EventPattern("orders.created")
+  async onOrderCreated(
+    @Payload() order: OrderCreated,
+    @Ctx() ctx: KafkaContext,
+  ) {
     await this.inventory.reserve(order);
   }
 }
@@ -3495,12 +3642,12 @@ The Nest Kafka transport is built on kafkajs. It is convenient for simple cases.
 Moleculer is a Node.js framework built specifically for microservices. Services are defined as objects with actions and event handlers, and a **service broker** takes care of discovery, load balancing, retries, circuit breakers, caching and transport.
 
 ```js
-import { ServiceBroker } from 'moleculer';
+import { ServiceBroker } from "moleculer";
 
-const broker = new ServiceBroker({ transporter: 'nats://nats:4222' });
+const broker = new ServiceBroker({ transporter: "nats://nats:4222" });
 
 broker.createService({
-  name: 'math',
+  name: "math",
   actions: {
     add(ctx) {
       return ctx.params.a + ctx.params.b;
@@ -3509,7 +3656,7 @@ broker.createService({
 });
 
 await broker.start();
-const sum = await broker.call('math.add', { a: 2, b: 3 });
+const sum = await broker.call("math.add", { a: 2, b: 3 });
 ```
 
 It gives you a lot out of the box, but it also ties all your services to the framework, so it fits best when the whole system is in Node.js.
@@ -3534,8 +3681,8 @@ pnpm-workspace.yaml
 ```yaml
 # pnpm-workspace.yaml
 packages:
-  - 'apps/*'
-  - 'packages/*'
+  - "apps/*"
+  - "packages/*"
 ```
 
 Tools like Nx or Turborepo know the dependency graph, so CI can run only `affected` builds and tests and cache results. Set lint rules that stop one app from importing another app's code directly, only shared packages.
@@ -3650,8 +3797,8 @@ volumes:
 ```
 
 ```js
-import { readFile } from 'node:fs/promises';
-const password = (await readFile('/etc/secrets/password', 'utf8')).trim();
+import { readFile } from "node:fs/promises";
+const password = (await readFile("/etc/secrets/password", "utf8")).trim();
 ```
 
 Environment variables are read once at startup. Mounted files are updated when the Secret changes, so a service that reads them again can pick up rotated values without a restart.
@@ -3690,8 +3837,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 2        # up to 2 extra pods during the update
-      maxUnavailable: 0  # never go below 6 ready pods
+      maxSurge: 2 # up to 2 extra pods during the update
+      maxUnavailable: 0 # never go below 6 ready pods
   minReadySeconds: 10
 ```
 
@@ -3762,17 +3909,20 @@ It is usually done with a lease in a shared store: a Kubernetes `Lease` object, 
 Measure event loop delay with `perf_hooks`:
 
 ```js
-import { monitorEventLoopDelay } from 'node:perf_hooks';
+import { monitorEventLoopDelay } from "node:perf_hooks";
 
 const h = monitorEventLoopDelay({ resolution: 20 });
 h.enable();
 
 setInterval(() => {
-  logger.info({
-    p50: h.percentile(50) / 1e6,
-    p99: h.percentile(99) / 1e6,
-    max: h.max / 1e6,
-  }, 'event loop delay ms');
+  logger.info(
+    {
+      p50: h.percentile(50) / 1e6,
+      p99: h.percentile(99) / 1e6,
+      max: h.max / 1e6,
+    },
+    "event loop delay ms",
+  );
   h.reset();
 }, 10_000).unref();
 ```
@@ -3785,22 +3935,22 @@ Use worker threads when a service has CPU-heavy work that would block the event 
 
 ```js
 // main.js
-import { Worker } from 'node:worker_threads';
+import { Worker } from "node:worker_threads";
 
 export function resizeImage(buffer) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker(new URL('./resize-worker.js', import.meta.url), {
+    const worker = new Worker(new URL("./resize-worker.js", import.meta.url), {
       workerData: buffer,
     });
-    worker.once('message', resolve);
-    worker.once('error', reject);
+    worker.once("message", resolve);
+    worker.once("error", reject);
   });
 }
 ```
 
 ```js
 // resize-worker.js
-import { parentPort, workerData } from 'node:worker_threads';
+import { parentPort, workerData } from "node:worker_threads";
 parentPort.postMessage(doHeavyResize(workerData));
 ```
 
@@ -3811,13 +3961,15 @@ Creating a worker per task is slow, so use a pool such as `piscina` in real code
 Do not load large payloads fully into memory. Stream them with `pipeline`, which also handles errors and backpressure.
 
 ```js
-import { pipeline } from 'node:stream/promises';
-import { Readable } from 'node:stream';
+import { pipeline } from "node:stream/promises";
+import { Readable } from "node:stream";
 
-app.get('/exports/:id', async (req, res) => {
-  const upstream = await fetch(`http://reports:3000/reports/${req.params.id}.csv`);
+app.get("/exports/:id", async (req, res) => {
+  const upstream = await fetch(
+    `http://reports:3000/reports/${req.params.id}.csv`,
+  );
   if (!upstream.ok) return res.sendStatus(502);
-  res.set('content-type', 'text/csv');
+  res.set("content-type", "text/csv");
   await pipeline(Readable.fromWeb(upstream.body), res);
 });
 ```
@@ -3834,13 +3986,17 @@ Avoid sending large files through several services. A common approach with objec
 4. Other services get the file's key in an event and fetch it from storage when needed.
 
 ```js
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const s3 = new S3Client({});
 const url = await getSignedUrl(
   s3,
-  new PutObjectCommand({ Bucket: 'uploads', Key: `avatars/${userId}.png`, ContentType: 'image/png' }),
+  new PutObjectCommand({
+    Bucket: "uploads",
+    Key: `avatars/${userId}.png`,
+    ContentType: "image/png",
+  }),
   { expiresIn: 300 },
 );
 ```
@@ -3852,7 +4008,7 @@ This keeps big files off your Node.js processes and makes uploads faster for use
 Without limits, a client (or a buggy service) can send a very large body that uses up memory, blocks the event loop while parsing or fills the disk.
 
 ```js
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: "1mb" }));
 ```
 
 ```js
@@ -3866,22 +4022,28 @@ Also limit header size (Node has `--max-http-header-size`, 16 KB by default), th
 Most providers sign the raw body with HMAC SHA-256. Compute the signature yourself and compare in constant time.
 
 ```js
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createHmac, timingSafeEqual } from "node:crypto";
 
-app.post('/webhooks/payments', express.raw({ type: 'application/json' }), (req, res) => {
-  const signature = req.get('x-signature') ?? '';
-  const expected = createHmac('sha256', process.env.WEBHOOK_SECRET).update(req.body).digest('hex');
+app.post(
+  "/webhooks/payments",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const signature = req.get("x-signature") ?? "";
+    const expected = createHmac("sha256", process.env.WEBHOOK_SECRET)
+      .update(req.body)
+      .digest("hex");
 
-  const a = Buffer.from(signature, 'hex');
-  const b = Buffer.from(expected, 'hex');
-  if (a.length !== b.length || !timingSafeEqual(a, b)) {
-    return res.sendStatus(401);
-  }
+    const a = Buffer.from(signature, "hex");
+    const b = Buffer.from(expected, "hex");
+    if (a.length !== b.length || !timingSafeEqual(a, b)) {
+      return res.sendStatus(401);
+    }
 
-  const event = JSON.parse(req.body.toString('utf8'));
-  // store and enqueue, then answer quickly
-  res.sendStatus(200);
-});
+    const event = JSON.parse(req.body.toString("utf8"));
+    // store and enqueue, then answer quickly
+    res.sendStatus(200);
+  },
+);
 ```
 
 Use the raw body, not the parsed JSON, because re-serializing changes bytes and breaks the signature. Also check the timestamp in the signed data if the provider sends one, to block replays of old requests.
@@ -3916,16 +4078,19 @@ Build a search indexer that listens to events and updates Elasticsearch or OpenS
 await consumer.run({
   eachMessage: async ({ message }) => {
     const event = JSON.parse(message.value.toString());
-    if (event.type === 'product.deleted') {
-      await es.delete({ index: 'products', id: event.data.id }, { ignore: [404] });
+    if (event.type === "product.deleted") {
+      await es.delete(
+        { index: "products", id: event.data.id },
+        { ignore: [404] },
+      );
       return;
     }
     await es.index({
-      index: 'products',
+      index: "products",
       id: event.data.id,
       document: toSearchDoc(event.data),
       version: event.data.version,
-      version_type: 'external',
+      version_type: "external",
     });
   },
 });
@@ -3957,29 +4122,47 @@ Store the key with the result. Use an atomic "set if not exists" to handle two r
 ```js
 export function idempotent({ ttlSeconds = 86_400 } = {}) {
   return async (req, res, next) => {
-    const key = req.get('idempotency-key');
-    if (!key) return res.status(400).json({ title: 'Idempotency-Key header is required' });
+    const key = req.get("idempotency-key");
+    if (!key)
+      return res
+        .status(400)
+        .json({ title: "Idempotency-Key header is required" });
 
     const redisKey = `idem:${req.user.sub}:${key}`;
-    const created = await redis.set(redisKey, JSON.stringify({ state: 'pending' }), 'EX', ttlSeconds, 'NX');
+    const created = await redis.set(
+      redisKey,
+      JSON.stringify({ state: "pending" }),
+      "EX",
+      ttlSeconds,
+      "NX",
+    );
 
     if (!created) {
       const saved = JSON.parse(await redis.get(redisKey));
-      if (saved.state === 'pending') return res.status(409).json({ title: 'Request in progress' });
+      if (saved.state === "pending")
+        return res.status(409).json({ title: "Request in progress" });
       return res.status(saved.status).json(saved.body);
     }
 
     const originalJson = res.json.bind(res);
     res.json = (body) => {
-      redis.set(redisKey, JSON.stringify({ state: 'done', status: res.statusCode, body }), 'EX', ttlSeconds)
-        .catch((err) => req.log?.error({ err }, 'failed to save idempotent response'));
+      redis
+        .set(
+          redisKey,
+          JSON.stringify({ state: "done", status: res.statusCode, body }),
+          "EX",
+          ttlSeconds,
+        )
+        .catch((err) =>
+          req.log?.error({ err }, "failed to save idempotent response"),
+        );
       return originalJson(body);
     };
     next();
   };
 }
 
-app.post('/payments', idempotent(), createPaymentHandler);
+app.post("/payments", idempotent(), createPaymentHandler);
 ```
 
 Scope keys per user or client so one caller cannot read another's response. Some implementations also store a hash of the request body and reject the same key with a different body. If the handler fails with a `5xx`, delete the key so the client can retry.
@@ -3996,7 +4179,7 @@ const { rowCount } = await db.query(
 );
 
 if (rowCount === 0) {
-  throw new ConflictError('order was changed by someone else');
+  throw new ConflictError("order was changed by someone else");
 }
 ```
 
@@ -4007,18 +4190,18 @@ The caller can then reload and try again, or show an error. It works well in mic
 The server returns the current version as an `ETag`. The client sends it back in `If-Match` when updating. If the resource changed in between, the server answers `412 Precondition Failed`.
 
 ```js
-app.get('/orders/:id', async (req, res) => {
+app.get("/orders/:id", async (req, res) => {
   const order = await repo.find(req.params.id);
-  res.set('ETag', `"${order.version}"`).json(order);
+  res.set("ETag", `"${order.version}"`).json(order);
 });
 
-app.patch('/orders/:id', async (req, res) => {
-  const ifMatch = req.get('if-match');
+app.patch("/orders/:id", async (req, res) => {
+  const ifMatch = req.get("if-match");
   if (!ifMatch) return res.sendStatus(428); // Precondition Required
-  const version = Number(ifMatch.replaceAll('"', ''));
+  const version = Number(ifMatch.replaceAll('"', ""));
   const updated = await repo.updateIfVersion(req.params.id, req.body, version);
   if (!updated) return res.sendStatus(412);
-  res.set('ETag', `"${updated.version}"`).json(updated);
+  res.set("ETag", `"${updated.version}"`).json(updated);
 });
 ```
 
@@ -4049,7 +4232,7 @@ Fixes:
 - Store the needed data locally (the customer name in the order).
 
 ```js
-import DataLoader from 'dataloader';
+import DataLoader from "dataloader";
 
 const userLoader = new DataLoader(async (ids) => {
   const users = await usersClient.getMany(ids);
@@ -4136,7 +4319,7 @@ For anything that serves browsers, set:
 In Node.js, `helmet` (Express) and `@fastify/helmet` set good defaults:
 
 ```js
-import helmet from 'helmet';
+import helmet from "helmet";
 app.use(helmet());
 ```
 
@@ -4213,22 +4396,29 @@ The client sends a message with `replyTo` set to its reply queue and a `correlat
 
 ```js
 // client
-const { queue: replyQueue } = await ch.assertQueue('', { exclusive: true });
+const { queue: replyQueue } = await ch.assertQueue("", { exclusive: true });
 const pending = new Map();
 
-await ch.consume(replyQueue, (msg) => {
-  const resolve = pending.get(msg.properties.correlationId);
-  if (resolve) {
-    pending.delete(msg.properties.correlationId);
-    resolve(JSON.parse(msg.content.toString()));
-  }
-}, { noAck: true });
+await ch.consume(
+  replyQueue,
+  (msg) => {
+    const resolve = pending.get(msg.properties.correlationId);
+    if (resolve) {
+      pending.delete(msg.properties.correlationId);
+      resolve(JSON.parse(msg.content.toString()));
+    }
+  },
+  { noAck: true },
+);
 
 export function call(queue, payload) {
   const correlationId = randomUUID();
   return new Promise((resolve) => {
     pending.set(correlationId, resolve);
-    ch.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), { correlationId, replyTo: replyQueue });
+    ch.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), {
+      correlationId,
+      replyTo: replyQueue,
+    });
   });
 }
 ```
@@ -4265,7 +4455,13 @@ Use `eachBatch` when you want to handle many messages together, for example with
 ```js
 await consumer.run({
   eachBatchAutoResolve: false,
-  eachBatch: async ({ batch, resolveOffset, heartbeat, isRunning, isStale }) => {
+  eachBatch: async ({
+    batch,
+    resolveOffset,
+    heartbeat,
+    isRunning,
+    isStale,
+  }) => {
     const rows = [];
     for (const message of batch.messages) {
       if (!isRunning() || isStale()) break;
@@ -4322,16 +4518,16 @@ They overlap more than before: RabbitMQ has streams, and Kafka 4.x added share g
 NATS is a lightweight messaging system with very low latency. Core NATS does pub/sub and request-reply with at-most-once delivery and no storage. **JetStream**, built into the NATS server, adds persistence, consumers with acks, replay and a key-value store.
 
 ```js
-import { connect, StringCodec } from 'nats';
+import { connect, StringCodec } from "nats";
 
-const nc = await connect({ servers: 'nats://nats:4222' });
+const nc = await connect({ servers: "nats://nats:4222" });
 const sc = StringCodec();
 
-nc.subscribe('orders.created', {
+nc.subscribe("orders.created", {
   callback: (err, msg) => console.log(sc.decode(msg.data)),
 });
 
-nc.publish('orders.created', sc.encode(JSON.stringify({ id: 'o_123' })));
+nc.publish("orders.created", sc.encode(JSON.stringify({ id: "o_123" })));
 ```
 
 It is a good fit when you want something simpler to run than Kafka, especially for request-reply and edge or IoT setups. The NATS JavaScript client is being split into scoped `@nats-io/*` packages, so check which package the current docs use.
@@ -4341,14 +4537,18 @@ It is a good fit when you want something simpler to run than Kafka, especially f
 The publisher sends an event to an **SNS topic**. Each consuming service has its own **SQS queue** subscribed to the topic. SNS copies every message to every subscribed queue, and each service reads from its own queue at its own pace.
 
 ```js
-import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
+import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 
 const sns = new SNSClient({});
-await sns.send(new PublishCommand({
-  TopicArn: process.env.ORDERS_TOPIC_ARN,
-  Message: JSON.stringify(event),
-  MessageAttributes: { type: { DataType: 'String', StringValue: 'order.created' } },
-}));
+await sns.send(
+  new PublishCommand({
+    TopicArn: process.env.ORDERS_TOPIC_ARN,
+    Message: JSON.stringify(event),
+    MessageAttributes: {
+      type: { DataType: "String", StringValue: "order.created" },
+    },
+  }),
+);
 ```
 
 Subscription filter policies let a queue receive only some event types. Use FIFO topics and queues if you need ordering and deduplication per message group. Each queue should have its own DLQ.
@@ -4421,11 +4621,11 @@ For most services, the database and other network calls take far more time than 
 Hono is a small web framework built on Web standards (`Request`, `Response`, `fetch`). The same code runs on Node.js (with `@hono/node-server`), Bun, Deno, Cloudflare Workers and AWS Lambda.
 
 ```js
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
+import { Hono } from "hono";
+import { serve } from "@hono/node-server";
 
 const app = new Hono();
-app.get('/orders/:id', (c) => c.json({ id: c.req.param('id') }));
+app.get("/orders/:id", (c) => c.json({ id: c.req.param("id") }));
 
 serve({ fetch: app.fetch, port: 3000 });
 ```
@@ -4455,19 +4655,25 @@ It saves weeks of setup per service and keeps services consistent, so any engine
 Put a routing layer in front of the monolith and move routes to new services one by one.
 
 ```js
-import express from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware';
+import express from "express";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 const app = express();
 
-const toOrders = createProxyMiddleware({ target: 'http://orders-service:3000', changeOrigin: true });
-const toMonolith = createProxyMiddleware({ target: 'http://legacy-app:8080', changeOrigin: true });
+const toOrders = createProxyMiddleware({
+  target: "http://orders-service:3000",
+  changeOrigin: true,
+});
+const toMonolith = createProxyMiddleware({
+  target: "http://legacy-app:8080",
+  changeOrigin: true,
+});
 
 // moved to the new service
-app.use('/api/orders', toOrders);
+app.use("/api/orders", toOrders);
 
 // everything else still goes to the monolith
-app.use('/', toMonolith);
+app.use("/", toMonolith);
 
 app.listen(8080);
 ```
@@ -4479,7 +4685,7 @@ You can also move traffic gradually, for example sending only some users or a pe
 The dual write problem happens when a service has to write to two systems that do not share a transaction, like its database and a message broker, or two different databases. If one write succeeds and the other fails, the systems are out of sync.
 
 ```js
-await db.orders.insert(order);     // succeeds
+await db.orders.insert(order); // succeeds
 await producer.send(orderCreated); // fails, other services never hear about the order
 ```
 
@@ -4521,7 +4727,7 @@ If an inner timeout is longer than an outer one, the outer layer gives up first 
 Total connections = pool size per instance × number of instances (× number of services using the database). With 20 pods and a pool of 20 each, that is 400 connections, which can be more than the database allows.
 
 ```js
-import pg from 'pg';
+import pg from "pg";
 
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -4555,22 +4761,25 @@ Send writes and reads that must be fresh to the primary. Send reads that can be 
 Use a router per version and mount them under their prefixes. Share the service layer and change only what is different.
 
 ```js
-import express from 'express';
+import express from "express";
 
 const v1 = express.Router();
-v1.get('/orders/:id', async (req, res) => {
+v1.get("/orders/:id", async (req, res) => {
   const order = await ordersService.get(req.params.id);
   res.json({ id: order.id, total: order.totalCents / 100 }); // old format
 });
 
 const v2 = express.Router();
-v2.get('/orders/:id', async (req, res) => {
+v2.get("/orders/:id", async (req, res) => {
   const order = await ordersService.get(req.params.id);
-  res.json({ id: order.id, total: { amount: order.totalCents, currency: order.currency } });
+  res.json({
+    id: order.id,
+    total: { amount: order.totalCents, currency: order.currency },
+  });
 });
 
-app.use('/v1', v1);
-app.use('/v2', v2);
+app.use("/v1", v1);
+app.use("/v2", v2);
 ```
 
 Add a `Deprecation` and `Sunset` header to old versions so clients know when they will be removed, and track who still calls them before you turn them off.
@@ -4580,16 +4789,22 @@ Add a `Deprecation` and `Sunset` header to old versions so clients know when the
 Do not keep the HTTP request open for minutes. Accept the request, return `202 Accepted` with a link to check status, and do the work in the background.
 
 ```js
-app.post('/reports', async (req, res) => {
-  const job = await reportsQueue.add('generate', req.body);
-  res.status(202).location(`/reports/jobs/${job.id}`).json({ jobId: job.id, status: 'queued' });
+app.post("/reports", async (req, res) => {
+  const job = await reportsQueue.add("generate", req.body);
+  res
+    .status(202)
+    .location(`/reports/jobs/${job.id}`)
+    .json({ jobId: job.id, status: "queued" });
 });
 
-app.get('/reports/jobs/:id', async (req, res) => {
+app.get("/reports/jobs/:id", async (req, res) => {
   const job = await reportsQueue.getJob(req.params.id);
   if (!job) return res.sendStatus(404);
   const state = await job.getState();
-  res.json({ status: state, result: state === 'completed' ? job.returnvalue : undefined });
+  res.json({
+    status: state,
+    result: state === "completed" ? job.returnvalue : undefined,
+  });
 });
 ```
 
@@ -4634,14 +4849,17 @@ Load shedding means rejecting some requests quickly when the service is overload
 In Fastify, `@fastify/under-pressure` returns `503` when event loop delay, heap or RSS go above limits:
 
 ```js
-import underPressure from '@fastify/under-pressure';
+import underPressure from "@fastify/under-pressure";
 
 await app.register(underPressure, {
   maxEventLoopDelay: 200,
   maxHeapUsedBytes: 900 * 1024 * 1024,
   retryAfter: 5,
   pressureHandler: (req, reply, type, value) => {
-    reply.code(503).header('Retry-After', '5').send({ title: 'Service overloaded' });
+    reply
+      .code(503)
+      .header("Retry-After", "5")
+      .send({ title: "Service overloaded" });
   },
 });
 ```
@@ -4668,7 +4886,9 @@ async function hedged(urls, hedgeAfterMs) {
     });
 
   const first = attempt(0);
-  const second = new Promise((r) => setTimeout(r, hedgeAfterMs)).then(() => attempt(1));
+  const second = new Promise((r) => setTimeout(r, hedgeAfterMs)).then(() =>
+    attempt(1),
+  );
   try {
     return await Promise.any([first, second]);
   } finally {
@@ -4716,13 +4936,22 @@ Other loops: cache failures that send all traffic to the database, or GC pressur
 Kafka supports exactly-once semantics for **read-process-write inside Kafka**. A transactional producer can write output messages and commit the consumer's input offsets in one atomic transaction. Consumers with `isolation.level=read_committed` only see committed messages.
 
 ```js
-const producer = kafka.producer({ transactionalId: 'pricing-processor-1', idempotent: true, maxInFlightRequests: 1 });
+const producer = kafka.producer({
+  transactionalId: "pricing-processor-1",
+  idempotent: true,
+  maxInFlightRequests: 1,
+});
 await producer.connect();
 
 const tx = await producer.transaction();
 try {
-  await tx.send({ topic: 'prices-calculated', messages: [{ key, value }] });
-  await tx.sendOffsets({ consumerGroupId: 'pricing', topics: [{ topic: 'orders', partitions: [{ partition, offset: nextOffset }] }] });
+  await tx.send({ topic: "prices-calculated", messages: [{ key, value }] });
+  await tx.sendOffsets({
+    consumerGroupId: "pricing",
+    topics: [
+      { topic: "orders", partitions: [{ partition, offset: nextOffset }] },
+    ],
+  });
   await tx.commit();
 } catch (err) {
   await tx.abort();
@@ -4773,15 +5002,25 @@ CREATE TABLE events (
 
 ```js
 async function append(streamId, expectedVersion, newEvents) {
-  const values = newEvents.map((e, i) => [streamId, expectedVersion + i + 1, e.type, e.data]);
+  const values = newEvents.map((e, i) => [
+    streamId,
+    expectedVersion + i + 1,
+    e.type,
+    e.data,
+  ]);
   try {
     await db.query(
       `INSERT INTO events (stream_id, version, type, data)
        SELECT * FROM unnest($1::text[], $2::int[], $3::text[], $4::jsonb[])`,
-      [values.map((v) => v[0]), values.map((v) => v[1]), values.map((v) => v[2]), values.map((v) => v[3])],
+      [
+        values.map((v) => v[0]),
+        values.map((v) => v[1]),
+        values.map((v) => v[2]),
+        values.map((v) => v[3]),
+      ],
     );
   } catch (err) {
-    if (err.code === '23505') throw new ConcurrencyError(streamId); // unique violation
+    if (err.code === "23505") throw new ConcurrencyError(streamId); // unique violation
     throw err;
   }
 }
@@ -4815,8 +5054,8 @@ Upcasting means converting old versions of events into the current version when 
 
 ```js
 const upcasters = {
-  'order.created': {
-    1: (e) => ({ ...e, version: 2, data: { ...e.data, currency: 'USD' } }),
+  "order.created": {
+    1: (e) => ({ ...e, version: 2, data: { ...e.data, currency: "USD" } }),
   },
 };
 
@@ -4842,7 +5081,7 @@ When writes go to one service and reads come from a read model updated by events
 
 ```js
 // write returns the version, read waits until the projection has it
-const { version } = await api.post('/orders', body);
+const { version } = await api.post("/orders", body);
 await api.get(`/order-views/${id}?minVersion=${version}`); // server waits briefly or returns 202
 ```
 
@@ -4877,11 +5116,13 @@ Workflow engines like Temporal help here because they keep retrying activities a
 Temporal is a workflow engine. You write workflows as normal async code with the TypeScript SDK, and Temporal records each step's result in an event history. If a worker crashes, another worker replays the workflow code from the history to rebuild its state and continues from where it stopped.
 
 ```ts
-import { proxyActivities } from '@temporalio/workflow';
-import type * as activities from './activities';
+import { proxyActivities } from "@temporalio/workflow";
+import type * as activities from "./activities";
 
-const { reserveStock, chargeCard, refund, releaseStock } = proxyActivities<typeof activities>({
-  startToCloseTimeout: '30 seconds',
+const { reserveStock, chargeCard, refund, releaseStock } = proxyActivities<
+  typeof activities
+>({
+  startToCloseTimeout: "30 seconds",
   retry: { maximumAttempts: 5 },
 });
 
@@ -5236,7 +5477,9 @@ function processInKeyOrder(key, fn) {
   const prev = chains.get(key) ?? Promise.resolve();
   const next = prev.then(fn, fn);
   chains.set(key, next);
-  next.finally(() => { if (chains.get(key) === next) chains.delete(key); });
+  next.finally(() => {
+    if (chains.get(key) === next) chains.delete(key);
+  });
   return next;
 }
 ```
@@ -5500,7 +5743,7 @@ When dozens of pods start together (after a deploy, a node failure or a scale-up
 4. Then close other connections and exit.
 
 ```js
-process.once('SIGTERM', async () => {
+process.once("SIGTERM", async () => {
   try {
     await consumer.disconnect();
     await producer.disconnect();
@@ -5553,19 +5796,30 @@ The producer puts the trace context (`traceparent`) into message headers. The co
 Because a message can be consumed much later, or by many consumers, and a batch can contain messages from many traces, OpenTelemetry messaging conventions often use **span links** instead of a plain parent-child relation. The consumer's span links to the producer's span, so you can navigate between them without one trace lasting for hours.
 
 ```js
-import { context, propagation, trace } from '@opentelemetry/api';
+import { context, propagation, trace } from "@opentelemetry/api";
 
 // producer
 const headers = {};
 propagation.inject(context.active(), headers);
-await producer.send({ topic: 'orders', messages: [{ key, value, headers }] });
+await producer.send({ topic: "orders", messages: [{ key, value, headers }] });
 
 // consumer
-const parentCtx = propagation.extract(context.active(), toStringHeaders(message.headers));
+const parentCtx = propagation.extract(
+  context.active(),
+  toStringHeaders(message.headers),
+);
 const linkCtx = trace.getSpanContext(parentCtx);
-tracer.startActiveSpan('process order', { links: linkCtx ? [{ context: linkCtx }] : [] }, async (span) => {
-  try { await handle(message); } finally { span.end(); }
-});
+tracer.startActiveSpan(
+  "process order",
+  { links: linkCtx ? [{ context: linkCtx }] : [] },
+  async (span) => {
+    try {
+      await handle(message);
+    } finally {
+      span.end();
+    }
+  },
+);
 ```
 
 Kafka headers arrive as Buffers, so `toStringHeaders` converts them to strings first. Auto-instrumentation for kafkajs and amqplib can do this for you.
@@ -5589,7 +5843,7 @@ Add the active trace ID and span ID to every log line. With OpenTelemetry, `@ope
 By hand:
 
 ```js
-import { trace } from '@opentelemetry/api';
+import { trace } from "@opentelemetry/api";
 
 const logger = pino({
   mixin() {
@@ -5691,7 +5945,7 @@ export async function getCustomer(id) {
     id: String(raw.CUST_NO),
     name: `${raw.FNAME} ${raw.LNAME}`.trim(),
     email: raw.EMAIL_ADDR?.toLowerCase() ?? null,
-    isActive: raw.STATUS_CD === 'A',
+    isActive: raw.STATUS_CD === "A",
   };
 }
 ```
@@ -5847,7 +6101,7 @@ If the provider allows 100 requests per second for your whole account and you ru
 - **Static split:** give each instance `limit / instances`. Simple, but breaks when you autoscale.
 
 ```js
-const worker = new Worker('crm-sync', syncToCrm, {
+const worker = new Worker("crm-sync", syncToCrm, {
   connection,
   limiter: { max: 100, duration: 1000 },
 });
@@ -5898,13 +6152,18 @@ Fixes:
 - **Negative caching:** store "not found" results for a short time.
 
 ```js
-const NOT_FOUND = '__nf__';
+const NOT_FOUND = "__nf__";
 const cached = await redis.get(key);
 if (cached === NOT_FOUND) return null;
 if (cached) return JSON.parse(cached);
 
 const row = await db.find(id);
-await redis.set(key, row ? JSON.stringify(row) : NOT_FOUND, 'EX', row ? 300 : 30);
+await redis.set(
+  key,
+  row ? JSON.stringify(row) : NOT_FOUND,
+  "EX",
+  row ? 300 : 30,
+);
 return row;
 ```
 
@@ -5953,8 +6212,10 @@ When a RabbitMQ node uses more memory than its high watermark, or free disk spac
 For Node.js publishers this means `publish` calls stop being confirmed and can hang. amqplib emits `blocked` and `unblocked` events on the connection:
 
 ```js
-conn.on('blocked', (reason) => logger.warn({ reason }, 'rabbitmq blocked publishing'));
-conn.on('unblocked', () => logger.info('rabbitmq unblocked'));
+conn.on("blocked", (reason) =>
+  logger.warn({ reason }, "rabbitmq blocked publishing"),
+);
+conn.on("unblocked", () => logger.info("rabbitmq unblocked"));
 ```
 
 Handle it with publish timeouts, an outbox or local buffer with a size limit, and alerts on queue depth. The real fix is usually consumers that are too slow or queues with no consumer at all, which keep growing until they fill memory.

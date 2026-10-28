@@ -465,7 +465,9 @@ These questions cover Tailwind CSS v4 (the current major version, up to v4.3). W
 Tailwind CSS is a utility-first CSS framework. Instead of giving you ready-made components like "card" or "navbar", it gives you small single-purpose classes such as `flex`, `p-4`, `text-center` and `bg-blue-500`. You build the design by combining these classes directly in your markup.
 
 ```html
-<button class="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
+<button
+  class="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+>
   Save
 </button>
 ```
@@ -705,7 +707,9 @@ Use `underline` to add one and `no-underline` to remove it. You can style it wit
 Use `truncate`. It sets `overflow: hidden`, `text-overflow: ellipsis` and `white-space: nowrap`. The element needs a limited width.
 
 ```html
-<p class="w-48 truncate">This is a very long line of text that will be cut off</p>
+<p class="w-48 truncate">
+  This is a very long line of text that will be cut off
+</p>
 ```
 
 ### 34: How do you limit text to a set number of lines?
@@ -895,6 +899,7 @@ Use `rounded-*`: `rounded-xs`, `rounded-sm`, `rounded-md`, `rounded-lg`, `rounde
 ### 60: What changed with the `rounded` and `shadow` names in v4?
 
 The scales were shifted so every size has a name. In v4:
+
 - `shadow-sm` became `shadow-xs`, and plain `shadow` became `shadow-sm`.
 - `rounded-sm` became `rounded-xs`, and plain `rounded` became `rounded-sm`.
 - The same shift happened for `blur` and `drop-shadow`.
@@ -942,8 +947,12 @@ In v4 `hover:` is wrapped in `@media (hover: hover)`, so it only applies on devi
 Use `focus:` or, better for keyboard users, `focus-visible:`.
 
 ```html
-<input class="border rounded-md px-3 py-2 focus:outline-2 focus:outline-blue-500" />
-<button class="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+<input
+  class="border rounded-md px-3 py-2 focus:outline-2 focus:outline-blue-500"
+/>
+<button
+  class="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+>
   OK
 </button>
 ```
@@ -965,7 +974,10 @@ Use `active:`.
 Use `disabled:`.
 
 ```html
-<button disabled class="bg-blue-600 text-white disabled:cursor-not-allowed disabled:opacity-50">
+<button
+  disabled
+  class="bg-blue-600 text-white disabled:cursor-not-allowed disabled:opacity-50"
+>
   Submit
 </button>
 ```
@@ -1025,7 +1037,9 @@ Use `absolute` on the element and `relative` on the parent, then place it with `
 ```html
 <div class="relative">
   <img src="/photo.jpg" alt="" />
-  <span class="absolute top-2 right-2 rounded bg-black/60 px-2 text-white">New</span>
+  <span class="absolute top-2 right-2 rounded bg-black/60 px-2 text-white"
+    >New</span
+  >
 </div>
 ```
 
@@ -1073,7 +1087,9 @@ Use `overflow-hidden`, `overflow-auto`, `overflow-scroll`, `overflow-visible`, o
 
 ```html
 <div class="overflow-x-auto">
-  <table class="min-w-full">...</table>
+  <table class="min-w-full">
+    ...
+  </table>
 </div>
 ```
 
@@ -1094,7 +1110,9 @@ Use `select-none`. `select-all` selects the whole text on click, and `select-tex
 Use `transition` (common properties), `transition-colors`, `transition-opacity`, `transition-transform` or `transition-all`, together with `duration-*` and `ease-*`.
 
 ```html
-<button class="bg-blue-500 transition-colors duration-200 ease-in-out hover:bg-blue-700">
+<button
+  class="bg-blue-500 transition-colors duration-200 ease-in-out hover:bg-blue-700"
+>
   Hover
 </button>
 ```
@@ -1125,7 +1143,9 @@ Use `rotate-*` in degrees: `rotate-45`, `rotate-90`, `-rotate-12`. v4 also adds 
 Use `translate-x-*` and `translate-y-*`. Fractions work too.
 
 ```html
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Centered</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+  Centered
+</div>
 ```
 
 ### 91: Do you need the `transform` class to use scale, rotate or translate?
@@ -1160,7 +1180,9 @@ Yes, with `bg-radial` and `bg-conic`.
 
 ```html
 <div class="size-32 rounded-full bg-radial from-white to-sky-500"></div>
-<div class="size-32 rounded-full bg-conic from-red-500 via-yellow-400 to-red-500"></div>
+<div
+  class="size-32 rounded-full bg-conic from-red-500 via-yellow-400 to-red-500"
+></div>
 ```
 
 ### 96: How do you add a background image?
@@ -1233,7 +1255,9 @@ It lets you style an element based on the state of a previous sibling. Mark the 
 
 ```html
 <input type="email" class="peer border" />
-<p class="hidden text-sm text-red-600 peer-invalid:block">Please enter a valid email.</p>
+<p class="hidden text-sm text-red-600 peer-invalid:block">
+  Please enter a valid email.
+</p>
 ```
 
 ### 104: What are `first:` and `last:` variants?
@@ -1251,7 +1275,9 @@ They apply when the element is the first or last child of its parent.
 They style odd or even children, often for zebra-striped tables.
 
 ```html
-<tr class="odd:bg-white even:bg-gray-50">...</tr>
+<tr class="odd:bg-white even:bg-gray-50">
+  ...
+</tr>
 ```
 
 ### 106: How do you style the placeholder of an input?
@@ -1259,7 +1285,10 @@ They style odd or even children, often for zebra-striped tables.
 Use `placeholder:`.
 
 ```html
-<input class="placeholder:text-gray-400 placeholder:italic" placeholder="Search..." />
+<input
+  class="placeholder:text-gray-400 placeholder:italic"
+  placeholder="Search..."
+/>
 ```
 
 ### 107: What is the default placeholder color in v4?
@@ -1287,7 +1316,10 @@ Use `selection:`.
 Use `file:`.
 
 ```html
-<input type="file" class="file:mr-4 file:rounded-full file:border-0 file:bg-violet-50 file:px-4 file:py-2" />
+<input
+  type="file"
+  class="file:mr-4 file:rounded-full file:border-0 file:bg-violet-50 file:px-4 file:py-2"
+/>
 ```
 
 ### 111: How do you style a checkbox color without custom CSS?
@@ -1311,7 +1343,9 @@ Use `caret-*`.
 Use `appearance-none`, then style it yourself.
 
 ```html
-<select class="appearance-none rounded border px-3 py-2">...</select>
+<select class="appearance-none rounded border px-3 py-2">
+  ...
+</select>
 ```
 
 ### 114: How do you make content visible only to screen readers?
@@ -1334,7 +1368,9 @@ In v4 `outline-none` sets `outline-style: none`, which removes the outline compl
 Use `ring-*` utilities with a color.
 
 ```html
-<button class="focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">...</button>
+<button class="focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+  ...
+</button>
 ```
 
 ### 117: What is the default `ring` width in v4?
@@ -1346,7 +1382,10 @@ Use `ring-*` utilities with a color.
 Use `outline`, `outline-2`, `outline-4` with `outline-*` colors and `outline-offset-*`.
 
 ```html
-<a class="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Link</a>
+<a
+  class="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+  >Link</a
+>
 ```
 
 ### 119: How do you add a divider line between children?
@@ -1399,7 +1438,9 @@ Use normal utilities on table elements, plus `table-auto` or `table-fixed` for l
 ```html
 <table class="w-full table-auto border-collapse">
   <thead class="bg-gray-50 text-left text-sm font-medium">
-    <tr><th class="px-4 py-2">Name</th></tr>
+    <tr>
+      <th class="px-4 py-2">Name</th>
+    </tr>
   </thead>
 </table>
 ```
@@ -1439,7 +1480,9 @@ The footer stays at the bottom even when there is little content.
 ### 129: How do you build a simple navbar?
 
 ```html
-<nav class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+<nav
+  class="flex items-center justify-between border-b border-gray-200 px-6 py-4"
+>
   <a href="/" class="text-xl font-bold">Brand</a>
   <ul class="hidden gap-6 md:flex">
     <li><a href="#" class="hover:text-blue-600">Home</a></li>
@@ -1461,7 +1504,7 @@ const colors = {
   red: "bg-red-500",
   blue: "bg-blue-500",
 };
-<div className={colors[color]} />
+<div className={colors[color]} />;
 ```
 
 ### 132: How do you use Tailwind in React?
@@ -1470,7 +1513,11 @@ Use the `className` attribute.
 
 ```jsx
 export function Alert({ children }) {
-  return <div className="rounded-md bg-yellow-50 p-4 text-yellow-800">{children}</div>;
+  return (
+    <div className="rounded-md bg-yellow-50 p-4 text-yellow-800">
+      {children}
+    </div>
+  );
 }
 ```
 
@@ -1570,7 +1617,7 @@ Use `columns-*`.
 It sets `scroll-behavior: smooth`, so anchor links scroll smoothly instead of jumping.
 
 ```html
-<html class="scroll-smooth">
+<html class="scroll-smooth"></html>
 ```
 
 ### 142: What are `inline-block` and `inline-flex` used for?
@@ -1658,27 +1705,27 @@ All customization happens in your main CSS file using directives:
 
 The prefix of a `@theme` variable decides which utilities it creates. Some common namespaces:
 
-| Namespace | Example utilities |
-| --- | --- |
-| `--color-*` | `bg-red-500`, `text-sky-300`, `border-*`, `fill-*` |
-| `--font-*` | `font-sans`, `font-display` |
-| `--text-*` | `text-xl` |
-| `--font-weight-*` | `font-bold` |
-| `--tracking-*` | `tracking-wide` |
-| `--leading-*` | `leading-tight` |
-| `--breakpoint-*` | `sm:`, `md:` |
-| `--container-*` | `@sm:`, `max-w-md` |
-| `--spacing` | `p-4`, `m-2`, `w-10`, `gap-3` |
-| `--radius-*` | `rounded-lg` |
-| `--shadow-*` | `shadow-md` |
-| `--inset-shadow-*` | `inset-shadow-xs` |
-| `--drop-shadow-*` | `drop-shadow-md` |
-| `--text-shadow-*` | `text-shadow-md` |
-| `--blur-*` | `blur-md` |
-| `--perspective-*` | `perspective-near` |
-| `--aspect-*` | `aspect-video` |
-| `--ease-*` | `ease-out` |
-| `--animate-*` | `animate-spin` |
+| Namespace          | Example utilities                                  |
+| ------------------ | -------------------------------------------------- |
+| `--color-*`        | `bg-red-500`, `text-sky-300`, `border-*`, `fill-*` |
+| `--font-*`         | `font-sans`, `font-display`                        |
+| `--text-*`         | `text-xl`                                          |
+| `--font-weight-*`  | `font-bold`                                        |
+| `--tracking-*`     | `tracking-wide`                                    |
+| `--leading-*`      | `leading-tight`                                    |
+| `--breakpoint-*`   | `sm:`, `md:`                                       |
+| `--container-*`    | `@sm:`, `max-w-md`                                 |
+| `--spacing`        | `p-4`, `m-2`, `w-10`, `gap-3`                      |
+| `--radius-*`       | `rounded-lg`                                       |
+| `--shadow-*`       | `shadow-md`                                        |
+| `--inset-shadow-*` | `inset-shadow-xs`                                  |
+| `--drop-shadow-*`  | `drop-shadow-md`                                   |
+| `--text-shadow-*`  | `text-shadow-md`                                   |
+| `--blur-*`         | `blur-md`                                          |
+| `--perspective-*`  | `perspective-near`                                 |
+| `--aspect-*`       | `aspect-video`                                     |
+| `--ease-*`         | `ease-out`                                         |
+| `--animate-*`      | `animate-spin`                                     |
 
 ### 153: How do you extend the theme versus replace it?
 
@@ -1985,7 +2032,9 @@ Then add `class="dark"` to `<html>` with JavaScript when the user picks dark mod
 ```
 
 ```html
-<html data-theme="dark">...</html>
+<html data-theme="dark">
+  ...
+</html>
 ```
 
 ### 177: How do you support light, dark and system modes together?
@@ -1997,7 +2046,8 @@ Use the class-based `dark` variant and a small script that runs before the page 
   document.documentElement.classList.toggle(
     "dark",
     localStorage.theme === "dark" ||
-      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches),
   );
 </script>
 ```
@@ -2013,7 +2063,7 @@ Because the theme is applied by JavaScript after the page has already been paint
 It sets `color-scheme: dark`, which tells the browser to draw native UI (scrollbars, form controls, date pickers) in dark style. Use `scheme-light`, `scheme-dark` or `scheme-light-dark`.
 
 ```html
-<html class="dark:scheme-dark">
+<html class="dark:scheme-dark"></html>
 ```
 
 ### 180: How do you style based on a data attribute?
@@ -2041,7 +2091,9 @@ Built-in ones include `aria-checked`, `aria-disabled`, `aria-expanded`, `aria-hi
 It styles an element based on what it contains, using CSS `:has()`.
 
 ```html
-<label class="rounded-lg border p-4 has-checked:border-indigo-600 has-checked:bg-indigo-50">
+<label
+  class="rounded-lg border p-4 has-checked:border-indigo-600 has-checked:bg-indigo-50"
+>
   <input type="radio" name="plan" /> Pro plan
 </label>
 ```
@@ -2124,7 +2176,9 @@ v4 includes `nth-*`, `nth-last-*`, `nth-of-type-*` and `nth-last-of-type-*`.
 They let you write a custom selector inside square brackets, using `&` for the element.
 
 ```html
-<ul class="[&>li]:py-2 [&_a]:text-blue-600">...</ul>
+<ul class="[&>li]:py-2 [&_a]:text-blue-600">
+  ...
+</ul>
 <div class="[&:nth-child(3)]:font-bold">...</div>
 <div class="[@supports(display:grid)]:grid">...</div>
 ```
@@ -2135,7 +2189,9 @@ It applies styles only if the browser supports a CSS feature.
 
 ```html
 <div class="flex supports-[display:grid]:grid">...</div>
-<div class="bg-black/75 supports-backdrop-filter:bg-black/25 supports-backdrop-filter:backdrop-blur">
+<div
+  class="bg-black/75 supports-backdrop-filter:bg-black/25 supports-backdrop-filter:backdrop-blur"
+>
   ...
 </div>
 ```
@@ -2262,8 +2318,13 @@ Define `--animate-*` and the `@keyframes` inside `@theme`.
   --animate-wiggle: wiggle 1s ease-in-out infinite;
 
   @keyframes wiggle {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
   }
 }
 ```
@@ -2277,7 +2338,11 @@ Define `--animate-*` and the `@keyframes` inside `@theme`.
 It uses CSS `@starting-style` to set the initial style of an element when it first appears, so you can animate entry without JavaScript.
 
 ```html
-<div popover id="menu" class="opacity-100 transition-opacity starting:open:opacity-0">
+<div
+  popover
+  id="menu"
+  class="opacity-100 transition-opacity starting:open:opacity-0"
+>
   ...
 </div>
 ```
@@ -2287,7 +2352,9 @@ It uses CSS `@starting-style` to set the initial style of an element when it fir
 It sets `transition-behavior: allow-discrete`, which allows transitions on properties like `display` that normally switch instantly. Combined with `starting:` it lets you fade elements in and out when they go from `hidden` to visible.
 
 ```html
-<div class="hidden opacity-0 transition-all transition-discrete group-open:block group-open:opacity-100">
+<div
+  class="hidden opacity-0 transition-all transition-discrete group-open:block group-open:opacity-100"
+>
   ...
 </div>
 ```
@@ -2295,7 +2362,11 @@ It sets `transition-behavior: allow-discrete`, which allows transitions on prope
 ### 207: How do you set an arbitrary transition duration or easing?
 
 ```html
-<div class="transition duration-[400ms] ease-[cubic-bezier(0.95,0.05,0.795,0.035)]">...</div>
+<div
+  class="transition duration-[400ms] ease-[cubic-bezier(0.95,0.05,0.795,0.035)]"
+>
+  ...
+</div>
 ```
 
 Or add values to the theme with `--ease-*`.
@@ -2327,7 +2398,11 @@ Pick a specific transition utility: `transition-colors`, `transition-opacity`, `
 Add `from-*%`, `via-*%` and `to-*%`.
 
 ```html
-<div class="bg-linear-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">...</div>
+<div
+  class="bg-linear-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%"
+>
+  ...
+</div>
 ```
 
 ### 212: What are gradient interpolation modifiers?
@@ -2344,7 +2419,9 @@ The default in v4 is `oklab`. Options include `srgb`, `hsl`, `oklab`, `oklch`, `
 ### 213: How do you make gradient text?
 
 ```html
-<h1 class="bg-linear-to-r from-pink-500 to-violet-500 bg-clip-text text-5xl font-extrabold text-transparent">
+<h1
+  class="bg-linear-to-r from-pink-500 to-violet-500 bg-clip-text text-5xl font-extrabold text-transparent"
+>
   Gradient text
 </h1>
 ```
@@ -2354,7 +2431,9 @@ The default in v4 is `oklab`. Options include `srgb`, `hsl`, `oklab`, `oklch`, `
 v4 adds `inset-shadow-*` and `inset-ring-*`, which can be used together with normal `shadow-*` and `ring-*` on the same element (up to four layers).
 
 ```html
-<button class="shadow-md ring-1 ring-black/5 inset-shadow-sm inset-ring inset-ring-white/20">
+<button
+  class="shadow-md ring-1 ring-black/5 inset-shadow-sm inset-ring inset-ring-white/20"
+>
   Button
 </button>
 ```
@@ -2392,7 +2471,10 @@ v4.1 added `mask-*` utilities for CSS masks. They can fade an element at its edg
 Use `invalid:`, `valid:`, `required:`, `user-invalid:` and `user-valid:`.
 
 ```html
-<input required class="border user-invalid:border-red-500 user-valid:border-green-500" />
+<input
+  required
+  class="border user-invalid:border-red-500 user-valid:border-green-500"
+/>
 ```
 
 `user-invalid:` only applies after the user has interacted with the field, so you don't show errors on page load.
@@ -2437,7 +2519,11 @@ Use `not-prose` to opt a section out.
 Use element modifiers.
 
 ```html
-<article class="prose prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-xl">...</article>
+<article
+  class="prose prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-xl"
+>
+  ...
+</article>
 ```
 
 ### 223: Which v3 plugins are built into v4 core?
@@ -2509,6 +2595,7 @@ The second line generates every red background shade, plus hover and focus versi
 ### 230: How do you handle dynamic classes from a CMS or API?
 
 Since the class names aren't in your source code, Tailwind won't see them. Options:
+
 1. Map API values to full class names in your code.
 2. Safelist the needed classes with `@source inline()`.
 3. Use inline styles or CSS variables for truly dynamic values, like `style={{ "--card-color": color }}` with `bg-(--card-color)`.
@@ -2603,7 +2690,11 @@ It is better to make a component in your framework (React, Vue, Angular, etc.) a
 
 ```jsx
 function Button({ children }) {
-  return <button className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">{children}</button>;
+  return (
+    <button className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+      {children}
+    </button>
+  );
 }
 ```
 
@@ -2748,8 +2839,9 @@ In v3 stacked variants were applied right to left. In v4 they are applied left t
 ```html
 <!-- v3 -->
 <ul class="first:*:pt-0">
-<!-- v4 -->
-<ul class="*:first:pt-0">
+  <!-- v4 -->
+  <ul class="*:first:pt-0"></ul>
+</ul>
 ```
 
 ### 250: What changed with `space-y-*` in v4?
@@ -2762,7 +2854,11 @@ Because the default border color changed from `gray-200` to `currentColor`. Add 
 
 ```css
 @layer base {
-  *, ::after, ::before, ::backdrop, ::file-selector-button {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
 }
@@ -2863,7 +2959,13 @@ It adds autocomplete for class names, a hover preview of the generated CSS, colo
 ```jsx
 import clsx from "clsx";
 
-<button className={clsx("rounded px-4 py-2", isActive ? "bg-blue-600 text-white" : "bg-gray-100", disabled && "opacity-50")} />
+<button
+  className={clsx(
+    "rounded px-4 py-2",
+    isActive ? "bg-blue-600 text-white" : "bg-gray-100",
+    disabled && "opacity-50",
+  )}
+/>;
 ```
 
 ### 262: What is `tailwind-merge`?
@@ -2928,18 +3030,32 @@ function Navbar() {
   return (
     <nav className="border-b bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-        <a href="/" className="font-bold">Brand</a>
-        <button className="md:hidden" onClick={() => setOpen(!open)} aria-expanded={open}>
+        <a href="/" className="font-bold">
+          Brand
+        </a>
+        <button
+          className="md:hidden"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+        >
           <span className="sr-only">Toggle menu</span>☰
         </button>
         <ul className="hidden gap-6 md:flex">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Docs</a></li>
+          <li>
+            <a href="#">Home</a>
+          </li>
+          <li>
+            <a href="#">Docs</a>
+          </li>
         </ul>
       </div>
       <ul className={open ? "space-y-2 px-4 pb-4 md:hidden" : "hidden"}>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Docs</a></li>
+        <li>
+          <a href="#">Home</a>
+        </li>
+        <li>
+          <a href="#">Docs</a>
+        </li>
       </ul>
     </nav>
   );
@@ -2959,8 +3075,14 @@ The grid adds columns as space allows, with no breakpoints needed.
 ### 267: How do you build a modal overlay?
 
 ```html
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-  <div role="dialog" aria-modal="true" class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+>
+  <div
+    role="dialog"
+    aria-modal="true"
+    class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
+  >
     <h2 class="text-lg font-semibold">Confirm</h2>
     <p class="mt-2 text-gray-600">Are you sure?</p>
     <div class="mt-6 flex justify-end gap-3">
@@ -2976,7 +3098,9 @@ With the native `<dialog>` element you can style the backdrop with `backdrop:bg-
 ### 268: How do you style a native `<dialog>` and its backdrop?
 
 ```html
-<dialog class="rounded-xl p-6 shadow-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm open:flex open:flex-col">
+<dialog
+  class="rounded-xl p-6 shadow-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm open:flex open:flex-col"
+>
   ...
 </dialog>
 ```
@@ -2985,7 +3109,9 @@ With the native `<dialog>` element you can style the backdrop with `backdrop:bg-
 
 ```html
 <details class="group rounded-lg border p-4">
-  <summary class="flex cursor-pointer list-none items-center justify-between font-medium">
+  <summary
+    class="flex cursor-pointer list-none items-center justify-between font-medium"
+  >
     What is Tailwind?
     <span class="transition-transform group-open:rotate-180">⌄</span>
   </summary>
@@ -3070,7 +3196,11 @@ They control what happens when you reach the end of a scroll area. `overscroll-c
 ### 278: How do you style scrollbar colors in v4.3?
 
 ```html
-<div class="scrollbar-thin scrollbar-thumb-sky-700 scrollbar-track-sky-100 overflow-auto">...</div>
+<div
+  class="scrollbar-thin scrollbar-thumb-sky-700 scrollbar-track-sky-100 overflow-auto"
+>
+  ...
+</div>
 ```
 
 `scrollbar-thumb-*` and `scrollbar-track-*` accept any color and opacity modifiers.
@@ -3120,7 +3250,9 @@ v4.1 added utilities like `justify-center-safe` and `items-center-safe`. They ce
 ### 286: How do you style the first line or first letter of text?
 
 ```html
-<p class="first-letter:float-left first-letter:mr-2 first-letter:text-6xl first-letter:font-bold first-line:uppercase">
+<p
+  class="first-letter:float-left first-letter:mr-2 first-letter:text-6xl first-letter:font-bold first-line:uppercase"
+>
   Drop cap paragraph...
 </p>
 ```
@@ -3130,7 +3262,9 @@ v4.1 added utilities like `justify-center-safe` and `items-center-safe`. They ce
 Use `marker:`.
 
 ```html
-<ul class="list-disc marker:text-sky-400">...</ul>
+<ul class="list-disc marker:text-sky-400">
+  ...
+</ul>
 ```
 
 `marker:` can be set on the `<ul>` and is inherited by the list items.
@@ -3173,9 +3307,11 @@ Use `print:`.
 ```html
 <label class="inline-flex cursor-pointer items-center">
   <input type="checkbox" class="peer sr-only" />
-  <span class="relative h-6 w-11 rounded-full bg-gray-300 transition peer-checked:bg-blue-600
+  <span
+    class="relative h-6 w-11 rounded-full bg-gray-300 transition peer-checked:bg-blue-600
                after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white
-               after:transition peer-checked:after:translate-x-5"></span>
+               after:transition peer-checked:after:translate-x-5"
+  ></span>
 </label>
 ```
 
@@ -3183,11 +3319,17 @@ Use `print:`.
 
 ```html
 <div class="relative">
-  <input id="email" placeholder=" " class="peer w-full rounded border px-3 pt-5 pb-2" />
-  <label for="email"
+  <input
+    id="email"
+    placeholder=" "
+    class="peer w-full rounded border px-3 pt-5 pb-2"
+  />
+  <label
+    for="email"
     class="absolute top-1 left-3 text-xs text-gray-500 transition-all
            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base
-           peer-focus:top-1 peer-focus:text-xs">
+           peer-focus:top-1 peer-focus:text-xs"
+  >
     Email
   </label>
 </div>
@@ -3198,8 +3340,10 @@ Use `print:`.
 ```html
 <div class="group relative inline-block">
   <button>Info</button>
-  <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded bg-gray-900 px-2 py-1
-               text-xs whitespace-nowrap text-white opacity-0 transition group-hover:opacity-100">
+  <span
+    class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded bg-gray-900 px-2 py-1
+               text-xs whitespace-nowrap text-white opacity-0 transition group-hover:opacity-100"
+  >
     More details
   </span>
 </div>
@@ -3218,7 +3362,9 @@ Use `print:`.
 ### 296: How do you build a badge component?
 
 ```html
-<span class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+<span
+  class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset"
+>
   Active
 </span>
 ```
@@ -3285,6 +3431,7 @@ Because scanning is text-based, any string that matches a valid utility is gener
 ### 304: How does automatic source detection decide which files to scan?
 
 v4 starts from the current working directory (or the base path you set with `source()`), walks the file tree, and:
+
 - skips files and folders listed in `.gitignore`,
 - skips `node_modules`,
 - skips binary files (images, videos, archives),
@@ -3322,6 +3469,7 @@ This is useful when adding Tailwind to an existing site whose base styles you do
 ### 307: Why can unlayered CSS override Tailwind utilities in v4?
 
 In the CSS cascade, any styles that are not inside a `@layer` beat all layered styles of the same origin, no matter the specificity. Tailwind v4 puts utilities in `@layer utilities`. So if a third-party stylesheet or your own CSS has `.button { padding: 0 }` outside any layer, it will override `p-4`. Fixes:
+
 - Put your custom CSS in `@layer base` or `@layer components`.
 - Import third-party CSS into a layer: `@import "library.css" layer(components);`.
 - Use the important modifier for specific cases.
@@ -3359,6 +3507,7 @@ This works with any color, including CSS variables and `currentColor`, which v3 
 ### 311: How are utilities sorted in the generated CSS?
 
 Tailwind sorts utilities so that predictable overrides work:
+
 1. Utilities without variants come before utilities with variants.
 2. Variants are ordered in a fixed order (for example, responsive variants are sorted by breakpoint size).
 3. Among utilities, ones that set more CSS properties come before ones that set fewer.
@@ -3440,8 +3589,10 @@ It gives a functional utility a value when it is used without a suffix, so one d
 ```
 
 ```html
-<pre class="tab">...</pre>   <!-- tab-size: 4 -->
-<pre class="tab-2">...</pre> <!-- tab-size: 2 -->
+<pre class="tab">...</pre>
+<!-- tab-size: 4 -->
+<pre class="tab-2">...</pre>
+<!-- tab-size: 2 -->
 ```
 
 Before v4.3 you needed a separate `@utility tab { ... }` for the bare class.
@@ -3504,7 +3655,9 @@ Define semantic CSS variables per theme and map them to utilities with `@theme i
 ```
 
 ```html
-<body class="bg-bg text-fg"><button class="bg-accent">...</button></body>
+<body class="bg-bg text-fg">
+  <button class="bg-accent">...</button>
+</body>
 ```
 
 Switching themes only changes the `data-theme` attribute. No `dark:` classes are needed.
@@ -3563,6 +3716,7 @@ Each app imports it after Tailwind and adds `@source` for shared component packa
 ### 323: How should a component library that uses Tailwind be published?
 
 Common approaches:
+
 1. Ship source files (or built JS that still contains the class strings) and ask users to add `@source "../node_modules/your-lib"` so their Tailwind build generates the classes. This avoids duplicate CSS and lets users theme it.
 2. Ship a prebuilt CSS file. Simpler for users but can cause duplicated utilities and conflicts with their own Tailwind version. Using a prefix helps.
 3. Ship a CSS file with `@theme` and `@source` lines that users import, so setup is one import line.
@@ -3621,7 +3775,7 @@ export default plugin(function ({ matchUtilities, addVariant, theme }) {
     {
       "text-stroke": (value) => ({ "-webkit-text-stroke-width": value }),
     },
-    { values: { 1: "1px", 2: "2px", 4: "4px" } }
+    { values: { 1: "1px", 2: "2px", 4: "4px" } },
   );
 
   addVariant("optional", "&:optional");
@@ -3640,7 +3794,7 @@ Use a block after `@plugin`.
 
 ```css
 @plugin "@tailwindcss/typography" {
-  className: wysiwyg;
+  classname: wysiwyg;
 }
 
 @plugin "@tailwindcss/forms" {
@@ -3653,6 +3807,7 @@ The plugin must be created with `plugin.withOptions()` to accept options.
 ### 329: What parts of the v3 JavaScript config are not supported in v4?
 
 When loading a JS config with `@config`:
+
 - `corePlugins` is not supported (you can't disable individual core utilities).
 - `safelist` is not supported (use `@source inline()`).
 - `separator` is not supported.
@@ -3676,7 +3831,9 @@ Since charts often need actual values, read the computed CSS variable and conver
 
 ```js
 const ctx = canvas.getContext("2d");
-ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--color-sky-500").trim();
+ctx.fillStyle = getComputedStyle(document.documentElement)
+  .getPropertyValue("--color-sky-500")
+  .trim();
 ```
 
 When the theme changes (dark mode), re-read the variables and redraw.
@@ -3699,6 +3856,7 @@ When the theme changes (dark mode), re-read the variables and redraw.
 ### 334: Why is a class generated in development but missing in production?
 
 Common reasons:
+
 - Production build scans a different folder (CI checkout without some files, or the base path differs).
 - The file is in `.gitignore` (for example generated code) and therefore skipped.
 - Class names are built with string concatenation and only worked locally because the class was used elsewhere while you were developing.
@@ -3711,7 +3869,10 @@ Fix by adding explicit `@source` paths and using complete class names.
 Don't store class names if you can avoid it. Store values and use CSS variables:
 
 ```jsx
-<div style={{ "--user-color": user.color }} className="bg-(--user-color) text-white" />
+<div
+  style={{ "--user-color": user.color }}
+  className="bg-(--user-color) text-white"
+/>
 ```
 
 If you must store class names, limit them to a known set and safelist them with `@source inline()` so they're always generated.
@@ -3768,6 +3929,7 @@ For your own components, keeping classes in the template is usually better.
 ### 343: How do you handle specificity conflicts with a legacy CSS codebase?
 
 Options, from least to most invasive:
+
 1. Put the legacy CSS into a layer below utilities: `@import "legacy.css" layer(base);` so utilities win.
 2. Use the important modifier on specific utilities: `mt-4!`.
 3. Enable `important` globally: `@import "tailwindcss" important;`.
@@ -3818,6 +3980,7 @@ Changing the variable at different breakpoints updates every child that uses it.
 ### 348: What is `@source inline()` brace expansion syntax?
 
 It works like shell brace expansion:
+
 - `{a,b}` expands to each option.
 - `{100..900..100}` expands to a range with a step.
 - An empty option (`{hover:,}`) means "with or without".
@@ -3848,7 +4011,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-primary text-white hover:bg-primary/90 focus-visible:outline-primary",
+        primary:
+          "bg-primary text-white hover:bg-primary/90 focus-visible:outline-primary",
         outline: "border border-gray-300 bg-transparent hover:bg-gray-50",
         ghost: "hover:bg-gray-100",
         danger: "bg-red-600 text-white hover:bg-red-700",
@@ -3861,13 +4025,19 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: { variant: "primary", size: "md" },
-  }
+  },
 );
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants>;
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants>;
 
 export function Button({ className, variant, size, ...props }: Props) {
-  return <button className={cn(buttonVariants({ variant, size }), className)} {...props} />;
+  return (
+    <button
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
 }
 ```
 
@@ -3893,10 +4063,13 @@ Combine container queries and group variants.
 Use `starting:` for the entry state and `transition-discrete` so `display` can transition.
 
 ```html
-<div popover id="toast"
+<div
+  popover
+  id="toast"
   class="opacity-100 translate-y-0 transition-all transition-discrete duration-300
          starting:open:opacity-0 starting:open:translate-y-2
-         not-open:opacity-0 not-open:translate-y-2">
+         not-open:opacity-0 not-open:translate-y-2"
+>
   Saved
 </div>
 ```
@@ -3934,13 +4107,17 @@ Write `@property` in your CSS and use it in utilities or keyframes.
 @theme {
   --animate-rotate-border: rotate-border 3s linear infinite;
   @keyframes rotate-border {
-    to { --angle: 360deg; }
+    to {
+      --angle: 360deg;
+    }
   }
 }
 ```
 
 ```html
-<div class="animate-rotate-border bg-[conic-gradient(from_var(--angle),var(--color-sky-500),var(--color-pink-500),var(--color-sky-500))] p-px">
+<div
+  class="animate-rotate-border bg-[conic-gradient(from_var(--angle),var(--color-sky-500),var(--color-pink-500),var(--color-sky-500))] p-px"
+>
   ...
 </div>
 ```
@@ -3971,6 +4148,7 @@ Now the library styles sit below utilities, so you can override them with Tailwi
 ### 358: How do you scope Tailwind to part of a page (e.g. a widget embedded in another site)?
 
 Options:
+
 - Use `prefix(tw)` so class names don't clash.
 - Skip Preflight and add a scoped reset under your widget root.
 - Load it inside Shadow DOM, keeping in mind the `@property` limitation.
@@ -4018,8 +4196,7 @@ Create a utility and use it everywhere.
 ```
 
 ```html
-<button class="focus-ring">...</button>
-<a class="focus-ring">...</a>
+<button class="focus-ring">...</button> <a class="focus-ring">...</a>
 ```
 
 ### 363: How do you support Windows high contrast mode properly?
@@ -4045,7 +4222,9 @@ Built-in variants: `motion-reduce:`, `motion-safe:`, `contrast-more:`, `contrast
 
 ```html
 <form class="@container">
-  <div class="grid gap-4 @lg:grid-cols-2 has-[input:invalid]:ring-1 has-[input:invalid]:ring-red-500">
+  <div
+    class="grid gap-4 @lg:grid-cols-2 has-[input:invalid]:ring-1 has-[input:invalid]:ring-red-500"
+  >
     <input required class="border p-2" />
     <input class="border p-2" />
   </div>
@@ -4169,7 +4348,9 @@ Yes. For example, one for the public site and one for the admin panel, each with
 /* admin.css */
 @import "tailwindcss" source(none);
 @source "../admin";
-@theme { --color-primary: oklch(0.5 0.15 150); }
+@theme {
+  --color-primary: oklch(0.5 0.15 150);
+}
 ```
 
 Each entry is compiled separately. Avoid loading two Tailwind builds on the same page, since both include Preflight and duplicate utilities, and their order can cause conflicts.
@@ -4195,8 +4376,9 @@ The first `@layer` statement fixes the order, so `vendor` sits between base and 
 Some utilities set only part of a property. For example, `shadow-md`, `ring-2` and `inset-shadow-sm` each set their own variable (`--tw-shadow`, `--tw-ring-shadow`, `--tw-inset-shadow`), and every one of them writes the full `box-shadow` that combines all of them:
 
 ```css
-box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow),
-  var(--tw-ring-shadow), var(--tw-shadow);
+box-shadow:
+  var(--tw-inset-shadow), var(--tw-inset-ring-shadow),
+  var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
 ```
 
 That's why you can use a shadow and a ring on the same element. The same pattern is used for transforms, filters, gradients and font variant numeric utilities.
@@ -4219,7 +4401,9 @@ Export tokens from Figma (for example with Tokens Studio or Figma variables expo
 ```js
 // build-tokens.js
 import tokens from "./tokens.json" with { type: "json" };
-const lines = Object.entries(tokens.color).map(([name, value]) => `  --color-${name}: ${value};`);
+const lines = Object.entries(tokens.color).map(
+  ([name, value]) => `  --color-${name}: ${value};`,
+);
 fs.writeFileSync("src/styles/theme.css", `@theme {\n${lines.join("\n")}\n}\n`);
 ```
 
@@ -4228,6 +4412,7 @@ Run it in CI so the theme always matches the design source.
 ### 382: How do you handle a hydration mismatch caused by theme classes?
 
 If the server renders `class="light"` and the client script immediately changes it to `dark`, React (or another framework) may warn about a mismatch on `<html>`. Options:
+
 - Put `suppressHydrationWarning` on `<html>` (Next.js common pattern, used by `next-themes`).
 - Read the theme from a cookie on the server so both match.
 - Don't render theme-dependent markup on the server; use `dark:` classes so CSS handles it instead of JS conditions.
@@ -4242,7 +4427,9 @@ With semantic CSS variables, set different values on a container.
 
 ```html
 <body class="bg-bg text-fg">
-  <section data-theme="dark" class="bg-bg text-fg">Dark section on a light page</section>
+  <section data-theme="dark" class="bg-bg text-fg">
+    Dark section on a light page
+  </section>
 </body>
 ```
 
@@ -4325,7 +4512,11 @@ The browser skips rendering the section until it is near the viewport.
 @custom-variant hover (&:hover);
 /* or */
 @custom-variant any-hover {
-  @media (any-hover: hover) { &:hover { @slot; } }
+  @media (any-hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
 }
 ```
 
@@ -4370,7 +4561,9 @@ Use `has-*` on a common ancestor with `group`.
 ```html
 <form class="group">
   <input type="checkbox" id="terms" />
-  <button class="opacity-50 group-has-[#terms:checked]:opacity-100">Continue</button>
+  <button class="opacity-50 group-has-[#terms:checked]:opacity-100">
+    Continue
+  </button>
 </form>
 ```
 
@@ -4385,6 +4578,7 @@ Tailwind v4 output uses CSS variables, `@layer`, `oklch()`, `color-mix()` and ne
 ### 398: How do you use Tailwind in a browser extension's content script?
 
 Content scripts inject CSS into other websites, so:
+
 - Use `prefix()` to avoid clashing with the site's classes.
 - Skip Preflight, or render your UI in a Shadow DOM so you don't reset the host page.
 - If using Shadow DOM, include `@property` rules in the main document or set fallbacks, as explained earlier.
@@ -4432,8 +4626,14 @@ Each unique class is generated once, no matter how many files use it. The CSS ou
   <table class="min-w-full border-separate border-spacing-0 text-sm">
     <thead>
       <tr>
-        <th class="sticky top-0 left-0 z-20 border-b bg-gray-50 px-4 py-2 text-left">Name</th>
-        <th class="sticky top-0 z-10 border-b bg-gray-50 px-4 py-2 text-left">Email</th>
+        <th
+          class="sticky top-0 left-0 z-20 border-b bg-gray-50 px-4 py-2 text-left"
+        >
+          Name
+        </th>
+        <th class="sticky top-0 z-10 border-b bg-gray-50 px-4 py-2 text-left">
+          Email
+        </th>
       </tr>
     </thead>
     <tbody class="[&_tr:hover_td]:bg-gray-50">
@@ -4464,7 +4664,9 @@ Items flow top to bottom in each column. For left-to-right order you would need 
 ### 406: How do you build a dashboard layout with a fixed sidebar and scrollable content?
 
 ```html
-<div class="grid h-dvh grid-cols-[16rem_1fr] grid-rows-[auto_1fr] max-lg:grid-cols-1">
+<div
+  class="grid h-dvh grid-cols-[16rem_1fr] grid-rows-[auto_1fr] max-lg:grid-cols-1"
+>
   <header class="col-span-full border-b px-6 py-3">Top bar</header>
   <aside class="overflow-y-auto border-r max-lg:hidden">Sidebar</aside>
   <main class="min-h-0 overflow-y-auto p-6">Scrollable content</main>
@@ -4478,7 +4680,12 @@ Items flow top to bottom in each column. For left-to-right order you would need 
 ```html
 <ul class="grid grid-cols-2 gap-2 md:grid-cols-4">
   <li class="aspect-square overflow-hidden rounded-md bg-gray-100">
-    <img loading="lazy" class="size-full object-cover transition-transform hover:scale-105" src="..." alt="" />
+    <img
+      loading="lazy"
+      class="size-full object-cover transition-transform hover:scale-105"
+      src="..."
+      alt=""
+    />
   </li>
 </ul>
 ```
@@ -4490,7 +4697,9 @@ The `aspect-square` wrapper reserves space so the layout doesn't shift while ima
 Use `has-*` with `nth-*` selectors.
 
 ```html
-<div class="grid gap-2 has-[>:nth-child(2)]:grid-cols-2 has-[>:nth-child(3)]:grid-cols-3">
+<div
+  class="grid gap-2 has-[>:nth-child(2)]:grid-cols-2 has-[>:nth-child(3)]:grid-cols-3"
+>
   <img /><img /><img />
 </div>
 ```
@@ -4502,7 +4711,9 @@ One child: one column. Two children: two columns. Three or more: three columns.
 The same idea as above, using `:has()` with `:nth-last-child`.
 
 ```html
-<ul class="flex gap-2 has-[>:nth-child(5)]:flex-wrap">...</ul>
+<ul class="flex gap-2 has-[>:nth-child(5)]:flex-wrap">
+  ...
+</ul>
 ```
 
 When there are five or more items, the list wraps.
@@ -4521,7 +4732,7 @@ Use sub-properties with `--value()` and read them in the utility.
 
 @utility heading-* {
   font-size: --value(--heading-*);
-  font-weight: --value(--heading-*--weight);
+  font-weight: --value(--heading-* --weight);
 }
 ```
 
@@ -4537,7 +4748,12 @@ Read the color with `--value()`, read the opacity with `--modifier()`, and mix t
 @utility glow-* {
   --glow-color: --value(--color-*, [color]);
   --glow-opacity: calc(--modifier(integer) * 1%);
-  box-shadow: 0 0 1.5rem color-mix(in oklab, var(--glow-color) var(--glow-opacity, 100%), transparent);
+  box-shadow: 0 0 1.5rem
+    color-mix(
+      in oklab,
+      var(--glow-color) var(--glow-opacity, 100%),
+      transparent
+    );
 }
 ```
 
@@ -4648,7 +4864,9 @@ Change `--spacing` for a section.
 
 ```html
 <div class="[--spacing:0.2rem]">
-  <table>...</table>
+  <table>
+    ...
+  </table>
 </div>
 ```
 
@@ -4677,7 +4895,11 @@ For container queries, resize the container's parent in the test or render the c
     <h2 class="break-after-avoid">Section</h2>
     <figure class="break-inside-avoid">...</figure>
   </article>
-  <a href="https://example.com" class="print:after:ml-1 print:after:content-[attr(href)]">Link</a>
+  <a
+    href="https://example.com"
+    class="print:after:ml-1 print:after:content-[attr(href)]"
+    >Link</a
+  >
 </body>
 ```
 
@@ -4687,9 +4909,12 @@ Use `break-before-page`, `break-inside-avoid` and `print:` variants. Page margin
 
 ```html
 <button popovertarget="menu" class="rounded px-3 py-2">Options</button>
-<div id="menu" popover
+<div
+  id="menu"
+  popover
   class="m-0 rounded-lg border bg-white p-2 shadow-lg opacity-0 transition-all transition-discrete
-         open:opacity-100 starting:open:opacity-0 starting:open:scale-95">
+         open:opacity-100 starting:open:opacity-0 starting:open:scale-95"
+>
   <a class="block rounded px-3 py-1 hover:bg-gray-100" href="#">Edit</a>
 </div>
 ```
@@ -4705,10 +4930,10 @@ Positioning next to the button can use CSS anchor positioning in supporting brow
 
 ```jsx
 const classes = clsx(
-  "flex items-center gap-2",          // layout
-  "rounded-md px-3 py-2",             // box
-  "text-sm font-medium",              // text
-  "hover:bg-gray-100 focus-visible:outline-2" // states
+  "flex items-center gap-2", // layout
+  "rounded-md px-3 py-2", // box
+  "text-sm font-medium", // text
+  "hover:bg-gray-100 focus-visible:outline-2", // states
 );
 ```
 
@@ -4721,14 +4946,25 @@ If a codebase has many `mt-[13px]`, `text-[#3a3a3a]`, `w-[372px]`, it means the 
 Keep styles in the component and allow the element to change.
 
 ```tsx
-type Props<T extends React.ElementType> = { as?: T; className?: string } & React.ComponentPropsWithoutRef<T>;
+type Props<T extends React.ElementType> = {
+  as?: T;
+  className?: string;
+} & React.ComponentPropsWithoutRef<T>;
 
-export function Text<T extends React.ElementType = "p">({ as, className, ...props }: Props<T>) {
+export function Text<T extends React.ElementType = "p">({
+  as,
+  className,
+  ...props
+}: Props<T>) {
   const Comp = as ?? "p";
-  return <Comp className={cn("text-base/7 text-gray-700", className)} {...props} />;
+  return (
+    <Comp className={cn("text-base/7 text-gray-700", className)} {...props} />
+  );
 }
 
-<Text as="span" className="text-sm">Small</Text>
+<Text as="span" className="text-sm">
+  Small
+</Text>;
 ```
 
 ### 432: How do you handle styling of child elements you can't edit (like a third-party widget)?
@@ -4736,7 +4972,9 @@ export function Text<T extends React.ElementType = "p">({ as, className, ...prop
 Use arbitrary variants or `**:` / `*:` from the parent, or target its classes with nested selectors.
 
 ```html
-<div class="[&_.widget-title]:text-lg [&_.widget-title]:font-semibold **:data-[slot=icon]:size-4">
+<div
+  class="[&_.widget-title]:text-lg [&_.widget-title]:font-semibold **:data-[slot=icon]:size-4"
+>
   <ThirdPartyWidget />
 </div>
 ```
@@ -4805,6 +5043,7 @@ Because the HTML class order has no effect. Only the CSS rule order and specific
 ### 440: How can Tailwind v4's CSS-first config work with TypeScript type safety?
 
 The theme isn't in TypeScript, so you lose autocompletion of tokens in TS code. Common solutions:
+
 - Rely on IntelliSense in editors, which reads your CSS file.
 - Generate a `tokens.ts` from your token JSON at the same time you generate `@theme`.
 - Type variant props with `cva`'s `VariantProps` rather than raw class names.
@@ -4864,6 +5103,7 @@ No inline blocking script is needed because the server already sends the right a
 ### 447: How do you handle CSS for third-party components that are rendered into a portal?
 
 Portals render at the end of `<body>`, outside your component tree, so:
+
 - `group-*`, `peer-*` and `in-*` variants based on your component's ancestors won't apply.
 - Scoped themes based on a container (like `data-theme` on a section) won't reach it.
 - Pass the theme attribute or class to the portal container, or rely on themes set on `<html>`.
@@ -4875,7 +5115,12 @@ Tailwind v4 doesn't have dedicated anchor utilities at the time of writing, so u
 
 ```html
 <button class="[anchor-name:--trigger]">Open</button>
-<div popover class="absolute [position-anchor:--trigger] top-[anchor(bottom)] left-[anchor(left)]">...</div>
+<div
+  popover
+  class="absolute [position-anchor:--trigger] top-[anchor(bottom)] left-[anchor(left)]"
+>
+  ...
+</div>
 ```
 
 Wrap them in `supports-[anchor-name:--a]:` or provide a fallback position, since browser support is still uneven.

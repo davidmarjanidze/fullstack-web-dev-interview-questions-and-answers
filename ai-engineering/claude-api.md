@@ -625,9 +625,7 @@ You can pass a key directly with `Anthropic(api_key="...")`, but you should not 
   "type": "message",
   "role": "assistant",
   "model": "claude-opus-5-5",
-  "content": [
-    {"type": "text", "text": "The capital of France is Paris."}
-  ],
+  "content": [{ "type": "text", "text": "The capital of France is Paris." }],
   "stop_reason": "end_turn",
   "stop_sequence": null,
   "usage": {
@@ -681,14 +679,14 @@ Your code should check for this. Common fixes are raising `max_tokens`, asking f
 
 `stop_reason` tells you why Claude stopped generating:
 
-| Value | Meaning |
-|---|---|
-| `end_turn` | Claude finished its answer normally |
-| `max_tokens` | It hit the `max_tokens` limit |
-| `stop_sequence` | It generated one of your `stop_sequences` |
-| `tool_use` | It wants you to run a tool and send back the result |
-| `pause_turn` | A long server tool turn was paused; send it back to continue |
-| `refusal` | Claude declined the request for safety reasons |
+| Value           | Meaning                                                      |
+| --------------- | ------------------------------------------------------------ |
+| `end_turn`      | Claude finished its answer normally                          |
+| `max_tokens`    | It hit the `max_tokens` limit                                |
+| `stop_sequence` | It generated one of your `stop_sequences`                    |
+| `tool_use`      | It wants you to run a tool and send back the result          |
+| `pause_turn`    | A long server tool turn was paused; send it back to continue |
+| `refusal`       | Claude declined the request for safety reasons               |
 
 Checking `stop_reason` is the first thing you do with a response, before reading content.
 
@@ -799,12 +797,12 @@ Extra pricing rules:
 
 Standard Claude API prices as of October 2026, per million tokens:
 
-| Model | Input | Output |
-|---|---|---|
-| Claude Fable 5.1 | $10 | $50 |
-| Claude Opus 5.5 | $4 | $20 |
-| Claude Sonnet 5.5 | $2 | $10 |
-| Claude Haiku 5.5 | $0.10 | $0.50 (prompts up to 100K tokens) |
+| Model             | Input | Output                            |
+| ----------------- | ----- | --------------------------------- |
+| Claude Fable 5.1  | $10   | $50                               |
+| Claude Opus 5.5   | $4    | $20                               |
+| Claude Sonnet 5.5 | $2    | $10                               |
+| Claude Haiku 5.5  | $0.10 | $0.50 (prompts up to 100K tokens) |
 
 Prices change, so check the pricing page before you build a cost estimate. Prices on Bedrock and Vertex AI are set by those platforms.
 
@@ -1055,7 +1053,7 @@ It is the content block Claude returns when it wants to call a tool:
   "type": "tool_use",
   "id": "toolu_01A09q90qw90lq917835lq9",
   "name": "get_order_status",
-  "input": {"order_id": "ORD-98765"}
+  "input": { "order_id": "ORD-98765" }
 }
 ```
 
@@ -1294,17 +1292,17 @@ The SDKs retry 429 errors automatically with exponential backoff (2 retries by d
 
 ## 75: What are the common HTTP error codes of the Claude API?
 
-| Code | Type | Usual cause |
-|---|---|---|
-| 400 | `invalid_request_error` | Bad parameters or request format |
-| 401 | `authentication_error` | Missing or invalid API key |
-| 402 | `billing_error` | Billing or payment problem |
-| 403 | `permission_error` | The key is not allowed to do this |
-| 404 | `not_found_error` | Wrong model ID or endpoint |
-| 413 | `request_too_large` | Request body too big |
-| 429 | `rate_limit_error` | Over the rate limit |
-| 500 | `api_error` | Problem on Anthropic's side |
-| 529 | `overloaded_error` | The API is temporarily overloaded |
+| Code | Type                    | Usual cause                       |
+| ---- | ----------------------- | --------------------------------- |
+| 400  | `invalid_request_error` | Bad parameters or request format  |
+| 401  | `authentication_error`  | Missing or invalid API key        |
+| 402  | `billing_error`         | Billing or payment problem        |
+| 403  | `permission_error`      | The key is not allowed to do this |
+| 404  | `not_found_error`       | Wrong model ID or endpoint        |
+| 413  | `request_too_large`     | Request body too big              |
+| 429  | `rate_limit_error`      | Over the rate limit               |
+| 500  | `api_error`             | Problem on Anthropic's side       |
+| 529  | `overloaded_error`      | The API is temporarily overloaded |
 
 400, 401, 403 and 404 are your bugs and should not be retried. 429, 500 and 529 can be retried.
 
@@ -2043,15 +2041,17 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const client = new Anthropic();
 
-const tools: Anthropic.Tool[] = [{
-  name: "get_weather",
-  description: "Get the current weather for a city.",
-  input_schema: {
-    type: "object",
-    properties: { city: { type: "string" } },
-    required: ["city"],
+const tools: Anthropic.Tool[] = [
+  {
+    name: "get_weather",
+    description: "Get the current weather for a city.",
+    input_schema: {
+      type: "object",
+      properties: { city: { type: "string" } },
+      required: ["city"],
+    },
   },
-}];
+];
 
 async function runTool(name: string, input: unknown): Promise<string> {
   if (name === "get_weather") {
@@ -2079,9 +2079,18 @@ for (let i = 0; i < 10; i++) {
   for (const block of response.content) {
     if (block.type !== "tool_use") continue;
     try {
-      results.push({ type: "tool_result", tool_use_id: block.id, content: await runTool(block.name, block.input) });
+      results.push({
+        type: "tool_result",
+        tool_use_id: block.id,
+        content: await runTool(block.name, block.input),
+      });
     } catch (err) {
-      results.push({ type: "tool_result", tool_use_id: block.id, content: String(err), is_error: true });
+      results.push({
+        type: "tool_result",
+        tool_use_id: block.id,
+        content: String(err),
+        is_error: true,
+      });
     }
   }
   messages.push({ role: "user", content: results });
@@ -2187,7 +2196,9 @@ const client = new Anthropic();
 const getStockPrice = betaZodTool({
   name: "get_stock_price",
   description: "Get the latest price for a stock ticker",
-  inputSchema: z.object({ ticker: z.string().describe("Ticker symbol, e.g. AAPL") }),
+  inputSchema: z.object({
+    ticker: z.string().describe("Ticker symbol, e.g. AAPL"),
+  }),
   run: async ({ ticker }) => `${ticker}: 182.40 USD`,
 });
 
@@ -2406,7 +2417,9 @@ app.post("/api/chat", async (req, res) => {
 
   req.on("close", () => stream.abort()); // stop generating if the user leaves
 
-  stream.on("text", (text) => res.write(`data: ${JSON.stringify({ text })}\n\n`));
+  stream.on("text", (text) =>
+    res.write(`data: ${JSON.stringify({ text })}\n\n`),
+  );
 
   try {
     await stream.finalMessage();
@@ -3912,12 +3925,12 @@ Also handle `restart` by resetting the shell session.
 
 You handle each command on real files, inside a fixed root folder:
 
-| Command | Inputs | What you do |
-|---|---|---|
-| `view` | `path`, optional `view_range` | Return file content (with line numbers) or a directory listing |
-| `create` | `path`, `file_text` | Create or overwrite the file |
-| `str_replace` | `path`, `old_str`, `new_str` | Replace exactly one match; return an error if there are 0 or more than 1 |
-| `insert` | `path`, `insert_line`, `insert_text` | Insert text after that line |
+| Command       | Inputs                               | What you do                                                              |
+| ------------- | ------------------------------------ | ------------------------------------------------------------------------ |
+| `view`        | `path`, optional `view_range`        | Return file content (with line numbers) or a directory listing           |
+| `create`      | `path`, `file_text`                  | Create or overwrite the file                                             |
+| `str_replace` | `path`, `old_str`, `new_str`         | Replace exactly one match; return an error if there are 0 or more than 1 |
+| `insert`      | `path`, `insert_line`, `insert_text` | Insert text after that line                                              |
 
 Resolve every `path` to an absolute path and check that it is still inside your project root. Reject `..`, symlinks out of the root and absolute paths outside it. Return errors with `is_error: true` so Claude can fix its next call.
 
@@ -4131,12 +4144,12 @@ Cross-cutting concerns are secrets management, PII handling, spend limits and an
 
 ## 302: How do you choose between a manual loop, the tool runner, the Agent SDK and Managed Agents?
 
-| Option | You write | Who runs it | Good for |
-|---|---|---|---|
-| Manual loop | The whole loop | You | Full control, unusual flows, no beta dependency |
-| Tool runner | Tool functions | You (SDK runs the loop) | Most custom tool agents |
-| Claude Agent SDK | A prompt and options | You (Claude Code harness) | Coding and file system agents with built-in tools |
-| Managed Agents | Agent config and events | Anthropic (loop and sandbox) | Long-running hosted agents, scheduled agents, no infra to run |
+| Option           | You write               | Who runs it                  | Good for                                                      |
+| ---------------- | ----------------------- | ---------------------------- | ------------------------------------------------------------- |
+| Manual loop      | The whole loop          | You                          | Full control, unusual flows, no beta dependency               |
+| Tool runner      | Tool functions          | You (SDK runs the loop)      | Most custom tool agents                                       |
+| Claude Agent SDK | A prompt and options    | You (Claude Code harness)    | Coding and file system agents with built-in tools             |
+| Managed Agents   | Agent config and events | Anthropic (loop and sandbox) | Long-running hosted agents, scheduled agents, no infra to run |
 
 Two questions decide it: who should own the agent loop, and who should host the place where tools run. Start with the simplest option that does the job. Many "agents" are really workflows that need only a few fixed calls.
 
@@ -4262,14 +4275,14 @@ So keep one model per conversation when you can. If you need a cheaper model for
 
 The cache has three levels in prompt order: tools, system, messages. A change invalidates its own level and everything after it.
 
-| Change | Tools cache | System cache | Messages cache |
-|---|---|---|---|
-| Tool definitions | invalid | invalid | invalid |
-| Model | invalid | invalid | invalid |
-| System prompt | kept | invalid | invalid |
-| `tool_choice`, images | kept | kept | invalid |
-| Thinking or effort settings | depends on model | depends on model | invalid |
-| New messages at the end | kept | kept | kept up to the change |
+| Change                      | Tools cache      | System cache     | Messages cache        |
+| --------------------------- | ---------------- | ---------------- | --------------------- |
+| Tool definitions            | invalid          | invalid          | invalid               |
+| Model                       | invalid          | invalid          | invalid               |
+| System prompt               | kept             | invalid          | invalid               |
+| `tool_choice`, images       | kept             | kept             | invalid               |
+| Thinking or effort settings | depends on model | depends on model | invalid               |
+| New messages at the end     | kept             | kept             | kept up to the change |
 
 So it is fine to change `tool_choice` per request, but changing the tools or the model means rebuilding everything. Pin thinking and effort per route instead of changing them per request.
 

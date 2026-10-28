@@ -517,10 +517,10 @@ NgRx Store follows this pattern and uses RxJS observables and Angular signals to
 - Read state with `store.select(selector)` (returns an observable) or `store.selectSignal(selector)` (returns a signal).
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, inject } from "@angular/core";
+import { Store } from "@ngrx/store";
 
-@Component({ /* ... */ })
+@Component({/* ... */})
 export class BooksPage {
   private readonly store = inject(Store);
   readonly books = this.store.selectSignal(selectBooks);
@@ -542,7 +542,7 @@ You normally don't write these objects by hand. You use action creators like `cr
 A reducer is a pure function that takes the current state and an action and returns the next state. In NgRx you build reducers with `createReducer` and `on`.
 
 ```ts
-import { createReducer, on } from '@ngrx/store';
+import { createReducer, on } from "@ngrx/store";
 
 export interface CounterState {
   count: number;
@@ -552,8 +552,11 @@ const initialState: CounterState = { count: 0 };
 
 export const counterReducer = createReducer(
   initialState,
-  on(CounterActions.increment, (state) => ({ ...state, count: state.count + 1 })),
-  on(CounterActions.reset, () => initialState)
+  on(CounterActions.increment, (state) => ({
+    ...state,
+    count: state.count + 1,
+  })),
+  on(CounterActions.reset, () => initialState),
 );
 ```
 
@@ -562,11 +565,12 @@ export const counterReducer = createReducer(
 A selector is a pure function that reads a piece of state, or computes something from it. Selectors are created with `createSelector` and `createFeatureSelector`, and they are memoized, so the result is reused when the inputs don't change.
 
 ```ts
-export const selectCounterState = createFeatureSelector<CounterState>('counter');
+export const selectCounterState =
+  createFeatureSelector<CounterState>("counter");
 
 export const selectCount = createSelector(
   selectCounterState,
-  (state) => state.count
+  (state) => state.count,
 );
 ```
 
@@ -604,10 +608,10 @@ It installs `@ngrx/store` with a version that matches your Angular version and a
 Use `provideStore` in `app.config.ts`:
 
 ```ts
-import { ApplicationConfig, isDevMode } from '@angular/core';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { ApplicationConfig, isDevMode } from "@angular/core";
+import { provideStore } from "@ngrx/store";
+import { provideEffects } from "@ngrx/effects";
+import { provideStoreDevtools } from "@ngrx/store-devtools";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -627,23 +631,23 @@ You can pass root reducers to `provideStore({ router: routerReducer })` if you h
 ```ts
 provideState(booksFeature);
 // or
-provideState('books', booksReducer);
+provideState("books", booksReducer);
 ```
 
 ### 15: How do you create an action with `createAction`?
 
 ```ts
-import { createAction, props } from '@ngrx/store';
+import { createAction, props } from "@ngrx/store";
 
-export const loadBooks = createAction('[Books Page] Load Books');
+export const loadBooks = createAction("[Books Page] Load Books");
 
 export const searchBooks = createAction(
-  '[Books Page] Search Books',
-  props<{ query: string }>()
+  "[Books Page] Search Books",
+  props<{ query: string }>(),
 );
 
 // usage
-store.dispatch(searchBooks({ query: 'ngrx' }));
+store.dispatch(searchBooks({ query: "ngrx" }));
 ```
 
 `createAction` returns a function that creates the action object and also has a `type` property you can use in reducers and effects.
@@ -654,11 +658,11 @@ store.dispatch(searchBooks({ query: 'ngrx' }));
 
 ```ts
 export const bookSelected = createAction(
-  '[Books Page] Book Selected',
-  props<{ bookId: string }>()
+  "[Books Page] Book Selected",
+  props<{ bookId: string }>(),
 );
 
-bookSelected({ bookId: '42' }); // { type: '[Books Page] Book Selected', bookId: '42' }
+bookSelected({ bookId: "42" }); // { type: '[Books Page] Book Selected', bookId: '42' }
 ```
 
 ### 17: What is `emptyProps()`?
@@ -667,10 +671,10 @@ bookSelected({ bookId: '42' }); // { type: '[Books Page] Book Selected', bookId:
 
 ```ts
 export const BooksPageActions = createActionGroup({
-  source: 'Books Page',
+  source: "Books Page",
   events: {
     Opened: emptyProps(),
-    'Query Changed': props<{ query: string }>(),
+    "Query Changed": props<{ query: string }>(),
   },
 });
 ```
@@ -680,14 +684,14 @@ export const BooksPageActions = createActionGroup({
 `createActionGroup` creates several action creators that share the same source. It cuts down on repeated code.
 
 ```ts
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
 export const BooksApiActions = createActionGroup({
-  source: 'Books API',
+  source: "Books API",
   events: {
-    'Load Success': props<{ books: Book[] }>(),
-    'Load Failure': props<{ error: string }>(),
-    'Clear Cache': emptyProps(),
+    "Load Success": props<{ books: Book[] }>(),
+    "Load Failure": props<{ error: string }>(),
+    "Clear Cache": emptyProps(),
   },
 });
 
@@ -759,7 +763,7 @@ export const booksReducer = createReducer(
     ...state,
     books,
     loading: false,
-  }))
+  })),
 );
 ```
 
@@ -768,7 +772,11 @@ export const booksReducer = createReducer(
 `on` is used inside `createReducer`. It takes one or more action creators and a function that returns the new state. The second argument of that function is the action, already typed, so you can destructure its props.
 
 ```ts
-on(BooksApiActions.loadFailure, (state, { error }) => ({ ...state, error, loading: false }))
+on(BooksApiActions.loadFailure, (state, { error }) => ({
+  ...state,
+  error,
+  loading: false,
+}));
 ```
 
 ### 27: Why must reducers be pure functions?
@@ -786,18 +794,18 @@ So inside a reducer you should not make HTTP calls, read `Date.now()`, use `Math
 Use the spread operator and array methods that return new arrays:
 
 ```ts
-on(TodoActions.added, (state, { todo }) => ({
+(on(TodoActions.added, (state, { todo }) => ({
   ...state,
   todos: [...state.todos, todo],
 })),
-on(TodoActions.removed, (state, { id }) => ({
-  ...state,
-  todos: state.todos.filter((t) => t.id !== id),
-})),
-on(TodoActions.toggled, (state, { id }) => ({
-  ...state,
-  todos: state.todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
-}))
+  on(TodoActions.removed, (state, { id }) => ({
+    ...state,
+    todos: state.todos.filter((t) => t.id !== id),
+  })),
+  on(TodoActions.toggled, (state, { id }) => ({
+    ...state,
+    todos: state.todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+  })));
 ```
 
 Avoid `push`, `splice`, `sort` (on the original array) and direct assignment like `state.count++`.
@@ -828,7 +836,7 @@ Yes. Pass several action creators before the handler:
 on(BooksPageActions.opened, BooksPageActions.refreshClicked, (state) => ({
   ...state,
   loading: true,
-}))
+}));
 ```
 
 The action type in the handler becomes a union of those actions.
@@ -843,14 +851,18 @@ The reducer returns the current state unchanged. `createReducer` does this for y
 
 ```ts
 export const booksFeature = createFeature({
-  name: 'books',
+  name: "books",
   reducer: createReducer(
     initialState,
-    on(BooksApiActions.loadSuccess, (state, { books }) => ({ ...state, books }))
+    on(BooksApiActions.loadSuccess, (state, { books }) => ({
+      ...state,
+      books,
+    })),
   ),
 });
 
-export const { selectBooks, selectLoading, selectError, selectBooksState } = booksFeature;
+export const { selectBooks, selectLoading, selectError, selectBooksState } =
+  booksFeature;
 ```
 
 Register it with `provideState(booksFeature)`.
@@ -867,7 +879,7 @@ You can add your own derived selectors with the `extraSelectors` option.
 It creates a selector that returns a whole feature slice of the state by its key.
 
 ```ts
-export const selectBooksState = createFeatureSelector<BooksState>('books');
+export const selectBooksState = createFeatureSelector<BooksState>("books");
 ```
 
 If you use `createFeature`, you don't need to write this yourself.
@@ -884,7 +896,7 @@ export const selectFilteredBooks = createSelector(
   selectBooks,
   selectQuery,
   (books, query) =>
-    books.filter((b) => b.title.toLowerCase().includes(query.toLowerCase()))
+    books.filter((b) => b.title.toLowerCase().includes(query.toLowerCase())),
 );
 ```
 
@@ -901,7 +913,7 @@ export class BooksPage {
 
 ```html
 @for (book of books$ | async; track book.id) {
-  <app-book-card [book]="book" />
+<app-book-card [book]="book" />
 }
 ```
 
@@ -919,10 +931,9 @@ export class BooksPage {
 
 ```html
 @if (loading()) {
-  <app-spinner />
-}
-@for (book of books(); track book.id) {
-  <app-book-card [book]="book" />
+<app-spinner />
+} @for (book of books(); track book.id) {
+<app-book-card [book]="book" />
 }
 ```
 
@@ -964,7 +975,7 @@ If you need more inputs, it usually means you should split the selector into sma
 It's the last function you pass to `createSelector`. It receives the results of the input selectors and returns the computed value. Every memoized selector exposes it as `selector.projector`, which is handy in unit tests.
 
 ```ts
-const result = selectFilteredBooks.projector(books, 'angular');
+const result = selectFilteredBooks.projector(books, "angular");
 ```
 
 ### 43: How do you use a selected signal in a template?
@@ -977,7 +988,7 @@ readonly user = this.store.selectSignal(selectCurrentUser);
 
 ```html
 @if (user(); as user) {
-  <p>Hello {{ user.name }}</p>
+<p>Hello {{ user.name }}</p>
 }
 ```
 
@@ -1012,16 +1023,16 @@ const actions$ = inject(Actions);
 ```ts
 actions$.pipe(
   ofType(BooksPageActions.queryChanged),
-  map(({ query }) => query)
+  map(({ query }) => query),
 );
 ```
 
 ### 48: How do you write a class-based effect?
 
 ```ts
-import { Injectable, inject } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { Injectable, inject } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { catchError, exhaustMap, map, of } from "rxjs";
 
 @Injectable()
 export class BooksEffects {
@@ -1035,11 +1046,11 @@ export class BooksEffects {
         this.booksService.getAll().pipe(
           map((books) => BooksApiActions.loadSuccess({ books })),
           catchError((error: { message: string }) =>
-            of(BooksApiActions.loadFailure({ error: error.message }))
-          )
-        )
-      )
-    )
+            of(BooksApiActions.loadFailure({ error: error.message })),
+          ),
+        ),
+      ),
+    ),
   );
 }
 ```
@@ -1059,19 +1070,19 @@ export const loadBooks = createEffect(
         booksService.getAll().pipe(
           map((books) => BooksApiActions.loadSuccess({ books })),
           catchError((error: { message: string }) =>
-            of(BooksApiActions.loadFailure({ error: error.message }))
-          )
-        )
-      )
+            of(BooksApiActions.loadFailure({ error: error.message })),
+          ),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
 Register all functional effects from a file at once:
 
 ```ts
-import * as booksEffects from './books.effects';
+import * as booksEffects from "./books.effects";
 
 provideEffects(booksEffects);
 ```
@@ -1081,10 +1092,7 @@ provideEffects(booksEffects);
 Pass effect classes and/or objects that hold functional effects:
 
 ```ts
-providers: [
-  provideStore(),
-  provideEffects(AuthEffects, routerEffects),
-]
+providers: [provideStore(), provideEffects(AuthEffects, routerEffects)];
 ```
 
 For a lazy feature, use it inside route providers:
@@ -1106,9 +1114,9 @@ export const showError = createEffect(
   (actions$ = inject(Actions), snackBar = inject(MatSnackBar)) =>
     actions$.pipe(
       ofType(BooksApiActions.loadFailure),
-      tap(({ error }) => snackBar.open(error, 'Close'))
+      tap(({ error }) => snackBar.open(error, "Close")),
     ),
-  { functional: true, dispatch: false }
+  { functional: true, dispatch: false },
 );
 ```
 
@@ -1123,11 +1131,11 @@ Anything that reaches outside the pure state update: HTTP calls, timers, reading
 ### 54: Can you show a simple effect that loads data with `HttpClient`?
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class BooksService {
   private readonly http = inject(HttpClient);
   getAll() {
-    return this.http.get<Book[]>('/api/books');
+    return this.http.get<Book[]>("/api/books");
   }
 }
 
@@ -1138,11 +1146,13 @@ export const loadBooks = createEffect(
       switchMap(() =>
         api.getAll().pipe(
           map((books) => BooksApiActions.loadSuccess({ books })),
-          catchError(() => of(BooksApiActions.loadFailure({ error: 'Could not load books' })))
-        )
-      )
+          catchError(() =>
+            of(BooksApiActions.loadFailure({ error: "Could not load books" })),
+          ),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -1154,9 +1164,11 @@ Put `catchError` on the inner observable (the HTTP call) and return a failure ac
 switchMap(() =>
   api.getAll().pipe(
     map((books) => BooksApiActions.loadSuccess({ books })),
-    catchError((err) => of(BooksApiActions.loadFailure({ error: err.message })))
-  )
-)
+    catchError((err) =>
+      of(BooksApiActions.loadFailure({ error: err.message })),
+    ),
+  ),
+);
 ```
 
 ### 56: Why should `catchError` be inside the inner observable and not on the outer stream?
@@ -1172,8 +1184,8 @@ It connects the store to the Redux DevTools browser extension. You can see every
 ### 58: How do you set up Store DevTools?
 
 ```ts
-import { isDevMode } from '@angular/core';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { isDevMode } from "@angular/core";
+import { provideStoreDevtools } from "@ngrx/store-devtools";
 
 providers: [
   provideStore(),
@@ -1182,7 +1194,7 @@ providers: [
     logOnly: !isDevMode(),
     autoPause: true,
   }),
-]
+];
 ```
 
 Then install the Redux DevTools extension in your browser.
@@ -1228,7 +1240,7 @@ export interface BooksState extends EntityState<Book> {
 It creates an adapter object for one entity type:
 
 ```ts
-import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 
 export const booksAdapter: EntityAdapter<Book> = createEntityAdapter<Book>();
 ```
@@ -1260,8 +1272,8 @@ Each one takes the current state as the last argument and returns new state:
 
 ```ts
 on(BooksApiActions.loadSuccess, (state, { books }) =>
-  booksAdapter.setAll(books, { ...state, loading: false })
-)
+  booksAdapter.setAll(books, { ...state, loading: false }),
+);
 ```
 
 ### 67: What is the difference between `addOne` and `setOne`?
@@ -1313,7 +1325,7 @@ It connects the Angular Router to the store. It puts the current router state (u
 ### 72: How do you set up router-store?
 
 ```ts
-import { provideRouterStore, routerReducer } from '@ngrx/router-store';
+import { provideRouterStore, routerReducer } from "@ngrx/router-store";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -1331,7 +1343,7 @@ The key `router` is the default name the router selectors look for.
 It returns ready-made selectors for router state:
 
 ```ts
-import { getRouterSelectors } from '@ngrx/router-store';
+import { getRouterSelectors } from "@ngrx/router-store";
 
 export const {
   selectCurrentRoute,
@@ -1345,7 +1357,7 @@ export const {
   selectFragment,
 } = getRouterSelectors();
 
-export const selectBookId = selectRouteParam('bookId');
+export const selectBookId = selectRouteParam("bookId");
 ```
 
 ### 74: What is `@ngrx/signals`?
@@ -1366,8 +1378,14 @@ It doesn't depend on `@ngrx/store`, so you can use it alone.
 SignalStore is a store built from signals. You compose it from small features and it gives you an injectable class with state signals, computed signals and methods.
 
 ```ts
-import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
-import { computed } from '@angular/core';
+import {
+  signalStore,
+  withState,
+  withComputed,
+  withMethods,
+  patchState,
+} from "@ngrx/signals";
+import { computed } from "@angular/core";
 
 export const CounterStore = signalStore(
   withState({ count: 0 }),
@@ -1378,7 +1396,7 @@ export const CounterStore = signalStore(
     increment() {
       patchState(store, (s) => ({ count: s.count + 1 }));
     },
-  }))
+  })),
 );
 ```
 
@@ -1407,13 +1425,13 @@ export class BooksPage {
 type BooksState = {
   books: Book[];
   isLoading: boolean;
-  filter: { query: string; order: 'asc' | 'desc' };
+  filter: { query: string; order: "asc" | "desc" };
 };
 
 const initialState: BooksState = {
   books: [],
   isLoading: false,
-  filter: { query: '', order: 'asc' },
+  filter: { query: "", order: "asc" },
 };
 
 export const BooksStore = signalStore(withState(initialState));
@@ -1429,10 +1447,10 @@ It adds derived signals to the store. The factory gets the store members defined
 withComputed(({ books, filter }) => ({
   booksCount: computed(() => books().length),
   sortedBooks: computed(() => {
-    const dir = filter.order() === 'asc' ? 1 : -1;
+    const dir = filter.order() === "asc" ? 1 : -1;
     return [...books()].sort((a, b) => dir * a.title.localeCompare(b.title));
   }),
-}))
+}));
 ```
 
 ### 79: What does `withMethods` do?
@@ -1449,7 +1467,7 @@ withMethods((store, booksService = inject(BooksService)) => ({
     const books = await booksService.getAll();
     patchState(store, { books, isLoading: false });
   },
-}))
+}));
 ```
 
 ### 80: What is `patchState`?
@@ -1459,7 +1477,9 @@ withMethods((store, booksService = inject(BooksService)) => ({
 ```ts
 patchState(store, { isLoading: true });
 patchState(store, (state) => ({ count: state.count + 1 }));
-patchState(store, { isLoading: false }, (state) => ({ books: [...state.books, book] }));
+patchState(store, { isLoading: false }, (state) => ({
+  books: [...state.books, book],
+}));
 ```
 
 It merges the result into the current state, it doesn't replace the whole state.
@@ -1471,7 +1491,10 @@ Two common ways:
 - Globally, by passing `{ providedIn: 'root' }` as the first argument. You get one shared instance.
 
 ```ts
-export const AuthStore = signalStore({ providedIn: 'root' }, withState(initialAuthState));
+export const AuthStore = signalStore(
+  { providedIn: "root" },
+  withState(initialAuthState),
+);
 ```
 
 - Locally, by listing it in a component's (or route's) `providers`. Each component instance gets its own store, and it's destroyed with the component.
@@ -1487,7 +1510,7 @@ export class BooksPage {}
 
 ```ts
 @Component({
-  selector: 'app-books-page',
+  selector: "app-books-page",
   providers: [BooksStore],
   template: `
     <input [value]="store.filter.query()" (input)="onQuery($event)" />
@@ -1513,10 +1536,10 @@ export class BooksPage {
 `signalState` creates a single state object as a signal with deep signals for nested properties. It's lighter than `signalStore` and works well inside a component or a service.
 
 ```ts
-import { signalState, patchState } from '@ngrx/signals';
+import { signalState, patchState } from "@ngrx/signals";
 
 export class UserForm {
-  readonly state = signalState({ name: '', age: 0, address: { city: '' } });
+  readonly state = signalState({ name: "", age: 0, address: { city: "" } });
 
   setCity(city: string) {
     patchState(this.state, (s) => ({ address: { ...s.address, city } }));
@@ -1544,9 +1567,9 @@ export const BooksStore = signalStore(
       store.loadAll();
     },
     onDestroy(store) {
-      console.log('books store destroyed', store.books().length);
+      console.log("books store destroyed", store.books().length);
     },
-  })
+  }),
 );
 ```
 
@@ -1555,8 +1578,8 @@ export const BooksStore = signalStore(
 `rxMethod` from `@ngrx/signals/rxjs-interop` creates a method backed by an RxJS pipeline. You can call it with a plain value, a signal, or an observable. It's useful for things like debounced search where RxJS operators help.
 
 ```ts
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { tapResponse } from '@ngrx/operators';
+import { rxMethod } from "@ngrx/signals/rxjs-interop";
+import { tapResponse } from "@ngrx/operators";
 
 withMethods((store, api = inject(BooksService)) => ({
   search: rxMethod<string>(
@@ -1570,12 +1593,12 @@ withMethods((store, api = inject(BooksService)) => ({
             next: (books) => patchState(store, { books }),
             error: console.error,
             finalize: () => patchState(store, { isLoading: false }),
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   ),
-}))
+}));
 ```
 
 ### 87: What is `@ngrx/component`?
@@ -1634,11 +1657,12 @@ switchMap((id) =>
   api.getBook(id).pipe(
     tapResponse({
       next: (book) => patchState(store, { book }),
-      error: (err: HttpErrorResponse) => patchState(store, { error: err.message }),
+      error: (err: HttpErrorResponse) =>
+        patchState(store, { error: err.message }),
       finalize: () => patchState(store, { isLoading: false }),
-    })
-  )
-)
+    }),
+  ),
+);
 ```
 
 ### 93: What is `concatLatestFrom`?
@@ -1646,21 +1670,25 @@ switchMap((id) =>
 It's an operator that adds the latest value from another observable (often a selector) to the emitted value. It only subscribes to the other observable when the source emits, so selectors are read lazily.
 
 ```ts
-import { concatLatestFrom } from '@ngrx/operators';
+import { concatLatestFrom } from "@ngrx/operators";
 
 export const saveBook = createEffect(
-  (actions$ = inject(Actions), store = inject(Store), api = inject(BooksService)) =>
+  (
+    actions$ = inject(Actions),
+    store = inject(Store),
+    api = inject(BooksService),
+  ) =>
     actions$.pipe(
       ofType(BookFormActions.saveClicked),
       concatLatestFrom(() => store.select(selectCurrentUserId)),
       concatMap(([{ book }, userId]) =>
         api.save(book, userId).pipe(
           map((saved) => BooksApiActions.saveSuccess({ book: saved })),
-          catchError(() => of(BooksApiActions.saveFailure()))
-        )
-      )
+          catchError(() => of(BooksApiActions.saveFailure())),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -1725,13 +1753,13 @@ Write an interface (or type) for the slice and use it in the initial state:
 export interface AuthState {
   user: User | null;
   token: string | null;
-  status: 'idle' | 'loading' | 'error';
+  status: "idle" | "loading" | "error";
 }
 
 export const initialAuthState: AuthState = {
   user: null,
   token: null,
-  status: 'idle',
+  status: "idle",
 };
 ```
 
@@ -1761,8 +1789,8 @@ Add `provideState` (and `provideEffects`) to the route's `providers`. The reduce
 ```ts
 export const routes: Routes = [
   {
-    path: 'admin',
-    loadChildren: () => import('./admin/admin.routes'),
+    path: "admin",
+    loadChildren: () => import("./admin/admin.routes"),
     providers: [provideState(adminFeature), provideEffects(adminEffects)],
   },
 ];
@@ -1834,12 +1862,12 @@ In many of these cases a simple service with signals, or a SignalStore, is a bet
 A reducer is a pure function, so you call it with state and an action and check the result:
 
 ```ts
-describe('booksReducer', () => {
-  it('sets books on load success', () => {
-    const books = [{ id: '1', title: 'NgRx' }] as Book[];
+describe("booksReducer", () => {
+  it("sets books on load success", () => {
+    const books = [{ id: "1", title: "NgRx" }] as Book[];
     const state = booksFeature.reducer(
       initialState,
-      BooksApiActions.loadSuccess({ books })
+      BooksApiActions.loadSuccess({ books }),
     );
     expect(state.books).toEqual(books);
     expect(state.loading).toBe(false);
@@ -1852,9 +1880,12 @@ describe('booksReducer', () => {
 Use the `projector` function to test the logic without building a full state:
 
 ```ts
-it('filters books by query', () => {
-  const books = [{ id: '1', title: 'Angular' }, { id: '2', title: 'React' }] as Book[];
-  const result = selectFilteredBooks.projector(books, 'ang');
+it("filters books by query", () => {
+  const books = [
+    { id: "1", title: "Angular" },
+    { id: "2", title: "React" },
+  ] as Book[];
+  const result = selectFilteredBooks.projector(books, "ang");
   expect(result).toEqual([books[0]]);
 });
 ```
@@ -1883,7 +1914,7 @@ TestBed.configureTestingModule({
 
 ```ts
 const store = TestBed.inject(MockStore);
-const dispatchSpy = spyOn(store, 'dispatch');
+const dispatchSpy = spyOn(store, "dispatch");
 ```
 
 ### 115: What is `overrideSelector`?
@@ -1891,7 +1922,7 @@ const dispatchSpy = spyOn(store, 'dispatch');
 It makes a selector return a fixed value in tests:
 
 ```ts
-store.overrideSelector(selectBooks, [{ id: '1', title: 'NgRx' } as Book]);
+store.overrideSelector(selectBooks, [{ id: "1", title: "NgRx" } as Book]);
 store.refreshState();
 fixture.detectChanges();
 ```
@@ -1917,8 +1948,8 @@ actions$ = of(BooksPageActions.opened());
 Provide the store with `TestBed`, inject it, and call its methods:
 
 ```ts
-describe('CounterStore', () => {
-  it('increments', () => {
+describe("CounterStore", () => {
+  it("increments", () => {
     TestBed.configureTestingModule({ providers: [CounterStore] });
     const store = TestBed.inject(CounterStore);
 
@@ -1939,7 +1970,7 @@ Serializable data (strings, numbers, booleans, plain objects, arrays) can be log
 Yes. With `createAction`, leave out `props`. With `createActionGroup`, use `emptyProps()`.
 
 ```ts
-export const logout = createAction('[Header] Logout Clicked');
+export const logout = createAction("[Header] Logout Clicked");
 store.dispatch(logout());
 ```
 
@@ -1974,7 +2005,10 @@ Action creators return objects that extend this with their props.
 `ActionReducer<S, A>` is the type of a reducer function:
 
 ```ts
-type ActionReducer<S, A extends Action = Action> = (state: S | undefined, action: A) => S;
+type ActionReducer<S, A extends Action = Action> = (
+  state: S | undefined,
+  action: A,
+) => S;
 ```
 
 It's mostly used when writing meta-reducers.
@@ -1984,7 +2018,7 @@ It's mostly used when writing meta-reducers.
 It's the operator version of `store.select`. It maps state to a slice and adds `distinctUntilChanged`.
 
 ```ts
-import { select } from '@ngrx/store';
+import { select } from "@ngrx/store";
 
 this.store.pipe(select(selectBooks));
 ```
@@ -2006,7 +2040,7 @@ export const selectCartSummary = createSelector(
   (items, discount) => ({
     count: items.length,
     total: items.reduce((sum, i) => sum + i.price, 0) * (1 - discount),
-  })
+  }),
 );
 ```
 
@@ -2067,8 +2101,16 @@ export interface BooksState {
 createReducer(
   initialState,
   on(BooksPageActions.opened, (s) => ({ ...s, loading: true, error: null })),
-  on(BooksApiActions.loadSuccess, (s, { books }) => ({ ...s, books, loading: false })),
-  on(BooksApiActions.loadFailure, (s, { error }) => ({ ...s, error, loading: false }))
+  on(BooksApiActions.loadSuccess, (s, { books }) => ({
+    ...s,
+    books,
+    loading: false,
+  })),
+  on(BooksApiActions.loadFailure, (s, { error }) => ({
+    ...s,
+    error,
+    loading: false,
+  })),
 );
 ```
 
@@ -2084,9 +2126,9 @@ readonly loading = this.store.selectSignal(selectLoading);
 
 ```html
 @if (loading()) {
-  <app-spinner />
+<app-spinner />
 } @else {
-  <app-books-list [books]="books()" />
+<app-books-list [books]="books()" />
 }
 ```
 
@@ -2133,8 +2175,10 @@ Things like "is this dropdown open" or a component's local filter usually belong
 
 ```ts
 @Component({
-  selector: 'app-book-list',
-  template: `@for (b of books(); track b.id) { <p (click)="select.emit(b.id)">{{ b.title }}</p> }`,
+  selector: "app-book-list",
+  template: `@for (b of books(); track b.id) {
+    <p (click)="select.emit(b.id)">{{ b.title }}</p>
+  }`,
 })
 export class BookList {
   readonly books = input.required<Book[]>();
@@ -2171,7 +2215,7 @@ Scripts that run during `ng update` and change your code for you. For example, w
 `withEntities` from `@ngrx/signals/entities` adds an entity collection to a SignalStore. It adds `ids`, `entityMap` and a computed `entities` array.
 
 ```ts
-import { withEntities, addEntity, removeEntity } from '@ngrx/signals/entities';
+import { withEntities, addEntity, removeEntity } from "@ngrx/signals/entities";
 
 export const TodosStore = signalStore(
   withEntities<Todo>(),
@@ -2182,7 +2226,7 @@ export const TodosStore = signalStore(
     remove(id: string) {
       patchState(store, removeEntity(id));
     },
-  }))
+  })),
 );
 
 // store.entities(), store.ids(), store.entityMap()
@@ -2201,8 +2245,11 @@ export const TodosStore = signalStore(
 All of them are passed to `patchState`:
 
 ```ts
-patchState(store, updateEntity({ id: '1', changes: { done: true } }));
-patchState(store, removeEntities((todo) => todo.done));
+patchState(store, updateEntity({ id: "1", changes: { done: true } }));
+patchState(
+  store,
+  removeEntities((todo) => todo.done),
+);
 ```
 
 ### 142: What does `getState` do?
@@ -2211,7 +2258,7 @@ patchState(store, removeEntities((todo) => todo.done));
 
 ```ts
 const snapshot = getState(store);
-localStorage.setItem('books', JSON.stringify(snapshot));
+localStorage.setItem("books", JSON.stringify(snapshot));
 ```
 
 If you call it inside a `computed` or `effect`, it tracks the whole state.
@@ -2231,7 +2278,7 @@ export const BooksStore = signalStore(
     async load() {
       patchState(store, { books: await store._api.getAll() });
     },
-  }))
+  })),
 );
 ```
 
@@ -2243,8 +2290,8 @@ Not by default. SignalStore state is protected, so only the store's own methods 
 
 ```ts
 export const SettingsStore = signalStore(
-  { providedIn: 'root', protectedState: false },
-  withState({ theme: 'light' })
+  { providedIn: "root", protectedState: false },
+  withState({ theme: "light" }),
 );
 ```
 
@@ -2255,10 +2302,10 @@ In tests you can use `unprotected(store)` from `@ngrx/signals/testing` instead o
 `type` from `@ngrx/signals` is a helper that only carries a TypeScript type. It's used when you need to tell a function about a type without giving a real value:
 
 ```ts
-withEntities({ entity: type<Todo>(), collection: 'todo' });
+withEntities({ entity: type<Todo>(), collection: "todo" });
 
 eventGroup({
-  source: 'Books Page',
+  source: "Books Page",
   events: { queryChanged: type<string>() },
 });
 ```
@@ -2272,11 +2319,13 @@ It makes the store a root-level singleton, like `@Injectable({ providedIn: 'root
 When a state property is an object, SignalStore and `signalState` turn it into a DeepSignal. It's a signal you can call to get the whole object, and it also has signals for each nested property.
 
 ```ts
-const state = signalState({ user: { name: 'Ann', address: { city: 'Tbilisi' } } });
+const state = signalState({
+  user: { name: "Ann", address: { city: "Tbilisi" } },
+});
 
-state.user();               // { name: 'Ann', address: {...} }
-state.user.name();          // 'Ann'
-state.user.address.city();  // 'Tbilisi'
+state.user(); // { name: 'Ann', address: {...} }
+state.user.name(); // 'Ann'
+state.user.address.city(); // 'Tbilisi'
 ```
 
 Nested signals are created lazily, only when you read them.
@@ -2333,11 +2382,13 @@ Reducers. The state is updated first, and only then is the action sent to the `A
 
 ```ts
 export const booksFeature = createFeature({
-  name: 'books',
+  name: "books",
   reducer: booksReducer,
   extraSelectors: ({ selectBooks, selectQuery }) => ({
-    selectFilteredBooks: createSelector(selectBooks, selectQuery, (books, query) =>
-      books.filter((b) => b.title.includes(query))
+    selectFilteredBooks: createSelector(
+      selectBooks,
+      selectQuery,
+      (books, query) => books.filter((b) => b.title.includes(query)),
     ),
   }),
 });
@@ -2350,7 +2401,7 @@ With entity state you can spread the adapter selectors:
 ```ts
 extraSelectors: ({ selectBooksState }) => ({
   ...booksAdapter.getSelectors(selectBooksState),
-})
+});
 ```
 
 ### 154: How do you write a selector that takes a parameter?
@@ -2394,7 +2445,7 @@ So memoization only works if reducers keep unchanged parts of the state as the s
 `release()` clears the selector's memoized values, and does the same for its input selectors. It can free memory for selectors that hold big results and are no longer needed, for example factory selectors created per component.
 
 ```ts
-const selectBook = selectBookById('42');
+const selectBook = selectBookById("42");
 // ...
 selectBook.release();
 ```
@@ -2404,15 +2455,16 @@ selectBook.release();
 Use `createSelectorFactory` with a custom memoize function. A common case is comparing the result deeply so the selector doesn't emit a new array that has the same content:
 
 ```ts
-import { createSelectorFactory, resultMemoize } from '@ngrx/store';
-import { isEqual } from 'lodash-es';
+import { createSelectorFactory, resultMemoize } from "@ngrx/store";
+import { isEqual } from "lodash-es";
 
 const createDeepEqualSelector = createSelectorFactory((projector) =>
-  resultMemoize(projector, isEqual)
+  resultMemoize(projector, isEqual),
 );
 
-export const selectActiveIds = createDeepEqualSelector(selectTodos, (todos: Todo[]) =>
-  todos.filter((t) => !t.done).map((t) => t.id)
+export const selectActiveIds = createDeepEqualSelector(
+  selectTodos,
+  (todos: Todo[]) => todos.filter((t) => !t.done).map((t) => t.id),
 );
 ```
 
@@ -2432,7 +2484,7 @@ Example:
 // bad: the projector only depends on state, which changes on every action
 export const selectSummary = createSelector(
   (state: AppState) => state,
-  (state) => ({ count: state.books.books.length })
+  (state) => ({ count: state.books.books.length }),
 );
 ```
 
@@ -2441,7 +2493,9 @@ The input selector returns the whole state, which changes on every action, so th
 Fix it by using narrow input selectors:
 
 ```ts
-export const selectSummary = createSelector(selectBooks, (books) => ({ count: books.length }));
+export const selectSummary = createSelector(selectBooks, (books) => ({
+  count: books.length,
+}));
 ```
 
 ### 162: What is the `equal` option of `selectSignal`?
@@ -2478,10 +2532,10 @@ actions$.pipe(
   exhaustMap(({ credentials }) =>
     auth.login(credentials).pipe(
       map((user) => AuthApiActions.loginSuccess({ user })),
-      catchError((e) => of(AuthApiActions.loginFailure({ error: e.message })))
-    )
-  )
-)
+      catchError((e) => of(AuthApiActions.loginFailure({ error: e.message }))),
+    ),
+  ),
+);
 ```
 
 ### 165: When would you use `concatMap`?
@@ -2502,18 +2556,25 @@ Use `concatLatestFrom` with a selector:
 
 ```ts
 export const loadNextPage = createEffect(
-  (actions$ = inject(Actions), store = inject(Store), api = inject(BooksService)) =>
+  (
+    actions$ = inject(Actions),
+    store = inject(Store),
+    api = inject(BooksService),
+  ) =>
     actions$.pipe(
       ofType(BooksPageActions.nextPageClicked),
-      concatLatestFrom(() => [store.select(selectPage), store.select(selectQuery)]),
+      concatLatestFrom(() => [
+        store.select(selectPage),
+        store.select(selectQuery),
+      ]),
       switchMap(([, page, query]) =>
         api.search(query, page + 1).pipe(
           map((result) => BooksApiActions.pageLoaded({ result })),
-          catchError(() => of(BooksApiActions.pageFailed()))
-        )
-      )
+          catchError(() => of(BooksApiActions.pageFailed())),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -2528,10 +2589,10 @@ Yes. An effect is just an observable, so it can start from any source: a timer, 
 ```ts
 export const onlineStatus = createEffect(
   () =>
-    merge(fromEvent(window, 'online'), fromEvent(window, 'offline')).pipe(
-      map(() => NetworkActions.statusChanged({ online: navigator.onLine }))
+    merge(fromEvent(window, "online"), fromEvent(window, "offline")).pipe(
+      map(() => NetworkActions.statusChanged({ online: navigator.onLine })),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -2544,9 +2605,9 @@ export const init = createEffect(
   (actions$ = inject(Actions)) =>
     actions$.pipe(
       ofType(ROOT_EFFECTS_INIT),
-      map(() => AppActions.started())
+      map(() => AppActions.started()),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -2572,20 +2633,20 @@ The default effects error handler logs the error with Angular's `ErrorHandler` a
 Provide `EFFECTS_ERROR_HANDLER`:
 
 ```ts
-import { EFFECTS_ERROR_HANDLER } from '@ngrx/effects';
-import { ErrorHandler } from '@angular/core';
-import { Observable, retry } from 'rxjs';
+import { EFFECTS_ERROR_HANDLER } from "@ngrx/effects";
+import { ErrorHandler } from "@angular/core";
+import { Observable, retry } from "rxjs";
 
 export function effectsErrorHandler<T extends Action>(
   observable$: Observable<T>,
-  errorHandler: ErrorHandler
+  errorHandler: ErrorHandler,
 ): Observable<T> {
   return observable$.pipe(
     retry({
       count: 3,
       delay: 1000,
       resetOnSuccess: true,
-    })
+    }),
   );
 }
 
@@ -2600,7 +2661,7 @@ Yes, by emitting several actions, for example with `switchMap` returning an arra
 switchMap(({ order }) => [
   OrderApiActions.placed({ order }),
   CartActions.cleared(),
-])
+]);
 ```
 
 It's often better, though, to dispatch one action and let other reducers react to it. The `no-multiple-actions-in-effects` lint rule points this out. Here, the cart reducer could listen to `OrderApiActions.placed` directly.
@@ -2614,9 +2675,9 @@ export const redirectAfterLogin = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) =>
     actions$.pipe(
       ofType(AuthApiActions.loginSuccess),
-      tap(() => router.navigate(['/dashboard']))
+      tap(() => router.navigate(["/dashboard"])),
     ),
-  { functional: true, dispatch: false }
+  { functional: true, dispatch: false },
 );
 ```
 
@@ -2625,7 +2686,7 @@ export const redirectAfterLogin = createEffect(
 Dependencies are default parameters. In a test you can call the effect function directly and pass mocks, without TestBed:
 
 ```ts
-it('loads books', (done) => {
+it("loads books", (done) => {
   const actions$ = of(BooksPageActions.opened());
   const api = { getAll: () => of([book]) } as unknown as BooksService;
 
@@ -2653,11 +2714,11 @@ export const search = createEffect(
       switchMap((query) =>
         api.search(query).pipe(
           map((books) => BooksApiActions.searchSuccess({ books })),
-          catchError(() => of(BooksApiActions.searchFailure()))
-        )
-      )
+          catchError(() => of(BooksApiActions.searchFailure())),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -2677,14 +2738,14 @@ export const pollStatus = createEffect(
           switchMap(() =>
             api.status(jobId).pipe(
               map((status) => JobApiActions.statusLoaded({ status })),
-              catchError(() => of(JobApiActions.statusFailed()))
-            )
+              catchError(() => of(JobApiActions.statusFailed())),
+            ),
           ),
-          takeUntil(actions$.pipe(ofType(JobPageActions.pollingStopped)))
-        )
-      )
+          takeUntil(actions$.pipe(ofType(JobPageActions.pollingStopped))),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -2697,9 +2758,9 @@ switchMap(({ fileId }) =>
   api.upload(fileId).pipe(
     map(() => UploadApiActions.done({ fileId })),
     catchError(() => of(UploadApiActions.failed({ fileId }))),
-    takeUntil(actions$.pipe(ofType(UploadActions.cancelled)))
-  )
-)
+    takeUntil(actions$.pipe(ofType(UploadActions.cancelled))),
+  ),
+);
 ```
 
 ### 182: What are the options of `tapResponse`?
@@ -2716,7 +2777,7 @@ tapResponse({
   next: (user) => patchState(store, { user }),
   error: (e: HttpErrorResponse) => patchState(store, { error: e.message }),
   finalize: () => patchState(store, { loading: false }),
-})
+});
 ```
 
 The older form with positional arguments `tapResponse(next, error)` is still supported, but the object form is clearer.
@@ -2726,16 +2787,17 @@ The older form with positional arguments `tapResponse(next, error)` is still sup
 `mapResponse` maps success and error to new values, usually actions or events, and catches errors. It's like `map` + `catchError` in one call.
 
 ```ts
-import { mapResponse } from '@ngrx/operators';
+import { mapResponse } from "@ngrx/operators";
 
 exhaustMap(() =>
   api.getAll().pipe(
     mapResponse({
       next: (books) => BooksApiActions.loadSuccess({ books }),
-      error: (e: HttpErrorResponse) => BooksApiActions.loadFailure({ error: e.message }),
-    })
-  )
-)
+      error: (e: HttpErrorResponse) =>
+        BooksApiActions.loadFailure({ error: e.message }),
+    }),
+  ),
+);
 ```
 
 ### 184: How does `createActionGroup` keep things type safe?
@@ -2759,7 +2821,9 @@ type LoadSuccessAction = ReturnType<typeof BooksApiActions.loadSuccess>;
 To get a union of all actions in a group:
 
 ```ts
-type BooksApiAction = ReturnType<(typeof BooksApiActions)[keyof typeof BooksApiActions]>;
+type BooksApiAction = ReturnType<
+  (typeof BooksApiActions)[keyof typeof BooksApiActions]
+>;
 ```
 
 ### 186: How does typing work when one `on` handles actions with different props?
@@ -2767,10 +2831,14 @@ type BooksApiAction = ReturnType<(typeof BooksApiActions)[keyof typeof BooksApiA
 The handler's action is a union of the action types. You can only safely read props that exist on all of them, or check the `type` first:
 
 ```ts
-on(BooksApiActions.createSuccess, BooksApiActions.updateSuccess, (state, action) => ({
-  ...state,
-  lastSaved: action.book, // both have `book`
-}))
+on(
+  BooksApiActions.createSuccess,
+  BooksApiActions.updateSuccess,
+  (state, action) => ({
+    ...state,
+    lastSaved: action.book, // both have `book`
+  }),
+);
 ```
 
 If the props are different, it's usually clearer to write two `on` handlers.
@@ -2789,7 +2857,7 @@ on(SettingsActions.themeColorChanged, (state, { color }) => ({
       color,
     },
   },
-}))
+}));
 ```
 
 If this gets painful, it's often a sign the state is too nested. Flatten it, or split it into more features. Some teams use Immer through community packages like `ngrx-immer`.
@@ -2799,14 +2867,14 @@ If this gets painful, it's often a sign the state is too nested. Flatten it, or 
 Yes, through community libraries like `ngrx-immer`, which provide `immerOn` for reducers. Immer lets you write code that looks like mutation, and it produces a new immutable object:
 
 ```ts
-import { immerOn } from 'ngrx-immer/store';
+import { immerOn } from "ngrx-immer/store";
 
 createReducer(
   initialState,
   immerOn(TodoActions.toggled, (state, { id }) => {
     const todo = state.todos.find((t) => t.id === id);
     if (todo) todo.done = !todo.done;
-  })
+  }),
 );
 ```
 
@@ -2815,7 +2883,7 @@ It's not part of NgRx itself, so weigh the extra dependency.
 ### 189: Show a meta-reducer that resets state on logout, with types.
 
 ```ts
-import { ActionReducer, MetaReducer } from '@ngrx/store';
+import { ActionReducer, MetaReducer } from "@ngrx/store";
 
 export function resetOnLogout<S>(reducer: ActionReducer<S>): ActionReducer<S> {
   return (state, action) => {
@@ -2835,10 +2903,12 @@ provideStore({}, { metaReducers });
 ### 190: How do you save and load state from `localStorage` with a meta-reducer?
 
 ```ts
-const KEY = 'app-state';
-const KEYS_TO_SAVE = ['cart', 'settings'] as const;
+const KEY = "app-state";
+const KEYS_TO_SAVE = ["cart", "settings"] as const;
 
-export function localStorageSync(reducer: ActionReducer<any>): ActionReducer<any> {
+export function localStorageSync(
+  reducer: ActionReducer<any>,
+): ActionReducer<any> {
   return (state, action) => {
     if (action.type === INIT || action.type === UPDATE) {
       const saved = localStorage.getItem(KEY);
@@ -2863,7 +2933,7 @@ Things to watch: SSR (no `localStorage` on the server), state shape changes betw
 Pass them in the third argument of `provideState`:
 
 ```ts
-provideState('books', booksReducer, { metaReducers: [booksLogger] });
+provideState("books", booksReducer, { metaReducers: [booksLogger] });
 ```
 
 They wrap only that feature's reducer.
@@ -2881,7 +2951,7 @@ When you knowingly keep something non-serializable in state or actions and accep
 
 ```ts
 // partial update by id
-booksAdapter.updateOne({ id: book.id, changes: { title: 'New title' } }, state);
+booksAdapter.updateOne({ id: book.id, changes: { title: "New title" } }, state);
 
 // add if missing, merge if present
 booksAdapter.upsertOne(book, state);
@@ -2899,14 +2969,14 @@ Extend `EntityState` and pass the extra fields to `getInitialState`:
 ```ts
 export interface BooksState extends EntityState<Book> {
   selectedId: string | null;
-  status: 'idle' | 'loading' | 'error';
+  status: "idle" | "loading" | "error";
 }
 
 export const adapter = createEntityAdapter<Book>();
 
 export const initialState: BooksState = adapter.getInitialState({
   selectedId: null,
-  status: 'idle',
+  status: "idle",
 });
 ```
 
@@ -2914,12 +2984,14 @@ export const initialState: BooksState = adapter.getInitialState({
 
 ```ts
 export const booksFeature = createFeature({
-  name: 'books',
+  name: "books",
   reducer: booksReducer,
   extraSelectors: ({ selectBooksState, selectEntities, selectSelectedId }) => ({
     ...adapter.getSelectors(selectBooksState),
-    selectSelectedBook: createSelector(selectEntities, selectSelectedId, (entities, id) =>
-      id ? entities[id] : undefined
+    selectSelectedBook: createSelector(
+      selectEntities,
+      selectSelectedId,
+      (entities, id) => (id ? entities[id] : undefined),
     ),
   }),
 });
@@ -2938,12 +3010,12 @@ The adapter keeps `ids` sorted after every add or update, which costs time on bi
 Combine router selectors with feature selectors:
 
 ```ts
-export const selectBookId = selectRouteParam('bookId');
+export const selectBookId = selectRouteParam("bookId");
 
 export const selectBookFromRoute = createSelector(
   selectBookEntities,
   selectBookId,
-  (entities, id) => (id ? entities[id] : undefined)
+  (entities, id) => (id ? entities[id] : undefined),
 );
 ```
 
@@ -2960,7 +3032,7 @@ The component then doesn't need `ActivatedRoute` at all.
 There are action creators for them: `routerRequestAction`, `routerNavigationAction`, `routerNavigatedAction`, `routerCancelAction`, `routerErrorAction`.
 
 ```ts
-actions$.pipe(ofType(routerNavigatedAction), /* ... */);
+actions$.pipe(ofType(routerNavigatedAction) /* ... */);
 ```
 
 ### 200: What is the `navigationActionTiming` option?
@@ -2971,7 +3043,9 @@ It controls when `ROUTER_NAVIGATION` is dispatched:
 - `NavigationActionTiming.PostActivation` - after guards and resolvers.
 
 ```ts
-provideRouterStore({ navigationActionTiming: NavigationActionTiming.PostActivation });
+provideRouterStore({
+  navigationActionTiming: NavigationActionTiming.PostActivation,
+});
 ```
 
 Use `PostActivation` if your effects should only react to navigations that guards allowed.
@@ -3004,7 +3078,11 @@ export class CustomSerializer implements RouterStateSerializer<AppRouterState> {
       route = route.firstChild;
       params = { ...params, ...route.params };
     }
-    return { url: routerState.url, params, queryParams: routerState.root.queryParams };
+    return {
+      url: routerState.url,
+      params,
+      queryParams: routerState.root.queryParams,
+    };
   }
 }
 
@@ -3016,9 +3094,10 @@ This example also merges params from parent routes, which the default doesn't do
 ### 203: How do you read route `data` and `title` with router-store?
 
 ```ts
-const { selectRouteData, selectRouteDataParam, selectTitle } = getRouterSelectors();
+const { selectRouteData, selectRouteDataParam, selectTitle } =
+  getRouterSelectors();
 
-export const selectPageLayout = selectRouteDataParam('layout');
+export const selectPageLayout = selectRouteDataParam("layout");
 ```
 
 `selectRouteData` returns the data of the current (deepest) route, and `selectTitle` returns the resolved route title.
@@ -3029,7 +3108,7 @@ Yes. `withState` accepts either an object or a factory function. The factory run
 
 ```ts
 export const SettingsStore = signalStore(
-  withState(() => inject(INITIAL_SETTINGS))
+  withState(() => inject(INITIAL_SETTINGS)),
 );
 ```
 
@@ -3047,7 +3126,7 @@ signalStore(
   })),
   withComputed(({ subtotal, taxRate }) => ({
     total: computed(() => subtotal() * (1 + taxRate())),
-  }))
+  })),
 );
 ```
 
@@ -3056,13 +3135,15 @@ signalStore(
 Inject them as default parameters of the factory, or inject them inside the factory body:
 
 ```ts
-withMethods((store, api = inject(OrdersService), toast = inject(ToastService)) => ({
-  async cancel(id: string) {
-    await api.cancel(id);
-    patchState(store, removeEntity(id));
-    toast.show('Order cancelled');
-  },
-}))
+withMethods(
+  (store, api = inject(OrdersService), toast = inject(ToastService)) => ({
+    async cancel(id: string) {
+      await api.cancel(id);
+      patchState(store, removeEntity(id));
+      toast.show("Order cancelled");
+    },
+  }),
+);
 ```
 
 ### 207: How do you write a Promise-based async method in SignalStore?
@@ -3070,15 +3151,15 @@ withMethods((store, api = inject(OrdersService), toast = inject(ToastService)) =
 ```ts
 withMethods((store, http = inject(HttpClient)) => ({
   async loadUser(id: string): Promise<void> {
-    patchState(store, { status: 'loading' });
+    patchState(store, { status: "loading" });
     try {
       const user = await firstValueFrom(http.get<User>(`/api/users/${id}`));
-      patchState(store, { user, status: 'loaded' });
+      patchState(store, { user, status: "loaded" });
     } catch (e) {
-      patchState(store, { status: 'error', error: String(e) });
+      patchState(store, { status: "error", error: String(e) });
     }
   },
-}))
+}));
 ```
 
 Promise methods are easy to read but don't handle cancellation or races. If the user can trigger the method quickly many times, `rxMethod` with `switchMap` is safer.
@@ -3087,7 +3168,7 @@ Promise methods are easy to read but don't handle cancellation or races. If the 
 
 ```ts
 export const BooksSearchStore = signalStore(
-  withState({ query: '', books: [] as Book[], isLoading: false }),
+  withState({ query: "", books: [] as Book[], isLoading: false }),
   withMethods((store, api = inject(BooksService)) => ({
     setQuery(query: string) {
       patchState(store, { query });
@@ -3103,10 +3184,10 @@ export const BooksSearchStore = signalStore(
               next: (books) => patchState(store, { books }),
               error: console.error,
               finalize: () => patchState(store, { isLoading: false }),
-            })
-          )
-        )
-      )
+            }),
+          ),
+        ),
+      ),
     ),
   })),
   withHooks({
@@ -3114,7 +3195,7 @@ export const BooksSearchStore = signalStore(
       // re-runs every time query changes
       store.searchByQuery(store.query);
     },
-  })
+  }),
 );
 ```
 
@@ -3131,13 +3212,13 @@ This lets the same method work for one-off calls and for reactive inputs.
 `signalMethod` from `@ngrx/signals` is like `rxMethod` but without RxJS. It creates a function that accepts a value or a signal. When given a signal, it runs the handler every time the signal changes.
 
 ```ts
-import { signalMethod } from '@ngrx/signals';
+import { signalMethod } from "@ngrx/signals";
 
 withMethods((store) => ({
   logPage: signalMethod<number>((page) => {
-    console.log('page changed', page);
+    console.log("page changed", page);
   }),
-}))
+}));
 ```
 
 ```ts
@@ -3164,14 +3245,14 @@ withHooks((store) => {
   const logger = inject(Logger);
   return {
     onInit() {
-      logger.info('store created');
+      logger.info("store created");
       store.load();
     },
     onDestroy() {
-      logger.info('store destroyed');
+      logger.info("store destroyed");
     },
   };
-})
+});
 ```
 
 ### 213: How do you write reusable updater functions for `patchState`?
@@ -3179,7 +3260,7 @@ withHooks((store) => {
 An updater is a function that takes state and returns a partial state. You can write them outside the store and reuse them:
 
 ```ts
-import { PartialStateUpdater } from '@ngrx/signals';
+import { PartialStateUpdater } from "@ngrx/signals";
 
 export function setLoading(): { isLoading: boolean } {
   return { isLoading: true };
@@ -3202,10 +3283,10 @@ The entity updaters in `@ngrx/signals/entities` follow the same idea.
 withHooks({
   onInit(store) {
     watchState(store, (state) => {
-      console.log('[BooksStore] state changed', state);
+      console.log("[BooksStore] state changed", state);
     });
   },
-})
+});
 ```
 
 When called inside an injection context, it stops automatically when that context is destroyed. Outside of one, pass `{ injector }` or call the returned `destroy()`.
@@ -3216,13 +3297,13 @@ Pass a `collection` name. All members are then prefixed with that name:
 
 ```ts
 export const LibraryStore = signalStore(
-  withEntities({ entity: type<Book>(), collection: 'book' }),
-  withEntities({ entity: type<Author>(), collection: 'author' }),
+  withEntities({ entity: type<Book>(), collection: "book" }),
+  withEntities({ entity: type<Author>(), collection: "author" }),
   withMethods((store) => ({
     addBook(book: Book) {
-      patchState(store, addEntity(book, { collection: 'book' }));
+      patchState(store, addEntity(book, { collection: "book" }));
     },
-  }))
+  })),
 );
 
 // store.bookEntities(), store.bookIds(), store.bookEntityMap()
@@ -3234,11 +3315,11 @@ export const LibraryStore = signalStore(
 `entityConfig` lets you define the entity type, collection name and `selectId` once, and reuse it in `withEntities` and in updaters:
 
 ```ts
-import { entityConfig, withEntities, addEntity } from '@ngrx/signals/entities';
+import { entityConfig, withEntities, addEntity } from "@ngrx/signals/entities";
 
 const bookConfig = entityConfig({
   entity: type<Book>(),
-  collection: 'book',
+  collection: "book",
   selectId: (book) => book.isbn,
 });
 
@@ -3248,7 +3329,7 @@ export const BooksStore = signalStore(
     add(book: Book) {
       patchState(store, addEntity(book, bookConfig));
     },
-  }))
+  })),
 );
 ```
 
@@ -3260,7 +3341,10 @@ Pass `selectId` to the updaters (or use `entityConfig`):
 const selectId: SelectEntityId<Country> = (c) => c.code;
 
 patchState(store, setAllEntities(countries, { selectId }));
-patchState(store, updateEntity({ id: 'GE', changes: { name: 'Georgia' } }, { selectId }));
+patchState(
+  store,
+  updateEntity({ id: "GE", changes: { name: "Georgia" } }, { selectId }),
+);
 ```
 
 ### 218: What is `signalStoreFeature`?
@@ -3270,21 +3354,26 @@ It lets you group several features into one reusable feature. You then use it in
 ```ts
 export function withRequestStatus() {
   return signalStoreFeature(
-    withState<{ requestStatus: 'idle' | 'pending' | 'fulfilled' | { error: string } }>({
-      requestStatus: 'idle',
+    withState<{
+      requestStatus: "idle" | "pending" | "fulfilled" | { error: string };
+    }>({
+      requestStatus: "idle",
     }),
     withComputed(({ requestStatus }) => ({
-      isPending: computed(() => requestStatus() === 'pending'),
-      isFulfilled: computed(() => requestStatus() === 'fulfilled'),
+      isPending: computed(() => requestStatus() === "pending"),
+      isFulfilled: computed(() => requestStatus() === "fulfilled"),
       error: computed(() => {
         const s = requestStatus();
-        return typeof s === 'object' ? s.error : null;
+        return typeof s === "object" ? s.error : null;
       }),
-    }))
+    })),
   );
 }
 
-export const BooksStore = signalStore(withEntities<Book>(), withRequestStatus());
+export const BooksStore = signalStore(
+  withEntities<Book>(),
+  withRequestStatus(),
+);
 ```
 
 ### 219: How do you write a custom feature that needs something from the store?
@@ -3301,7 +3390,7 @@ export function withSelectedEntity<E extends { id: string }>() {
         const id = selectedId();
         return id ? entityMap()[id] : undefined;
       }),
-    }))
+    })),
   );
 }
 ```
@@ -3345,7 +3434,7 @@ async load() {
 withProps(() => ({
   _http: inject(HttpClient),
   pageSize: 20,
-}))
+}));
 ```
 
 ### 222: How do private members work in SignalStore?
@@ -3359,7 +3448,7 @@ signalStore(
     _remember(book: Book) {
       patchState(store, (s) => ({ _cache: { ...s._cache, [book.id]: book } }));
     },
-  }))
+  })),
 );
 
 // inject(Store)._cache  -> TypeScript error, and undefined at runtime
@@ -3379,13 +3468,13 @@ Provide it in a common parent component (or in route `providers`). Every child i
 
 ```ts
 @Component({
-  selector: 'app-checkout',
+  selector: "app-checkout",
   providers: [CheckoutStore],
   template: `<app-cart-step /> <app-payment-step />`,
 })
 export class Checkout {}
 
-@Component({ selector: 'app-payment-step' /* ... */ })
+@Component({ selector: "app-payment-step" /* ... */ })
 export class PaymentStep {
   readonly store = inject(CheckoutStore); // same instance as in Checkout
 }
@@ -3396,14 +3485,14 @@ export class PaymentStep {
 `deepComputed` from `@ngrx/signals` works like `computed`, but if the result is an object, you get a DeepSignal with signals for each nested property.
 
 ```ts
-import { deepComputed } from '@ngrx/signals';
+import { deepComputed } from "@ngrx/signals";
 
 withComputed(({ page, pageSize, total }) => ({
   pagination: deepComputed(() => ({
     current: page(),
     totalPages: Math.ceil(total() / pageSize()),
   })),
-}))
+}));
 
 // store.pagination.totalPages()
 ```
@@ -3415,7 +3504,7 @@ Use `toObservable` from `@angular/core/rxjs-interop`. It needs an injection cont
 ```ts
 withProps(({ query }) => ({
   query$: toObservable(query),
-}))
+}));
 ```
 
 You can also call it in a component constructor or field initializer.
@@ -3441,7 +3530,7 @@ export const BookStore = signalStore(
     selectBook(bookId: string) {
       patchState(store, { bookId });
     },
-  }))
+  })),
 );
 ```
 
@@ -3452,7 +3541,7 @@ When `bookId` changes, the resource fetches again by itself. Note that the resou
 `withLinkedState` adds state that is derived from other signals but can also be changed by hand, like Angular's `linkedSignal`. When the source changes, the value is recalculated. Between changes you can still update it with `patchState`.
 
 ```ts
-import { withLinkedState } from '@ngrx/signals';
+import { withLinkedState } from "@ngrx/signals";
 
 export const OptionsStore = signalStore(
   withState({ options: [] as Option[] }),
@@ -3464,7 +3553,7 @@ export const OptionsStore = signalStore(
     select(option: Option) {
       patchState(store, { selectedOption: option });
     },
-  }))
+  })),
 );
 ```
 
@@ -3481,7 +3570,7 @@ export const BookStore = signalStore(
       return api.get(id);
     },
   })),
-  withFeature((store) => withEntityLoader((id) => store.load(id)))
+  withFeature((store) => withEntityLoader((id) => store.load(id))),
 );
 ```
 
@@ -3492,17 +3581,20 @@ This keeps the custom feature generic, because it doesn't need to know the metho
 Use `unprotected` from `@ngrx/signals/testing`. It lets you call `patchState` on a protected store in tests only:
 
 ```ts
-import { unprotected } from '@ngrx/signals/testing';
+import { unprotected } from "@ngrx/signals/testing";
 
-it('shows sorted books', () => {
+it("shows sorted books", () => {
   TestBed.configureTestingModule({ providers: [BooksStore] });
   const store = TestBed.inject(BooksStore);
 
   patchState(unprotected(store), {
-    books: [{ id: '2', title: 'B' }, { id: '1', title: 'A' }] as Book[],
+    books: [
+      { id: "2", title: "B" },
+      { id: "1", title: "A" },
+    ] as Book[],
   });
 
-  expect(store.sortedBooks().map((b) => b.title)).toEqual(['A', 'B']);
+  expect(store.sortedBooks().map((b) => b.title)).toEqual(["A", "B"]);
 });
 ```
 
@@ -3511,17 +3603,17 @@ it('shows sorted books', () => {
 Use fake timers and mock the service:
 
 ```ts
-it('searches after debounce', fakeAsync(() => {
+it("searches after debounce", fakeAsync(() => {
   const api = { search: jasmine.createSpy().and.returnValue(of([book])) };
   TestBed.configureTestingModule({
     providers: [BooksSearchStore, { provide: BooksService, useValue: api }],
   });
   const store = TestBed.inject(BooksSearchStore);
 
-  store.searchByQuery('ngrx');
+  store.searchByQuery("ngrx");
   tick(300);
 
-  expect(api.search).toHaveBeenCalledWith('ngrx');
+  expect(api.search).toHaveBeenCalledWith("ngrx");
   expect(store.books()).toEqual([book]);
 }));
 ```
@@ -3536,7 +3628,10 @@ Store dependencies come from DI, so you replace them in `TestBed` providers:
 TestBed.configureTestingModule({
   providers: [
     BooksStore,
-    { provide: BooksService, useValue: { getAll: () => Promise.resolve([book]) } },
+    {
+      provide: BooksService,
+      useValue: { getAll: () => Promise.resolve([book]) },
+    },
   ],
 });
 ```
@@ -3556,7 +3651,7 @@ fixture.detectChanges();
 ### 235: How do you test a class-based effect with `provideMockActions`?
 
 ```ts
-describe('BooksEffects', () => {
+describe("BooksEffects", () => {
   let actions$: Observable<Action>;
   let effects: BooksEffects;
   const api = { getAll: jasmine.createSpy() };
@@ -3572,12 +3667,12 @@ describe('BooksEffects', () => {
     effects = TestBed.inject(BooksEffects);
   });
 
-  it('returns loadFailure on error', (done) => {
-    api.getAll.and.returnValue(throwError(() => new Error('boom')));
+  it("returns loadFailure on error", (done) => {
+    api.getAll.and.returnValue(throwError(() => new Error("boom")));
     actions$ = of(BooksPageActions.opened());
 
     effects.loadBooks$.subscribe((action) => {
-      expect(action).toEqual(BooksApiActions.loadFailure({ error: 'boom' }));
+      expect(action).toEqual(BooksApiActions.loadFailure({ error: "boom" }));
       done();
     });
   });
@@ -3601,8 +3696,8 @@ beforeEach(() => {
   fixture.detectChanges();
 });
 
-it('dispatches opened on init', () => {
-  const spy = spyOn(store, 'dispatch');
+it("dispatches opened on init", () => {
+  const spy = spyOn(store, "dispatch");
   fixture.componentInstance.ngOnInit();
   expect(spy).toHaveBeenCalledWith(BooksPageActions.opened());
 });
@@ -3665,10 +3760,10 @@ export class MoviesStore extends ComponentStore<MoviesState> {
           tapResponse({
             next: (movies) => this.patchState({ movies }),
             error: console.error,
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 }
 ```
@@ -3680,24 +3775,26 @@ export class MoviesStore extends ComponentStore<MoviesState> {
 
 ### 240: How does ComponentStore compare to SignalStore?
 
-| | ComponentStore | SignalStore |
-| --- | --- | --- |
-| Based on | RxJS (with signal helpers) | Signals (RxJS optional) |
+|            | ComponentStore                      | SignalStore                        |
+| ---------- | ----------------------------------- | ---------------------------------- |
+| Based on   | RxJS (with signal helpers)          | Signals (RxJS optional)            |
 | Defined as | Class that extends `ComponentStore` | Function composition with features |
-| Reuse | Inheritance | Custom features |
-| Entities | Use `@ngrx/entity` by hand | `withEntities` built in |
-| Status | Maintained, not the focus | Recommended for new code |
+| Reuse      | Inheritance                         | Custom features                    |
+| Entities   | Use `@ngrx/entity` by hand          | `withEntities` built in            |
+| Status     | Maintained, not the focus           | Recommended for new code           |
 
 ### 241: How does `*ngrxLet` handle errors and loading?
 
 It exposes extra context values and supports a `suspense` template:
 
 ```html
-<ng-container *ngrxLet="user$ as user; error as error; complete as complete; suspense: loading">
+<ng-container
+  *ngrxLet="user$ as user; error as error; complete as complete; suspense: loading"
+>
   @if (error) {
-    <p>Could not load user</p>
+  <p>Could not load user</p>
   } @else {
-    <p>{{ user.name }}</p>
+  <p>{{ user.name }}</p>
   }
 </ng-container>
 
@@ -3767,7 +3864,7 @@ The main point is that state code is grouped by feature, not by type across the 
 A facade is a service that hides the store behind simple methods and signals:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class BooksFacade {
   private readonly store = inject(Store);
   readonly books = this.store.selectSignal(selectBooks);
@@ -3877,8 +3974,8 @@ Inject `ReducerManager`:
 ```ts
 const reducerManager = inject(ReducerManager);
 
-reducerManager.addReducer('reports', reportsReducer);
-reducerManager.removeReducer('reports');
+reducerManager.addReducer("reports", reportsReducer);
+reducerManager.removeReducer("reports");
 ```
 
 `provideState` does this for you in most cases. Manual use is rare, for example in plugin systems where features are loaded by name.
@@ -3927,7 +4024,7 @@ A flat config setup:
 
 ```js
 // eslint.config.js
-const ngrx = require('@ngrx/eslint-plugin/v9');
+const ngrx = require("@ngrx/eslint-plugin/v9");
 
 module.exports = [
   ...ngrx.configs.store,
@@ -3958,11 +4055,11 @@ provideStoreDevtools({
   logOnly: !isDevMode(),
   actionSanitizer: (action) =>
     action.type === AuthApiActions.loginSuccess.type
-      ? { ...action, token: '***' }
+      ? { ...action, token: "***" }
       : action,
   stateSanitizer: (state: any) => ({
     ...state,
-    auth: { ...state.auth, token: state.auth?.token ? '***' : null },
+    auth: { ...state.auth, token: state.auth?.token ? "***" : null },
   }),
 });
 ```
@@ -3987,11 +4084,11 @@ Keep in mind that anyone with the extension can see your state in production if 
 Not with `@ngrx/store-devtools`, which only works with the global store. The community package `@angular-architects/ngrx-toolkit` provides a `withDevtools('storeName')` feature that sends SignalStore state to Redux DevTools:
 
 ```ts
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
+import { withDevtools } from "@angular-architects/ngrx-toolkit";
 
 export const BooksStore = signalStore(
-  withDevtools('books'),
-  withState(initialState)
+  withDevtools("books"),
+  withState(initialState),
 );
 ```
 
@@ -4027,7 +4124,7 @@ export const selectCartWithProducts = createSelector(
   cartFeature.selectItems,
   productsFeature.selectEntities,
   (items, products) =>
-    items.map((item) => ({ ...item, product: products[item.productId] }))
+    items.map((item) => ({ ...item, product: products[item.productId] })),
 );
 ```
 
@@ -4046,7 +4143,7 @@ Put this selector in a shared place or in the feature that needs it.
 export class ProductsPage {
   private readonly store = inject(Store);
   readonly products = this.store.selectSignal(selectProducts);
-  readonly search = signal('');
+  readonly search = signal("");
 
   readonly visible = computed(() => {
     const q = this.search().toLowerCase();
@@ -4102,7 +4199,7 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
   return store.select(selectIsLoggedIn).pipe(
     take(1),
-    map((loggedIn) => (loggedIn ? true : router.createUrlTree(['/login'])))
+    map((loggedIn) => (loggedIn ? true : router.createUrlTree(["/login"]))),
   );
 };
 ```
@@ -4121,7 +4218,7 @@ export const booksLoadedGuard: CanActivateFn = () => {
       if (!loaded) store.dispatch(BooksGuardActions.loadRequested());
     }),
     filter(Boolean),
-    take(1)
+    take(1),
   );
 };
 ```
@@ -4161,13 +4258,13 @@ export interface ProductsState extends EntityState<Product> {
   page: number;
   pageSize: number;
   total: number;
-  status: 'idle' | 'loading' | 'error';
+  status: "idle" | "loading" | "error";
 }
 
 export const selectTotalPages = createSelector(
   productsFeature.selectTotal,
   productsFeature.selectPageSize,
-  (total, size) => Math.ceil(total / size)
+  (total, size) => Math.ceil(total / size),
 );
 ```
 
@@ -4184,8 +4281,12 @@ export const selectVisibleProducts = createSelector(
   selectSort,
   (products, filter, sort) =>
     products
-      .filter((p) => p.category === filter.category || filter.category === 'all')
-      .toSorted((a, b) => (sort === 'price' ? a.price - b.price : a.name.localeCompare(b.name)))
+      .filter(
+        (p) => p.category === filter.category || filter.category === "all",
+      )
+      .toSorted((a, b) =>
+        sort === "price" ? a.price - b.price : a.name.localeCompare(b.name),
+      ),
 );
 ```
 
@@ -4197,7 +4298,11 @@ Check in the effect before calling the API:
 
 ```ts
 export const loadBooks = createEffect(
-  (actions$ = inject(Actions), store = inject(Store), api = inject(BooksService)) =>
+  (
+    actions$ = inject(Actions),
+    store = inject(Store),
+    api = inject(BooksService),
+  ) =>
     actions$.pipe(
       ofType(BooksPageActions.opened),
       concatLatestFrom(() => store.select(selectBooksLoaded)),
@@ -4205,11 +4310,13 @@ export const loadBooks = createEffect(
       exhaustMap(() =>
         api.getAll().pipe(
           map((books) => BooksApiActions.loadSuccess({ books })),
-          catchError(() => of(BooksApiActions.loadFailure({ error: 'failed' })))
-        )
-      )
+          catchError(() =>
+            of(BooksApiActions.loadFailure({ error: "failed" })),
+          ),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -4223,11 +4330,13 @@ Dispatch a "left" action and reset in the reducer:
 export class BooksPage {
   private readonly store = inject(Store);
   constructor() {
-    inject(DestroyRef).onDestroy(() => this.store.dispatch(BooksPageActions.left()));
+    inject(DestroyRef).onDestroy(() =>
+      this.store.dispatch(BooksPageActions.left()),
+    );
   }
 }
 
-on(BooksPageActions.left, () => initialState)
+on(BooksPageActions.left, () => initialState);
 ```
 
 If the state is only needed by that page, a component-level SignalStore is often a better fit, since it's destroyed automatically.
@@ -4257,9 +4366,9 @@ switchMap(() =>
   api.getAll().pipe(
     retry({ count: 3, delay: (_, attempt) => timer(attempt * 1000) }),
     map((books) => BooksApiActions.loadSuccess({ books })),
-    catchError((e) => of(BooksApiActions.loadFailure({ error: e.message })))
-  )
-)
+    catchError((e) => of(BooksApiActions.loadFailure({ error: e.message }))),
+  ),
+);
 ```
 
 Only retry safe requests (like GET), and don't retry on errors like 400 or 403 that won't change.
@@ -4271,9 +4380,9 @@ switchMap(({ id }) =>
   api.getReport(id).pipe(
     map((report) => ReportApiActions.loaded({ report })),
     catchError(() => of(ReportApiActions.failed())),
-    takeUntil(actions$.pipe(ofType(routerNavigationAction)))
-  )
-)
+    takeUntil(actions$.pipe(ofType(routerNavigationAction))),
+  ),
+);
 ```
 
 Or listen to a page "left" action instead of every navigation.
@@ -4289,11 +4398,11 @@ export const liveQuotes = createEffect(
         socket.connect().pipe(
           map((quote) => QuotesSocketActions.quoteReceived({ quote })),
           catchError(() => of(QuotesSocketActions.connectionFailed())),
-          takeUntil(actions$.pipe(ofType(QuotesPageActions.left)))
-        )
-      )
+          takeUntil(actions$.pipe(ofType(QuotesPageActions.left))),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -4305,11 +4414,13 @@ Yes. The function receives arguments and returns the props. It's useful for addi
 
 ```ts
 export const todoAdded = createAction(
-  '[Todo Page] Todo Added',
-  (title: string, id = crypto.randomUUID()) => ({ todo: { id, title, done: false } })
+  "[Todo Page] Todo Added",
+  (title: string, id = crypto.randomUUID()) => ({
+    todo: { id, title, done: false },
+  }),
 );
 
-store.dispatch(todoAdded('Buy milk'));
+store.dispatch(todoAdded("Buy milk"));
 ```
 
 Generating the id in the action creator keeps the reducer pure.
@@ -4320,9 +4431,11 @@ Yes, each event can be `props<...>()`, `emptyProps()` or a function:
 
 ```ts
 export const TodoPageActions = createActionGroup({
-  source: 'Todo Page',
+  source: "Todo Page",
   events: {
-    'Todo Added': (title: string) => ({ todo: { id: crypto.randomUUID(), title, done: false } }),
+    "Todo Added": (title: string) => ({
+      todo: { id: crypto.randomUUID(), title, done: false },
+    }),
     Opened: emptyProps(),
   },
 });
@@ -4360,12 +4473,16 @@ function selectCount<T>(selectList: MemoizedSelector<object, T[]>) {
 Keep past states and handle an undo action in a meta-reducer for that feature:
 
 ```ts
-export function undoable<S>(reducer: ActionReducer<S>): ActionReducer<{ past: S[]; present: S }> {
+export function undoable<S>(
+  reducer: ActionReducer<S>,
+): ActionReducer<{ past: S[]; present: S }> {
   return (state, action) => {
     const current = state ?? { past: [], present: reducer(undefined, action) };
     if (action.type === EditorActions.undo.type) {
       const previous = current.past.at(-1);
-      return previous ? { past: current.past.slice(0, -1), present: previous } : current;
+      return previous
+        ? { past: current.past.slice(0, -1), present: previous }
+        : current;
     }
     const present = reducer(current.present, action);
     return present === current.present
@@ -4387,7 +4504,7 @@ export const CartStore = signalStore(
   withProps(() => ({ _auth: inject(AuthStore) })),
   withComputed(({ items, _auth }) => ({
     canCheckout: computed(() => _auth.isLoggedIn() && items().length > 0),
-  }))
+  })),
 );
 ```
 
@@ -4410,7 +4527,7 @@ withMethods((store, api = inject(BooksService)) => {
       await load();
     },
   };
-})
+});
 ```
 
 Or split them into two `withMethods` calls.
@@ -4440,14 +4557,14 @@ You can migrate one store at a time, since both can live in the same app.
 
 ### 295: How do you migrate an NgModule-based NgRx setup to standalone providers?
 
-| NgModule | Standalone |
-| --- | --- |
-| `StoreModule.forRoot(reducers, config)` | `provideStore(reducers, config)` |
-| `StoreModule.forFeature(feature)` | `provideState(feature)` |
-| `EffectsModule.forRoot([A])` | `provideEffects(A)` |
-| `EffectsModule.forFeature([B])` | `provideEffects(B)` in route providers |
-| `StoreDevtoolsModule.instrument()` | `provideStoreDevtools()` |
-| `StoreRouterConnectingModule.forRoot()` | `provideRouterStore()` |
+| NgModule                                | Standalone                             |
+| --------------------------------------- | -------------------------------------- |
+| `StoreModule.forRoot(reducers, config)` | `provideStore(reducers, config)`       |
+| `StoreModule.forFeature(feature)`       | `provideState(feature)`                |
+| `EffectsModule.forRoot([A])`            | `provideEffects(A)`                    |
+| `EffectsModule.forFeature([B])`         | `provideEffects(B)` in route providers |
+| `StoreDevtoolsModule.instrument()`      | `provideStoreDevtools()`               |
+| `StoreRouterConnectingModule.forRoot()` | `provideRouterStore()`                 |
 
 The rest of the code (actions, reducers, selectors, effects) stays the same.
 
@@ -4465,13 +4582,20 @@ export const OrdersStore = signalStore(
     load: rxMethod<string | null>(
       pipe(
         filter(Boolean),
-        switchMap((userId) => api.getForUser(userId).pipe(
-          tapResponse({ next: (orders) => patchState(store, { orders }), error: console.error })
-        ))
-      )
+        switchMap((userId) =>
+          api
+            .getForUser(userId)
+            .pipe(
+              tapResponse({
+                next: (orders) => patchState(store, { orders }),
+                error: console.error,
+              }),
+            ),
+        ),
+      ),
     ),
   })),
-  withHooks({ onInit: (store) => store.load(store._userId) })
+  withHooks({ onInit: (store) => store.load(store._userId) }),
 );
 ```
 
@@ -4526,7 +4650,15 @@ Roughly, `State` does this:
 actions$
   .pipe(observeOn(queueScheduler))
   .pipe(withLatestFrom(reducer$))
-  .pipe(scan(({ state }, [action, reducer]) => ({ state: reducer(state, action), action }), seed))
+  .pipe(
+    scan(
+      ({ state }, [action, reducer]) => ({
+        state: reducer(state, action),
+        action,
+      }),
+      seed,
+    ),
+  )
   .subscribe(({ state, action }) => {
     this.next(state);
     scannedActions.next(action);
@@ -4568,9 +4700,11 @@ The default checks if the arguments changed. `resultMemoize` also runs the proje
 
 ```ts
 const createArraySelector = createSelectorFactory((projector) =>
-  resultMemoize(projector, (a: unknown[], b: unknown[]) =>
-    a.length === b.length && a.every((x, i) => x === b[i])
-  )
+  resultMemoize(
+    projector,
+    (a: unknown[], b: unknown[]) =>
+      a.length === b.length && a.every((x, i) => x === b[i]),
+  ),
 );
 ```
 
@@ -4602,7 +4736,10 @@ interface State {
 Without an explicit return type, TypeScript doesn't check for extra properties in the object the `on` handler returns. A typo like `{ ...state, laoding: true }` compiles, adds a new key, and the real `loading` never changes.
 
 ```ts
-on(BooksPageActions.opened, (state): BooksState => ({ ...state, loading: true }))
+on(BooksPageActions.opened, (state): BooksState => ({
+  ...state,
+  loading: true,
+}));
 ```
 
 With the explicit return type, the typo becomes a compile error.
@@ -4650,8 +4787,10 @@ export class LiveDataEffects implements OnRunEffects {
     return this.actions$.pipe(
       ofType(AuthApiActions.loginSuccess),
       exhaustMap(() =>
-        resolvedEffects$.pipe(takeUntil(this.actions$.pipe(ofType(AuthActions.logout))))
-      )
+        resolvedEffects$.pipe(
+          takeUntil(this.actions$.pipe(ofType(AuthActions.logout))),
+        ),
+      ),
     );
   }
 }
@@ -4676,9 +4815,11 @@ export const liveFeed = createEffect(
   (feed = inject(FeedService)) =>
     feed.connect().pipe(
       map((msg) => FeedActions.messageReceived({ msg })),
-      retry({ delay: (error, attempt) => timer(Math.min(30000, 1000 * 2 ** attempt)) })
+      retry({
+        delay: (error, attempt) => timer(Math.min(30000, 1000 * 2 ** attempt)),
+      }),
     ),
-  { functional: true, useEffectsErrorHandler: false }
+  { functional: true, useEffectsErrorHandler: false },
 );
 ```
 
@@ -4707,13 +4848,13 @@ export const loadDetails = createEffect(
           switchMap(({ id }) =>
             api.details(id).pipe(
               map((details) => ItemApiActions.detailsLoaded({ id, details })),
-              catchError(() => of(ItemApiActions.detailsFailed({ id })))
-            )
-          )
-        )
-      )
+              catchError(() => of(ItemApiActions.detailsFailed({ id }))),
+            ),
+          ),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -4724,19 +4865,23 @@ Requests for the same id cancel each other, while different ids run in parallel.
 With RxJS `TestScheduler`:
 
 ```ts
-import { TestScheduler } from 'rxjs/testing';
+import { TestScheduler } from "rxjs/testing";
 
 let scheduler: TestScheduler;
 beforeEach(() => {
-  scheduler = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
+  scheduler = new TestScheduler((actual, expected) =>
+    expect(actual).toEqual(expected),
+  );
 });
 
-it('maps opened to loadSuccess', () => {
+it("maps opened to loadSuccess", () => {
   scheduler.run(({ hot, cold, expectObservable }) => {
-    const actions$ = hot('-a', { a: BooksPageActions.opened() });
-    const api = { getAll: () => cold('--b|', { b: [book] }) } as unknown as BooksService;
+    const actions$ = hot("-a", { a: BooksPageActions.opened() });
+    const api = {
+      getAll: () => cold("--b|", { b: [book] }),
+    } as unknown as BooksService;
 
-    expectObservable(loadBooks(actions$ as any, api)).toBe('---c', {
+    expectObservable(loadBooks(actions$ as any, api)).toBe("---c", {
       c: BooksApiActions.loadSuccess({ books: [book] }),
     });
   });
@@ -4751,13 +4896,13 @@ Inside `scheduler.run`, time-based operators like `debounceTime` use virtual tim
 
 ```ts
 scheduler.run(({ hot, cold, expectObservable }) => {
-  const actions$ = hot('-a-b 300ms -', {
-    a: BooksPageActions.queryChanged({ query: 'n' }),
-    b: BooksPageActions.queryChanged({ query: 'ng' }),
+  const actions$ = hot("-a-b 300ms -", {
+    a: BooksPageActions.queryChanged({ query: "n" }),
+    b: BooksPageActions.queryChanged({ query: "ng" }),
   });
-  const api = { search: (q: string) => cold('-r|', { r: [book] }) } as any;
+  const api = { search: (q: string) => cold("-r|", { r: [book] }) } as any;
 
-  expectObservable(search(actions$ as any, api)).toBe('---- 299ms -s', {
+  expectObservable(search(actions$ as any, api)).toBe("---- 299ms -s", {
     s: BooksApiActions.searchSuccess({ books: [book] }),
   });
 });
@@ -4769,14 +4914,16 @@ Only the last query passes through the debounce, which is what you want to prove
 
 ```ts
 scheduler.run(({ hot, cold, expectObservable, expectSubscriptions }) => {
-  const actions$ = hot('-a-a-a', { a: LoginPageActions.submitted({ credentials }) });
-  const response = cold('---u|', { u: user });
+  const actions$ = hot("-a-a-a", {
+    a: LoginPageActions.submitted({ credentials }),
+  });
+  const response = cold("---u|", { u: user });
   const auth = { login: () => response } as any;
 
-  expectObservable(login(actions$ as any, auth)).toBe('----s-', {
+  expectObservable(login(actions$ as any, auth)).toBe("----s-", {
     s: AuthApiActions.loginSuccess({ user }),
   });
-  expectSubscriptions(response.subscriptions).toBe(['-^---!']);
+  expectSubscriptions(response.subscriptions).toBe(["-^---!"]);
 });
 ```
 
@@ -4804,8 +4951,16 @@ The check freezes the state objects. If you pass state objects to a library that
 Use separate entity collections that reference each other by id:
 
 ```ts
-interface Post { id: string; authorId: string; title: string; }
-interface Comment { id: string; postId: string; text: string; }
+interface Post {
+  id: string;
+  authorId: string;
+  title: string;
+}
+interface Comment {
+  id: string;
+  postId: string;
+  text: string;
+}
 
 export interface BlogState {
   posts: EntityState<Post>;
@@ -4824,7 +4979,7 @@ Use selectors that combine collections:
 export const selectPostsWithAuthors = createSelector(
   selectAllPosts,
   selectAuthorEntities,
-  (posts, authors) => posts.map((p) => ({ ...p, author: authors[p.authorId] }))
+  (posts, authors) => posts.map((p) => ({ ...p, author: authors[p.authorId] })),
 );
 ```
 
@@ -4835,16 +4990,29 @@ This creates new objects each time posts or authors change, so keep it close to 
 Store a join collection, or arrays of ids on one side:
 
 ```ts
-interface Student { id: string; name: string; }
-interface Course { id: string; title: string; }
-interface Enrollment { id: string; studentId: string; courseId: string; }
+interface Student {
+  id: string;
+  name: string;
+}
+interface Course {
+  id: string;
+  title: string;
+}
+interface Enrollment {
+  id: string;
+  studentId: string;
+  courseId: string;
+}
 
 export const selectCoursesForStudent = (studentId: string) =>
-  createSelector(selectAllEnrollments, selectCourseEntities, (enrollments, courses) =>
-    enrollments
-      .filter((e) => e.studentId === studentId)
-      .map((e) => courses[e.courseId])
-      .filter((c): c is Course => !!c)
+  createSelector(
+    selectAllEnrollments,
+    selectCourseEntities,
+    (enrollments, courses) =>
+      enrollments
+        .filter((e) => e.studentId === studentId)
+        .map((e) => courses[e.courseId])
+        .filter((c): c is Course => !!c),
   );
 ```
 
@@ -4909,8 +5077,15 @@ interface History<S> {
   future: S[];
 }
 
-export function undoRedo<S>(reducer: ActionReducer<S>, limit = 100): ActionReducer<History<S>> {
-  const initial: History<S> = { past: [], present: reducer(undefined, { type: '@@init' }), future: [] };
+export function undoRedo<S>(
+  reducer: ActionReducer<S>,
+  limit = 100,
+): ActionReducer<History<S>> {
+  const initial: History<S> = {
+    past: [],
+    present: reducer(undefined, { type: "@@init" }),
+    future: [],
+  };
 
   return (state = initial, action) => {
     const { past, present, future } = state;
@@ -4918,22 +5093,34 @@ export function undoRedo<S>(reducer: ActionReducer<S>, limit = 100): ActionReduc
     switch (action.type) {
       case HistoryActions.undo.type: {
         if (!past.length) return state;
-        return { past: past.slice(0, -1), present: past[past.length - 1], future: [present, ...future] };
+        return {
+          past: past.slice(0, -1),
+          present: past[past.length - 1],
+          future: [present, ...future],
+        };
       }
       case HistoryActions.redo.type: {
         if (!future.length) return state;
-        return { past: [...past, present], present: future[0], future: future.slice(1) };
+        return {
+          past: [...past, present],
+          present: future[0],
+          future: future.slice(1),
+        };
       }
       default: {
         const next = reducer(present, action);
         if (next === present) return state;
-        return { past: [...past, present].slice(-limit), present: next, future: [] };
+        return {
+          past: [...past, present].slice(-limit),
+          present: next,
+          future: [],
+        };
       }
     }
   };
 }
 
-provideState('editor', undoRedo(editorReducer));
+provideState("editor", undoRedo(editorReducer));
 ```
 
 Each history entry keeps structural sharing with the others, so memory use is lower than it looks. Still, keep the limit reasonable.
@@ -4943,24 +5130,24 @@ Each history entry keeps structural sharing with the others, so memory use is lo
 Use `BroadcastChannel` in effects:
 
 ```ts
-const channel = new BroadcastChannel('cart');
+const channel = new BroadcastChannel("cart");
 
 export const broadcastCart = createEffect(
   (actions$ = inject(Actions)) =>
     actions$.pipe(
       ofType(CartActions.itemAdded, CartActions.itemRemoved),
       filter((action) => !(action as any).fromOtherTab),
-      tap((action) => channel.postMessage(action))
+      tap((action) => channel.postMessage(action)),
     ),
-  { functional: true, dispatch: false }
+  { functional: true, dispatch: false },
 );
 
 export const receiveCart = createEffect(
   () =>
-    fromEvent<MessageEvent>(channel, 'message').pipe(
-      map((event) => ({ ...event.data, fromOtherTab: true }))
+    fromEvent<MessageEvent>(channel, "message").pipe(
+      map((event) => ({ ...event.data, fromOtherTab: true })),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -5030,7 +5217,7 @@ It shouldn't. `provideStore` should be called once at the root. Calling it again
 Put `provideState` before `provideEffects`:
 
 ```ts
-providers: [provideState(booksFeature), provideEffects(booksEffects)]
+providers: [provideState(booksFeature), provideEffects(booksEffects)];
 ```
 
 If effects start first and react to an action right away (like `ngrxOnInitEffects`, or an action in the same tick), reading the feature state with selectors could fail or return `undefined` because the reducer isn't registered yet.
@@ -5122,7 +5309,7 @@ export function withAutoSave<State extends object>() {
           store.onSaved();
         });
       },
-    })
+    }),
   );
 }
 ```
@@ -5146,7 +5333,7 @@ export function withPagination(config: { pageSize: number }) {
       setTotal(total: number) {
         patchState(store, { total });
       },
-    }))
+    })),
   );
 }
 
@@ -5159,24 +5346,26 @@ Use template literal types to build member names from the collection name:
 
 ```ts
 type NamedCallState<C extends string> = {
-  [K in `${C}CallState`]: 'init' | 'loading' | 'loaded' | { error: string };
+  [K in `${C}CallState`]: "init" | "loading" | "loaded" | { error: string };
 };
 
 export function withCallState<C extends string>(config: { collection: C }) {
   const key = `${config.collection}CallState` as const;
 
   return signalStoreFeature(
-    withState({ [key]: 'init' } as NamedCallState<C>),
+    withState({ [key]: "init" } as NamedCallState<C>),
     withComputed((store) => {
       const callState = (store as Record<string, Signal<unknown>>)[key];
       return {
-        [`${config.collection}Loading`]: computed(() => callState() === 'loading'),
+        [`${config.collection}Loading`]: computed(
+          () => callState() === "loading",
+        ),
       } as { [K in `${C}Loading`]: Signal<boolean> };
-    })
+    }),
   );
 }
 
-export const OrdersStore = signalStore(withCallState({ collection: 'orders' }));
+export const OrdersStore = signalStore(withCallState({ collection: "orders" }));
 // store.ordersCallState(), store.ordersLoading()
 ```
 
@@ -5230,19 +5419,19 @@ export function withUndoRedo<State extends object>(maxHistory = 50) {
           }));
         },
       };
-    })
+    }),
   );
 }
 
 export const EditorStore = signalStore(
-  withState({ text: '', fontSize: 14 }),
+  withState({ text: "", fontSize: 14 }),
   withUndoRedo<{ text: string; fontSize: number }>(),
   withMethods((store) => ({
     setText(text: string) {
       store._record();
       patchState(store, { text });
     },
-  }))
+  })),
 );
 ```
 
@@ -5256,7 +5445,7 @@ export function withStorageSync<State extends object>(key: string) {
     { state: type<State>() },
     withHooks({
       onInit(store) {
-        if (typeof localStorage === 'undefined') return; // SSR
+        if (typeof localStorage === "undefined") return; // SSR
         const saved = localStorage.getItem(key);
         if (saved) {
           patchState(store, JSON.parse(saved) as Partial<State>);
@@ -5265,14 +5454,14 @@ export function withStorageSync<State extends object>(key: string) {
           localStorage.setItem(key, JSON.stringify(state));
         });
       },
-    })
+    }),
   );
 }
 
 export const SettingsStore = signalStore(
-  { providedIn: 'root' },
-  withState({ theme: 'light', language: 'en' }),
-  withStorageSync('settings')
+  { providedIn: "root" },
+  withState({ theme: "light", language: "en" }),
+  withStorageSync("settings"),
 );
 ```
 
@@ -5291,14 +5480,16 @@ export function withEntityLoader<E>(loader: (id: string) => Promise<E>) {
       async loadEntity(id: string) {
         patchState(store, { entity: await loader(id) });
       },
-    }))
+    })),
   );
 }
 
 // host
 signalStore(
-  withMethods((store, api = inject(UsersApi)) => ({ fetchUser: (id: string) => api.get(id) })),
-  withFeature((store) => withEntityLoader((id) => store.fetchUser(id)))
+  withMethods((store, api = inject(UsersApi)) => ({
+    fetchUser: (id: string) => api.get(id),
+  })),
+  withFeature((store) => withEntityLoader((id) => store.fetchUser(id))),
 );
 ```
 
@@ -5316,7 +5507,7 @@ withLinkedState(({ options }) => ({
       return kept ?? newOptions[0] ?? null;
     },
   }),
-}))
+}));
 ```
 
 The linked signal becomes part of the store state, so `patchState(store, { selectedOption })` and `getState` work with it.
@@ -5356,7 +5547,7 @@ Pass the injector in the config:
 export class BooksPage {
   private readonly store = inject(BooksStore);
   private readonly injector = inject(Injector);
-  readonly query = signal('');
+  readonly query = signal("");
 
   ngOnInit() {
     this.store.loadByQuery(this.query, { injector: this.injector });
@@ -5378,11 +5569,11 @@ load: rxMethod<string>(
         tapResponse({
           next: (item) => patchState(store, { item }),
           error: (e: Error) => patchState(store, { error: e.message }),
-        })
-      )
-    )
-  )
-)
+        }),
+      ),
+    ),
+  ),
+);
 ```
 
 If an error reaches the outer pipe, the `rxMethod` stream dies and future calls do nothing.
@@ -5428,11 +5619,11 @@ It was added as experimental in NgRx 19.2 and has been extended in later version
 ### 365: How do you define events with `eventGroup`?
 
 ```ts
-import { type } from '@ngrx/signals';
-import { event, eventGroup } from '@ngrx/signals/events';
+import { type } from "@ngrx/signals";
+import { event, eventGroup } from "@ngrx/signals/events";
 
 export const booksPageEvents = eventGroup({
-  source: 'Books Page',
+  source: "Books Page",
   events: {
     opened: type<void>(),
     queryChanged: type<string>(),
@@ -5440,7 +5631,7 @@ export const booksPageEvents = eventGroup({
 });
 
 export const booksApiEvents = eventGroup({
-  source: 'Books API',
+  source: "Books API",
   events: {
     loadedSuccess: type<Book[]>(),
     loadedFailure: type<string>(),
@@ -5448,7 +5639,7 @@ export const booksApiEvents = eventGroup({
 });
 
 // a single event
-export const appStarted = event('[App] Started');
+export const appStarted = event("[App] Started");
 ```
 
 Each event creator takes the payload as its argument: `booksPageEvents.queryChanged('ngrx')` creates `{ type: '[Books Page] queryChanged', payload: 'ngrx' }`.
@@ -5456,49 +5647,63 @@ Each event creator takes the payload as its argument: `booksPageEvents.queryChan
 ### 366: How do you update state from events with `withReducer`?
 
 ```ts
-import { on, withReducer } from '@ngrx/signals/events';
+import { on, withReducer } from "@ngrx/signals/events";
 
 export const BooksStore = signalStore(
-  withState({ books: [] as Book[], query: '', isLoading: false, error: null as string | null }),
+  withState({
+    books: [] as Book[],
+    query: "",
+    isLoading: false,
+    error: null as string | null,
+  }),
   withReducer(
     on(booksPageEvents.opened, () => ({ isLoading: true })),
     on(booksPageEvents.queryChanged, ({ payload: query }) => ({ query })),
-    on(booksApiEvents.loadedSuccess, ({ payload: books }) => ({ books, isLoading: false })),
-    on(booksApiEvents.loadedFailure, ({ payload: error }) => ({ error, isLoading: false }))
-  )
+    on(booksApiEvents.loadedSuccess, ({ payload: books }) => ({
+      books,
+      isLoading: false,
+    })),
+    on(booksApiEvents.loadedFailure, ({ payload: error }) => ({
+      error,
+      isLoading: false,
+    })),
+  ),
 );
 ```
 
 Case reducers return a partial state, or a partial state updater, so you can reuse entity updaters:
 
 ```ts
-on(booksApiEvents.loadedSuccess, ({ payload }) => setAllEntities(payload))
+on(booksApiEvents.loadedSuccess, ({ payload }) => setAllEntities(payload));
 ```
 
 ### 367: How do you handle side effects with `withEventHandlers`?
 
 ```ts
-import { Events, withEventHandlers } from '@ngrx/signals/events';
-import { mapResponse } from '@ngrx/operators';
+import { Events, withEventHandlers } from "@ngrx/signals/events";
+import { mapResponse } from "@ngrx/operators";
 
 export const BooksStore = signalStore(
   withState(initialState),
   withReducer(/* ... */),
-  withEventHandlers((store, events = inject(Events), api = inject(BooksService)) => ({
-    loadBooks$: events.on(booksPageEvents.opened).pipe(
-      exhaustMap(() =>
-        api.getAll().pipe(
-          mapResponse({
-            next: (books) => booksApiEvents.loadedSuccess(books),
-            error: (e: { message: string }) => booksApiEvents.loadedFailure(e.message),
-          })
-        )
-      )
-    ),
-    logError$: events.on(booksApiEvents.loadedFailure).pipe(
-      tap(({ payload }) => console.error(payload))
-    ),
-  }))
+  withEventHandlers(
+    (store, events = inject(Events), api = inject(BooksService)) => ({
+      loadBooks$: events.on(booksPageEvents.opened).pipe(
+        exhaustMap(() =>
+          api.getAll().pipe(
+            mapResponse({
+              next: (books) => booksApiEvents.loadedSuccess(books),
+              error: (e: { message: string }) =>
+                booksApiEvents.loadedFailure(e.message),
+            }),
+          ),
+        ),
+      ),
+      logError$: events
+        .on(booksApiEvents.loadedFailure)
+        .pipe(tap(({ payload }) => console.error(payload))),
+    }),
+  ),
 );
 ```
 
@@ -5511,7 +5716,9 @@ With `injectDispatch`, which returns typed functions for each event in a group:
 ```ts
 @Component({
   providers: [BooksStore],
-  template: `<input (input)="dispatch.queryChanged($any($event.target).value)" />`,
+  template: `<input
+    (input)="dispatch.queryChanged($any($event.target).value)"
+  />`,
 })
 export class BooksPage {
   readonly store = inject(BooksStore);
@@ -5537,9 +5744,9 @@ export class TodoList {
   private readonly dispatcher = inject(Dispatcher);
 
   remove(id: string) {
-    this.dispatcher.dispatch(todoListEvents.removed(id));                        // local scope (default)
-    this.dispatcher.dispatch(todoListEvents.removed(id), { scope: 'parent' });  // parent scope
-    this.dispatcher.dispatch(todoListEvents.removed(id), { scope: 'global' });  // whole app
+    this.dispatcher.dispatch(todoListEvents.removed(id)); // local scope (default)
+    this.dispatcher.dispatch(todoListEvents.removed(id), { scope: "parent" }); // parent scope
+    this.dispatcher.dispatch(todoListEvents.removed(id), { scope: "global" }); // whole app
   }
 }
 ```
@@ -5565,20 +5772,20 @@ Each store just adds its own `on` or event handler:
 
 ```ts
 export const authEvents = eventGroup({
-  source: 'Auth',
+  source: "Auth",
   events: { loggedOut: type<void>() },
 });
 
 export const CartStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: "root" },
   withState({ items: [] as CartItem[] }),
-  withReducer(on(authEvents.loggedOut, () => ({ items: [] })))
+  withReducer(on(authEvents.loggedOut, () => ({ items: [] }))),
 );
 
 export const OrdersStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: "root" },
   withEntities<Order>(),
-  withReducer(on(authEvents.loggedOut, () => removeAllEntities()))
+  withReducer(on(authEvents.loggedOut, () => removeAllEntities())),
 );
 ```
 
@@ -5589,9 +5796,12 @@ The component that logs out only dispatches `authEvents.loggedOut()` and doesn't
 Dispatch events with the `Dispatcher` and check state:
 
 ```ts
-it('stores books after success', () => {
+it("stores books after success", () => {
   TestBed.configureTestingModule({
-    providers: [BooksStore, { provide: BooksService, useValue: { getAll: () => of([book]) } }],
+    providers: [
+      BooksStore,
+      { provide: BooksService, useValue: { getAll: () => of([book]) } },
+    ],
   });
   const store = TestBed.inject(BooksStore);
   const dispatcher = TestBed.inject(Dispatcher);
@@ -5610,13 +5820,13 @@ To check that events were dispatched, subscribe to `TestBed.inject(Events).on(bo
 ```ts
 const productConfig = entityConfig({
   entity: type<Product>(),
-  collection: 'product',
+  collection: "product",
   selectId: (p) => p.sku,
 });
 
 const categoryConfig = entityConfig({
   entity: type<Category>(),
-  collection: 'category',
+  collection: "category",
   selectId: (c) => c.slug,
 });
 
@@ -5625,7 +5835,10 @@ export const CatalogStore = signalStore(
   withEntities(categoryConfig),
   withComputed(({ productEntities, categoryEntityMap }) => ({
     productsWithCategory: computed(() =>
-      productEntities().map((p) => ({ ...p, category: categoryEntityMap()[p.categorySlug] }))
+      productEntities().map((p) => ({
+        ...p,
+        category: categoryEntityMap()[p.categorySlug],
+      })),
     ),
   })),
   withMethods((store, api = inject(CatalogApi)) => ({
@@ -5634,10 +5847,10 @@ export const CatalogStore = signalStore(
       patchState(
         store,
         setAllEntities(products, productConfig),
-        setAllEntities(categories, categoryConfig)
+        setAllEntities(categories, categoryConfig),
       );
     },
-  }))
+  })),
 );
 ```
 
@@ -5653,10 +5866,13 @@ patchState(
   updateEntities({
     predicate: (todo) => todo.listId === listId,
     changes: (todo) => ({ archived: true, updatedAt: Date.now() }),
-  })
+  }),
 );
 
-patchState(store, removeEntities((todo) => todo.archived));
+patchState(
+  store,
+  removeEntities((todo) => todo.archived),
+);
 ```
 
 `changes` can be an object or a function of the entity.
@@ -5680,7 +5896,7 @@ For a detail view of one item, read from `entityMap()[id]` in a `computed`, inst
 If the HTTP transfer cache isn't enough (for example the state comes from several sources), use `TransferState` in a hook:
 
 ```ts
-const BOOKS_KEY = makeStateKey<BooksState>('books-store');
+const BOOKS_KEY = makeStateKey<BooksState>("books-store");
 
 export function withTransferState<State extends object>(key: StateKey<State>) {
   return signalStoreFeature(
@@ -5699,7 +5915,7 @@ export function withTransferState<State extends object>(key: StateKey<State>) {
           }
         },
       };
-    })
+    }),
   );
 }
 ```
@@ -5719,7 +5935,10 @@ Not in a useful way. `signalStore` returns a class built at runtime from feature
 Use `InstanceType`:
 
 ```ts
-export const BooksStore = signalStore(withState(initialState), withMethods(/* ... */));
+export const BooksStore = signalStore(
+  withState(initialState),
+  withMethods(/* ... */),
+);
 export type BooksStore = InstanceType<typeof BooksStore>;
 
 function logBooks(store: BooksStore) {
@@ -5737,7 +5956,7 @@ Provide an object with the same shape, using signals and spies:
 const mockStore = {
   books: signal<Book[]>([book]),
   isLoading: signal(false),
-  loadAll: jasmine.createSpy('loadAll'),
+  loadAll: jasmine.createSpy("loadAll"),
 };
 
 TestBed.overrideComponent(BooksPage, {
@@ -5752,10 +5971,10 @@ TestBed.overrideComponent(BooksPage, {
 Build a small test store that uses the feature:
 
 ```ts
-describe('withPagination', () => {
+describe("withPagination", () => {
   const TestStore = signalStore(withPagination({ pageSize: 10 }));
 
-  it('moves to the next page if there is one', () => {
+  it("moves to the next page if there is one", () => {
     TestBed.configureTestingModule({ providers: [TestStore] });
     const store = TestBed.inject(TestStore);
 
@@ -5777,10 +5996,10 @@ For features with inputs, add the required state and methods to the test store b
 Destroy the injector that owns the store. For a root-like store in tests, call `TestBed.resetTestingModule()`. For a component-level store, destroy the component fixture:
 
 ```ts
-it('stops polling on destroy', () => {
+it("stops polling on destroy", () => {
   const fixture = TestBed.createComponent(JobPage);
   const store = fixture.debugElement.injector.get(JobStore);
-  const spy = spyOn(store, 'stopPolling').and.callThrough();
+  const spy = spyOn(store, "stopPolling").and.callThrough();
 
   fixture.destroy();
 
@@ -5845,7 +6064,7 @@ This avoids features reaching into each other's state and makes refactors safer.
 Keep the facade thin and name its methods after events:
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class CheckoutFacade {
   private readonly store = inject(Store);
 
@@ -5884,26 +6103,32 @@ export const startUpload = createEffect(
       ofType(UploadPageActions.fileChosen),
       concatMap(({ fileName }) =>
         api.createUploadUrl(fileName).pipe(
-          map(({ url, uploadId }) => UploadApiActions.urlCreated({ url, uploadId })),
-          catchError(() => of(UploadApiActions.failed({ step: 'url' })))
-        )
-      )
+          map(({ url, uploadId }) =>
+            UploadApiActions.urlCreated({ url, uploadId }),
+          ),
+          catchError(() => of(UploadApiActions.failed({ step: "url" }))),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 
 export const sendFile = createEffect(
-  (actions$ = inject(Actions), api = inject(UploadApi), files = inject(PendingFiles)) =>
+  (
+    actions$ = inject(Actions),
+    api = inject(UploadApi),
+    files = inject(PendingFiles),
+  ) =>
     actions$.pipe(
       ofType(UploadApiActions.urlCreated),
       concatMap(({ url, uploadId }) =>
         api.put(url, files.take(uploadId)).pipe(
           map(() => UploadApiActions.fileSent({ uploadId })),
-          catchError(() => of(UploadApiActions.failed({ step: 'send' })))
-        )
-      )
+          catchError(() => of(UploadApiActions.failed({ step: "send" }))),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -5917,34 +6142,40 @@ Provide a store at the wizard component, keep the step and the collected data in
 export const SignupWizardStore = signalStore(
   withState({
     step: 1 as 1 | 2 | 3,
-    account: { email: '', password: '' },
-    profile: { name: '', country: '' },
-    status: 'editing' as 'editing' | 'submitting' | 'done' | 'error',
+    account: { email: "", password: "" },
+    profile: { name: "", country: "" },
+    status: "editing" as "editing" | "submitting" | "done" | "error",
   }),
   withComputed(({ account, profile }) => ({
-    accountValid: computed(() => account.email().includes('@') && account.password().length >= 8),
+    accountValid: computed(
+      () => account.email().includes("@") && account.password().length >= 8,
+    ),
     profileValid: computed(() => profile.name().length > 0),
   })),
   withMethods((store, api = inject(SignupApi)) => ({
     next() {
-      patchState(store, (s) => ({ step: Math.min(3, s.step + 1) as 1 | 2 | 3 }));
+      patchState(store, (s) => ({
+        step: Math.min(3, s.step + 1) as 1 | 2 | 3,
+      }));
     },
     back() {
-      patchState(store, (s) => ({ step: Math.max(1, s.step - 1) as 1 | 2 | 3 }));
+      patchState(store, (s) => ({
+        step: Math.max(1, s.step - 1) as 1 | 2 | 3,
+      }));
     },
     updateAccount(account: Partial<{ email: string; password: string }>) {
       patchState(store, (s) => ({ account: { ...s.account, ...account } }));
     },
     async submit() {
-      patchState(store, { status: 'submitting' });
+      patchState(store, { status: "submitting" });
       try {
         await api.signup(store.account(), store.profile());
-        patchState(store, { status: 'done' });
+        patchState(store, { status: "done" });
       } catch {
-        patchState(store, { status: 'error' });
+        patchState(store, { status: "error" });
       }
     },
-  }))
+  })),
 );
 ```
 
@@ -5959,7 +6190,11 @@ The store is destroyed with the wizard, so there's nothing to reset by hand.
 
 ```ts
 export const flushQueue = createEffect(
-  (store = inject(Store), api = inject(SyncApi), online = inject(OnlineStatus)) =>
+  (
+    store = inject(Store),
+    api = inject(SyncApi),
+    online = inject(OnlineStatus),
+  ) =>
     online.isOnline$.pipe(
       filter(Boolean),
       concatLatestFrom(() => store.select(selectPendingWrites)),
@@ -5968,13 +6203,20 @@ export const flushQueue = createEffect(
           concatMap((write) =>
             api.send(write).pipe(
               map(() => SyncApiActions.writeSent({ id: write.id })),
-              catchError((e) => of(SyncApiActions.writeFailed({ id: write.id, status: e.status })))
-            )
-          )
-        )
-      )
+              catchError((e) =>
+                of(
+                  SyncApiActions.writeFailed({
+                    id: write.id,
+                    status: e.status,
+                  }),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -6016,10 +6258,12 @@ Options that work well together:
 export const reportFailures = createEffect(
   (actions$ = inject(Actions), monitoring = inject(Monitoring)) =>
     actions$.pipe(
-      filter((action) => action.type.endsWith('Failure')),
-      tap((action) => monitoring.captureMessage(action.type, { extra: action }))
+      filter((action) => action.type.endsWith("Failure")),
+      tap((action) =>
+        monitoring.captureMessage(action.type, { extra: action }),
+      ),
     ),
-  { functional: true, dispatch: false }
+  { functional: true, dispatch: false },
 );
 ```
 
@@ -6073,8 +6317,8 @@ DevTools keeps a copy of the state for every action in its history. With large s
 ```ts
 provideStoreDevtools({
   maxAge: 20,
-  actionsBlocklist: ['[Ticker] Price Received'],
-  stateSanitizer: (state: any) => ({ ...state, ticker: '<<large data>>' }),
+  actionsBlocklist: ["[Ticker] Price Received"],
+  stateSanitizer: (state: any) => ({ ...state, ticker: "<<large data>>" }),
 });
 ```
 
@@ -6099,11 +6343,15 @@ export function resetFeatureOn<S>(...creators: ActionCreator[]) {
 
   return (reducer: ActionReducer<S>): ActionReducer<S> =>
     (state, action) =>
-      types.has(action.type) ? reducer(undefined, action) : reducer(state, action);
+      types.has(action.type)
+        ? reducer(undefined, action)
+        : reducer(state, action);
 }
 
-provideState('orders', ordersReducer, {
-  metaReducers: [resetFeatureOn(AuthActions.logoutSuccess, AccountActions.switched)],
+provideState("orders", ordersReducer, {
+  metaReducers: [
+    resetFeatureOn(AuthActions.logoutSuccess, AccountActions.switched),
+  ],
 });
 ```
 
@@ -6127,17 +6375,20 @@ Keep meta-reducers pure. They're plain functions without an injection context, s
 export class ProfileForm {
   private readonly store = inject(Store);
   readonly profile = this.store.selectSignal(selectProfile);
-  readonly form = inject(FormBuilder).nonNullable.group({ name: '', bio: '' });
+  readonly form = inject(FormBuilder).nonNullable.group({ name: "", bio: "" });
 
   constructor() {
     effect(() => {
       const p = this.profile();
-      if (p) this.form.reset({ name: p.name, bio: p.bio }, { emitEvent: false });
+      if (p)
+        this.form.reset({ name: p.name, bio: p.bio }, { emitEvent: false });
     });
 
     this.form.valueChanges
       .pipe(debounceTime(1000), takeUntilDestroyed())
-      .subscribe((draft) => this.store.dispatch(ProfileFormActions.draftChanged({ draft })));
+      .subscribe((draft) =>
+        this.store.dispatch(ProfileFormActions.draftChanged({ draft })),
+      );
   }
 }
 ```
@@ -6152,12 +6403,12 @@ Save a version number with the state and migrate when loading:
 const CURRENT_VERSION = 3;
 
 const migrations: Record<number, (s: any) => any> = {
-  1: (s) => ({ ...s, settings: { theme: s.theme ?? 'light' } }),
+  1: (s) => ({ ...s, settings: { theme: s.theme ?? "light" } }),
   2: (s) => ({ ...s, cart: { items: s.cartItems ?? [] } }),
 };
 
 function loadState(): Partial<AppState> | undefined {
-  const raw = localStorage.getItem('app');
+  const raw = localStorage.getItem("app");
   if (!raw) return undefined;
   let { version, state } = JSON.parse(raw);
   while (version < CURRENT_VERSION) {
@@ -6187,13 +6438,18 @@ Load them at startup and keep them in a small global feature:
 
 ```ts
 export const flagsFeature = createFeature({
-  name: 'flags',
+  name: "flags",
   reducer: createReducer(
     { flags: {} as Record<string, boolean>, loaded: false },
-    on(FlagsApiActions.loaded, (s, { flags }) => ({ ...s, flags, loaded: true }))
+    on(FlagsApiActions.loaded, (s, { flags }) => ({
+      ...s,
+      flags,
+      loaded: true,
+    })),
   ),
   extraSelectors: ({ selectFlags }) => ({
-    selectFlag: (name: string) => createSelector(selectFlags, (flags) => flags[name] ?? false),
+    selectFlag: (name: string) =>
+      createSelector(selectFlags, (flags) => flags[name] ?? false),
   }),
 });
 ```
@@ -6208,9 +6464,9 @@ Things like the current page, filters, sorting and the selected item live in the
 export const selectProductFilters = createSelector(
   selectQueryParams,
   (params) => ({
-    category: params['category'] ?? 'all',
-    page: Number(params['page'] ?? 1),
-  })
+    category: params["category"] ?? "all",
+    page: Number(params["page"] ?? 1),
+  }),
 );
 ```
 
@@ -6336,7 +6592,11 @@ The packages are small and tree-shakable. A few things help:
 ```ts
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = inject(Store).selectSignal(selectToken)();
-  return next(token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req);
+  return next(
+    token
+      ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+      : req,
+  );
 };
 
 provideHttpClient(withInterceptors([authInterceptor]));
@@ -6370,8 +6630,8 @@ on(TaskApiActions.updateConflict, (state, { serverTask }) =>
   adapter.setOne(serverTask, {
     ...state,
     conflicts: { ...state.conflicts, [serverTask.id]: true },
-  })
-)
+  }),
+);
 ```
 
 The UI then shows "this task was changed by someone else" with the server version, and lets the user apply their change again.
@@ -6390,7 +6650,7 @@ export const selectCurrentResults = createSelector(
   selectQueries,
   selectCurrentQuery,
   selectProductEntities,
-  (queries, q, entities) => (queries[q]?.ids ?? []).map((id) => entities[id]!)
+  (queries, q, entities) => (queries[q]?.ids ?? []).map((id) => entities[id]!),
 );
 ```
 
@@ -6402,19 +6662,25 @@ Show cached data right away and refresh in the background:
 
 ```ts
 export const loadDashboard = createEffect(
-  (actions$ = inject(Actions), store = inject(Store), api = inject(DashboardApi)) =>
+  (
+    actions$ = inject(Actions),
+    store = inject(Store),
+    api = inject(DashboardApi),
+  ) =>
     actions$.pipe(
       ofType(DashboardPageActions.opened),
       concatLatestFrom(() => store.select(selectDashboardLoadedAt)),
       filter(([, loadedAt]) => !loadedAt || Date.now() - loadedAt > 30_000),
       switchMap(() =>
         api.get().pipe(
-          map((data) => DashboardApiActions.loaded({ data, loadedAt: Date.now() })),
-          catchError(() => of(DashboardApiActions.refreshFailed()))
-        )
-      )
+          map((data) =>
+            DashboardApiActions.loaded({ data, loadedAt: Date.now() }),
+          ),
+          catchError(() => of(DashboardApiActions.refreshFailed())),
+        ),
+      ),
     ),
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -6435,19 +6701,26 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status !== 401 || req.url.includes('/auth/refresh')) return throwError(() => error);
+      if (error.status !== 401 || req.url.includes("/auth/refresh"))
+        return throwError(() => error);
 
       return auth.refreshOnce().pipe(
-        tap((tokens) => store.dispatch(AuthApiActions.tokenRefreshed({ tokens }))),
+        tap((tokens) =>
+          store.dispatch(AuthApiActions.tokenRefreshed({ tokens })),
+        ),
         switchMap((tokens) =>
-          next(req.clone({ setHeaders: { Authorization: `Bearer ${tokens.access}` } }))
+          next(
+            req.clone({
+              setHeaders: { Authorization: `Bearer ${tokens.access}` },
+            }),
+          ),
         ),
         catchError((refreshError) => {
           store.dispatch(AuthApiActions.sessionExpired());
           return throwError(() => refreshError);
-        })
+        }),
       );
-    })
+    }),
   );
 };
 ```
@@ -6470,11 +6743,13 @@ Count requests that are in flight instead of using a boolean:
 
 ```ts
 export const loadingFeature = createFeature({
-  name: 'loading',
+  name: "loading",
   reducer: createReducer(
     { pending: 0 },
     on(HttpActivityActions.started, (s) => ({ pending: s.pending + 1 })),
-    on(HttpActivityActions.finished, (s) => ({ pending: Math.max(0, s.pending - 1) }))
+    on(HttpActivityActions.finished, (s) => ({
+      pending: Math.max(0, s.pending - 1),
+    })),
   ),
   extraSelectors: ({ selectPending }) => ({
     selectIsBusy: createSelector(selectPending, (n) => n > 0),
@@ -6489,25 +6764,29 @@ The started and finished actions can come from an interceptor (with `finalize` f
 ```ts
 export interface CrudService<E> {
   getAll(): Promise<E[]>;
-  create(entity: Omit<E, 'id'>): Promise<E>;
+  create(entity: Omit<E, "id">): Promise<E>;
   update(id: string, changes: Partial<E>): Promise<E>;
   remove(id: string): Promise<void>;
 }
 
-export function withCrud<E extends { id: string }>(serviceToken: ProviderToken<CrudService<E>>) {
+export function withCrud<E extends { id: string }>(
+  serviceToken: ProviderToken<CrudService<E>>,
+) {
   return signalStoreFeature(
     withEntities<E>(),
-    withState({ status: 'idle' as 'idle' | 'loading' | 'error' }),
+    withState({ status: "idle" as "idle" | "loading" | "error" }),
     withMethods((store, api = inject(serviceToken)) => ({
       async loadAll() {
-        patchState(store, { status: 'loading' });
+        patchState(store, { status: "loading" });
         try {
-          patchState(store, setAllEntities(await api.getAll()), { status: 'idle' });
+          patchState(store, setAllEntities(await api.getAll()), {
+            status: "idle",
+          });
         } catch {
-          patchState(store, { status: 'error' });
+          patchState(store, { status: "error" });
         }
       },
-      async create(entity: Omit<E, 'id'>) {
+      async create(entity: Omit<E, "id">) {
         patchState(store, addEntity(await api.create(entity)));
       },
       async update(id: string, changes: Partial<E>) {
@@ -6517,7 +6796,7 @@ export function withCrud<E extends { id: string }>(serviceToken: ProviderToken<C
         await api.remove(id);
         patchState(store, removeEntity(id));
       },
-    }))
+    })),
   );
 }
 
@@ -6539,10 +6818,13 @@ The store-based check is the most visible one, because the UI can also use the s
 A child store can inject the parent store, because DI looks up the component tree:
 
 ```ts
-export const BoardStore = signalStore(withEntities<Column>(), withMethods(/* ... */));
+export const BoardStore = signalStore(
+  withEntities<Column>(),
+  withMethods(/* ... */),
+);
 
 export const ColumnStore = signalStore(
-  withState({ columnId: '' }),
+  withState({ columnId: "" }),
   withProps(() => ({ _board: inject(BoardStore) })),
   withComputed(({ columnId, _board }) => ({
     column: computed(() => _board.entityMap()[columnId()]),
@@ -6551,7 +6833,7 @@ export const ColumnStore = signalStore(
     rename(title: string) {
       store._board.renameColumn(store.columnId(), title);
     },
-  }))
+  })),
 );
 ```
 
@@ -6567,22 +6849,28 @@ Check the platform before starting:
 
 ```ts
 export const pollPrices = createEffect(
-  (actions$ = inject(Actions), api = inject(PricesApi), platformId = inject(PLATFORM_ID)) =>
+  (
+    actions$ = inject(Actions),
+    api = inject(PricesApi),
+    platformId = inject(PLATFORM_ID),
+  ) =>
     isPlatformBrowser(platformId)
       ? actions$.pipe(
           ofType(PricesPageActions.opened),
           switchMap(() =>
             timer(0, 10_000).pipe(
-              switchMap(() => api.get().pipe(
-                map((prices) => PricesApiActions.loaded({ prices })),
-                catchError(() => EMPTY)
-              )),
-              takeUntil(actions$.pipe(ofType(PricesPageActions.left)))
-            )
-          )
+              switchMap(() =>
+                api.get().pipe(
+                  map((prices) => PricesApiActions.loaded({ prices })),
+                  catchError(() => EMPTY),
+                ),
+              ),
+              takeUntil(actions$.pipe(ofType(PricesPageActions.left))),
+            ),
+          ),
         )
       : EMPTY,
-  { functional: true }
+  { functional: true },
 );
 ```
 
@@ -6597,11 +6885,11 @@ Components inside `@defer` are loaded later. If they provide their own SignalSto
 `watchState` runs synchronously, so a normal test works. Angular `effect`s are scheduled, so you need to flush them. In recent Angular versions use `TestBed.tick()` (it replaced `TestBed.flushEffects()`):
 
 ```ts
-it('saves settings to storage', () => {
+it("saves settings to storage", () => {
   const store = TestBed.inject(SettingsStore);
-  store.setTheme('dark');
+  store.setTheme("dark");
   TestBed.tick();
-  expect(localStorage.getItem('settings')).toContain('dark');
+  expect(localStorage.getItem("settings")).toContain("dark");
 });
 ```
 
@@ -6612,15 +6900,17 @@ For `rxMethod` with time operators, use fake timers or `TestScheduler`.
 Set the input with `fixture.componentRef.setInput` and override the selectors it uses:
 
 ```ts
-it('shows the book from the store', () => {
+it("shows the book from the store", () => {
   const store = TestBed.inject(MockStore);
-  store.overrideSelector(selectBookEntities, { '1': { id: '1', title: 'NgRx' } as Book });
+  store.overrideSelector(selectBookEntities, {
+    "1": { id: "1", title: "NgRx" } as Book,
+  });
 
   const fixture = TestBed.createComponent(BookCard);
-  fixture.componentRef.setInput('id', '1');
+  fixture.componentRef.setInput("id", "1");
   fixture.detectChanges();
 
-  expect(fixture.nativeElement.textContent).toContain('NgRx');
+  expect(fixture.nativeElement.textContent).toContain("NgRx");
 });
 ```
 
@@ -6698,15 +6988,20 @@ A feature can compute internal values (prefixed with `_`) that later features us
 ```ts
 export function withSearch<E extends { name: string }>() {
   return signalStoreFeature(
-    { state: type<{ query: string }>(), props: type<{ entities: Signal<E[]> }>() },
+    {
+      state: type<{ query: string }>(),
+      props: type<{ entities: Signal<E[]> }>(),
+    },
     withComputed(({ query }) => ({
       _normalizedQuery: computed(() => query().trim().toLowerCase()),
     })),
     withComputed(({ entities, _normalizedQuery }) => ({
       searchResults: computed(() =>
-        entities().filter((e) => e.name.toLowerCase().includes(_normalizedQuery()))
+        entities().filter((e) =>
+          e.name.toLowerCase().includes(_normalizedQuery()),
+        ),
       ),
-    }))
+    })),
   );
 }
 ```

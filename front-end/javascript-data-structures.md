@@ -486,11 +486,11 @@ Primitives (`string`, `number`, `bigint`, `boolean`, `undefined`, `null`, `symbo
 ```js
 let a = 5;
 let b = a;
-b++;            // a is still 5
+b++; // a is still 5
 
 const x = { n: 1 };
 const y = x;
-y.n = 2;        // x.n is now 2, both point to the same object
+y.n = 2; // x.n is now 2, both point to the same object
 ```
 
 ## 4: What data structures does JavaScript give you out of the box?
@@ -526,7 +526,7 @@ Not by the language spec. An array is a special object whose keys are string ind
 
 ```js
 const arr = [2, 3];
-arr.push(4);    // [2, 3, 4]
+arr.push(4); // [2, 3, 4]
 arr.unshift(1); // [1, 2, 3, 4]
 ```
 
@@ -539,11 +539,11 @@ arr.unshift(1); // [1, 2, 3, 4]
 A sparse array has holes: indexes that don't exist at all, which is different from holding `undefined`.
 
 ```js
-const a = [1, , 3];   // hole at index 1
+const a = [1, , 3]; // hole at index 1
 const b = new Array(3); // three holes
-a[10] = 5;            // indexes 3-9 are now holes
+a[10] = 5; // indexes 3-9 are now holes
 
-console.log(1 in a);  // false
+console.log(1 in a); // false
 ```
 
 Methods treat holes differently: `forEach` and `map` skip them, `for...of` and `Array.from` give `undefined`. Holes also make arrays slower in engines, so avoid them.
@@ -554,8 +554,8 @@ Setting `length` to a smaller number deletes everything past that index. Setting
 
 ```js
 const arr = [1, 2, 3, 4, 5];
-arr.length = 2;  // [1, 2]
-arr.length = 0;  // [] , a quick way to empty an array in place
+arr.length = 2; // [1, 2]
+arr.length = 0; // [] , a quick way to empty an array in place
 ```
 
 Emptying with `length = 0` changes the original array, so every other reference to it sees an empty array too. `arr = []` only rebinds your variable.
@@ -566,18 +566,18 @@ Emptying with `length = 0` changes the original array, so every other reference 
 
 ```js
 const arr = [10, 20, 30];
-arr.at(0);   // 10
-arr.at(-1);  // 30, instead of arr[arr.length - 1]
+arr.at(0); // 10
+arr.at(-1); // 30, instead of arr[arr.length - 1]
 ```
 
 ## 13: What are the different ways to create an array?
 
 ```js
-const a = [1, 2, 3];               // literal, the usual way
-const b = Array.of(7);             // [7]
-const c = Array.from("abc");       // ["a", "b", "c"]
+const a = [1, 2, 3]; // literal, the usual way
+const b = Array.of(7); // [7]
+const c = Array.from("abc"); // ["a", "b", "c"]
 const d = Array.from({ length: 3 }, (_, i) => i * 2); // [0, 2, 4]
-const e = new Array(3);            // three empty holes, not [3]
+const e = new Array(3); // three empty holes, not [3]
 ```
 
 The trap is `new Array(n)`: with a single number it makes an empty array of that length, but with any other single value it makes a one-element array. `Array.of` doesn't have that problem.
@@ -585,7 +585,7 @@ The trap is `new Array(n)`: with a single number it makes an empty array of that
 ## 14: How do you create an array of n items filled with values?
 
 ```js
-const zeros = new Array(5).fill(0);                    // [0, 0, 0, 0, 0]
+const zeros = new Array(5).fill(0); // [0, 0, 0, 0, 0]
 const nums = Array.from({ length: 5 }, (_, i) => i + 1); // [1, 2, 3, 4, 5]
 ```
 
@@ -608,7 +608,8 @@ const fixed = Array.from({ length: 3 }, () => ({}));
 Create each row separately so rows don't share the same array.
 
 ```js
-const rows = 3, cols = 4;
+const rows = 3,
+  cols = 4;
 const grid = Array.from({ length: rows }, () => new Array(cols).fill(0));
 grid[1][2] = 5;
 ```
@@ -669,11 +670,11 @@ They are non-mutating versions of `sort`, `reverse`, `splice` and index assignme
 
 ```js
 const nums = [3, 1, 2];
-nums.toSorted();          // [1, 2, 3]
-nums.toReversed();        // [2, 1, 3]
-nums.toSpliced(1, 1);     // [3, 2]
-nums.with(0, 99);         // [99, 1, 2]
-console.log(nums);        // [3, 1, 2]
+nums.toSorted(); // [1, 2, 3]
+nums.toReversed(); // [2, 1, 3]
+nums.toSpliced(1, 1); // [3, 2]
+nums.with(0, 99); // [99, 1, 2]
+console.log(nums); // [3, 1, 2]
 ```
 
 ## 23: Why does [10, 1, 2].sort() give [1, 10, 2]?
@@ -689,10 +690,14 @@ Without a compare function, `sort` converts items to strings and compares them a
 `find` returns the first element that matches, or `undefined`. `findIndex` returns its index, or `-1`. `findLast` and `findLastIndex` do the same thing starting from the end.
 
 ```js
-const logs = [{ lvl: "info" }, { lvl: "error", id: 1 }, { lvl: "error", id: 2 }];
-logs.find(l => l.lvl === "error").id;     // 1
-logs.findLast(l => l.lvl === "error").id; // 2
-logs.findIndex(l => l.lvl === "warn");    // -1
+const logs = [
+  { lvl: "info" },
+  { lvl: "error", id: 1 },
+  { lvl: "error", id: 2 },
+];
+logs.find((l) => l.lvl === "error").id; // 1
+logs.findLast((l) => l.lvl === "error").id; // 2
+logs.findIndex((l) => l.lvl === "warn"); // -1
 ```
 
 ## 25: What is the difference between includes and indexOf?
@@ -701,7 +706,7 @@ logs.findIndex(l => l.lvl === "warn");    // -1
 
 ```js
 [NaN].includes(NaN); // true
-[NaN].indexOf(NaN);  // -1
+[NaN].indexOf(NaN); // -1
 ```
 
 ## 26: How do you check if a value is an array?
@@ -709,8 +714,8 @@ logs.findIndex(l => l.lvl === "warn");    // -1
 Use `Array.isArray`. `typeof` returns `"object"` for arrays, so it can't tell them apart from other objects.
 
 ```js
-typeof [];          // "object"
-Array.isArray([]);  // true
+typeof []; // "object"
+Array.isArray([]); // true
 Array.isArray({ length: 0 }); // false
 ```
 
@@ -744,8 +749,8 @@ Dot notation (`obj.name`) works when the key is a valid identifier written in co
 ```js
 const field = "email";
 const user = { email: "a@b.com", "last-login": "today" };
-user[field];         // "a@b.com"
-user["last-login"];  // "today"
+user[field]; // "a@b.com"
+user["last-login"]; // "today"
 ```
 
 ## 30: What do Object.keys, Object.values and Object.entries return?
@@ -754,8 +759,8 @@ They return arrays of an object's own enumerable string keys, their values, or `
 
 ```js
 const scores = { ana: 10, ben: 7 };
-Object.keys(scores);    // ["ana", "ben"]
-Object.values(scores);  // [10, 7]
+Object.keys(scores); // ["ana", "ben"]
+Object.values(scores); // [10, 7]
 Object.entries(scores); // [["ana", 10], ["ben", 7]]
 ```
 
@@ -766,7 +771,7 @@ It does the opposite of `Object.entries`: it builds an object from a list of `[k
 ```js
 const prices = { apple: 1, pear: 2 };
 const doubled = Object.fromEntries(
-  Object.entries(prices).map(([k, v]) => [k, v * 2])
+  Object.entries(prices).map(([k, v]) => [k, v * 2]),
 ); // { apple: 2, pear: 4 }
 
 Object.fromEntries(new Map([["a", 1]])); // { a: 1 }
@@ -780,9 +785,9 @@ Object.fromEntries(new Map([["a", 1]])); // { a: 1 }
 
 ```js
 const o = { a: undefined };
-"a" in o;              // true
+"a" in o; // true
 Object.hasOwn(o, "a"); // true
-"toString" in o;       // true, inherited
+"toString" in o; // true, inherited
 Object.hasOwn(o, "toString"); // false
 ```
 
@@ -794,7 +799,7 @@ Object.hasOwn(o, "toString"); // false
 const dict = Object.create(null);
 dict.x = 1;
 // dict.hasOwnProperty("x"); // TypeError
-Object.hasOwn(dict, "x");    // true
+Object.hasOwn(dict, "x"); // true
 ```
 
 ## 34: What does the delete operator do?
@@ -831,7 +836,7 @@ If you need full insertion order for any key, use a `Map`.
 
 ```js
 const config = Object.freeze({ api: "/v1", flags: { beta: true } });
-config.api = "/v2";      // ignored (throws in strict mode)
+config.api = "/v2"; // ignored (throws in strict mode)
 config.flags.beta = false; // works, nested object isn't frozen
 ```
 
@@ -849,9 +854,9 @@ Use optional chaining (`?.`). It stops and returns `undefined` if something in t
 
 ```js
 const res = { data: { user: null } };
-res.data.user?.address?.city;  // undefined
-res.data.items?.[0];           // undefined
-res.onDone?.();                // calls only if it exists
+res.data.user?.address?.city; // undefined
+res.data.items?.[0]; // undefined
+res.onDone?.(); // calls only if it exists
 ```
 
 ## 40: How do you set a default for a missing value in a data structure?
@@ -873,7 +878,7 @@ const visits = new Map();
 visits.set("/home", 3);
 visits.set("/about", 1);
 visits.get("/home"); // 3
-visits.size;         // 2
+visits.size; // 2
 ```
 
 ## 42: When should you use a Map instead of a plain object?
@@ -884,12 +889,12 @@ Use a `Map` when keys are not strings, when keys come from users or outside data
 
 ```js
 const m = new Map([["a", 1]]);
-m.set("b", 2);   // returns the map, so calls can chain
-m.get("a");      // 1
-m.has("c");      // false
-m.delete("a");   // true
-m.size;          // 1
-m.clear();       // empties it
+m.set("b", 2); // returns the map, so calls can chain
+m.get("a"); // 1
+m.has("c"); // false
+m.delete("a"); // true
+m.size; // 1
+m.clear(); // empties it
 ```
 
 ## 44: How do you loop over a Map?
@@ -897,10 +902,13 @@ m.clear();       // empties it
 `Map` is iterable and gives `[key, value]` pairs in insertion order. You can also use `keys()`, `values()`, `entries()` or `forEach`.
 
 ```js
-const m = new Map([["x", 1], ["y", 2]]);
+const m = new Map([
+  ["x", 1],
+  ["y", 2],
+]);
 for (const [key, value] of m) console.log(key, value);
 m.forEach((value, key) => console.log(key, value));
-[...m.keys()];   // ["x", "y"]
+[...m.keys()]; // ["x", "y"]
 ```
 
 Note that `forEach` passes the value first, then the key.
@@ -924,7 +932,7 @@ const m = new Map();
 m.set(NaN, "not a number");
 m.get(NaN); // "not a number"
 m.set(0, "zero");
-m.get(-0);  // "zero"
+m.get(-0); // "zero"
 ```
 
 ## 47: Why does map.get({ id: 1 }) return undefined after map.set({ id: 1 }, "x")?
@@ -934,8 +942,8 @@ Because those are two different objects. Map compares object keys by reference, 
 ```js
 const key = { id: 1 };
 const m = new Map([[key, "x"]]);
-m.get(key);        // "x"
-m.get({ id: 1 });  // undefined
+m.get(key); // "x"
+m.get({ id: 1 }); // undefined
 ```
 
 If you want to look up by content, use a primitive key like the id: `m.set(1, "x")`.
@@ -946,19 +954,19 @@ A `Set` is a collection of unique values. Adding a value that's already there do
 
 ```js
 const tags = new Set(["js", "css"]);
-tags.add("js");     // no change
-tags.has("css");    // true
-tags.size;          // 2
+tags.add("js"); // no change
+tags.has("css"); // true
+tags.size; // 2
 ```
 
 ## 49: What are the main methods of a Set?
 
 ```js
 const s = new Set();
-s.add(1).add(2);   // add returns the set
-s.has(1);          // true
-s.delete(1);       // true
-s.size;            // 1
+s.add(1).add(2); // add returns the set
+s.has(1); // true
+s.delete(1); // true
+s.size; // 1
 s.clear();
 ```
 
@@ -982,7 +990,7 @@ const s = new Set([{ id: 1 }, { id: 1 }]);
 s.size; // 2
 
 const users = [{ id: 1 }, { id: 1 }, { id: 2 }];
-const uniqueUsers = [...new Map(users.map(u => [u.id, u])).values()];
+const uniqueUsers = [...new Map(users.map((u) => [u.id, u])).values()];
 ```
 
 ## 52: Does a Set keep the order of items?
@@ -1029,8 +1037,8 @@ An array already works as a stack with `push` and `pop`, both O(1).
 const stack = [];
 stack.push(1);
 stack.push(2);
-stack.at(-1);  // 2, peek
-stack.pop();   // 2
+stack.at(-1); // 2, peek
+stack.pop(); // 2
 stack.length === 0; // isEmpty check
 ```
 
@@ -1260,8 +1268,8 @@ You can't change a string after it's created. `str[0] = "X"` does nothing (or th
 
 ```js
 const s = "hi😀";
-s.split("").length;   // 4
-[...s].length;        // 3
+s.split("").length; // 4
+[...s].length; // 3
 ```
 
 For characters made of several code points (like family emoji or flags), use `Intl.Segmenter` to split by what the user sees as one character.
@@ -1301,8 +1309,11 @@ JSON.stringify({ a: undefined, b: [undefined], c: new Map([[1, 2]]) });
 Turn it into an array first, and turn it back after parsing.
 
 ```js
-const m = new Map([["a", 1], ["b", 2]]);
-const json = JSON.stringify([...m]);      // '[["a",1],["b",2]]'
+const m = new Map([
+  ["a", 1],
+  ["b", 2],
+]);
+const json = JSON.stringify([...m]); // '[["a",1],["b",2]]'
 const restored = new Map(JSON.parse(json));
 
 const s = new Set([1, 2]);
@@ -1323,8 +1334,8 @@ Arrays, strings, `Map`, `Set`, typed arrays, `arguments`, DOM collections like `
 
 ```js
 const arr = ["a", "b"];
-for (const v of arr) console.log(v);  // "a", "b"
-for (const k in arr) console.log(k);  // "0", "1"
+for (const v of arr) console.log(v); // "a", "b"
+for (const k in arr) console.log(k); // "0", "1"
 ```
 
 ## 104: What does the spread operator work on?
@@ -1337,8 +1348,8 @@ An array-like object has a `length` and indexed keys but isn't a real array, so 
 
 ```js
 const arrayLike = { length: 2, 0: "a", 1: "b" };
-Array.from(arrayLike);               // ["a", "b"]
-Array.prototype.map.call(arrayLike, s => s.toUpperCase());
+Array.from(arrayLike); // ["a", "b"]
+Array.prototype.map.call(arrayLike, (s) => s.toUpperCase());
 ```
 
 Spread only works if the object is also iterable.
@@ -1379,7 +1390,7 @@ A `Symbol` is a unique primitive value. Two symbols are never equal, even with t
 const id = Symbol("id");
 const user = { name: "Ana", [id]: 123 };
 Object.keys(user); // ["name"]
-user[id];          // 123
+user[id]; // 123
 ```
 
 ## 111: What is the difference between mutable and immutable data?
@@ -1391,7 +1402,7 @@ Mutable data can be changed in place: `arr.push(x)`, `obj.name = "x"`. Immutable
 They detect changes by comparing references. If you mutate an array and pass the same array back, `oldState === newState` is `true`, so React may skip the re-render and memoized components won't update. Creating a new array or object for every change gives a new reference, which is a quick and reliable signal that something changed.
 
 ```js
-setTodos(todos => [...todos, newTodo]); // new array, React re-renders
+setTodos((todos) => [...todos, newTodo]); // new array, React re-renders
 ```
 
 ## 113: How do you update a nested object without mutating it?
@@ -1415,11 +1426,16 @@ Libraries like Immer let you write this as a normal mutation and do the copying 
 ## 114: How do you add, remove and update items in an array without mutating it?
 
 ```js
-const list = [{ id: 1, done: false }, { id: 2, done: false }];
+const list = [
+  { id: 1, done: false },
+  { id: 2, done: false },
+];
 
-const added   = [...list, { id: 3, done: false }];
-const removed = list.filter(item => item.id !== 1);
-const updated = list.map(item => item.id === 2 ? { ...item, done: true } : item);
+const added = [...list, { id: 3, done: false }];
+const removed = list.filter((item) => item.id !== 1);
+const updated = list.map((item) =>
+  item.id === 2 ? { ...item, done: true } : item,
+);
 const atIndex = list.with(0, { id: 1, done: true });
 ```
 
@@ -1437,7 +1453,7 @@ const products = [
   { name: "carrot", type: "veg" },
   { name: "pear", type: "fruit" },
 ];
-const byType = Object.groupBy(products, p => p.type);
+const byType = Object.groupBy(products, (p) => p.type);
 // { fruit: [apple, pear], veg: [carrot] }
 ```
 
@@ -1448,7 +1464,7 @@ The result is an object with a `null` prototype, so it has no `toString` or `has
 `Map.groupBy` returns a `Map` instead of an object. Use it when the group keys aren't strings, for example objects, or when you want `Map` features like `size`.
 
 ```js
-const byLength = Map.groupBy(["a", "bb", "cc"], s => s.length);
+const byLength = Map.groupBy(["a", "bb", "cc"], (s) => s.length);
 byLength.get(2); // ["bb", "cc"]
 ```
 
@@ -1457,9 +1473,9 @@ byLength.get(2); // ["bb", "cc"]
 `flat(depth)` turns nested arrays into a flatter array. The default depth is 1, and `Infinity` flattens everything. `flatMap` maps each item and then flattens by one level, which is handy when each item turns into zero, one or many items.
 
 ```js
-[1, [2, [3, [4]]]].flat();         // [1, 2, [3, [4]]]
+[1, [2, [3, [4]]]].flat(); // [1, 2, [3, [4]]]
 [1, [2, [3, [4]]]].flat(Infinity); // [1, 2, 3, 4]
-["a b", "c"].flatMap(s => s.split(" ")); // ["a", "b", "c"]
+["a b", "c"].flatMap((s) => s.split(" ")); // ["a", "b", "c"]
 ```
 
 ## 119: How do you count how many times each value appears?
@@ -1491,8 +1507,11 @@ const label = statusText[code] ?? "Unknown";
 This is often called indexing or normalizing, and it turns repeated O(n) `find` calls into O(1) lookups.
 
 ```js
-const users = [{ id: "u1", name: "Ana" }, { id: "u2", name: "Ben" }];
-const byId = Object.fromEntries(users.map(u => [u.id, u]));
+const users = [
+  { id: "u1", name: "Ana" },
+  { id: "u2", name: "Ben" },
+];
+const byId = Object.fromEntries(users.map((u) => [u.id, u]));
 // or: const byId = new Map(users.map(u => [u.id, u]));
 byId.u2.name; // "Ben"
 ```
@@ -1533,11 +1552,11 @@ Since ES2025, `Set` has methods for set math. They return a new `Set` or a boole
 const a = new Set([1, 2, 3]);
 const b = new Set([2, 3, 4]);
 
-a.union(b);               // {1, 2, 3, 4}
-a.intersection(b);        // {2, 3}
-a.difference(b);          // {1}
+a.union(b); // {1, 2, 3, 4}
+a.intersection(b); // {2, 3}
+a.difference(b); // {1}
 a.symmetricDifference(b); // {1, 4}
-a.isSubsetOf(b);          // false
+a.isSubsetOf(b); // false
 a.isSupersetOf(new Set([1])); // true
 a.isDisjointFrom(new Set([9])); // true
 ```
@@ -1550,13 +1569,13 @@ a.isDisjointFrom(new Set([9])); // true
 
 ```js
 const arr = [];
-arr.length === 0;               // true
+arr.length === 0; // true
 
 const obj = {};
-Object.keys(obj).length === 0;  // true
+Object.keys(obj).length === 0; // true
 
 const m = new Map();
-m.size === 0;                   // true
+m.size === 0; // true
 ```
 
 Note that `Object.keys` only checks own enumerable string keys, which is what you want in almost every case.
@@ -1582,9 +1601,10 @@ Use `toSpliced` if you want the same result as a new array.
 Both return a new array. Spread works with any iterable and lets you put items anywhere: `[first, ...a, ...b, last]`. `concat` is a method that flattens array arguments one level and adds other values as they are. For joining a few arrays, they're the same in practice, so pick what reads better.
 
 ```js
-const a = [1], b = [2];
-[...a, ...b];      // [1, 2]
-a.concat(b, 3);    // [1, 2, 3]
+const a = [1],
+  b = [2];
+[...a, ...b]; // [1, 2]
+a.concat(b, 3); // [1, 2, 3]
 ```
 
 ## 132: What is the difference between a Map's size and an object's key count?
@@ -1614,7 +1634,7 @@ function shallowEqual(a, b) {
   const keysA = Object.keys(a);
   const keysB = Object.keys(b);
   if (keysA.length !== keysB.length) return false;
-  return keysA.every(k => Object.hasOwn(b, k) && Object.is(a[k], b[k]));
+  return keysA.every((k) => Object.hasOwn(b, k) && Object.is(a[k], b[k]));
 }
 shallowEqual({ x: 1 }, { x: 1 }); // true
 ```
@@ -1678,7 +1698,7 @@ Turn it into entries, map them, and build a new object.
 ```js
 const celsius = { mon: 20, tue: 25 };
 const fahrenheit = Object.fromEntries(
-  Object.entries(celsius).map(([day, c]) => [day, c * 9 / 5 + 32])
+  Object.entries(celsius).map(([day, c]) => [day, (c * 9) / 5 + 32]),
 );
 // { mon: 68, tue: 77 }
 ```
@@ -1688,7 +1708,10 @@ const fahrenheit = Object.fromEntries(
 Pass any iterable of `[key, value]` pairs to the constructor.
 
 ```js
-const pairs = [["en", "Hello"], ["ka", "Gamarjoba"]];
+const pairs = [
+  ["en", "Hello"],
+  ["ka", "Gamarjoba"],
+];
 const greetings = new Map(pairs);
 greetings.get("ka"); // "Gamarjoba"
 ```
@@ -1698,7 +1721,8 @@ greetings.get("ka"); // "Gamarjoba"
 The object is converted to a string, which for plain objects is always `"[object Object]"`. So every object key ends up on the same property and overwrites the others.
 
 ```js
-const a = { id: 1 }, b = { id: 2 };
+const a = { id: 1 },
+  b = { id: 2 };
 const store = {};
 store[a] = "first";
 store[b] = "second";
@@ -1810,10 +1834,14 @@ One simple way uses an object with two indexes that can go negative.
 class Deque {
   #items = {};
   #front = 0; // index of first item
-  #back = 0;  // index after last item
+  #back = 0; // index after last item
 
-  pushBack(x)  { this.#items[this.#back++] = x; }
-  pushFront(x) { this.#items[--this.#front] = x; }
+  pushBack(x) {
+    this.#items[this.#back++] = x;
+  }
+  pushFront(x) {
+    this.#items[--this.#front] = x;
+  }
   popBack() {
     if (this.size === 0) return undefined;
     const x = this.#items[--this.#back];
@@ -1826,7 +1854,9 @@ class Deque {
     delete this.#items[this.#front++];
     return x;
   }
-  get size() { return this.#back - this.#front; }
+  get size() {
+    return this.#back - this.#front;
+  }
 }
 ```
 
@@ -1911,7 +1941,8 @@ Use two pointers: `slow` moves one step and `fast` moves two. When `fast` reache
 
 ```js
 function middle(head) {
-  let slow = head, fast = head;
+  let slow = head,
+    fast = head;
   while (fast && fast.next) {
     slow = slow.next;
     fast = fast.next.next;
@@ -1928,7 +1959,8 @@ Use the same slow and fast pointers. If there's a cycle, the fast one eventually
 
 ```js
 function hasCycle(head) {
-  let slow = head, fast = head;
+  let slow = head,
+    fast = head;
   while (fast && fast.next) {
     slow = slow.next;
     fast = fast.next.next;
@@ -2063,8 +2095,8 @@ function levels(root) {
   const result = [];
   let level = [root];
   while (level.length) {
-    result.push(level.map(n => n.value));
-    level = level.flatMap(n => [n.left, n.right].filter(Boolean));
+    result.push(level.map((n) => n.value));
+    level = level.flatMap((n) => [n.left, n.right].filter(Boolean));
   }
   return result;
 }
@@ -2080,8 +2112,10 @@ Each node must be within a range set by its ancestors, not just bigger than its 
 function isValidBST(node, min = -Infinity, max = Infinity) {
   if (!node) return true;
   if (node.value <= min || node.value >= max) return false;
-  return isValidBST(node.left, min, node.value) &&
-         isValidBST(node.right, node.value, max);
+  return (
+    isValidBST(node.left, min, node.value) &&
+    isValidBST(node.right, node.value, max)
+  );
 }
 ```
 
@@ -2148,8 +2182,12 @@ class MinHeap {
   constructor(compare = (x, y) => x - y) {
     this.compare = compare;
   }
-  get size() { return this.#a.length; }
-  peek() { return this.#a[0]; }
+  get size() {
+    return this.#a.length;
+  }
+  peek() {
+    return this.#a[0];
+  }
 
   push(value) {
     const a = this.#a;
@@ -2172,7 +2210,8 @@ class MinHeap {
       a[0] = last;
       let i = 0;
       while (true) {
-        const l = 2 * i + 1, r = l + 1;
+        const l = 2 * i + 1,
+          r = l + 1;
         let m = i;
         if (l < a.length && this.compare(a[l], a[m]) < 0) m = l;
         if (r < a.length && this.compare(a[r], a[m]) < 0) m = r;
@@ -2205,7 +2244,8 @@ function heapify(a, compare = (x, y) => x - y) {
   for (let i = (a.length >> 1) - 1; i >= 0; i--) {
     let j = i;
     while (true) {
-      const l = 2 * j + 1, r = l + 1;
+      const l = 2 * j + 1,
+        r = l + 1;
       let m = j;
       if (l < a.length && compare(a[l], a[m]) < 0) m = l;
       if (r < a.length && compare(a[r], a[m]) < 0) m = r;
@@ -2338,7 +2378,9 @@ When the graph is small and dense (lots of edges), or when you need to check "is
 ```js
 const n = 4;
 const matrix = new Uint8Array(n * n);
-const addEdge = (a, b) => { matrix[a * n + b] = 1; };
+const addEdge = (a, b) => {
+  matrix[a * n + b] = 1;
+};
 const hasEdge = (a, b) => matrix[a * n + b] === 1;
 ```
 
@@ -2347,10 +2389,11 @@ const hasEdge = (a, b) => matrix[a * n + b] === 1;
 A topological sort orders the nodes of a directed graph with no cycles so that every node comes before the nodes that depend on it. Bundlers use it to decide module execution order, build tools like Nx and Turborepo use it to run tasks in the right order, and spreadsheets use it to recalculate cells.
 
 ```js
-function topoSort(deps) { // Map<node, Set<dependency>>
+function topoSort(deps) {
+  // Map<node, Set<dependency>>
   const order = [];
   const state = new Map(); // 1 = visiting, 2 = done
-  const visit = n => {
+  const visit = (n) => {
     if (state.get(n) === 2) return;
     if (state.get(n) === 1) throw new Error(`Cycle at ${n}`);
     state.set(n, 1);
@@ -2378,7 +2421,7 @@ class HashTable {
 
   set(key, value) {
     const bucket = this.#buckets[this.#hash(key)];
-    const entry = bucket.find(e => e[0] === key);
+    const entry = bucket.find((e) => e[0] === key);
     if (entry) entry[1] = value;
     else {
       bucket.push([key, value]);
@@ -2387,7 +2430,7 @@ class HashTable {
   }
 
   get(key) {
-    return this.#buckets[this.#hash(key)].find(e => e[0] === key)?.[1];
+    return this.#buckets[this.#hash(key)].find((e) => e[0] === key)?.[1];
   }
 
   #resize() {
@@ -2475,12 +2518,15 @@ class RingBuffer {
 
   toArray() {
     const cap = this.#data.length;
-    return Array.from({ length: this.#length }, (_, i) => this.#data[(this.#start + i) % cap]);
+    return Array.from(
+      { length: this.#length },
+      (_, i) => this.#data[(this.#start + i) % cap],
+    );
   }
 }
 
 const lastLogs = new RingBuffer(3);
-[1, 2, 3, 4].forEach(n => lastLogs.push(n));
+[1, 2, 3, 4].forEach((n) => lastLogs.push(n));
 lastLogs.toArray(); // [2, 3, 4]
 ```
 
@@ -2492,9 +2538,9 @@ With spread and `filter`. You'll still see this in older code or when you need t
 
 ```js
 const union = new Set([...a, ...b]);
-const intersection = new Set([...a].filter(x => b.has(x)));
-const difference = new Set([...a].filter(x => !b.has(x)));
-const isSubset = [...a].every(x => b.has(x));
+const intersection = new Set([...a].filter((x) => b.has(x)));
+const difference = new Set([...a].filter((x) => !b.has(x)));
+const isSubset = [...a].every((x) => b.has(x));
 ```
 
 The built-in methods are shorter and can skip work, for example `intersection` loops over the smaller set.
@@ -2505,7 +2551,10 @@ Yes, as long as it's "set-like": it needs a numeric `size`, a `has()` method and
 
 ```js
 const ids = new Set([1, 2, 3]);
-const byId = new Map([[2, "b"], [3, "c"]]);
+const byId = new Map([
+  [2, "b"],
+  [3, "c"],
+]);
 ids.intersection(byId); // Set {2, 3}
 ```
 
@@ -2571,7 +2620,7 @@ A `WeakRef` holds a weak reference to an object; `deref()` returns the object, o
 
 ```js
 const ref = new WeakRef(bigObject);
-const registry = new FinalizationRegistry(key => cache.delete(key));
+const registry = new FinalizationRegistry((key) => cache.delete(key));
 registry.register(bigObject, "report-1");
 
 const obj = ref.deref();
@@ -2600,7 +2649,8 @@ const countdown = {
   [Symbol.iterator]() {
     let n = 3;
     return {
-      next: () => n > 0 ? { value: n--, done: false } : { value: undefined, done: true },
+      next: () =>
+        n > 0 ? { value: n--, done: false } : { value: undefined, done: true },
     };
   },
 };
@@ -2652,8 +2702,8 @@ function* naturals() {
 }
 
 naturals()
-  .filter(n => n % 2 === 0)
-  .map(n => n * n)
+  .filter((n) => n % 2 === 0)
+  .map((n) => n * n)
   .take(3)
   .toArray(); // [4, 16, 36]
 ```
@@ -2677,8 +2727,16 @@ Eager processing, like array `map` and `filter`, does all the work right away an
 
 ```js
 const big = Array.from({ length: 1_000_000 }, (_, i) => i);
-big.map(x => x * 2).filter(x => x % 3 === 0).slice(0, 5);        // processes all items
-big.values().map(x => x * 2).filter(x => x % 3 === 0).take(5).toArray(); // stops early
+big
+  .map((x) => x * 2)
+  .filter((x) => x % 3 === 0)
+  .slice(0, 5); // processes all items
+big
+  .values()
+  .map((x) => x * 2)
+  .filter((x) => x % 3 === 0)
+  .take(5)
+  .toArray(); // stops early
 ```
 
 ## 199: What are async iterables?
@@ -2706,7 +2764,7 @@ for await (const item of fetchPages("/api/items")) {
 
 ```js
 const items = await Array.fromAsync(fetchPages("/api/items"));
-const doubled = await Array.fromAsync([Promise.resolve(1), 2], x => x * 2); // [2, 4]
+const doubled = await Array.fromAsync([Promise.resolve(1), 2], (x) => x * 2); // [2, 4]
 ```
 
 Unlike `Promise.all`, it waits for items one at a time, in order.
@@ -2717,12 +2775,17 @@ It means storing each kind of entity once, in a lookup table by id, and referrin
 
 ```js
 // Nested (hard to update)
-const posts = [{ id: 1, author: { id: 7, name: "Ana" }, comments: [/* ... */] }];
+const posts = [
+  { id: 1, author: { id: 7, name: "Ana" }, comments: [/* ... */] },
+];
 
 // Normalized
 const state = {
   users: { byId: { 7: { id: 7, name: "Ana" } }, allIds: [7] },
-  posts: { byId: { 1: { id: 1, authorId: 7, commentIds: [10, 11] } }, allIds: [1] },
+  posts: {
+    byId: { 1: { id: 1, authorId: 7, commentIds: [10, 11] } },
+    allIds: [1],
+  },
 };
 ```
 
@@ -2755,18 +2818,26 @@ Copy each level on the way down, and use `map` to replace only the item that cha
 ```js
 const board = {
   columns: [
-    { id: "todo", cards: [{ id: 1, title: "A" }, { id: 2, title: "B" }] },
+    {
+      id: "todo",
+      cards: [
+        { id: 1, title: "A" },
+        { id: 2, title: "B" },
+      ],
+    },
     { id: "done", cards: [] },
   ],
 };
 
 const next = {
   ...board,
-  columns: board.columns.map(col =>
-    col.id !== "todo" ? col : {
-      ...col,
-      cards: col.cards.map(c => c.id === 2 ? { ...c, title: "B2" } : c),
-    }
+  columns: board.columns.map((col) =>
+    col.id !== "todo"
+      ? col
+      : {
+          ...col,
+          cards: col.cards.map((c) => (c.id === 2 ? { ...c, title: "B2" } : c)),
+        },
   ),
 };
 ```
@@ -2780,7 +2851,7 @@ Unchanged columns and cards keep their old references, so memoized components fo
 ```js
 import { produce } from "immer";
 
-const next = produce(state, draft => {
+const next = produce(state, (draft) => {
   draft.user.address.city = "Batumi";
   draft.todos.push({ id: 3, text: "New" });
 });
@@ -2812,9 +2883,12 @@ function deepClone(value) {
   if (value === null || typeof value !== "object") return value;
   if (Array.isArray(value)) return value.map(deepClone);
   if (value instanceof Date) return new Date(value);
-  if (value instanceof Map) return new Map([...value].map(([k, v]) => [deepClone(k), deepClone(v)]));
+  if (value instanceof Map)
+    return new Map([...value].map(([k, v]) => [deepClone(k), deepClone(v)]));
   if (value instanceof Set) return new Set([...value].map(deepClone));
-  return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, deepClone(v)]));
+  return Object.fromEntries(
+    Object.entries(value).map(([k, v]) => [k, deepClone(v)]),
+  );
 }
 ```
 
@@ -2825,10 +2899,17 @@ This doesn't handle circular references or class prototypes. In real code, use `
 Functions, DOM nodes, getters and setters (they get turned into plain values), symbol keys, and property descriptors like non-writable. Class instances lose their prototype and come back as plain objects, so their methods are gone. Functions and DOM nodes make it throw a `DataCloneError`.
 
 ```js
-class Point { constructor(x) { this.x = x; } len() { return this.x; } }
+class Point {
+  constructor(x) {
+    this.x = x;
+  }
+  len() {
+    return this.x;
+  }
+}
 const copy = structuredClone(new Point(3));
 copy instanceof Point; // false
-copy.len;              // undefined
+copy.len; // undefined
 ```
 
 ## 209: How do you write a deep equality check?
@@ -2843,7 +2924,7 @@ function deepEqual(a, b) {
   const keysA = Object.keys(a);
   const keysB = Object.keys(b);
   if (keysA.length !== keysB.length) return false;
-  return keysA.every(k => Object.hasOwn(b, k) && deepEqual(a[k], b[k]));
+  return keysA.every((k) => Object.hasOwn(b, k) && deepEqual(a[k], b[k]));
 }
 ```
 
@@ -2862,7 +2943,10 @@ React uses `Object.is` to compare state and hook dependencies.
 Nothing. Setting an existing key updates the value but keeps its original position. To move a key to the end (like in an LRU cache), you have to `delete` it first and then `set` it.
 
 ```js
-const m = new Map([["a", 1], ["b", 2]]);
+const m = new Map([
+  ["a", 1],
+  ["b", 2],
+]);
 m.set("a", 9);
 [...m.keys()]; // ["a", "b"]
 m.delete("a");
@@ -2876,10 +2960,16 @@ Objects put integer-like keys first and sort them by number, so the order you ad
 
 ```js
 const o = {};
-o[30] = "c"; o[10] = "a"; o[20] = "b";
+o[30] = "c";
+o[10] = "a";
+o[20] = "b";
 Object.keys(o); // ["10", "20", "30"]
 
-const m = new Map([[30, "c"], [10, "a"], [20, "b"]]);
+const m = new Map([
+  [30, "c"],
+  [10, "a"],
+  [20, "b"],
+]);
 [...m.keys()]; // [30, 10, 20]
 ```
 
@@ -2906,7 +2996,7 @@ A `DataView` reads and writes numbers of different types at any byte offset in a
 const view = new DataView(buffer);
 const version = view.getUint8(0);
 const length = view.getUint32(1, false); // big-endian
-const scale = view.getFloat32(5, true);  // little-endian
+const scale = view.getFloat32(5, true); // little-endian
 ```
 
 ## 215: What is Uint8ClampedArray and where is it used?
@@ -2927,7 +3017,7 @@ Use `TextEncoder` and `TextDecoder`. They work with UTF-8 by default.
 
 ```js
 const bytes = new TextEncoder().encode("héllo"); // Uint8Array
-const text = new TextDecoder().decode(bytes);    // "héllo"
+const text = new TextDecoder().decode(bytes); // "héllo"
 ```
 
 Don't use `charCodeAt` to build bytes yourself; it gives UTF-16 code units, not UTF-8 bytes.
@@ -2946,12 +3036,14 @@ const buf = await blob.arrayBuffer();
 Use one array of size `rows * cols` and compute the index as `row * cols + col`. It uses less memory than an array of arrays, keeps data together, and works with typed arrays.
 
 ```js
-const cols = 100, rows = 50;
+const cols = 100,
+  rows = 50;
 const grid = new Uint8Array(rows * cols);
 const idx = (r, c) => r * cols + c;
 
 grid[idx(3, 7)] = 1;
-const row = Math.floor(i / cols), col = i % cols; // index back to coordinates
+const row = Math.floor(i / cols),
+  col = i % cols; // index back to coordinates
 ```
 
 Game boards, pixel buffers and heatmaps often use this layout.
@@ -2976,14 +3068,14 @@ A spreadsheet with a million possible cells but only a few hundred filled stays 
 Give each flag one bit and use bitwise operators. It's compact and fast to combine and check.
 
 ```js
-const READ = 1 << 0;   // 1
-const WRITE = 1 << 1;  // 2
+const READ = 1 << 0; // 1
+const WRITE = 1 << 1; // 2
 const DELETE = 1 << 2; // 4
 
 let perms = READ | WRITE;
 const canWrite = (perms & WRITE) !== 0; // true
-perms &= ~WRITE;       // remove WRITE
-perms ^= DELETE;       // toggle DELETE
+perms &= ~WRITE; // remove WRITE
+perms ^= DELETE; // toggle DELETE
 ```
 
 JavaScript bitwise operators work on 32-bit integers, so one number holds up to 32 flags. React uses this idea for its internal fiber flags and lanes.
@@ -2997,9 +3089,15 @@ class BitSet {
   constructor(size) {
     this.words = new Uint32Array(Math.ceil(size / 32));
   }
-  set(i)   { this.words[i >>> 5] |= 1 << (i & 31); }
-  clear(i) { this.words[i >>> 5] &= ~(1 << (i & 31)); }
-  has(i)   { return (this.words[i >>> 5] & (1 << (i & 31))) !== 0; }
+  set(i) {
+    this.words[i >>> 5] |= 1 << (i & 31);
+  }
+  clear(i) {
+    this.words[i >>> 5] &= ~(1 << (i & 31));
+  }
+  has(i) {
+    return (this.words[i >>> 5] & (1 << (i & 31))) !== 0;
+  }
 }
 
 const seen = new BitSet(1_000_000); // about 125 KB
@@ -3031,7 +3129,8 @@ class UnionFind {
     return x;
   }
   union(a, b) {
-    let ra = this.find(a), rb = this.find(b);
+    let ra = this.find(a),
+      rb = this.find(b);
     if (ra === rb) return false;
     if (this.size[ra] < this.size[rb]) [ra, rb] = [rb, ra];
     this.parent[rb] = ra;
@@ -3091,7 +3190,9 @@ Keep two stacks. Every new change pushes the previous state onto `undo` and clea
 class History {
   #undo = [];
   #redo = [];
-  constructor(initial) { this.current = initial; }
+  constructor(initial) {
+    this.current = initial;
+  }
 
   push(state) {
     this.#undo.push(this.current);
@@ -3125,7 +3226,7 @@ Walk the DOM breadth-first with a queue and track the level.
 function elementsAtDepth(root, depth) {
   let level = [root];
   for (let d = 0; d < depth; d++) {
-    level = level.flatMap(el => [...el.children]);
+    level = level.flatMap((el) => [...el.children]);
   }
   return level;
 }
@@ -3170,7 +3271,7 @@ function createStore(initial) {
     getState: () => state,
     setState(update) {
       state = { ...state, ...update };
-      listeners.forEach(l => l(state));
+      listeners.forEach((l) => l(state));
     },
     subscribe(l) {
       listeners.add(l);
@@ -3185,7 +3286,8 @@ function createStore(initial) {
 Do a depth-first search and keep a set of nodes on the current path. If you reach a node that's already on the path, you've found a cycle. The path itself tells you the cycle.
 
 ```js
-function findCycle(graph) { // Map<string, string[]>
+function findCycle(graph) {
+  // Map<string, string[]>
   const done = new Set();
   const path = [];
   const onPath = new Set();
@@ -3193,12 +3295,15 @@ function findCycle(graph) { // Map<string, string[]>
   function dfs(n) {
     if (onPath.has(n)) return [...path.slice(path.indexOf(n)), n];
     if (done.has(n)) return null;
-    onPath.add(n); path.push(n);
+    onPath.add(n);
+    path.push(n);
     for (const dep of graph.get(n) ?? []) {
       const cycle = dfs(dep);
       if (cycle) return cycle;
     }
-    onPath.delete(n); path.pop(); done.add(n);
+    onPath.delete(n);
+    path.pop();
+    done.add(n);
     return null;
   }
   for (const n of graph.keys()) {
@@ -3236,8 +3341,8 @@ Use `WeakMap` levels instead of `Map` when the arguments are objects that should
 Building a `Set` costs O(n). If you check membership once, `includes` is fine. If you check many times, like filtering one list against another, the `Set` wins: O(n + m) instead of O(n × m).
 
 ```js
-const blocked = new Set(blockedIds);           // once
-const visible = posts.filter(p => !blocked.has(p.authorId));
+const blocked = new Set(blockedIds); // once
+const visible = posts.filter((p) => !blocked.has(p.authorId));
 ```
 
 For very small arrays (a handful of items), `includes` can be just as fast, so don't bother.
@@ -3267,8 +3372,8 @@ For a huge number of distinct items where you only need the top few, a small hea
 Use `Object.groupBy` when keys are strings and you want a plain object, and `Map.groupBy` when keys are non-strings or you need `Map` features. Use `reduce` (or a loop) when you need something the built-ins don't do, like counting instead of collecting, or putting one item in several groups.
 
 ```js
-const byStatus = Object.groupBy(orders, o => o.status);
-const byCustomer = Map.groupBy(orders, o => o.customer); // object keys
+const byStatus = Object.groupBy(orders, (o) => o.status);
+const byCustomer = Map.groupBy(orders, (o) => o.customer); // object keys
 const totals = orders.reduce((acc, o) => {
   acc[o.status] = (acc[o.status] ?? 0) + o.total;
   return acc;
@@ -3314,7 +3419,11 @@ a.splice(1, 1); // the right way, or a.filter(...) / a.toSpliced(...)
 A `Map` keeps insertion order, so you sort its entries and build a new `Map`.
 
 ```js
-const scores = new Map([["ana", 7], ["ben", 10], ["cy", 3]]);
+const scores = new Map([
+  ["ana", 7],
+  ["ben", 10],
+  ["cy", 3],
+]);
 const sorted = new Map([...scores].toSorted((a, b) => b[1] - a[1]));
 [...sorted.keys()]; // ["ben", "ana", "cy"]
 ```
@@ -3326,7 +3435,7 @@ Get the entries, sort them, and rebuild. Keep in mind that integer-like keys alw
 ```js
 const obj = { banana: 2, apple: 1, cherry: 3 };
 const sorted = Object.fromEntries(
-  Object.entries(obj).toSorted(([a], [b]) => a.localeCompare(b))
+  Object.entries(obj).toSorted(([a], [b]) => a.localeCompare(b)),
 );
 ```
 
@@ -3339,7 +3448,7 @@ It creates an object with no prototype, so it has no inherited keys like `toStri
 ```js
 const dict = Object.create(null);
 dict["__proto__"] = "safe"; // just a normal key here
-"toString" in dict;          // false
+"toString" in dict; // false
 ```
 
 These objects don't have `hasOwnProperty`, so check keys with `Object.hasOwn` or `in`. A `Map` is often the better choice anyway.
@@ -3352,7 +3461,7 @@ It happens when code copies user-controlled keys into an object and a key like `
 const payload = JSON.parse('{"__proto__": {"isAdmin": true}}');
 function merge(target, src) {
   for (const k in src) {
-    if (typeof src[k] === "object") merge(target[k] ??= {}, src[k]);
+    if (typeof src[k] === "object") merge((target[k] ??= {}), src[k]);
     else target[k] = src[k];
   }
 }
@@ -3416,7 +3525,10 @@ Write the nodes in pre-order, with `null` for missing children. Reading it back 
 function serialize(root) {
   const out = [];
   (function walk(n) {
-    if (!n) { out.push(null); return; }
+    if (!n) {
+      out.push(null);
+      return;
+    }
     out.push(n.value);
     walk(n.left);
     walk(n.right);
@@ -3450,7 +3562,7 @@ function findPath(nodes, id, path = []) {
   }
   return null;
 }
-findPath(menu, "billing")?.map(n => n.label); // ["Settings", "Account", "Billing"]
+findPath(menu, "billing")?.map((n) => n.label); // ["Settings", "Account", "Billing"]
 ```
 
 ## 251: How do you filter a tree but keep the parents of matching nodes?
@@ -3459,14 +3571,14 @@ This is what a tree view search does: show matching nodes plus the path to them.
 
 ```js
 function filterTree(nodes, match) {
-  return nodes.flatMap(node => {
+  return nodes.flatMap((node) => {
     const children = filterTree(node.children ?? [], match);
     if (match(node) || children.length) return [{ ...node, children }];
     return [];
   });
 }
 
-filterTree(files, n => n.name.includes("test"));
+filterTree(files, (n) => n.name.includes("test"));
 ```
 
 The original tree isn't changed, so clearing the search just shows the original again.
@@ -3496,9 +3608,9 @@ mkdirp("/src/components/ui");
 APIs often return a flat list with `parentId`, which is easy to store and paginate. For rendering, build a tree once, or keep a `Map` from `parentId` to child ids and render recursively from that.
 
 ```jsx
-const childrenOf = Map.groupBy(comments, c => c.parentId ?? "root");
+const childrenOf = Map.groupBy(comments, (c) => c.parentId ?? "root");
 function Thread({ parentId = "root" }) {
-  return (childrenOf.get(parentId) ?? []).map(c => (
+  return (childrenOf.get(parentId) ?? []).map((c) => (
     <Comment key={c.id} comment={c}>
       <Thread parentId={c.id} />
     </Comment>
@@ -3560,7 +3672,11 @@ Each new value is bigger than everything before, so it always goes to the right.
 function fromSorted(arr, lo = 0, hi = arr.length - 1) {
   if (lo > hi) return null;
   const mid = (lo + hi) >> 1;
-  return { value: arr[mid], left: fromSorted(arr, lo, mid - 1), right: fromSorted(arr, mid + 1, hi) };
+  return {
+    value: arr[mid],
+    left: fromSorted(arr, lo, mid - 1),
+    right: fromSorted(arr, mid + 1, hi),
+  };
 }
 ```
 
@@ -3570,9 +3686,21 @@ Store the weight with each neighbor, for example as a `Map` of neighbor to weigh
 
 ```js
 const roads = new Map([
-  ["A", new Map([["B", 5], ["C", 2]])],
+  [
+    "A",
+    new Map([
+      ["B", 5],
+      ["C", 2],
+    ]),
+  ],
   ["B", new Map([["D", 1]])],
-  ["C", new Map([["B", 1], ["D", 7]])],
+  [
+    "C",
+    new Map([
+      ["B", 1],
+      ["D", 7],
+    ]),
+  ],
   ["D", new Map()],
 ]);
 
@@ -3585,7 +3713,10 @@ for (const [next, cost] of roads.get("C")) console.log(next, cost);
 An edge list is just an array of edges, like `[from, to, weight]`. It's the simplest format and is common in API responses and files. It's good for algorithms that look at all edges, like Kruskal's (sort the edges by weight) or Bellman-Ford. It's bad for "give me the neighbors of X", which takes O(E), so you usually convert it to an adjacency list.
 
 ```js
-const edges = [["A", "B", 5], ["A", "C", 2]];
+const edges = [
+  ["A", "B", 5],
+  ["A", "C", 2],
+];
 const adj = Map.groupBy(edges, ([from]) => from);
 ```
 
@@ -3594,10 +3725,16 @@ const adj = Map.groupBy(edges, ([from]) => from);
 A graph you never store as nodes and edges; you compute neighbors when you need them. A grid is the classic example: each cell's neighbors are the cells up, down, left and right. Puzzle states are another: neighbors are the states one move away. This saves memory, especially when the graph is huge or infinite.
 
 ```js
-const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+const dirs = [
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+];
 function* neighbors(grid, r, c) {
   for (const [dr, dc] of dirs) {
-    const nr = r + dr, nc = c + dc;
+    const nr = r + dr,
+      nc = c + dc;
     if (grid[nr]?.[nc] === 0) yield [nr, nc]; // 0 = open cell
   }
 }
@@ -3612,8 +3749,12 @@ It's O(1) on average. The spec only requires it to be "sublinear", but engines u
 Each `[1, 2]` is a separate array object, and `Set` compares objects by reference. To get unique pairs, store a string key instead, or keep a `Map` from the key to the original pair.
 
 ```js
-const pairs = [[1, 2], [1, 2], [2, 1]];
-const unique = [...new Map(pairs.map(p => [p.join(","), p])).values()];
+const pairs = [
+  [1, 2],
+  [1, 2],
+  [2, 1],
+];
+const unique = [...new Map(pairs.map((p) => [p.join(","), p])).values()];
 // [[1, 2], [2, 1]]
 ```
 
@@ -3687,7 +3828,9 @@ Store the expiry time with each value and check it on read.
 ```js
 class TTLCache {
   #map = new Map();
-  constructor(ttlMs) { this.ttl = ttlMs; }
+  constructor(ttlMs) {
+    this.ttl = ttlMs;
+  }
 
   set(key, value) {
     this.#map.set(key, { value, expires: Date.now() + this.ttl });
@@ -3717,7 +3860,8 @@ Move one pointer n steps ahead, then move both until the first reaches the end. 
 ```js
 function removeNthFromEnd(head, n) {
   const dummy = { next: head };
-  let fast = dummy, slow = dummy;
+  let fast = dummy,
+    slow = dummy;
   for (let i = 0; i < n; i++) fast = fast.next;
   while (fast.next) {
     fast = fast.next;
@@ -3734,7 +3878,8 @@ Walk both lists with two pointers. When one reaches the end, move it to the star
 
 ```js
 function intersection(a, b) {
-  let p = a, q = b;
+  let p = a,
+    q = b;
   while (p !== q) {
     p = p ? p.next : b;
     q = q ? q.next : a;
@@ -3749,11 +3894,17 @@ Find the middle, reverse the second half, and compare it with the first half. If
 
 ```js
 function isPalindrome(head) {
-  let slow = head, fast = head;
-  while (fast?.next) { slow = slow.next; fast = fast.next.next; }
+  let slow = head,
+    fast = head;
+  while (fast?.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
 
   let prev = null;
-  while (slow) { [slow.next, prev, slow] = [prev, slow, slow.next]; }
+  while (slow) {
+    [slow.next, prev, slow] = [prev, slow, slow.next];
+  }
 
   for (let l = head, r = prev; r; l = l.next, r = r.next) {
     if (l.value !== r.value) return false;
@@ -3867,7 +4018,9 @@ JSON.parse(json, reviver).tags.has("a"); // true
 
 ```js
 const iso = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
-const data = JSON.parse(text, (k, v) => typeof v === "string" && iso.test(v) ? new Date(v) : v);
+const data = JSON.parse(text, (k, v) =>
+  typeof v === "string" && iso.test(v) ? new Date(v) : v,
+);
 ```
 
 Converting known fields by name is safer than a regex, because a user might type a string that looks like a date. Schema libraries like Zod can do it with `z.coerce.date()`.
@@ -3878,7 +4031,7 @@ Converting known fields by name is safer than a regex, because a user might type
 
 ```js
 const json = JSON.stringify({ id: 12345678901234567890n }, (k, v) =>
-  typeof v === "bigint" ? v.toString() : v
+  typeof v === "bigint" ? v.toString() : v,
 ); // '{"id":"12345678901234567890"}'
 
 const id = BigInt(JSON.parse(json).id);
@@ -3945,9 +4098,12 @@ type Expr =
 
 function evaluate(e: Expr): number {
   switch (e.type) {
-    case "num": return e.value;
-    case "add": return evaluate(e.left) + evaluate(e.right);
-    case "mul": return evaluate(e.left) * evaluate(e.right);
+    case "num":
+      return e.value;
+    case "add":
+      return evaluate(e.left) + evaluate(e.right);
+    case "mul":
+      return evaluate(e.left) * evaluate(e.right);
   }
 }
 ```
@@ -3961,7 +4117,7 @@ Use `with(index, value)`. It returns a copy with one slot changed and supports n
 ```js
 const steps = ["draft", "review", "publish"];
 const next = steps.with(1, "approved"); // ["draft", "approved", "publish"]
-steps.with(-1, "done");                 // ["draft", "review", "done"]
+steps.with(-1, "done"); // ["draft", "review", "done"]
 ```
 
 Before ES2023 you'd write `steps.map((s, i) => i === 1 ? "approved" : s)`.
@@ -3983,13 +4139,14 @@ They make the internal storage impossible to reach from outside, so nobody can d
 Yes. Keys are compared by reference, so items that return the same object end up in the same group. This is useful when you group by a related entity you already have as an object.
 
 ```js
-const ana = { name: "Ana" }, ben = { name: "Ben" };
+const ana = { name: "Ana" },
+  ben = { name: "Ben" };
 const tasks = [
   { title: "A", owner: ana },
   { title: "B", owner: ben },
   { title: "C", owner: ana },
 ];
-const byOwner = Map.groupBy(tasks, t => t.owner);
+const byOwner = Map.groupBy(tasks, (t) => t.owner);
 byOwner.get(ana).length; // 2
 ```
 
@@ -4003,8 +4160,14 @@ Test the edge cases (empty, one item, full, duplicates), check that invariants h
 const heap = new MinHeap();
 const ref = [];
 for (let i = 0; i < 10_000; i++) {
-  if (Math.random() < 0.6) { const v = Math.random(); heap.push(v); ref.push(v); }
-  else { ref.sort((a, b) => a - b); console.assert(heap.pop() === ref.shift()); }
+  if (Math.random() < 0.6) {
+    const v = Math.random();
+    heap.push(v);
+    ref.push(v);
+  } else {
+    ref.sort((a, b) => a - b);
+    console.assert(heap.pop() === ref.shift());
+  }
 }
 ```
 
@@ -4024,14 +4187,18 @@ React needs a new reference to see a change, but `add` and `delete` mutate the s
 const [selected, setSelected] = useState(() => new Set());
 
 function toggle(id) {
-  setSelected(prev => {
+  setSelected((prev) => {
     const next = new Set(prev);
     next.has(id) ? next.delete(id) : next.add(id);
     return next;
   });
 }
 
-<input type="checkbox" checked={selected.has(item.id)} onChange={() => toggle(item.id)} />
+<input
+  type="checkbox"
+  checked={selected.has(item.id)}
+  onChange={() => toggle(item.id)}
+/>;
 ```
 
 ## 295: What problems can Map and Set cause in app state?
@@ -4055,7 +4222,10 @@ Adding new entries during the loop is also allowed, but they will be visited too
 Spread both into a new `Map`. When keys repeat, the later one wins.
 
 ```js
-const defaults = new Map([["theme", "light"], ["lang", "en"]]);
+const defaults = new Map([
+  ["theme", "light"],
+  ["lang", "en"],
+]);
 const user = new Map([["theme", "dark"]]);
 const settings = new Map([...defaults, ...user]);
 settings.get("theme"); // "dark"
@@ -4067,10 +4237,15 @@ For a custom merge (like adding counts), loop and combine values yourself.
 
 ```js
 const codes = { en: "English", ka: "Georgian" };
-const byName = Object.fromEntries(Object.entries(codes).map(([k, v]) => [v, k]));
+const byName = Object.fromEntries(
+  Object.entries(codes).map(([k, v]) => [v, k]),
+);
 // { English: "en", Georgian: "ka" }
 
-const m = new Map([["a", 1], ["b", 2]]);
+const m = new Map([
+  ["a", 1],
+  ["b", 2],
+]);
 const inverted = new Map([...m].map(([k, v]) => [v, k]));
 ```
 
@@ -4081,7 +4256,7 @@ If two keys share a value, only the last one survives. Group into arrays if you 
 ```js
 function chunk(arr, size) {
   return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size)
+    arr.slice(i * size, i * size + size),
   );
 }
 chunk([1, 2, 3, 4, 5], 2); // [[1, 2], [3, 4], [5]]
@@ -4107,7 +4282,10 @@ If the arrays can have different lengths, decide on purpose: cut to the shorter 
 Each object points to a hidden class (V8 calls it a "map", other engines call it a "shape") that describes its layout: which properties it has and at what offset each value sits. Objects created the same way, with the same properties in the same order, share one hidden class. That lets V8 read `obj.x` from a fixed offset instead of looking it up by name. Adding a property creates a transition to a new hidden class, so objects that get properties in different orders end up with different classes.
 
 ```js
-function Point(x, y) { this.x = x; this.y = y; } // all Points share one shape
+function Point(x, y) {
+  this.x = x;
+  this.y = y;
+} // all Points share one shape
 const a = { x: 1, y: 2 };
 const b = { y: 2, x: 1 }; // different shape from a
 ```
@@ -4121,10 +4299,10 @@ When an object's shape changes too much, V8 stops using hidden classes for it an
 V8 stores array items (the "elements") separately from named properties and tracks what kind they are: `PACKED_SMI_ELEMENTS` (small integers), `PACKED_DOUBLE_ELEMENTS`, `PACKED_ELEMENTS` (anything), and `HOLEY_` versions of each. Transitions only go toward more general kinds: SMI to double to generic, and packed to holey. An array that ever held a string stays generic even after you remove it. Keeping arrays packed and of one type lets the engine generate tighter loops.
 
 ```js
-const a = [1, 2, 3];  // PACKED_SMI
-a.push(4.5);          // PACKED_DOUBLE
-a.push("x");          // PACKED_ELEMENTS
-a[10] = 1;            // HOLEY_ELEMENTS
+const a = [1, 2, 3]; // PACKED_SMI
+a.push(4.5); // PACKED_DOUBLE
+a.push("x"); // PACKED_ELEMENTS
+a[10] = 1; // HOLEY_ELEMENTS
 ```
 
 ## 304: How are Map and Set implemented in V8?
@@ -4170,9 +4348,15 @@ A pool keeps reusable objects instead of creating new ones and dropping them. Yo
 ```js
 class Pool {
   #free = [];
-  constructor(create) { this.create = create; }
-  acquire() { return this.#free.pop() ?? this.create(); }
-  release(obj) { this.#free.push(obj); }
+  constructor(create) {
+    this.create = create;
+  }
+  acquire() {
+    return this.#free.pop() ?? this.create();
+  }
+  release(obj) {
+    this.#free.push(obj);
+  }
 }
 const vectors = new Pool(() => ({ x: 0, y: 0 }));
 ```
@@ -4184,8 +4368,10 @@ An array of structs (AoS) is the usual `[{ x, y, vx, vy }, ...]`. A struct of ar
 ```js
 const n = 100_000;
 const particles = {
-  x: new Float32Array(n), y: new Float32Array(n),
-  vx: new Float32Array(n), vy: new Float32Array(n),
+  x: new Float32Array(n),
+  y: new Float32Array(n),
+  vx: new Float32Array(n),
+  vy: new Float32Array(n),
 };
 for (let i = 0; i < n; i++) {
   particles.x[i] += particles.vx[i];
@@ -4207,8 +4393,8 @@ A `SharedArrayBuffer` is memory that several threads (the main thread and worker
 
 ```js
 const shared = new Int32Array(new SharedArrayBuffer(4));
-Atomics.add(shared, 0, 1);   // safe increment from any thread
-Atomics.notify(shared, 0);   // wake a waiting worker
+Atomics.add(shared, 0, 1); // safe increment from any thread
+Atomics.notify(shared, 0); // wake a waiting worker
 ```
 
 `Atomics.wait` isn't allowed on the browser main thread, since it would freeze the page.
@@ -4223,7 +4409,8 @@ const meta = new Int32Array(sab, 0, 2);
 const data = new Float32Array(sab, 8, capacity);
 
 function push(value) {
-  const w = Atomics.load(meta, 1), r = Atomics.load(meta, 0);
+  const w = Atomics.load(meta, 1),
+    r = Atomics.load(meta, 0);
   const next = (w + 1) % capacity;
   if (next === r) return false; // full
   data[w] = value;
@@ -4250,7 +4437,7 @@ view.length; // 4096
 ```js
 const a = new ArrayBuffer(8);
 const b = a.transfer();
-a.detached;   // true
+a.detached; // true
 a.byteLength; // 0
 ```
 
@@ -4264,9 +4451,9 @@ a.byteLength; // 0
 
 ```js
 const bytes = new TextEncoder().encode("héllo");
-const b64 = bytes.toBase64();            // "aMOpbGxv"
-Uint8Array.fromBase64(b64);              // back to bytes
-bytes.toHex();                           // "68c3a96c6c6f"
+const b64 = bytes.toBase64(); // "aMOpbGxv"
+Uint8Array.fromBase64(b64); // back to bytes
+bytes.toHex(); // "68c3a96c6c6f"
 ```
 
 ## 323: What does the structured clone algorithm support, and how does transfer work with it?
@@ -4300,8 +4487,11 @@ Take a heap snapshot in Chrome DevTools, do the action that leaks a few times, t
 Every node tracks its height, and for every node the heights of its left and right subtrees can differ by at most 1. After an insert or delete, walk back up and check this balance factor. If it's off, fix it with a rotation: single right or left rotations for the "left-left" and "right-right" cases, and double rotations for "left-right" and "right-left". Height stays below about 1.44 log₂(n), so lookups are fast.
 
 ```js
-const h = n => n?.height ?? 0;
-const update = n => { n.height = 1 + Math.max(h(n.left), h(n.right)); return n; };
+const h = (n) => n?.height ?? 0;
+const update = (n) => {
+  n.height = 1 + Math.max(h(n.left), h(n.right));
+  return n;
+};
 
 function rotateRight(y) {
   const x = y.left;
@@ -4330,11 +4520,15 @@ A Fenwick tree stores partial sums in an array so you can update a value and get
 
 ```js
 class Fenwick {
-  constructor(n) { this.tree = new Float64Array(n + 1); }
-  add(i, delta) { // i is 0-based
+  constructor(n) {
+    this.tree = new Float64Array(n + 1);
+  }
+  add(i, delta) {
+    // i is 0-based
     for (i++; i < this.tree.length; i += i & -i) this.tree[i] += delta;
   }
-  prefixSum(i) { // sum of [0..i]
+  prefixSum(i) {
+    // sum of [0..i]
     let s = 0;
     for (i++; i > 0; i -= i & -i) s += this.tree[i];
     return s;
@@ -4443,7 +4637,9 @@ If an attacker knows your hash function, they can send many keys that all land i
 A deep merge copies keys from a source into a target recursively, which is the classic place for prototype pollution. Block dangerous keys, only copy own properties, and only recurse into plain objects.
 
 ```js
-const isPlain = v => v !== null && typeof v === "object" &&
+const isPlain = (v) =>
+  v !== null &&
+  typeof v === "object" &&
   [Object.prototype, null].includes(Object.getPrototypeOf(v));
 const BLOCKED = new Set(["__proto__", "constructor", "prototype"]);
 
@@ -4512,7 +4708,8 @@ Binary search the prefix sums for the last row whose start is less than or equal
 ```js
 // offsets[i] = top of row i, sorted ascending
 function rowAt(offsets, scrollTop) {
-  let lo = 0, hi = offsets.length - 1;
+  let lo = 0,
+    hi = offsets.length - 1;
   while (lo < hi) {
     const mid = (lo + hi + 1) >> 1;
     if (offsets[mid] <= scrollTop) lo = mid;
@@ -4536,7 +4733,9 @@ With `produceWithPatches`, Immer returns the new state, a list of patches descri
 import { enablePatches, produceWithPatches, applyPatches } from "immer";
 enablePatches();
 
-const [next, patches, inverse] = produceWithPatches(state, d => { d.count++; });
+const [next, patches, inverse] = produceWithPatches(state, (d) => {
+  d.count++;
+});
 const undone = applyPatches(next, inverse); // back to state
 ```
 
@@ -4615,7 +4814,8 @@ Find the insert position with binary search (O(log n)), then insert with `splice
 
 ```js
 function insertSorted(arr, item, compare) {
-  let lo = 0, hi = arr.length;
+  let lo = 0,
+    hi = arr.length;
   while (lo < hi) {
     const mid = (lo + hi) >>> 1;
     if (compare(arr[mid], item) <= 0) lo = mid + 1;
@@ -4640,16 +4840,27 @@ Wrap a BST and add the operations a sorted map needs: `get`, `set`, `delete`, in
 class SortedMap {
   #root = null;
   #cmp;
-  constructor(cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0)) { this.#cmp = cmp; }
+  constructor(cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0)) {
+    this.#cmp = cmp;
+  }
 
   set(key, value) {
-    if (!this.#root) { this.#root = { key, value, left: null, right: null }; return; }
+    if (!this.#root) {
+      this.#root = { key, value, left: null, right: null };
+      return;
+    }
     let n = this.#root;
     while (true) {
       const c = this.#cmp(key, n.key);
-      if (c === 0) { n.value = value; return; }
+      if (c === 0) {
+        n.value = value;
+        return;
+      }
       const side = c < 0 ? "left" : "right";
-      if (!n[side]) { n[side] = { key, value, left: null, right: null }; return; }
+      if (!n[side]) {
+        n[side] = { key, value, left: null, right: null };
+        return;
+      }
       n = n[side];
     }
   }
@@ -4657,7 +4868,8 @@ class SortedMap {
   *range(lo, hi, n = this.#root) {
     if (!n) return;
     if (this.#cmp(lo, n.key) < 0) yield* this.range(lo, hi, n.left);
-    if (this.#cmp(lo, n.key) <= 0 && this.#cmp(n.key, hi) <= 0) yield [n.key, n.value];
+    if (this.#cmp(lo, n.key) <= 0 && this.#cmp(n.key, hi) <= 0)
+      yield [n.key, n.value];
     if (this.#cmp(n.key, hi) < 0) yield* this.range(lo, hi, n.right);
   }
 }
@@ -4676,9 +4888,11 @@ class RingDeque {
   #len = 0;
 
   #grow() {
-    const old = this.#buf, cap = old.length;
+    const old = this.#buf,
+      cap = old.length;
     this.#buf = new Array(cap * 2);
-    for (let i = 0; i < this.#len; i++) this.#buf[i] = old[(this.#head + i) & (cap - 1)];
+    for (let i = 0; i < this.#len; i++)
+      this.#buf[i] = old[(this.#head + i) & (cap - 1)];
     this.#head = 0;
   }
   pushBack(x) {
@@ -4699,7 +4913,9 @@ class RingDeque {
     this.#len--;
     return x;
   }
-  get size() { return this.#len; }
+  get size() {
+    return this.#len;
+  }
 }
 ```
 
@@ -4808,19 +5024,31 @@ The pool keeps every value alive, so pair it with `WeakRef`s or limits if it can
 Wrap a `Map` and hash each key to a canonical string. Store `[originalKey, value]` so you can still list the real keys.
 
 ```js
-const canon = v =>
+const canon = (v) =>
   v && typeof v === "object"
     ? Array.isArray(v)
       ? `[${v.map(canon).join(",")}]`
-      : `{${Object.keys(v).sort().map(k => JSON.stringify(k) + ":" + canon(v[k])).join(",")}}`
-    : JSON.stringify(v) ?? String(v);
+      : `{${Object.keys(v)
+          .sort()
+          .map((k) => JSON.stringify(k) + ":" + canon(v[k]))
+          .join(",")}}`
+    : (JSON.stringify(v) ?? String(v));
 
 class ValueMap {
   #m = new Map();
-  set(k, v) { this.#m.set(canon(k), [k, v]); return this; }
-  get(k) { return this.#m.get(canon(k))?.[1]; }
-  has(k) { return this.#m.has(canon(k)); }
-  *[Symbol.iterator]() { yield* this.#m.values(); }
+  set(k, v) {
+    this.#m.set(canon(k), [k, v]);
+    return this;
+  }
+  get(k) {
+    return this.#m.get(canon(k))?.[1];
+  }
+  has(k) {
+    return this.#m.has(canon(k));
+  }
+  *[Symbol.iterator]() {
+    yield* this.#m.values();
+  }
 }
 
 const m = new ValueMap().set({ b: 2, a: 1 }, "x");
@@ -4850,7 +5078,8 @@ function deepEqual(a, b, seen = new Map()) {
   }
   if (a instanceof Map) {
     if (a.size !== b.size) return false;
-    for (const [k, v] of a) if (!b.has(k) || !deepEqual(v, b.get(k), seen)) return false;
+    for (const [k, v] of a)
+      if (!b.has(k) || !deepEqual(v, b.get(k), seen)) return false;
     return true;
   }
   if (a instanceof Set) {
@@ -4858,9 +5087,10 @@ function deepEqual(a, b, seen = new Map()) {
     for (const v of a) if (!b.has(v)) return false;
     return true;
   }
-  const ka = Reflect.ownKeys(a), kb = Reflect.ownKeys(b);
+  const ka = Reflect.ownKeys(a),
+    kb = Reflect.ownKeys(b);
   if (ka.length !== kb.length) return false;
-  return ka.every(k => Object.hasOwn(b, k) && deepEqual(a[k], b[k], seen));
+  return ka.every((k) => Object.hasOwn(b, k) && deepEqual(a[k], b[k], seen));
 }
 ```
 
@@ -4891,7 +5121,9 @@ function clone(value, seen = new WeakMap()) {
     for (const v of value) copy.add(clone(v, seen));
     return copy;
   }
-  copy = Array.isArray(value) ? [] : Object.create(Object.getPrototypeOf(value));
+  copy = Array.isArray(value)
+    ? []
+    : Object.create(Object.getPrototypeOf(value));
   seen.set(value, copy);
   for (const key of Reflect.ownKeys(value)) copy[key] = clone(value[key], seen);
   return copy;
@@ -4906,13 +5138,21 @@ Unlike `structuredClone`, this keeps prototypes and symbol keys, but it doesn't 
 
 ```js
 class Money {
-  constructor(amount, currency) { this.amount = amount; this.currency = currency; }
-  toJSON() { return { $type: "Money", amount: this.amount, currency: this.currency }; }
-  static fromJSON(o) { return new Money(o.amount, o.currency); }
+  constructor(amount, currency) {
+    this.amount = amount;
+    this.currency = currency;
+  }
+  toJSON() {
+    return { $type: "Money", amount: this.amount, currency: this.currency };
+  }
+  static fromJSON(o) {
+    return new Money(o.amount, o.currency);
+  }
 }
 
 const registry = { Money };
-const revive = (k, v) => (v?.$type && registry[v.$type] ? registry[v.$type].fromJSON(v) : v);
+const revive = (k, v) =>
+  v?.$type && registry[v.$type] ? registry[v.$type].fromJSON(v) : v;
 
 const back = JSON.parse(JSON.stringify({ price: new Money(5, "EUR") }), revive);
 back.price instanceof Money; // true
@@ -4991,7 +5231,7 @@ A closure keeps every variable it uses from its outer scope. In V8, closures cre
 ```js
 function setup() {
   const huge = new Array(1e6).fill("x");
-  const summary = huge.length;            // keep only what you need
+  const summary = huge.length; // keep only what you need
   button.onclick = () => console.log(summary);
 }
 ```
@@ -5002,10 +5242,17 @@ Each helper wraps the previous iterator and pulls one value at a time. `take(n)`
 
 ```js
 function* ids() {
-  try { let i = 0; while (true) yield i++; }
-  finally { console.log("cleanup"); }
+  try {
+    let i = 0;
+    while (true) yield i++;
+  } finally {
+    console.log("cleanup");
+  }
 }
-ids().map(x => x * 2).take(2).toArray(); // [0, 2], then logs "cleanup"
+ids()
+  .map((x) => x * 2)
+  .take(2)
+  .toArray(); // [0, 2], then logs "cleanup"
 ```
 
 ## 407: When should a data pipeline use generators instead of arrays?
@@ -5017,11 +5264,14 @@ When the data is big or comes in over time, and each step only needs one item at
 Each `ReadableStream` and `WritableStream` has an internal queue with a high water mark set by its queuing strategy. When the queue is above that mark, `desiredSize` goes to zero or below, the stream stops calling `pull()` on the source, and `pipeTo` waits before reading more. That way a fast producer can't fill memory faster than a slow consumer handles it. You choose `CountQueuingStrategy` (number of chunks) or `ByteLengthQueuingStrategy` (bytes) depending on what you want to limit.
 
 ```js
-const stream = new ReadableStream({
-  async pull(controller) {
-    controller.enqueue(await fetchNextChunk());
+const stream = new ReadableStream(
+  {
+    async pull(controller) {
+      controller.enqueue(await fetchNextChunk());
+    },
   },
-}, new CountQueuingStrategy({ highWaterMark: 4 }));
+  new CountQueuingStrategy({ highWaterMark: 4 }),
+);
 ```
 
 ## 409: How do you build an async queue that producers push to and consumers await?
@@ -5040,7 +5290,7 @@ class AsyncQueue {
   }
   next() {
     if (this.#values.length) return Promise.resolve(this.#values.shift());
-    return new Promise(resolve => this.#waiters.push(resolve));
+    return new Promise((resolve) => this.#waiters.push(resolve));
   }
   async *[Symbol.asyncIterator]() {
     while (true) yield await this.next();
@@ -5048,7 +5298,9 @@ class AsyncQueue {
 }
 
 const q = new AsyncQueue();
-(async () => { for await (const msg of q) console.log(msg); })();
+(async () => {
+  for await (const msg of q) console.log(msg);
+})();
 q.push("hello");
 ```
 
@@ -5064,7 +5316,9 @@ These methods read `length` once at the start, then read each index when they ge
 
 ```js
 const arr = [1, 2, 3, 4];
-arr.forEach((x, i) => { if (x % 2 === 0) arr.splice(i, 1); });
+arr.forEach((x, i) => {
+  if (x % 2 === 0) arr.splice(i, 1);
+});
 // arr is [1, 3], but only by luck; [2, 4, 6] would leave [4]
 ```
 
@@ -5077,7 +5331,10 @@ Since ES2019, `Array.prototype.sort` and `toSorted` must be stable: equal items 
 Default `sort()` compares UTF-16 code units, so "Z" comes before "a" and "é" ends up after "z". Use `localeCompare` or, for many comparisons, an `Intl.Collator`, which is much faster when reused. Collator options handle case, accents and numbers inside strings.
 
 ```js
-const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+const collator = new Intl.Collator("en", {
+  numeric: true,
+  sensitivity: "base",
+});
 ["item10", "Item2", "item1"].toSorted(collator.compare);
 // ["item1", "Item2", "item10"]
 ```
@@ -5089,7 +5346,7 @@ Only keys that are canonical string forms of integers from 0 to 2³² − 2 are 
 ```js
 const a = [];
 a[-1] = "x";
-a.length;  // 0
+a.length; // 0
 Object.keys(a); // ["-1"]
 ```
 
@@ -5103,10 +5360,10 @@ Methods that use `===` can't find `NaN`: `indexOf`, `lastIndexOf`. Methods that 
 
 ```js
 const vals = [1, NaN];
-vals.indexOf(NaN);           // -1
-vals.includes(NaN);          // true
+vals.indexOf(NaN); // -1
+vals.includes(NaN); // true
 vals.findIndex(Number.isNaN); // 1
-new Set([NaN, NaN]).size;    // 1
+new Set([NaN, NaN]).size; // 1
 ```
 
 ## 417: What is Symbol.species, and why is it a problem when you subclass Array?
@@ -5141,7 +5398,8 @@ Intercept `get` and `set`, turn negative integer keys into positive indexes, and
 ```js
 function withNegative(arr) {
   const fix = (target, key) => {
-    if (typeof key === "string" && /^-\d+$/.test(key)) return String(target.length + Number(key));
+    if (typeof key === "string" && /^-\d+$/.test(key))
+      return String(target.length + Number(key));
     return key;
   };
   return new Proxy(arr, {
@@ -5167,8 +5425,12 @@ Normal objects store properties with no special rules. Arrays have a special `[[
 ```js
 class Cart {
   #items = [1, 2];
-  get count() { return this.#items.length; }
-  toJSON() { return { items: this.#items }; }
+  get count() {
+    return this.#items.length;
+  }
+  toJSON() {
+    return { items: this.#items };
+  }
 }
 JSON.stringify(new Cart()); // '{"items":[1,2]}'
 ```
@@ -5187,7 +5449,7 @@ Typed arrays sort numerically by default, so `new Int32Array([10, 1, 2]).sort()`
 
 ```js
 new Float64Array([3.5, -1, 2]).sort(); // Float64Array [-1, 2, 3.5]
-[10, -1, 2].sort();                    // [-1, 10, 2], compared as strings
+[10, -1, 2].sort(); // [-1, 10, 2], compared as strings
 ```
 
 Note that NaN goes to the end of a typed array sort.
@@ -5231,11 +5493,13 @@ A `Set` of millions of numbers works but can use hundreds of megabytes and takes
 
 ```js
 function hasId(sorted, id) {
-  let lo = 0, hi = sorted.length - 1;
+  let lo = 0,
+    hi = sorted.length - 1;
   while (lo <= hi) {
     const mid = (lo + hi) >>> 1;
     if (sorted[mid] === id) return true;
-    if (sorted[mid] < id) lo = mid + 1; else hi = mid - 1;
+    if (sorted[mid] < id) lo = mid + 1;
+    else hi = mid - 1;
   }
   return false;
 }
@@ -5295,11 +5559,15 @@ class TimeMap {
   }
   get(key, time) {
     const list = this.#data.get(key) ?? [];
-    let lo = 0, hi = list.length - 1, ans = undefined;
+    let lo = 0,
+      hi = list.length - 1,
+      ans = undefined;
     while (lo <= hi) {
       const mid = (lo + hi) >> 1;
-      if (list[mid][0] <= time) { ans = list[mid][1]; lo = mid + 1; }
-      else hi = mid - 1;
+      if (list[mid][0] <= time) {
+        ans = list[mid][1];
+        lo = mid + 1;
+      } else hi = mid - 1;
     }
     return ans;
   }
@@ -5316,20 +5584,26 @@ Copying the whole array on each `snap` is O(n) per snapshot. Instead, store for 
 class SnapshotArray {
   #history;
   #snap = 0;
-  constructor(n) { this.#history = Array.from({ length: n }, () => [[0, 0]]); }
+  constructor(n) {
+    this.#history = Array.from({ length: n }, () => [[0, 0]]);
+  }
 
   set(i, v) {
     const h = this.#history[i];
     if (h.at(-1)[0] === this.#snap) h.at(-1)[1] = v;
     else h.push([this.#snap, v]);
   }
-  snap() { return this.#snap++; }
+  snap() {
+    return this.#snap++;
+  }
   get(i, id) {
     const h = this.#history[i];
-    let lo = 0, hi = h.length - 1;
+    let lo = 0,
+      hi = h.length - 1;
     while (lo < hi) {
       const mid = (lo + hi + 1) >> 1;
-      if (h[mid][0] <= id) lo = mid; else hi = mid - 1;
+      if (h[mid][0] <= id) lo = mid;
+      else hi = mid - 1;
     }
     return h[lo][1];
   }
@@ -5345,14 +5619,19 @@ class HitCounter {
   #times = new Int32Array(300);
   #counts = new Int32Array(300);
 
-  hit(t) { // t in seconds
+  hit(t) {
+    // t in seconds
     const i = t % 300;
-    if (this.#times[i] !== t) { this.#times[i] = t; this.#counts[i] = 0; }
+    if (this.#times[i] !== t) {
+      this.#times[i] = t;
+      this.#counts[i] = 0;
+    }
     this.#counts[i]++;
   }
   getHits(t) {
     let total = 0;
-    for (let i = 0; i < 300; i++) if (t - this.#times[i] < 300) total += this.#counts[i];
+    for (let i = 0; i < 300; i++)
+      if (t - this.#times[i] < 300) total += this.#counts[i];
     return total;
   }
 }
@@ -5383,12 +5662,16 @@ class FileSystem {
     }
     return node;
   }
-  mkdir(path) { this.#walk(path, true); }
+  mkdir(path) {
+    this.#walk(path, true);
+  }
   addContent(path, text) {
     const node = this.#walk(path, true);
     node.content = (node.content ?? "") + text;
   }
-  readContent(path) { return this.#walk(path, false)?.content ?? ""; }
+  readContent(path) {
+    return this.#walk(path, false)?.content ?? "";
+  }
   ls(path) {
     const node = this.#walk(path, false);
     if (!node) return [];
@@ -5408,14 +5691,21 @@ Keep three things: a `Map` from key to `{ value, freq }`, a `Map` from frequency
 
 ```js
 class LFUCache {
-  #vals = new Map(); #buckets = new Map(); #min = 0;
-  constructor(cap) { this.cap = cap; }
+  #vals = new Map();
+  #buckets = new Map();
+  #min = 0;
+  constructor(cap) {
+    this.cap = cap;
+  }
 
   #touch(key) {
     const e = this.#vals.get(key);
     const b = this.#buckets.get(e.freq);
     b.delete(key);
-    if (b.size === 0) { this.#buckets.delete(e.freq); if (this.#min === e.freq) this.#min++; }
+    if (b.size === 0) {
+      this.#buckets.delete(e.freq);
+      if (this.#min === e.freq) this.#min++;
+    }
     e.freq++;
     if (!this.#buckets.has(e.freq)) this.#buckets.set(e.freq, new Set());
     this.#buckets.get(e.freq).add(key);
@@ -5427,7 +5717,11 @@ class LFUCache {
   }
   set(key, value) {
     if (this.cap === 0) return;
-    if (this.#vals.has(key)) { this.#vals.get(key).value = value; this.#touch(key); return; }
+    if (this.#vals.has(key)) {
+      this.#vals.get(key).value = value;
+      this.#touch(key);
+      return;
+    }
     if (this.#vals.size >= this.cap) {
       const b = this.#buckets.get(this.#min);
       const old = b.keys().next().value;
@@ -5487,9 +5781,12 @@ docs.forEach((doc, id) => {
     index.get(word).add(id);
   }
 });
-const search = q => q.toLowerCase().split(/\s+/)
-  .map(w => index.get(w) ?? new Set())
-  .reduce((a, b) => a.intersection(b));
+const search = (q) =>
+  q
+    .toLowerCase()
+    .split(/\s+/)
+    .map((w) => index.get(w) ?? new Set())
+    .reduce((a, b) => a.intersection(b));
 ```
 
 ## 448: How would you keep a large live-updating table (prices, statuses) fast?

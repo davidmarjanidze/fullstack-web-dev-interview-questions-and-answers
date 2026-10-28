@@ -5605,12 +5605,7 @@ With a recursive union.
 
 ```ts
 type JSONValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JSONValue[]
-  | { [key: string]: JSONValue };
+  string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue };
 
 const data: JSONValue = {
   name: "Ann",
@@ -7654,9 +7649,7 @@ export type AppRouter = typeof appRouter;
 
 // client
 import type { AppRouter } from "../server";
-const trpc = createTRPCClient<AppRouter>({
-  /* ... */
-});
+const trpc = createTRPCClient<AppRouter>({/* ... */});
 const user = await trpc.getUser.query("1"); // fully typed, no codegen
 ```
 
@@ -7725,8 +7718,7 @@ Yes, since TypeScript 4.6, when the variables are `const` (or parameters that ar
 
 ```ts
 type Action =
-  | { kind: "add"; payload: number }
-  | { kind: "rename"; payload: string };
+  { kind: "add"; payload: number } | { kind: "rename"; payload: string };
 
 function handle({ kind, payload }: Action) {
   if (kind === "add") {

@@ -678,7 +678,9 @@ A trimmed example:
     {
       "type": "message",
       "role": "assistant",
-      "content": [{ "type": "output_text", "text": "Tokyo.", "annotations": [] }]
+      "content": [
+        { "type": "output_text", "text": "Tokyo.", "annotations": [] }
+      ]
     }
   ],
   "usage": { "input_tokens": 20, "output_tokens": 3, "total_tokens": 23 }
@@ -1975,25 +1977,31 @@ import OpenAI from "openai";
 
 const client = new OpenAI();
 
-const tools: OpenAI.Responses.Tool[] = [{
-  type: "function",
-  name: "get_weather",
-  description: "Get the current temperature for a city.",
-  parameters: {
-    type: "object",
-    properties: { city: { type: "string" } },
-    required: ["city"],
-    additionalProperties: false,
+const tools: OpenAI.Responses.Tool[] = [
+  {
+    type: "function",
+    name: "get_weather",
+    description: "Get the current temperature for a city.",
+    parameters: {
+      type: "object",
+      properties: { city: { type: "string" } },
+      required: ["city"],
+      additionalProperties: false,
+    },
+    strict: true,
   },
-  strict: true,
-}];
+];
 
 let input: OpenAI.Responses.ResponseInput = [
   { role: "user", content: "What's the weather in Paris?" },
 ];
 
 for (let step = 0; step < 10; step++) {
-  const response = await client.responses.create({ model: "gpt-6.1-sol", input, tools });
+  const response = await client.responses.create({
+    model: "gpt-6.1-sol",
+    input,
+    tools,
+  });
   input = [...input, ...response.output];
 
   const calls = response.output.filter((item) => item.type === "function_call");
@@ -2046,7 +2054,10 @@ Keep it in `required`, but allow `null`:
   "type": "object",
   "properties": {
     "city": { "type": "string" },
-    "unit": { "type": ["string", "null"], "enum": ["celsius", "fahrenheit", null] }
+    "unit": {
+      "type": ["string", "null"],
+      "enum": ["celsius", "fahrenheit", null]
+    }
   },
   "required": ["city", "unit"],
   "additionalProperties": false
@@ -2257,12 +2268,12 @@ You can migrate one endpoint or feature at a time.
 
 ## 172: How does tool calling differ between Chat Completions and Responses?
 
-| Chat Completions | Responses |
-| --- | --- |
-| `{"type": "function", "function": {"name": ..., "parameters": ...}}` | `{"type": "function", "name": ..., "parameters": ...}` |
-| `message.tool_calls[]` | `function_call` items in `output` |
-| `{"role": "tool", "tool_call_id": ..., "content": ...}` | `{"type": "function_call_output", "call_id": ..., "output": ...}` |
-| non-strict by default | tries strict by default |
+| Chat Completions                                                     | Responses                                                         |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `{"type": "function", "function": {"name": ..., "parameters": ...}}` | `{"type": "function", "name": ..., "parameters": ...}`            |
+| `message.tool_calls[]`                                               | `function_call` items in `output`                                 |
+| `{"role": "tool", "tool_call_id": ..., "content": ...}`              | `{"type": "function_call_output", "call_id": ..., "output": ...}` |
+| non-strict by default                                                | tries strict by default                                           |
 
 Also, for GPT-6 Astra and GPT-6.1 Sol, tool calling only works in Responses.
 
@@ -2752,14 +2763,18 @@ You mark a breakpoint on an input content block:
 {
   "model": "gpt-6.1-sol",
   "prompt_cache_options": { "mode": "explicit" },
-  "input": [{
-    "role": "developer",
-    "content": [{
-      "type": "input_text",
-      "text": "Long stable instructions and reference material...",
-      "prompt_cache_breakpoint": { "mode": "explicit" }
-    }]
-  }]
+  "input": [
+    {
+      "role": "developer",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "Long stable instructions and reference material...",
+          "prompt_cache_breakpoint": { "mode": "explicit" }
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -3340,7 +3355,9 @@ export async function POST(req: Request) {
     },
   });
 
-  return new Response(body, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
+  return new Response(body, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
 }
 ```
 
@@ -4210,7 +4227,10 @@ This is why OpenAI recommends tool search and `allowed_tools` over adding and re
 Return the error as the tool output, in plain words the model can act on, instead of throwing an exception that ends the run:
 
 ```json
-{"error": "order_not_found", "message": "No order with ID 9912. Ask the user to check the order number."}
+{
+  "error": "order_not_found",
+  "message": "No order with ID 9912. Ask the user to check the order number."
+}
 ```
 
 The model can then fix the arguments, try another tool or ask the user. For errors the model can't fix (like an outage), say so clearly, so it stops retrying and tells the user.

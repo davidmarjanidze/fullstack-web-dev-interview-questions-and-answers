@@ -210,7 +210,7 @@ If you get an object back, the API is available. To try WebMCP on real users' br
 An origin trial lets you use an experimental Chrome feature on your real site for a limited time. You register your origin on the Chrome Origin Trials page, get a token, and add it to your pages. Users with a supported Chrome version then get the API without turning on any flag.
 
 ```html
-<meta http-equiv="origin-trial" content="YOUR_TOKEN_HERE">
+<meta http-equiv="origin-trial" content="YOUR_TOKEN_HERE" />
 ```
 
 You can also send the token in an `Origin-Trial` HTTP response header. The WebMCP origin trial starts in Chrome 149.
@@ -235,14 +235,14 @@ Call `registerTool()` with a tool definition. It returns a promise.
 
 ```js
 await document.modelContext.registerTool({
-  name: 'add_todo',
-  description: 'Add a new item to the to-do list.',
+  name: "add_todo",
+  description: "Add a new item to the to-do list.",
   inputSchema: {
-    type: 'object',
+    type: "object",
     properties: {
-      text: { type: 'string', description: 'The text of the to-do item' },
+      text: { type: "string", description: "The text of the to-do item" },
     },
-    required: ['text'],
+    required: ["text"],
   },
   async execute({ text }) {
     addTodo(text); // your existing app code
@@ -312,8 +312,8 @@ Pass an `AbortSignal` in the second argument of `registerTool()`. When you call 
 const controller = new AbortController();
 
 await document.modelContext.registerTool(
-  { name: 'get_cart', description: 'Get items in the cart.', execute: getCart },
-  { signal: controller.signal }
+  { name: "get_cart", description: "Get items in the cart.", execute: getCart },
+  { signal: controller.signal },
 );
 
 // later, for example when the user leaves the cart page
@@ -331,11 +331,13 @@ They were in the first drafts. `provideContext()` replaced the whole set of tool
 It turns a normal HTML form into a tool with no JavaScript. You add a tool name and description to the `<form>`, and the browser builds the input schema from the form fields.
 
 ```html
-<form toolname="search_recipes"
-      tooldescription="Search recipes by ingredient or dish name."
-      action="/search">
+<form
+  toolname="search_recipes"
+  tooldescription="Search recipes by ingredient or dish name."
+  action="/search"
+>
   <label for="q">Search</label>
-  <input id="q" name="q" type="text">
+  <input id="q" name="q" type="text" />
   <button type="submit">Search</button>
 </form>
 ```
@@ -349,8 +351,11 @@ It turns a normal HTML form into a tool with no JavaScript. You add a tool name 
 It is an attribute you put on a single form field to describe that parameter to the model. It becomes the field's `description` in the generated JSON Schema.
 
 ```html
-<input name="date" type="date"
-       toolparamdescription="Reservation date in YYYY-MM-DD format">
+<input
+  name="date"
+  type="date"
+  toolparamdescription="Reservation date in YYYY-MM-DD format"
+/>
 ```
 
 If you leave it out, the browser uses the text of the field's `<label>`. If there is no label, it falls back to `aria-description`.
@@ -360,9 +365,13 @@ If you leave it out, the browser uses the text of the field's `<label>`. If ther
 By default, when an agent calls a form tool, the browser fills in the fields but the user has to click Submit. With the `toolautosubmit` attribute on the form, the browser submits the form right after filling it in.
 
 ```html
-<form toolname="search_tool" tooldescription="Search the site"
-      action="/search" toolautosubmit>
-  <input type="text" name="query">
+<form
+  toolname="search_tool"
+  tooldescription="Search the site"
+  action="/search"
+  toolautosubmit
+>
+  <input type="text" name="query" />
 </form>
 ```
 
@@ -381,7 +390,7 @@ It is a boolean on the form's `submit` event. It is `true` when an AI agent trig
 It lets a form tool return a result to the agent without a page navigation. You call `preventDefault()` first, then pass a promise to `respondWith()`. The value the promise resolves to is sent back to the model as the tool output.
 
 ```js
-form.addEventListener('submit', (event) => {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
   if (event.agentInvoked) {
     event.respondWith(runSearch(new FormData(form)));
@@ -447,7 +456,7 @@ Both fire on `document.modelContext` and have a `toolName` property.
 - `toolcancel` fires when the run is cancelled, for example when the user cancels it or the form is reset.
 
 ```js
-document.modelContext.addEventListener('toolcancel', ({ toolName }) => {
+document.modelContext.addEventListener("toolcancel", ({ toolName }) => {
   console.log(`Tool "${toolName}" was cancelled`);
 });
 ```
@@ -459,7 +468,7 @@ You can use them to show or hide a "the assistant is working" indicator.
 It fires on `document.modelContext` when tools are added or removed. It can arrive asynchronously, not right at the moment of the change. Agents and debugging tools use it to keep their list of tools up to date.
 
 ```js
-document.modelContext.addEventListener('toolchange', async () => {
+document.modelContext.addEventListener("toolchange", async () => {
   const tools = await document.modelContext.getTools();
   console.log(tools.map((t) => t.name));
 });
@@ -577,7 +586,7 @@ Don't register and unregister tools on every small state change. It makes the to
 Register it in `useEffect` and abort the signal in the cleanup function, so the tool goes away when the component unmounts.
 
 ```jsx
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 function CartPage({ cart }) {
   useEffect(() => {
@@ -587,14 +596,17 @@ function CartPage({ cart }) {
     document.modelContext
       .registerTool(
         {
-          name: 'get_cart',
-          description: 'Get the items currently in the shopping cart.',
+          name: "get_cart",
+          description: "Get the items currently in the shopping cart.",
           annotations: { readOnlyHint: true },
           async execute() {
-            return cart.items.map((i) => `${i.quantity} x ${i.name}`).join('\n') || 'The cart is empty.';
+            return (
+              cart.items.map((i) => `${i.quantity} x ${i.name}`).join("\n") ||
+              "The cart is empty."
+            );
           },
         },
-        { signal: controller.signal }
+        { signal: controller.signal },
       )
       .catch(console.error);
 
@@ -638,11 +650,14 @@ Since Chrome 153, unregistering a tool does not cancel calls that are already ru
 Add `toolname` and `tooldescription` to the form, and `toolparamdescription` to fields where the label is not clear enough.
 
 ```html
-<form action="/products" method="get"
-      toolname="search_products"
-      tooldescription="Search the product catalog by keyword and category.">
+<form
+  action="/products"
+  method="get"
+  toolname="search_products"
+  tooldescription="Search the product catalog by keyword and category."
+>
   <label for="q">Keyword</label>
-  <input id="q" name="q" type="text" required>
+  <input id="q" name="q" type="text" required />
 
   <label for="cat">Category</label>
   <select id="cat" name="category">
@@ -661,16 +676,16 @@ Add `toolautosubmit` if the search should run right away without the user clicki
 Listen for `submit`, call `preventDefault()`, and if `agentInvoked` is true, pass a promise to `respondWith()`. Normal users still get the regular form behavior.
 
 ```js
-const form = document.querySelector('#support-form');
+const form = document.querySelector("#support-form");
 
-form.addEventListener('submit', (event) => {
+form.addEventListener("submit", (event) => {
   if (!event.agentInvoked) return; // a person submitted it, keep normal behavior
 
   event.preventDefault();
   event.respondWith(
-    fetch('/api/support', { method: 'POST', body: new FormData(form) })
+    fetch("/api/support", { method: "POST", body: new FormData(form) })
       .then((res) => res.json())
-      .then((data) => `Ticket ${data.ticketId} was created.`)
+      .then((data) => `Ticket ${data.ticketId} was created.`),
   );
 });
 ```
@@ -718,7 +733,9 @@ Give each tool one clear job and avoid tools that overlap. If two tools do almos
 On actions that matter a lot or can't be undone: placing an order, sending money, deleting data, sending a message to other people. The hint tells the agent and the browser that they should ask the user to confirm before running it.
 
 ```js
-annotations: { consequentialHint: true }
+annotations: {
+  consequentialHint: true;
+}
 ```
 
 Don't depend on it alone. For risky actions, also show your own confirmation step in the UI and enforce the rules on the server.
@@ -738,7 +755,7 @@ Call `getTools()`. It returns a promise with an array of `RegisteredTool` object
 ```js
 const tools = await document.modelContext.getTools();
 for (const tool of tools) {
-  console.log(tool.name, '-', tool.description);
+  console.log(tool.name, "-", tool.description);
 }
 ```
 
@@ -750,10 +767,12 @@ Use `executeTool()` with a tool object from `getTools()`, an input object and op
 
 ```js
 const [tool] = (await document.modelContext.getTools()).filter(
-  (t) => t.name === 'search_products'
+  (t) => t.name === "search_products",
 );
 
-const result = await document.modelContext.executeTool(tool, { q: 'rain jacket' });
+const result = await document.modelContext.executeTool(tool, {
+  q: "rain jacket",
+});
 console.log(result);
 ```
 
@@ -779,8 +798,12 @@ By default, only agents can see your tools. Other origins, such as a page that e
 
 ```js
 await document.modelContext.registerTool(
-  { name: 'get_saved_items', description: 'List the user\'s saved items.', execute: getSavedItems },
-  { exposedTo: ['https://partner.example.com'] }
+  {
+    name: "get_saved_items",
+    description: "List the user's saved items.",
+    execute: getSavedItems,
+  },
+  { exposedTo: ["https://partner.example.com"] },
 );
 ```
 
@@ -832,15 +855,15 @@ Keep the tool definition in its own module so you can import and call `execute` 
 // tools/addTodo.js
 export function createAddTodoTool(store) {
   return {
-    name: 'add_todo',
-    description: 'Add a new item to the to-do list.',
+    name: "add_todo",
+    description: "Add a new item to the to-do list.",
     inputSchema: {
-      type: 'object',
-      properties: { text: { type: 'string' } },
-      required: ['text'],
+      type: "object",
+      properties: { text: { type: "string" } },
+      required: ["text"],
     },
     async execute({ text }) {
-      if (!text?.trim()) return 'The to-do text can\'t be empty.';
+      if (!text?.trim()) return "The to-do text can't be empty.";
       store.add(text.trim());
       return `Added "${text.trim()}".`;
     },
@@ -850,18 +873,18 @@ export function createAddTodoTool(store) {
 
 ```js
 // tools/addTodo.test.js
-import { describe, it, expect } from 'vitest';
-import { createAddTodoTool } from './addTodo.js';
+import { describe, it, expect } from "vitest";
+import { createAddTodoTool } from "./addTodo.js";
 
-describe('add_todo', () => {
-  it('adds the item', async () => {
+describe("add_todo", () => {
+  it("adds the item", async () => {
     const items = [];
     const tool = createAddTodoTool({ add: (t) => items.push(t) });
     const signal = new AbortController().signal;
 
-    const result = await tool.execute({ text: ' Buy milk ' }, { signal });
+    const result = await tool.execute({ text: " Buy milk " }, { signal });
 
-    expect(items).toEqual(['Buy milk']);
+    expect(items).toEqual(["Buy milk"]);
     expect(result).toBe('Added "Buy milk".');
   });
 });
@@ -911,7 +934,7 @@ Catch the rate-limit response (for example HTTP 429) and return a clear message:
 
 ```js
 if (res.status === 429) {
-  return 'Too many requests right now. Wait a minute and try again, or ask the user to complete this on the page.';
+  return "Too many requests right now. Wait a minute and try again, or ask the user to complete this on the page.";
 }
 ```
 
@@ -1061,7 +1084,7 @@ If a tool is hard to write because the logic lives inside UI event handlers, mov
 ## 98: Show how you would expose a Zustand store through WebMCP.
 
 ```js
-import { useCartStore } from './cartStore';
+import { useCartStore } from "./cartStore";
 
 export function registerCartTools(signal) {
   const mc = document.modelContext;
@@ -1069,26 +1092,36 @@ export function registerCartTools(signal) {
 
   mc.registerTool(
     {
-      name: 'get_cart',
-      description: 'List the items in the shopping cart with quantities and the total.',
+      name: "get_cart",
+      description:
+        "List the items in the shopping cart with quantities and the total.",
       annotations: { readOnlyHint: true },
       async execute() {
         const { items, total } = useCartStore.getState();
-        if (items.length === 0) return 'The cart is empty.';
-        return { items: items.map(({ id, name, quantity }) => ({ id, name, quantity })), total };
+        if (items.length === 0) return "The cart is empty.";
+        return {
+          items: items.map(({ id, name, quantity }) => ({
+            id,
+            name,
+            quantity,
+          })),
+          total,
+        };
       },
     },
-    { signal }
+    { signal },
   );
 
   mc.registerTool(
     {
-      name: 'remove_from_cart',
-      description: 'Remove an item from the shopping cart by its item id.',
+      name: "remove_from_cart",
+      description: "Remove an item from the shopping cart by its item id.",
       inputSchema: {
-        type: 'object',
-        properties: { id: { type: 'string', description: 'Item id from get_cart' } },
-        required: ['id'],
+        type: "object",
+        properties: {
+          id: { type: "string", description: "Item id from get_cart" },
+        },
+        required: ["id"],
       },
       async execute({ id }) {
         const { items, removeItem } = useCartStore.getState();
@@ -1099,7 +1132,7 @@ export function registerCartTools(signal) {
         return `Removed item ${id}.`;
       },
     },
-    { signal }
+    { signal },
   );
 }
 ```
@@ -1172,7 +1205,7 @@ useEffect(() => {
   document.modelContext
     .registerTool(searchTool, { signal: controller.signal })
     .catch((err) => {
-      if (err.name !== 'AbortError') console.error(err);
+      if (err.name !== "AbortError") console.error(err);
     });
 
   return () => controller.abort();
@@ -1189,7 +1222,7 @@ Nothing visible. WebMCP must be a progressive enhancement: feature-detect, regis
 export async function setupAgentTools() {
   const mc = document.modelContext ?? navigator.modelContext;
   if (!mc) return; // no WebMCP, normal site
-  const { registerAllTools } = await import('./agentTools.js'); // only load when needed
+  const { registerAllTools } = await import("./agentTools.js"); // only load when needed
   await registerAllTools(mc);
 }
 ```

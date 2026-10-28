@@ -175,7 +175,10 @@ A good title is unique per page, describes the page clearly, puts the main topic
 The meta description is a short summary of the page in the `<head>`:
 
 ```html
-<meta name="description" content="Compare 12 running shoes for flat feet, with prices, support levels and real test results.">
+<meta
+  name="description"
+  content="Compare 12 running shoes for flat feet, with prices, support levels and real test results."
+/>
 ```
 
 Google does not use it as a ranking signal. It can be shown as the snippet under the title in results, so a good one can improve click-through rate. Google often writes its own snippet from the page text if it thinks that matches the query better. Make it unique per page and describe what the user will get.
@@ -225,13 +228,13 @@ It is a tag in the `<head>` that tells search engines how to treat a specific pa
 
 ```html
 <!-- Don't show this page in search results -->
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex" />
 
 <!-- Don't index and don't follow links on this page -->
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="noindex, nofollow" />
 
 <!-- Only for Google -->
-<meta name="googlebot" content="noindex">
+<meta name="googlebot" content="noindex" />
 ```
 
 The default is `index, follow`, so you don't need to add that. The most common use is `noindex` on pages like internal search results, thank-you pages, or login pages. The crawler must be able to fetch the page to see the tag.
@@ -241,7 +244,7 @@ The default is `index, follow`, so you don't need to add that. The most common u
 When the same or very similar content is available on several URLs, the canonical URL is the one you want search engines to treat as the main version. You declare it with a link tag:
 
 ```html
-<link rel="canonical" href="https://example.com/shoes/running">
+<link rel="canonical" href="https://example.com/shoes/running" />
 ```
 
 For example, `/shoes/running?sort=price` and `/shoes/running?utm_source=newsletter` should both point to `/shoes/running`. This groups the signals (like links) on one URL and tells Google which one to show. Use absolute URLs, and it is fine (and common) for a page to have a canonical pointing to itself.
@@ -251,7 +254,10 @@ For example, `/shoes/running?sort=price` and `/shoes/running?utm_source=newslett
 Alt text is the `alt` attribute of an image. It describes the image for screen reader users and for search engines, which use it to understand the image and the page.
 
 ```html
-<img src="/img/red-trail-shoe.jpg" alt="Red trail running shoe with a thick rubber sole">
+<img
+  src="/img/red-trail-shoe.jpg"
+  alt="Red trail running shoe with a thick rubber sole"
+/>
 ```
 
 Good alt text helps the image show up in Google Images and improves accessibility. Describe what is in the image in plain words. Don't stuff keywords. Decorative images should have an empty `alt=""` so screen readers skip them.
@@ -262,10 +268,10 @@ Headings show the structure of the page. Use them in a logical order, like a tab
 
 ```html
 <h1>How to Choose Running Shoes</h1>
-  <h2>Know Your Foot Type</h2>
-    <h3>Flat Feet</h3>
-    <h3>High Arches</h3>
-  <h2>Pick the Right Cushioning</h2>
+<h2>Know Your Foot Type</h2>
+<h3>Flat Feet</h3>
+<h3>High Arches</h3>
+<h2>Pick the Right Cushioning</h2>
 ```
 
 Usually you have one `<h1>` that describes the main topic. Don't pick heading tags for their font size; use CSS for styling. Headings help search engines and screen reader users understand what each section is about. Having more than one `h1` is not a penalty, but one clear main heading is easier to understand.
@@ -365,11 +371,11 @@ When moving to HTTPS, redirect every HTTP URL to its HTTPS version with a 301, u
 
 Core Web Vitals are three metrics Google uses to measure real user experience on a page:
 
-| Metric | What it measures | Good |
-|---|---|---|
-| **LCP** (Largest Contentful Paint) | Loading: when the main content shows up | 2.5 s or less |
+| Metric                              | What it measures                                                         | Good           |
+| ----------------------------------- | ------------------------------------------------------------------------ | -------------- |
+| **LCP** (Largest Contentful Paint)  | Loading: when the main content shows up                                  | 2.5 s or less  |
 | **INP** (Interaction to Next Paint) | Responsiveness: how fast the page reacts to clicks, taps and key presses | 200 ms or less |
-| **CLS** (Cumulative Layout Shift) | Visual stability: how much things jump around | 0.1 or less |
+| **CLS** (Cumulative Layout Shift)   | Visual stability: how much things jump around                            | 0.1 or less    |
 
 They are measured at the 75th percentile of real visits. INP replaced FID in March 2024. They are part of Google's page experience signals. They help, but relevant content still matters much more.
 
@@ -379,18 +385,18 @@ Structured data is extra code that describes the content of a page in a standard
 
 ```html
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "Trail Runner 3",
-  "image": "https://example.com/img/trail-runner-3.jpg",
-  "offers": {
-    "@type": "Offer",
-    "price": "119.99",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/InStock"
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Trail Runner 3",
+    "image": "https://example.com/img/trail-runner-3.jpg",
+    "offers": {
+      "@type": "Offer",
+      "price": "119.99",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
   }
-}
 </script>
 ```
 
@@ -425,11 +431,20 @@ There is no penalty for normal duplicate content. Google picks one version to sh
 Open Graph tags control how a link looks when it is shared on social networks and messaging apps (title, description, image):
 
 ```html
-<meta property="og:title" content="How to Choose Running Shoes">
-<meta property="og:description" content="A simple guide to picking shoes for your foot type.">
-<meta property="og:image" content="https://example.com/img/og/running-shoes.jpg">
-<meta property="og:url" content="https://example.com/blog/how-to-choose-running-shoes">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="How to Choose Running Shoes" />
+<meta
+  property="og:description"
+  content="A simple guide to picking shoes for your foot type."
+/>
+<meta
+  property="og:image"
+  content="https://example.com/img/og/running-shoes.jpg"
+/>
+<meta
+  property="og:url"
+  content="https://example.com/blog/how-to-choose-running-shoes"
+/>
+<meta name="twitter:card" content="summary_large_image" />
 ```
 
 They are not a Google ranking factor. They still matter because a good preview gets more clicks and shares, which brings traffic and can lead to links.
@@ -527,19 +542,21 @@ Put a `<script type="application/ld+json">` block anywhere in the HTML (usually 
 
 ```html
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "How to Choose Running Shoes",
-  "image": ["https://example.com/img/running-shoes-1x1.jpg"],
-  "datePublished": "2026-08-10T08:00:00+00:00",
-  "dateModified": "2026-09-02T10:30:00+00:00",
-  "author": [{
-    "@type": "Person",
-    "name": "Jane Smith",
-    "url": "https://example.com/authors/jane-smith"
-  }]
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Choose Running Shoes",
+    "image": ["https://example.com/img/running-shoes-1x1.jpg"],
+    "datePublished": "2026-08-10T08:00:00+00:00",
+    "dateModified": "2026-09-02T10:30:00+00:00",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Jane Smith",
+        "url": "https://example.com/authors/jane-smith"
+      }
+    ]
+  }
 </script>
 ```
 
@@ -597,7 +614,7 @@ Export a `metadata` object for static values, or a `generateMetadata` function f
 
 ```tsx
 // app/products/[slug]/page.tsx
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -631,13 +648,13 @@ Next.js supports special files in the `app` folder:
 
 ```ts
 // app/sitemap.ts
-import type { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPosts();
 
   return [
-    { url: 'https://example.com', lastModified: new Date() },
+    { url: "https://example.com", lastModified: new Date() },
     ...posts.map((post) => ({
       url: `https://example.com/blog/${post.slug}`,
       lastModified: post.updatedAt,
@@ -648,12 +665,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 ```ts
 // app/robots.ts
-import type { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: '*', allow: '/', disallow: '/admin/' },
-    sitemap: 'https://example.com/sitemap.xml',
+    rules: { userAgent: "*", allow: "/", disallow: "/admin/" },
+    sitemap: "https://example.com/sitemap.xml",
   };
 }
 ```
@@ -668,12 +685,12 @@ In a server-rendered app, return a real `404` status. In a client-side SPA, wher
 
 ```js
 // Option 1: send the user to a URL that the server answers with 404
-window.location.href = '/not-found';
+window.location.href = "/not-found";
 
 // Option 2: add noindex to the page when the item doesn't exist
-const meta = document.createElement('meta');
-meta.name = 'robots';
-meta.content = 'noindex';
+const meta = document.createElement("meta");
+meta.name = "robots";
+meta.content = "noindex";
 document.head.appendChild(meta);
 ```
 
@@ -694,10 +711,10 @@ Google stopped using `rel="next"` and `rel="prev"` as an indexing signal in 2019
 `hreflang` tells search engines which language and region versions of a page exist, so they show the right one to each user.
 
 ```html
-<link rel="alternate" hreflang="en-us" href="https://example.com/en-us/shoes">
-<link rel="alternate" hreflang="en-gb" href="https://example.com/en-gb/shoes">
-<link rel="alternate" hreflang="de" href="https://example.com/de/schuhe">
-<link rel="alternate" hreflang="x-default" href="https://example.com/shoes">
+<link rel="alternate" hreflang="en-us" href="https://example.com/en-us/shoes" />
+<link rel="alternate" hreflang="en-gb" href="https://example.com/en-gb/shoes" />
+<link rel="alternate" hreflang="de" href="https://example.com/de/schuhe" />
+<link rel="alternate" hreflang="x-default" href="https://example.com/shoes" />
 ```
 
 Rules:
@@ -715,7 +732,13 @@ Hreflang doesn't fix translation quality and doesn't make a page rank. It only h
 Use native lazy loading for images below the fold:
 
 ```html
-<img src="/img/shoe-2.jpg" alt="Blue road running shoe" width="800" height="600" loading="lazy">
+<img
+  src="/img/shoe-2.jpg"
+  alt="Blue road running shoe"
+  width="800"
+  height="600"
+  loading="lazy"
+/>
 ```
 
 Googlebot supports this, and the image stays in the HTML with a real `src`. Things to avoid:
@@ -738,8 +761,14 @@ LCP time can be split into four parts, and you fix whichever is biggest:
 Common fixes:
 
 ```html
-<link rel="preload" as="image" href="/img/hero.avif" fetchpriority="high">
-<img src="/img/hero.avif" alt="Runner on a mountain trail" width="1200" height="600" fetchpriority="high">
+<link rel="preload" as="image" href="/img/hero.avif" fetchpriority="high" />
+<img
+  src="/img/hero.avif"
+  alt="Runner on a mountain trail"
+  width="1200"
+  height="600"
+  fetchpriority="high"
+/>
 ```
 
 Plus: use a CDN, cache HTML, serve modern formats (AVIF/WebP) with responsive sizes, render content on the server, and remove or defer render-blocking scripts.
@@ -774,7 +803,7 @@ Shifts that happen within 500 ms after a user interaction don't count, because t
 PageSpeed Insights shows both: CrUX field data at the top (if the page has enough traffic) and a Lighthouse lab run below. You can also collect your own field data with the `web-vitals` JavaScript library:
 
 ```js
-import { onLCP, onINP, onCLS } from 'web-vitals';
+import { onLCP, onINP, onCLS } from "web-vitals";
 
 onLCP(sendToAnalytics);
 onINP(sendToAnalytics);
@@ -867,10 +896,10 @@ With robots directives and an HTML attribute:
 
 ```html
 <!-- No text snippet or video preview at all -->
-<meta name="robots" content="nosnippet">
+<meta name="robots" content="nosnippet" />
 
 <!-- Snippet max 120 characters, large image previews allowed -->
-<meta name="robots" content="max-snippet:120, max-image-preview:large">
+<meta name="robots" content="max-snippet:120, max-image-preview:large" />
 
 <!-- Exclude part of the page from snippets -->
 <p data-nosnippet>Internal pricing note that shouldn't appear in search.</p>
@@ -884,15 +913,25 @@ Breadcrumbs show where a page sits in the site hierarchy. Visible breadcrumbs he
 
 ```html
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Shoes", "item": "https://example.com/shoes" },
-    { "@type": "ListItem", "position": 2, "name": "Running", "item": "https://example.com/shoes/running" },
-    { "@type": "ListItem", "position": 3, "name": "Trail Runner 3" }
-  ]
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Shoes",
+        "item": "https://example.com/shoes"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Running",
+        "item": "https://example.com/shoes/running"
+      },
+      { "@type": "ListItem", "position": 3, "name": "Trail Runner 3" }
+    ]
+  }
 </script>
 ```
 
@@ -984,10 +1023,10 @@ const observer = new IntersectionObserver(async ([entry]) => {
   if (!entry.isIntersecting) return;
   nextPage++;
   await appendItems(nextPage);
-  history.replaceState(null, '', `/blog?page=${nextPage}`);
+  history.replaceState(null, "", `/blog?page=${nextPage}`);
 });
 
-observer.observe(document.querySelector('#load-more'));
+observer.observe(document.querySelector("#load-more"));
 ```
 
 ## 67: What is dynamic rendering and should you still use it?
@@ -1064,12 +1103,12 @@ For automated checks at scale, Google publishes its crawler IP ranges as JSON fi
 
 Common structures:
 
-| Structure | Example | Notes |
-|---|---|---|
-| ccTLD | `example.de` | Strongest country signal, but each domain builds authority separately and costs more to run |
-| Subdirectory | `example.com/de/` | Easiest to manage, shares domain authority. Most common choice |
-| Subdomain | `de.example.com` | Possible, often used when the sites are run on different setups |
-| URL parameter | `example.com?lang=de` | Not recommended |
+| Structure     | Example               | Notes                                                                                       |
+| ------------- | --------------------- | ------------------------------------------------------------------------------------------- |
+| ccTLD         | `example.de`          | Strongest country signal, but each domain builds authority separately and costs more to run |
+| Subdirectory  | `example.com/de/`     | Easiest to manage, shares domain authority. Most common choice                              |
+| Subdomain     | `de.example.com`      | Possible, often used when the sites are run on different setups                             |
+| URL parameter | `example.com?lang=de` | Not recommended                                                                             |
 
 Use hreflang between versions in all cases.
 
@@ -1118,17 +1157,17 @@ If Google sees full content but users see a paywall, that can look like cloaking
 </article>
 
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "NewsArticle",
-  "headline": "Inside the Shoe Industry",
-  "isAccessibleForFree": false,
-  "hasPart": {
-    "@type": "WebPageElement",
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "Inside the Shoe Industry",
     "isAccessibleForFree": false,
-    "cssSelector": ".paywall"
+    "hasPart": {
+      "@type": "WebPageElement",
+      "isAccessibleForFree": false,
+      "cssSelector": ".paywall"
+    }
   }
-}
 </script>
 ```
 
@@ -1267,8 +1306,17 @@ If a staging site already got indexed, add authentication or `noindex`, then use
 
 ```html
 <picture>
-  <source type="image/avif" srcset="/img/shoe-800.avif 800w, /img/shoe-1600.avif 1600w" sizes="(max-width: 800px) 100vw, 800px">
-  <img src="/img/shoe-800.jpg" alt="Red trail running shoe, side view" width="800" height="600">
+  <source
+    type="image/avif"
+    srcset="/img/shoe-800.avif 800w, /img/shoe-1600.avif 1600w"
+    sizes="(max-width: 800px) 100vw, 800px"
+  />
+  <img
+    src="/img/shoe-800.jpg"
+    alt="Red trail running shoe, side view"
+    width="800"
+    height="600"
+  />
 </picture>
 ```
 
@@ -1285,20 +1333,27 @@ SEO often breaks silently on deploy. Some checks you can automate:
 Example with Playwright:
 
 ```ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('product page has correct SEO tags', async ({ page }) => {
-  const response = await page.goto('/products/trail-runner-3');
+test("product page has correct SEO tags", async ({ page }) => {
+  const response = await page.goto("/products/trail-runner-3");
   expect(response?.status()).toBe(200);
 
   await expect(page).toHaveTitle(/Trail Runner 3/);
-  await expect(page.locator('link[rel="canonical"]'))
-    .toHaveAttribute('href', 'https://example.com/products/trail-runner-3');
-  await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0);
-  await expect(page.locator('h1')).toHaveCount(1);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://example.com/products/trail-runner-3",
+  );
+  await expect(
+    page.locator('meta[name="robots"][content*="noindex"]'),
+  ).toHaveCount(0);
+  await expect(page.locator("h1")).toHaveCount(1);
 
-  const jsonLd = await page.locator('script[type="application/ld+json"]').first().textContent();
-  expect(JSON.parse(jsonLd ?? '{}')['@type']).toBe('Product');
+  const jsonLd = await page
+    .locator('script[type="application/ld+json"]')
+    .first()
+    .textContent();
+  expect(JSON.parse(jsonLd ?? "{}")["@type"]).toBe("Product");
 });
 ```
 
@@ -1322,10 +1377,10 @@ First, find the slow interactions with field data (the `web-vitals` library with
 
 ```js
 async function handleFilterClick(filter) {
-  setActiveFilter(filter);      // quick visual feedback
+  setActiveFilter(filter); // quick visual feedback
 
   // let the browser paint before the heavy work
-  if ('scheduler' in window && 'yield' in scheduler) {
+  if ("scheduler" in window && "yield" in scheduler) {
     await scheduler.yield();
   } else {
     await new Promise((resolve) => setTimeout(resolve, 0));

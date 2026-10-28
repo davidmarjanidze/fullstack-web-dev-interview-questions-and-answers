@@ -175,7 +175,7 @@ The answers are based on the tools most teams use today: React 19, Vitest 4 and 
   - [165: Why does vi.mock get hoisted and what is vi.hoisted for?](#165-why-does-vimock-get-hoisted-and-what-is-vihoisted-for)
   - [166: How do you mock only part of a module?](#166-how-do-you-mock-only-part-of-a-module)
   - [167: How do you mock a default export?](#167-how-do-you-mock-a-default-export)
-  - [168: What is the __mocks__ folder?](#168-what-is-the-__mocks__-folder)
+  - [168: What is the **mocks** folder?](#168-what-is-the-__mocks__-folder)
   - [169: When does it make sense to mock a child component?](#169-when-does-it-make-sense-to-mock-a-child-component)
   - [170: What does vi.mocked do?](#170-what-does-vimocked-do)
   - [171: How do you mock environment variables in tests?](#171-how-do-you-mock-environment-variables-in-tests)
@@ -1144,7 +1144,10 @@ await user.type(input, "New name");
 For a native `<select>`, use `selectOptions`:
 
 ```tsx
-await user.selectOptions(screen.getByRole("combobox", { name: "Country" }), "Germany");
+await user.selectOptions(
+  screen.getByRole("combobox", { name: "Country" }),
+  "Germany",
+);
 expect(screen.getByRole("option", { name: "Germany" }).selected).toBe(true);
 ```
 
@@ -1175,7 +1178,9 @@ test("shows a tooltip on hover", async () => {
   expect(await screen.findByRole("tooltip")).toHaveTextContent("Delete");
 
   await user.unhover(screen.getByRole("button", { name: "Delete" }));
-  await waitFor(() => expect(screen.queryByRole("tooltip")).not.toBeInTheDocument());
+  await waitFor(() =>
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument(),
+  );
 });
 ```
 
@@ -1296,7 +1301,10 @@ test("submits the form data", async () => {
   await user.click(screen.getByRole("button", { name: "Send" }));
 
   expect(onSubmit).toHaveBeenCalledTimes(1);
-  expect(onSubmit).toHaveBeenCalledWith({ name: "Anna", email: "anna@test.com" });
+  expect(onSubmit).toHaveBeenCalledWith({
+    name: "Anna",
+    email: "anna@test.com",
+  });
 });
 ```
 
@@ -1567,7 +1575,9 @@ Inline snapshots are saved directly in the test file instead of a separate file:
 
 ```ts
 test("formats the user", () => {
-  expect(formatUser({ first: "Anna", last: "Smith" })).toMatchInlineSnapshot(`"Smith, Anna"`);
+  expect(formatUser({ first: "Anna", last: "Smith" })).toMatchInlineSnapshot(
+    `"Smith, Anna"`,
+  );
 });
 ```
 
@@ -1691,7 +1701,7 @@ import { server } from "../mocks/server";
 
 test("shows the list of users", async () => {
   server.use(
-    http.get("/api/users", () => HttpResponse.json([{ id: 1, name: "Anna" }]))
+    http.get("/api/users", () => HttpResponse.json([{ id: 1, name: "Anna" }])),
   );
 
   render(<UserList />);
@@ -1794,14 +1804,14 @@ It has a chain-based API (`cy.get(...).click()`), automatic retries, network stu
 
 ### 112: What are the main differences between Playwright and Cypress?
 
-| | Playwright | Cypress |
-| --- | --- | --- |
-| How it runs | Controls the browser from outside, in Node | Runs inside the browser |
-| Browsers | Chromium, Firefox, WebKit | Chrome-family, Firefox, Edge (WebKit is experimental) |
-| Multiple tabs and domains | Supported | Limited (`cy.origin` for other domains) |
-| Parallel runs | Built in and free | Through Cypress Cloud or third-party tools |
-| API style | `async`/`await` | Command chain |
-| Debugging | Trace viewer, UI mode | Interactive time-travel runner |
+|                           | Playwright                                 | Cypress                                               |
+| ------------------------- | ------------------------------------------ | ----------------------------------------------------- |
+| How it runs               | Controls the browser from outside, in Node | Runs inside the browser                               |
+| Browsers                  | Chromium, Firefox, WebKit                  | Chrome-family, Firefox, Edge (WebKit is experimental) |
+| Multiple tabs and domains | Supported                                  | Limited (`cy.origin` for other domains)               |
+| Parallel runs             | Built in and free                          | Through Cypress Cloud or third-party tools            |
+| API style                 | `async`/`await`                            | Command chain                                         |
+| Debugging                 | Trace viewer, UI mode                      | Interactive time-travel runner                        |
 
 Both are good. Playwright is more common in new projects because of WebKit support, free parallelism and multi-tab support. Cypress is still loved for its developer experience.
 
@@ -1830,7 +1840,9 @@ test("user can search for a product", async ({ page }) => {
   await page.getByRole("searchbox", { name: "Search" }).fill("laptop");
   await page.getByRole("button", { name: "Search" }).click();
 
-  await expect(page.getByRole("heading", { name: /results for "laptop"/i })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /results for "laptop"/i }),
+  ).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(10);
 });
 ```
@@ -2057,7 +2069,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router";
 
 function renderWithProviders(ui: React.ReactElement, options?: RenderOptions) {
-  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
 
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
@@ -2085,7 +2099,7 @@ test("shows the user's name", () => {
   render(
     <AuthContext.Provider value={{ user: { name: "Anna" }, logout: vi.fn() }}>
       <Header />
-    </AuthContext.Provider>
+    </AuthContext.Provider>,
   );
 
   expect(screen.getByText("Hi, Anna")).toBeInTheDocument();
@@ -2105,10 +2119,13 @@ test("highlights the active link", () => {
   render(
     <MemoryRouter initialEntries={["/settings"]}>
       <Sidebar />
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
-  expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("aria-current", "page");
+  expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
 });
 ```
 
@@ -2252,8 +2269,13 @@ test("shows an error for an invalid email", async () => {
   await user.type(screen.getByLabelText("Email"), "not-an-email");
   await user.click(screen.getByRole("button", { name: "Sign up" }));
 
-  expect(await screen.findByText("Please enter a valid email")).toBeInTheDocument();
-  expect(screen.getByLabelText("Email")).toHaveAttribute("aria-invalid", "true");
+  expect(
+    await screen.findByText("Please enter a valid email"),
+  ).toBeInTheDocument();
+  expect(screen.getByLabelText("Email")).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
 });
 ```
 
@@ -2383,7 +2405,7 @@ export function setupStore(preloadedState?: Partial<RootState>) {
 // test-utils.tsx
 export function renderWithStore(
   ui: React.ReactElement,
-  { preloadedState = {}, store = setupStore(preloadedState) } = {}
+  { preloadedState = {}, store = setupStore(preloadedState) } = {},
 ) {
   return {
     store,
@@ -2441,7 +2463,9 @@ function createWrapper() {
 }
 
 test("shows the todos", async () => {
-  server.use(http.get("/api/todos", () => HttpResponse.json([{ id: 1, title: "Test" }])));
+  server.use(
+    http.get("/api/todos", () => HttpResponse.json([{ id: 1, title: "Test" }])),
+  );
 
   render(<Todos />, { wrapper: createWrapper() });
   expect(await screen.findByText("Test")).toBeInTheDocument();
@@ -2460,12 +2484,14 @@ import { createMemoryRouter, RouterProvider } from "react-router";
 test("loads the product from the URL", async () => {
   const router = createMemoryRouter(
     [{ path: "/products/:id", element: <ProductPage /> }],
-    { initialEntries: ["/products/42"] }
+    { initialEntries: ["/products/42"] },
   );
 
   render(<RouterProvider router={router} />);
 
-  expect(await screen.findByRole("heading", { name: "Product 42" })).toBeInTheDocument();
+  expect(
+    await screen.findByRole("heading", { name: "Product 42" }),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -2484,11 +2510,13 @@ test("goes to the details page", async () => {
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:id" element={<h1>Details page</h1>} />
       </Routes>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
   await user.click(screen.getByRole("link", { name: "Laptop" }));
-  expect(screen.getByRole("heading", { name: "Details page" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: "Details page" }),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -2686,7 +2714,7 @@ vi.mock("./Chart", () => ({
 
 For modules with both default and named exports, include both. In Jest with ES modules compiled by Babel or SWC, you sometimes also need `__esModule: true` in the factory, so the default import picks up `default` correctly.
 
-### 168: What is the __mocks__ folder?
+### 168: What is the **mocks** folder?
 
 It's a folder where you put manual mock implementations. When you call `vi.mock("./api")` or `jest.mock("./api")` without a factory, the runner looks for `__mocks__/api.ts` next to the module and uses it.
 
@@ -2864,7 +2892,9 @@ test("refreshes the status every 5 seconds", async () => {
   vi.useFakeTimers();
   let calls = 0;
   server.use(
-    http.get("/api/status", () => HttpResponse.json({ status: ++calls === 1 ? "pending" : "done" }))
+    http.get("/api/status", () =>
+      HttpResponse.json({ status: ++calls === 1 ? "pending" : "done" }),
+    ),
   );
 
   render(<JobStatus />);
@@ -2905,7 +2935,9 @@ Pass a `wrapper` to `renderHook`:
 ```tsx
 test("returns the current user", async () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={new QueryClient()}>{children}</QueryClientProvider>
+    <QueryClientProvider client={new QueryClient()}>
+      {children}
+    </QueryClientProvider>
   );
 
   const { result } = renderHook(() => useCurrentUser(), { wrapper });
@@ -2938,7 +2970,7 @@ test("toggles between light and dark", async () => {
   render(
     <ThemeProvider>
       <TestConsumer />
-    </ThemeProvider>
+    </ThemeProvider>,
   );
 
   const button = screen.getByRole("button");
@@ -2995,7 +3027,9 @@ test.each([
 });
 
 test("accepts valid data", () => {
-  expect(signupSchema.safeParse({ email: "a@b.com", password: "secret123" }).success).toBe(true);
+  expect(
+    signupSchema.safeParse({ email: "a@b.com", password: "secret123" }).success,
+  ).toBe(true);
 });
 ```
 
@@ -3014,7 +3048,9 @@ test("shows the result of the action", async () => {
   await user.click(screen.getByRole("button", { name: "Subscribe" }));
 
   expect(screen.getByRole("button", { name: /subscribing/i })).toBeDisabled();
-  expect(await screen.findByText("Thanks for subscribing!")).toBeInTheDocument();
+  expect(
+    await screen.findByText("Thanks for subscribing!"),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -3030,7 +3066,7 @@ test("shows the message immediately and keeps it after saving", async () => {
     http.post("/api/messages", async () => {
       await delay(200);
       return HttpResponse.json({ id: 1, text: "Hi" });
-    })
+    }),
   );
   const user = userEvent.setup();
   render(<Chat />);
@@ -3058,11 +3094,13 @@ test("loads the settings page", async () => {
   render(
     <Suspense fallback={<p>Loading...</p>}>
       <Settings />
-    </Suspense>
+    </Suspense>,
   );
 
   expect(screen.getByText("Loading...")).toBeInTheDocument();
-  expect(await screen.findByRole("heading", { name: "Settings" })).toBeInTheDocument();
+  expect(
+    await screen.findByRole("heading", { name: "Settings" }),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -3085,7 +3123,7 @@ test("shows the user after the promise resolves", async () => {
     render(
       <Suspense fallback={<p>Loading...</p>}>
         <UserName userPromise={promise} />
-      </Suspense>
+      </Suspense>,
     );
   });
 
@@ -3110,7 +3148,7 @@ test("shows the fallback when a child throws", () => {
   render(
     <ErrorBoundary fallback={<p>Something went wrong</p>}>
       <Broken />
-    </ErrorBoundary>
+    </ErrorBoundary>,
   );
 
   expect(screen.getByText("Something went wrong")).toBeInTheDocument();
@@ -3153,7 +3191,9 @@ test("selects a country", async () => {
   await user.click(screen.getByRole("combobox", { name: "Country" }));
   await user.click(await screen.findByRole("option", { name: "Germany" }));
 
-  expect(screen.getByRole("combobox", { name: "Country" })).toHaveTextContent("Germany");
+  expect(screen.getByRole("combobox", { name: "Country" })).toHaveTextContent(
+    "Germany",
+  );
 });
 
 test("can be used with the keyboard", async () => {
@@ -3181,7 +3221,10 @@ test("sorts by price when the header is clicked", async () => {
 
   const rows = screen.getAllByRole("row").slice(1); // skip header row
   expect(within(rows[0]).getAllByRole("cell")[1]).toHaveTextContent("$5");
-  expect(screen.getByRole("columnheader", { name: /price/i })).toHaveAttribute("aria-sort", "ascending");
+  expect(screen.getByRole("columnheader", { name: /price/i })).toHaveAttribute(
+    "aria-sort",
+    "ascending",
+  );
 });
 ```
 
@@ -3220,7 +3263,9 @@ test("opens the command palette with Ctrl+K", async () => {
   render(<App />);
 
   await user.keyboard("{Control>}k{/Control}");
-  expect(screen.getByRole("dialog", { name: "Command palette" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("dialog", { name: "Command palette" }),
+  ).toBeInTheDocument();
 
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -3330,11 +3375,19 @@ export default defineConfig({
     projects: [
       {
         extends: true,
-        test: { name: "unit", include: ["src/**/*.unit.test.ts"], environment: "node" },
+        test: {
+          name: "unit",
+          include: ["src/**/*.unit.test.ts"],
+          environment: "node",
+        },
       },
       {
         extends: true,
-        test: { name: "dom", include: ["src/**/*.test.tsx"], environment: "jsdom" },
+        test: {
+          name: "dom",
+          include: ["src/**/*.test.tsx"],
+          environment: "jsdom",
+        },
       },
     ],
   },
@@ -3352,7 +3405,13 @@ Hooks from `next/navigation` need the Next.js router, which doesn't exist in tes
 ```tsx
 const push = vi.fn();
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push, replace: vi.fn(), back: vi.fn(), refresh: vi.fn(), prefetch: vi.fn() }),
+  useRouter: () => ({
+    push,
+    replace: vi.fn(),
+    back: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+  }),
   usePathname: () => "/dashboard",
   useSearchParams: () => new URLSearchParams("tab=billing"),
 }));
@@ -3565,7 +3624,7 @@ expect(onSubmit).toHaveBeenCalledWith(
     email: "anna@test.com",
     createdAt: expect.any(Date),
     id: expect.any(String),
-  })
+  }),
 );
 
 expect(tags).toEqual(expect.arrayContaining(["react", "testing"]));
@@ -3668,8 +3727,10 @@ test("filters products by category", async () => {
         { id: 1, name: "Laptop", category: "tech" },
         { id: 2, name: "Chair", category: "home" },
       ];
-      return HttpResponse.json(category ? all.filter((p) => p.category === category) : all);
-    })
+      return HttpResponse.json(
+        category ? all.filter((p) => p.category === category) : all,
+      );
+    }),
   );
   const user = userEvent.setup();
   render(<ProductsPage />);
@@ -3677,9 +3738,14 @@ test("filters products by category", async () => {
   expect(await screen.findByText("Laptop")).toBeInTheDocument();
   expect(screen.getByText("Chair")).toBeInTheDocument();
 
-  await user.selectOptions(screen.getByRole("combobox", { name: "Category" }), "home");
+  await user.selectOptions(
+    screen.getByRole("combobox", { name: "Category" }),
+    "home",
+  );
 
-  await waitFor(() => expect(screen.queryByText("Laptop")).not.toBeInTheDocument());
+  await waitFor(() =>
+    expect(screen.queryByText("Laptop")).not.toBeInTheDocument(),
+  );
   expect(screen.getByText("Chair")).toBeInTheDocument();
 });
 ```
@@ -3925,10 +3991,13 @@ They let you retry things that aren't locators.
 
 ```ts
 await expect
-  .poll(async () => {
-    const res = await page.request.get("/api/jobs/42");
-    return (await res.json()).status;
-  }, { timeout: 30_000 })
+  .poll(
+    async () => {
+      const res = await page.request.get("/api/jobs/42");
+      return (await res.json()).status;
+    },
+    { timeout: 30_000 },
+  )
   .toBe("done");
 ```
 
@@ -4082,7 +4151,7 @@ test("shows an empty state", async ({ page }) => {
 
 test("shows an error", async ({ page }) => {
   await page.route("**/api/orders", (route) =>
-    route.fulfill({ status: 500, json: { message: "Server error" } })
+    route.fulfill({ status: 500, json: { message: "Server error" } }),
   );
   await page.goto("/orders");
   await expect(page.getByRole("alert")).toBeVisible();
@@ -4112,7 +4181,10 @@ A HAR file is a recording of network traffic. Playwright can record one and late
 
 ```ts
 // record (run once)
-await page.routeFromHAR("e2e/hars/products.har", { url: "**/api/**", update: true });
+await page.routeFromHAR("e2e/hars/products.har", {
+  url: "**/api/**",
+  update: true,
+});
 
 // replay
 await page.routeFromHAR("e2e/hars/products.har", { url: "**/api/**" });
@@ -4142,7 +4214,9 @@ Create it through the API, not through the UI. It's much faster and less flaky:
 
 ```ts
 test("user can rename a project", async ({ page, request }) => {
-  const res = await request.post("/api/projects", { data: { name: `Project ${Date.now()}` } });
+  const res = await request.post("/api/projects", {
+    data: { name: `Project ${Date.now()}` },
+  });
   const project = await res.json();
 
   await page.goto(`/projects/${project.id}`);
@@ -4213,7 +4287,9 @@ const payment = page.frameLocator("iframe[title='Secure payment input']");
 await payment.getByLabel("Card number").fill("4242 4242 4242 4242");
 
 // same thing
-const frame = page.locator("iframe[title='Secure payment input']").contentFrame();
+const frame = page
+  .locator("iframe[title='Secure payment input']")
+  .contentFrame();
 await frame.getByLabel("Expiry").fill("12/30");
 ```
 
@@ -4241,7 +4317,9 @@ Baselines are saved per browser and per OS, because fonts and rendering differ. 
 A trace is a recording of a test run. It includes every action, a DOM snapshot before and after each action, screenshots, console logs, network requests and the source code line.
 
 ```ts
-use: { trace: "on-first-retry" }
+use: {
+  trace: "on-first-retry";
+}
 ```
 
 Open it with `npx playwright show-trace trace.zip`, from the HTML report, or at trace.playwright.dev. It's the best tool for debugging tests that fail only in CI, because you can see exactly what the page looked like when the failure happened.
@@ -4421,9 +4499,11 @@ const text = cy.get("h1").invoke("text"); // not a string, it's a chainable
 You get values with `.then()` or aliases:
 
 ```ts
-cy.get("h1").invoke("text").then((text) => {
-  expect(text).to.contain("Welcome");
-});
+cy.get("h1")
+  .invoke("text")
+  .then((text) => {
+    expect(text).to.contain("Welcome");
+  });
 ```
 
 You also can't use `async`/`await` with Cypress commands.
@@ -4434,7 +4514,9 @@ Use `cy.intercept`:
 
 ```ts
 it("shows the orders", () => {
-  cy.intercept("GET", "/api/orders", { fixture: "orders.json" }).as("getOrders");
+  cy.intercept("GET", "/api/orders", { fixture: "orders.json" }).as(
+    "getOrders",
+  );
 
   cy.visit("/orders");
   cy.wait("@getOrders");
@@ -4442,7 +4524,10 @@ it("shows the orders", () => {
 });
 
 it("shows an error", () => {
-  cy.intercept("GET", "/api/orders", { statusCode: 500, body: { message: "fail" } });
+  cy.intercept("GET", "/api/orders", {
+    statusCode: 500,
+    body: { message: "fail" },
+  });
   cy.visit("/orders");
   cy.findByRole("alert").should("be.visible");
 });
@@ -4509,7 +4594,7 @@ Cypress.Commands.add("login", (email: string, password: string) => {
       validate() {
         cy.request("/api/me").its("status").should("eq", 200);
       },
-    }
+    },
   );
 });
 ```
@@ -4553,7 +4638,9 @@ cy.intercept("POST", "/api/comments").as("createComment");
 cy.findByRole("textbox").type("Nice post!");
 cy.findByRole("button", { name: "Comment" }).click();
 
-cy.wait("@createComment").its("request.body").should("deep.equal", { text: "Nice post!" });
+cy.wait("@createComment")
+  .its("request.body")
+  .should("deep.equal", { text: "Nice post!" });
 cy.wait("@createComment").its("response.statusCode").should("eq", 201);
 ```
 
@@ -4650,7 +4737,9 @@ test.describe("mobile", () => {
   test("shows the burger menu", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
-    await expect(page.getByRole("navigation").getByRole("link", { name: "Pricing" })).toBeHidden();
+    await expect(
+      page.getByRole("navigation").getByRole("link", { name: "Pricing" }),
+    ).toBeHidden();
   });
 });
 ```
@@ -4697,7 +4786,7 @@ const chat = ws.link("wss://api.example.com/chat");
 server.use(
   chat.addEventListener("connection", ({ client }) => {
     client.send(JSON.stringify({ type: "message", text: "Hello from server" }));
-  })
+  }),
 );
 ```
 
@@ -4721,7 +4810,10 @@ Block them with routing:
 
 ```ts
 test.beforeEach(async ({ context }) => {
-  await context.route(/(google-analytics|hotjar|intercom|doubleclick)/, (route) => route.abort());
+  await context.route(
+    /(google-analytics|hotjar|intercom|doubleclick)/,
+    (route) => route.abort(),
+  );
 });
 ```
 
@@ -4862,7 +4954,9 @@ import { Button } from "./Button";
 
 test("calls onClick", async ({ mount }) => {
   let clicked = false;
-  const component = await mount(<Button onClick={() => (clicked = true)}>Save</Button>);
+  const component = await mount(
+    <Button onClick={() => (clicked = true)}>Save</Button>,
+  );
 
   await component.click();
   expect(clicked).toBe(true);
@@ -4918,12 +5012,22 @@ They're pure functions, so test them directly, without rendering anything:
 import { cartReducer, addItem, removeItem, selectCartTotal } from "./cartSlice";
 
 test("adds an item", () => {
-  const state = cartReducer({ items: [] }, addItem({ id: 1, price: 10, qty: 1 }));
+  const state = cartReducer(
+    { items: [] },
+    addItem({ id: 1, price: 10, qty: 1 }),
+  );
   expect(state.items).toEqual([{ id: 1, price: 10, qty: 1 }]);
 });
 
 test("calculates the total", () => {
-  const state = { cart: { items: [{ id: 1, price: 10, qty: 2 }, { id: 2, price: 5, qty: 1 }] } };
+  const state = {
+    cart: {
+      items: [
+        { id: 1, price: 10, qty: 2 },
+        { id: 2, price: 5, qty: 1 },
+      ],
+    },
+  };
   expect(selectCartTotal(state)).toBe(25);
 });
 ```
@@ -4941,7 +5045,9 @@ test("copies the invite link", async () => {
 
   await user.click(screen.getByRole("button", { name: "Copy link" }));
 
-  expect(await navigator.clipboard.readText()).toBe("https://app.test/invite/abc");
+  expect(await navigator.clipboard.readText()).toBe(
+    "https://app.test/invite/abc",
+  );
   expect(screen.getByText("Copied!")).toBeInTheDocument();
 });
 ```
@@ -4953,11 +5059,15 @@ In Playwright, grant permissions first: `context.grantPermissions(["clipboard-re
 jest-dom has matchers for that:
 
 ```tsx
-expect(screen.getByRole("button", { name: /close/i })).toHaveAccessibleName("Close dialog");
-expect(screen.getByLabelText("Password")).toHaveAccessibleDescription(
-  "At least 8 characters"
+expect(screen.getByRole("button", { name: /close/i })).toHaveAccessibleName(
+  "Close dialog",
 );
-expect(screen.getByLabelText("Email")).toHaveAccessibleErrorMessage("Email is required");
+expect(screen.getByLabelText("Password")).toHaveAccessibleDescription(
+  "At least 8 characters",
+);
+expect(screen.getByLabelText("Email")).toHaveAccessibleErrorMessage(
+  "Email is required",
+);
 ```
 
 They're useful for icon buttons, inputs with help text (`aria-describedby`) and error messages (`aria-errormessage`), where what a screen reader announces matters.
@@ -4978,18 +5088,22 @@ function renderAt(path: string, user: User | null) {
           </Route>
         </Routes>
       </MemoryRouter>
-    </AuthContext.Provider>
+    </AuthContext.Provider>,
   );
 }
 
 test("redirects guests to login", () => {
   renderAt("/account", null);
-  expect(screen.getByRole("heading", { name: "Login page" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: "Login page" }),
+  ).toBeInTheDocument();
 });
 
 test("shows the page to logged-in users", () => {
   renderAt("/account", { id: 1, name: "Anna" });
-  expect(screen.getByRole("heading", { name: "Account page" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: "Account page" }),
+  ).toBeInTheDocument();
 });
 ```
 
@@ -5002,7 +5116,9 @@ Start the router at a URL with params, interact, and check the UI. To check the 
 ```tsx
 function LocationDisplay() {
   const location = useLocation();
-  return <div data-testid="location">{location.pathname + location.search}</div>;
+  return (
+    <div data-testid="location">{location.pathname + location.search}</div>
+  );
 }
 
 test("updates the page param", async () => {
@@ -5011,7 +5127,7 @@ test("updates the page param", async () => {
     <MemoryRouter initialEntries={["/products?page=1"]}>
       <ProductList />
       <LocationDisplay />
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
   await user.click(screen.getByRole("button", { name: "Next page" }));
@@ -5429,7 +5545,9 @@ test("shows the shell first and the slow section later", async ({ page }) => {
 
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
   await expect(page.getByText("Loading recommendations...")).toBeVisible();
-  await expect(page.getByRole("region", { name: "Recommendations" })).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Recommendations" }),
+  ).toBeVisible();
 });
 ```
 
@@ -5455,7 +5573,9 @@ Use React's server APIs directly:
 import { renderToString } from "react-dom/server";
 
 test("renders the product name on the server", () => {
-  const html = renderToString(<ProductPage product={{ name: "Laptop", price: 999 }} />);
+  const html = renderToString(
+    <ProductPage product={{ name: "Laptop", price: 999 }} />,
+  );
   expect(html).toContain("<h1>Laptop</h1>");
 });
 ```
@@ -5517,7 +5637,7 @@ test("shows results for the latest query only", async () => {
       const q = new URL(request.url).searchParams.get("q");
       if (q === "ab") await delay(300); // old request is slow
       return HttpResponse.json([{ id: q, title: `Result for ${q}` }]);
-    })
+    }),
   );
   const user = userEvent.setup();
   render(<Search />);
@@ -5544,7 +5664,7 @@ test("aborts the request on unmount", async () => {
     http.get("/api/report", async ({ request }) => {
       signal = request.signal;
       await delay("infinite");
-    })
+    }),
   );
 
   const { unmount } = render(<Report />);
@@ -5564,8 +5684,10 @@ Make the first requests fail and a later one succeed. MSW's `once` option is use
 ```tsx
 test("retries after a failed request", async () => {
   server.use(
-    http.get("/api/data", () => new HttpResponse(null, { status: 503 }), { once: true }),
-    http.get("/api/data", () => HttpResponse.json({ items: ["ok"] }))
+    http.get("/api/data", () => new HttpResponse(null, { status: 503 }), {
+      once: true,
+    }),
+    http.get("/api/data", () => HttpResponse.json({ items: ["ok"] })),
   );
 
   render(<DataView />);
@@ -5612,12 +5734,13 @@ beforeEach(() => {
     "IntersectionObserver",
     class {
       constructor(cb: IntersectionObserverCallback) {
-        trigger = (entries) => cb(entries as IntersectionObserverEntry[], this as any);
+        trigger = (entries) =>
+          cb(entries as IntersectionObserverEntry[], this as any);
       }
       observe() {}
       unobserve() {}
       disconnect() {}
-    }
+    },
   );
 });
 
@@ -5701,7 +5824,10 @@ Libraries like Comlink make this easier, because you can test the exposed object
 In Playwright:
 
 ```ts
-test("shows the offline banner and queues the message", async ({ page, context }) => {
+test("shows the offline banner and queues the message", async ({
+  page,
+  context,
+}) => {
   await page.goto("/chat");
   await context.setOffline(true);
 
@@ -5734,8 +5860,12 @@ Create two browser contexts. Each one is like a separate browser profile with it
 
 ```ts
 test("admin sees the request a member just sent", async ({ browser }) => {
-  const memberContext = await browser.newContext({ storageState: "playwright/.auth/member.json" });
-  const adminContext = await browser.newContext({ storageState: "playwright/.auth/admin.json" });
+  const memberContext = await browser.newContext({
+    storageState: "playwright/.auth/member.json",
+  });
+  const adminContext = await browser.newContext({
+    storageState: "playwright/.auth/admin.json",
+  });
   const member = await memberContext.newPage();
   const admin = await adminContext.newPage();
 
@@ -5785,7 +5915,10 @@ Starting a new browser for every test would be slow. Creating a context only tak
 By default, fixtures are created for every test. A worker-scoped fixture is created once per worker process and shared by all tests that worker runs:
 
 ```ts
-export const test = base.extend<{}, { dbUser: { email: string; password: string } }>({
+export const test = base.extend<
+  {},
+  { dbUser: { email: string; password: string } }
+>({
   dbUser: [
     async ({}, use, workerInfo) => {
       const user = await createUser(`worker${workerInfo.workerIndex}@test.com`);
@@ -5982,7 +6115,10 @@ And check that the CSP doesn't break the app, by failing on CSP violation errors
 
 ```ts
 page.on("console", (msg) => {
-  if (msg.type() === "error" && msg.text().includes("Content Security Policy")) {
+  if (
+    msg.type() === "error" &&
+    msg.text().includes("Content Security Policy")
+  ) {
     throw new Error(`CSP violation: ${msg.text()}`);
   }
 });
@@ -6010,7 +6146,7 @@ test("formatting and parsing a price gives back the same number", () => {
   fc.assert(
     fc.property(fc.integer({ min: 0, max: 10_000_000 }), (cents) => {
       expect(parsePrice(formatPrice(cents))).toBe(cents);
-    })
+    }),
   );
 });
 ```
@@ -6066,7 +6202,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn } from "storybook/test";
 import { LoginForm } from "./LoginForm";
 
-const meta = { component: LoginForm, args: { onSubmit: fn() } } satisfies Meta<typeof LoginForm>;
+const meta = { component: LoginForm, args: { onSubmit: fn() } } satisfies Meta<
+  typeof LoginForm
+>;
 export default meta;
 
 export const FilledForm: StoryObj<typeof meta> = {
@@ -6124,7 +6262,11 @@ If the picker comes from a library, test your integration (the value you get and
 Use `buildQueries` from `@testing-library/react` (re-exported from `@testing-library/dom`) and add the result to your custom render:
 
 ```ts
-import { buildQueries, queryHelpers, type Matcher } from "@testing-library/react";
+import {
+  buildQueries,
+  queryHelpers,
+  type Matcher,
+} from "@testing-library/react";
 
 const queryAllByDataCy = (container: HTMLElement, id: Matcher) =>
   queryHelpers.queryAllByAttribute("data-cy", container, id);
@@ -6134,8 +6276,13 @@ const getMultipleError = (_c: Element | null, id: Matcher) =>
 const getMissingError = (_c: Element | null, id: Matcher) =>
   `Unable to find an element with data-cy="${id}"`;
 
-export const [queryByDataCy, getAllByDataCy, getByDataCy, findAllByDataCy, findByDataCy] =
-  buildQueries(queryAllByDataCy, getMultipleError, getMissingError);
+export const [
+  queryByDataCy,
+  getAllByDataCy,
+  getByDataCy,
+  findAllByDataCy,
+  findByDataCy,
+] = buildQueries(queryAllByDataCy, getMultipleError, getMissingError);
 ```
 
 `buildQueries` creates all the `get`, `query` and `find` variants from one `queryAll` function. If you only need a different test ID attribute, `configure({ testIdAttribute: "data-cy" })` is simpler.
@@ -6149,7 +6296,8 @@ configure({
   testIdAttribute: "data-qa", // attribute used by getByTestId
   asyncUtilTimeout: 2000, // default timeout for waitFor and findBy
   throwSuggestions: true, // fail when a better query exists (good for learning)
-  getElementError: (message, container) => new Error(message ?? "Element not found"),
+  getElementError: (message, container) =>
+    new Error(message ?? "Element not found"),
   reactStrictMode: true, // render inside StrictMode by default
 });
 ```
@@ -6177,7 +6325,7 @@ export function renderApp(
     currentUser = null,
     preloadedState,
     ...options
-  }: ExtraOptions & Omit<RenderOptions, "wrapper"> = {}
+  }: ExtraOptions & Omit<RenderOptions, "wrapper"> = {},
 ) {
   const store = setupStore(preloadedState);
 
@@ -6189,14 +6337,21 @@ export function renderApp(
     </Provider>
   );
 
-  return { store, user: userEvent.setup(), ...render(ui, { wrapper: Wrapper, ...options }) };
+  return {
+    store,
+    user: userEvent.setup(),
+    ...render(ui, { wrapper: Wrapper, ...options }),
+  };
 }
 ```
 
 The option is called `currentUser` so it doesn't clash with `user`, the user-event instance in the return value. Returning that instance from the render helper saves a line in every test:
 
 ```tsx
-const { user } = renderApp(<AccountPage />, { route: "/account", currentUser: buildUser() });
+const { user } = renderApp(<AccountPage />, {
+  route: "/account",
+  currentUser: buildUser(),
+});
 await user.click(screen.getByRole("button", { name: "Edit" }));
 ```
 
@@ -6210,7 +6365,10 @@ test("reflects changes to the online status", () => {
   expect(result.current).toBe(true);
 
   act(() => {
-    Object.defineProperty(navigator, "onLine", { value: false, configurable: true });
+    Object.defineProperty(navigator, "onLine", {
+      value: false,
+      configurable: true,
+    });
     window.dispatchEvent(new Event("offline"));
   });
 
@@ -6270,7 +6428,9 @@ test("exports the table as CSV", async () => {
   const createObjectURL = vi.fn(() => "blob:fake-url");
   const revokeObjectURL = vi.fn();
   vi.stubGlobal("URL", { ...URL, createObjectURL, revokeObjectURL });
-  const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+  const click = vi
+    .spyOn(HTMLAnchorElement.prototype, "click")
+    .mockImplementation(() => {});
 
   const user = userEvent.setup();
   render(<UsersTable users={[{ name: "Anna", email: "anna@test.com" }]} />);
@@ -6501,9 +6661,11 @@ Prevention: mock only at the edges, keep mocks synced with the API (types or con
 
 ```ts
 test("guest can buy a product with a card", async ({ page, request }) => {
-  const product = await (await request.post("/api/test/products", {
-    data: { name: `Test product ${Date.now()}`, price: 2500, stock: 5 },
-  })).json();
+  const product = await (
+    await request.post("/api/test/products", {
+      data: { name: `Test product ${Date.now()}`, price: 2500, stock: 5 },
+    })
+  ).json();
 
   await page.goto(`/products/${product.id}`);
   await page.getByRole("button", { name: "Add to cart" }).click();
@@ -6525,7 +6687,9 @@ test("guest can buy a product with a card", async ({ page, request }) => {
     await page.getByRole("button", { name: "Pay $25.00" }).click();
   });
 
-  await expect(page.getByRole("heading", { name: "Thank you for your order" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Thank you for your order" }),
+  ).toBeVisible();
 });
 ```
 
@@ -6553,7 +6717,9 @@ test("selects a suggestion with the keyboard", async () => {
 
   await user.keyboard("{ArrowDown}{Enter}");
 
-  expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ name: "Berlin" }));
+  expect(onSelect).toHaveBeenCalledWith(
+    expect.objectContaining({ name: "Berlin" }),
+  );
   expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
 });
 ```
@@ -6579,12 +6745,15 @@ const cases = [
   { role: "admin", canEdit: true, canDelete: true },
 ] as const;
 
-test.each(cases)("$role: edit=$canEdit, delete=$canDelete", ({ role, canEdit, canDelete }) => {
-  renderApp(<ProjectPage />, { currentUser: buildUser({ role }) });
+test.each(cases)(
+  "$role: edit=$canEdit, delete=$canDelete",
+  ({ role, canEdit, canDelete }) => {
+    renderApp(<ProjectPage />, { currentUser: buildUser({ role }) });
 
-  expect(!!screen.queryByRole("button", { name: "Edit" })).toBe(canEdit);
-  expect(!!screen.queryByRole("button", { name: "Delete" })).toBe(canDelete);
-});
+    expect(!!screen.queryByRole("button", { name: "Edit" })).toBe(canEdit);
+    expect(!!screen.queryByRole("button", { name: "Delete" })).toBe(canDelete);
+  },
+);
 ```
 
 That covers the UI. The real security is on the server, so also have API or e2e tests that check a viewer gets a 403 when calling the delete endpoint directly. A hidden button is not a permission check.
@@ -6612,10 +6781,16 @@ test("shows progress and then success", async () => {
 
   const user = userEvent.setup();
   render(<Uploader />);
-  await user.upload(screen.getByLabelText("Upload"), new File(["x"], "a.pdf", { type: "application/pdf" }));
+  await user.upload(
+    screen.getByLabelText("Upload"),
+    new File(["x"], "a.pdf", { type: "application/pdf" }),
+  );
 
   act(() => reportProgress(40));
-  expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "40");
+  expect(screen.getByRole("progressbar")).toHaveAttribute(
+    "aria-valuenow",
+    "40",
+  );
 
   await act(async () => finish());
   expect(screen.getByText("a.pdf uploaded")).toBeInTheDocument();
@@ -6638,7 +6813,7 @@ server.use(
       items: [{ id: page, name: `${sort ?? "default"} page ${page}` }],
       total: 50,
     });
-  })
+  }),
 );
 ```
 
@@ -6737,9 +6912,11 @@ function OrderButton() {
 
 // in tests
 render(
-  <ServicesContext.Provider value={{ api: fakeApi, analytics: { track: vi.fn() } }}>
+  <ServicesContext.Provider
+    value={{ api: fakeApi, analytics: { track: vi.fn() } }}
+  >
     <OrderButton />
-  </ServicesContext.Provider>
+  </ServicesContext.Provider>,
 );
 ```
 
@@ -6813,7 +6990,10 @@ const baseURLs: Record<string, string> = {
 
 export default defineConfig({
   use: { baseURL: process.env.BASE_URL ?? baseURLs[env] },
-  webServer: env === "local" ? { command: "npm run start", url: baseURLs.local } : undefined,
+  webServer:
+    env === "local"
+      ? { command: "npm run start", url: baseURLs.local }
+      : undefined,
   grep: env === "production" ? /@smoke/ : undefined,
 });
 ```
@@ -6836,7 +7016,9 @@ When several routes match a request, the one registered **last** runs first. A h
 
 ```ts
 await context.route("**/api/**", (route) => route.continue()); // base: pass everything through
-await page.route("**/api/user", (route) => route.fulfill({ json: { name: "Mock" } })); // more specific, registered later
+await page.route("**/api/user", (route) =>
+  route.fulfill({ json: { name: "Mock" } }),
+); // more specific, registered later
 ```
 
 Page routes run before context routes. You can remove routes with `page.unroute()` or `page.unrouteAll()`.
@@ -6851,7 +7033,9 @@ test("shows the session expiry warning", async ({ page }) => {
   await page.goto("/dashboard");
 
   await page.clock.fastForward("25:00"); // 25 minutes
-  await expect(page.getByRole("alertdialog", { name: /session expires soon/i })).toBeVisible();
+  await expect(
+    page.getByRole("alertdialog", { name: /session expires soon/i }),
+  ).toBeVisible();
 });
 
 test("shows the date in the header", async ({ page }) => {
@@ -6877,12 +7061,12 @@ server.use(
   http.get("/api/me", ({ request }) =>
     request.headers.get("Authorization") === "Bearer new-token"
       ? HttpResponse.json({ name: "Anna" })
-      : new HttpResponse(null, { status: 401 })
+      : new HttpResponse(null, { status: 401 }),
   ),
   http.post("/api/refresh", () => {
     refreshCalls++;
     return HttpResponse.json({ accessToken: "new-token" });
-  })
+  }),
 );
 ```
 
@@ -7034,7 +7218,7 @@ test("adding a todo refreshes the list", async () => {
       const todo = { id: todos.length + 1, title: body.title };
       todos.push(todo);
       return HttpResponse.json(todo, { status: 201 });
-    })
+    }),
   );
 
   const user = userEvent.setup();
@@ -7139,7 +7323,9 @@ test("product page has SEO tags in the server HTML", async ({ request }) => {
   const html = await (await request.get("/products/laptop")).text();
   expect(html).toContain("<title>Laptop | My Shop</title>");
   expect(html).toMatch(/<meta name="description" content="[^"]+"/);
-  expect(html).toContain('<link rel="canonical" href="https://shop.example.com/products/laptop"');
+  expect(html).toContain(
+    '<link rel="canonical" href="https://shop.example.com/products/laptop"',
+  );
 });
 ```
 
@@ -7184,15 +7370,19 @@ When data loading throws inside Suspense, the nearest error boundary catches it.
 ```tsx
 test("shows an error with a retry button, and retry works", async () => {
   server.use(
-    http.get("/api/profile", () => new HttpResponse(null, { status: 500 }), { once: true }),
-    http.get("/api/profile", () => HttpResponse.json({ name: "Anna" }))
+    http.get("/api/profile", () => new HttpResponse(null, { status: 500 }), {
+      once: true,
+    }),
+    http.get("/api/profile", () => HttpResponse.json({ name: "Anna" })),
   );
   vi.spyOn(console, "error").mockImplementation(() => {});
   const user = userEvent.setup();
 
   render(<ProfileRoute />, { wrapper: createWrapper() }); // ErrorBoundary + Suspense + useSuspenseQuery inside
 
-  expect(await screen.findByText(/couldn't load your profile/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/couldn't load your profile/i),
+  ).toBeInTheDocument();
 
   await user.click(screen.getByRole("button", { name: "Try again" }));
   expect(await screen.findByText("Anna")).toBeInTheDocument();
@@ -7212,7 +7402,7 @@ test("sends the title and the file", async () => {
     http.post("/api/documents", async ({ request }) => {
       received = await request.formData();
       return HttpResponse.json({ id: 1 }, { status: 201 });
-    })
+    }),
   );
   const user = userEvent.setup();
   render(<NewDocumentForm />);
@@ -7220,7 +7410,7 @@ test("sends the title and the file", async () => {
   await user.type(screen.getByLabelText("Title"), "Contract");
   await user.upload(
     screen.getByLabelText("File"),
-    new File(["%PDF-1.4"], "contract.pdf", { type: "application/pdf" })
+    new File(["%PDF-1.4"], "contract.pdf", { type: "application/pdf" }),
   );
   await user.click(screen.getByRole("button", { name: "Upload" }));
 
@@ -7238,7 +7428,11 @@ Loaders and actions are plain async functions that receive a request and params,
 
 ```ts
 test("loader returns the project", async () => {
-  server.use(http.get("/api/projects/7", () => HttpResponse.json({ id: 7, name: "Apollo" })));
+  server.use(
+    http.get("/api/projects/7", () =>
+      HttpResponse.json({ id: 7, name: "Apollo" }),
+    ),
+  );
 
   const result = await projectLoader({
     request: new Request("http://localhost/projects/7"),
@@ -7293,7 +7487,9 @@ test("announces the number of results", async () => {
 
   await user.type(screen.getByRole("searchbox"), "lamp");
 
-  expect(await screen.findByRole("status")).toHaveTextContent("12 results found");
+  expect(await screen.findByRole("status")).toHaveTextContent(
+    "12 results found",
+  );
 });
 ```
 

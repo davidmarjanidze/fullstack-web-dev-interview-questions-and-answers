@@ -5385,12 +5385,7 @@ email = new FormControl("", {
   updateOn: "blur",
 });
 
-form = new FormGroup(
-  {
-    /* ... */
-  },
-  { updateOn: "submit" },
-);
+form = new FormGroup({/* ... */}, { updateOn: "submit" });
 ```
 
 In template-driven forms: `[ngModelOptions]="{ updateOn: 'blur' }"`. Using `'blur'` is a good choice for expensive async validators.
@@ -7714,9 +7709,7 @@ export const ADMIN_ROUTES: Routes = [
       AdminTelemetry,
       provideEnvironmentInitializer(() => inject(AdminTelemetry).start()),
     ],
-    children: [
-      /* ... */
-    ],
+    children: [/* ... */],
   },
 ];
 ```

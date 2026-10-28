@@ -817,7 +817,9 @@ A repaint is cheaper than a reflow but still costs time, especially for big area
 
 ```css
 .box {
-  transition: transform 300ms, opacity 300ms;
+  transition:
+    transform 300ms,
+    opacity 300ms;
 }
 .box.open {
   transform: translateX(200px);
@@ -846,9 +848,9 @@ Only one task runs at a time. That's why a long task makes the page freeze: noth
 **Microtasks** come from resolved promises (`.then`, `await`), `queueMicrotask()` and `MutationObserver`. After each task, the browser runs every microtask in the queue, including new ones added while running, before doing anything else.
 
 ```js
-setTimeout(() => console.log('task'), 0);
-Promise.resolve().then(() => console.log('microtask'));
-console.log('sync');
+setTimeout(() => console.log("task"), 0);
+Promise.resolve().then(() => console.log("microtask"));
+console.log("sync");
 // sync, microtask, task
 ```
 
@@ -887,9 +889,9 @@ You can find them in the DevTools Performance panel (marked with red corners) or
 ```js
 new PerformanceObserver((list) => {
   for (const entry of list.getEntries()) {
-    console.log('Long task', entry.duration);
+    console.log("Long task", entry.duration);
   }
-}).observe({ type: 'longtask', buffered: true });
+}).observe({ type: "longtask", buffered: true });
 ```
 
 ## 57: What is a Web Worker and how does it relate to browser threads?
@@ -898,9 +900,9 @@ A Web Worker runs JavaScript on a separate thread inside the renderer process. I
 
 ```js
 // main.js
-const worker = new Worker('worker.js');
+const worker = new Worker("worker.js");
 worker.postMessage(bigArray);
-worker.onmessage = (e) => console.log('result', e.data);
+worker.onmessage = (e) => console.log("result", e.data);
 
 // worker.js
 onmessage = (e) => postMessage(e.data.reduce((a, b) => a + b, 0));
@@ -1000,9 +1002,9 @@ It is used for offline apps, caching API data and storing drafts. The raw API is
 Cache Storage (`caches`) stores pairs of `Request` and `Response` objects. It is mostly used with Service Workers to build offline support.
 
 ```js
-const cache = await caches.open('v1');
-await cache.addAll(['/', '/app.js', '/styles.css']);
-const res = await caches.match('/app.js');
+const cache = await caches.open("v1");
+await cache.addAll(["/", "/app.js", "/styles.css"]);
+const res = await caches.match("/app.js");
 ```
 
 It is separate from the HTTP cache. The HTTP cache is controlled by headers and by the browser; Cache Storage is fully controlled by your code.
@@ -1156,10 +1158,10 @@ Events like `visibilitychange`, `freeze`, `resume`, `pagehide` and `pageshow` te
 Use the `visibilitychange` event and `document.visibilityState`:
 
 ```js
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
     saveDraft();
-    navigator.sendBeacon('/analytics', JSON.stringify(stats));
+    navigator.sendBeacon("/analytics", JSON.stringify(stats));
   }
 });
 ```
@@ -1207,8 +1209,8 @@ You control this with `font-display`:
 
 ```css
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/inter.woff2') format('woff2');
+  font-family: "Inter";
+  src: url("/fonts/inter.woff2") format("woff2");
   font-display: swap;
 }
 ```
@@ -1218,7 +1220,7 @@ Preloading key fonts with `<link rel="preload" as="font" crossorigin>` makes the
 ## 95: How does native lazy loading work for images and iframes?
 
 ```html
-<img src="photo.jpg" loading="lazy" width="800" height="600" alt="">
+<img src="photo.jpg" loading="lazy" width="800" height="600" alt="" />
 <iframe src="https://example.com/map" loading="lazy"></iframe>
 ```
 
@@ -1229,7 +1231,7 @@ Don't lazy load images that appear in the first screen, especially the LCP image
 ## 96: What does the viewport meta tag do?
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 ```
 
 On mobile, without it Chrome lays out the page as if the screen were about 980 px wide and then shrinks it. With `width=device-width`, the layout width matches the device width in CSS pixels, so responsive CSS works as expected.
@@ -1245,10 +1247,10 @@ The parent and iframe can only talk through `postMessage` if they are cross-orig
 ## 98: What are resource hints like preconnect, dns-prefetch, preload and prefetch?
 
 ```html
-<link rel="preconnect" href="https://cdn.example.com">
-<link rel="dns-prefetch" href="https://api.example.com">
-<link rel="preload" href="/hero.webp" as="image">
-<link rel="prefetch" href="/next-page.js">
+<link rel="preconnect" href="https://cdn.example.com" />
+<link rel="dns-prefetch" href="https://api.example.com" />
+<link rel="preload" href="/hero.webp" as="image" />
+<link rel="prefetch" href="/next-page.js" />
 ```
 
 - **dns-prefetch**: do the DNS lookup early.
@@ -1303,7 +1305,7 @@ Powerful features like camera, microphone, location, notifications and clipboard
 Most of these features only work on secure origins (HTTPS or localhost). You can check the state from JavaScript:
 
 ```js
-const status = await navigator.permissions.query({ name: 'geolocation' });
+const status = await navigator.permissions.query({ name: "geolocation" });
 console.log(status.state); // 'granted', 'denied' or 'prompt'
 ```
 
@@ -1314,9 +1316,9 @@ The page can also use Permissions Policy to control which iframes are allowed to
 Chrome saves addresses, payment cards and passwords and fills them in when it recognizes a form. It uses the `autocomplete` attribute, field names, labels and server-side predictions to work out what each field is.
 
 ```html
-<input name="email" type="email" autocomplete="email">
-<input name="password" type="password" autocomplete="current-password">
-<input name="new-password" type="password" autocomplete="new-password">
+<input name="email" type="email" autocomplete="email" />
+<input name="password" type="password" autocomplete="current-password" />
+<input name="new-password" type="password" autocomplete="new-password" />
 ```
 
 Correct `autocomplete` values make autofill and the password manager work much better.
@@ -1413,8 +1415,8 @@ Long chains of requests that each wait for the previous one are a sign that you 
 - **load** fires when everything on the page has finished loading, including images, iframes and styles.
 
 ```js
-document.addEventListener('DOMContentLoaded', init);
-window.addEventListener('load', () => console.log('all done'));
+document.addEventListener("DOMContentLoaded", init);
+window.addEventListener("load", () => console.log("all done"));
 ```
 
 `document.readyState` moves from `loading` to `interactive` to `complete` along the same steps.
@@ -1424,8 +1426,8 @@ window.addEventListener('load', () => console.log('all done'));
 It is a navigation that changes the URL without loading a new document, for example clicking an `#anchor` link or calling `history.pushState()`. Single-page apps use it for routing.
 
 ```js
-history.pushState({ page: 2 }, '', '/products?page=2');
-window.addEventListener('popstate', (e) => render(e.state));
+history.pushState({ page: 2 }, "", "/products?page=2");
+window.addEventListener("popstate", (e) => render(e.state));
 ```
 
 No network request is made for the page itself, and the JavaScript state stays. The newer Navigation API (`navigation.navigate()` and the `navigate` event) makes this easier to manage.
@@ -1447,8 +1449,8 @@ Chrome creates it only when an assistive technology is active (or DevTools asks 
 Shadow DOM lets an element have its own hidden DOM tree, the shadow tree, with its own scoped styles. Styles inside don't leak out, and page styles mostly don't leak in.
 
 ```js
-const host = document.querySelector('#card');
-const root = host.attachShadow({ mode: 'open' });
+const host = document.querySelector("#card");
+const root = host.attachShadow({ mode: "open" });
 root.innerHTML = `<style>p { color: red; }</style><p>Inside</p>`;
 ```
 
@@ -1511,9 +1513,9 @@ Smaller images download faster and decode faster, which helps LCP. You can serve
 
 ```html
 <picture>
-  <source srcset="hero.avif" type="image/avif">
-  <source srcset="hero.webp" type="image/webp">
-  <img src="hero.jpg" alt="Hero" width="1200" height="600">
+  <source srcset="hero.avif" type="image/avif" />
+  <source srcset="hero.webp" type="image/webp" />
+  <img src="hero.jpg" alt="Hero" width="1200" height="600" />
 </picture>
 ```
 
@@ -1528,7 +1530,7 @@ A **renderer-initiated** navigation starts from the page: clicking a link, submi
 `beforeunload` fires when the page is about to be left or closed. If the handler cancels it, Chrome shows a generic "Leave site?" dialog. You can't customize the text.
 
 ```js
-window.addEventListener('beforeunload', (e) => {
+window.addEventListener("beforeunload", (e) => {
   if (hasUnsavedChanges) e.preventDefault();
 });
 ```
@@ -1583,7 +1585,7 @@ Chromium also uses more and more Rust for new code that handles untrusted input,
 A PWA is a website that Chrome lets users install like an app. It needs HTTPS and a web app manifest with name, icons and `start_url`. A Service Worker adds offline support.
 
 ```html
-<link rel="manifest" href="/manifest.webmanifest">
+<link rel="manifest" href="/manifest.webmanifest" />
 ```
 
 After installing, the app opens in its own window without the address bar, appears in the OS app list, and can use features like badges, file handling and protocol handlers.
@@ -1650,7 +1652,7 @@ Chrome gives each request a priority based on its type and position: the main HT
 You can change priority with `fetchpriority`:
 
 ```html
-<img src="hero.jpg" fetchpriority="high" alt="">
+<img src="hero.jpg" fetchpriority="high" alt="" />
 <script src="widget.js" async fetchpriority="low"></script>
 ```
 
@@ -1676,7 +1678,7 @@ Setting `textContent` just creates one text node. It doesn't parse anything, so 
 
 ```js
 el.textContent = userInput; // safe
-el.innerHTML = userInput;   // dangerous with untrusted data
+el.innerHTML = userInput; // dangerous with untrusted data
 ```
 
 ---
@@ -1779,13 +1781,13 @@ Layout thrashing happens when JavaScript writes to the DOM and then reads a layo
 ```js
 // Bad: layout on every iteration
 for (const el of items) {
-  el.style.width = box.offsetWidth + 'px';
+  el.style.width = box.offsetWidth + "px";
 }
 
 // Good: read once, then write
 const width = box.offsetWidth;
 for (const el of items) {
-  el.style.width = width + 'px';
+  el.style.width = width + "px";
 }
 ```
 
@@ -1845,7 +1847,9 @@ The Layers panel in DevTools shows each layer and the reason it was created.
 `will-change` tells the browser that a property is about to change, so it can prepare, usually by putting the element on its own layer ahead of time.
 
 ```css
-.drawer { will-change: transform; }
+.drawer {
+  will-change: transform;
+}
 ```
 
 Use it only for elements that will animate soon, and remove it when done if you set it from JavaScript. Every layer uses GPU memory, and putting `will-change` on many elements can make performance worse. It also creates a stacking context and a containing block for fixed children.
@@ -1867,7 +1871,7 @@ So these animations keep running smoothly while JavaScript is busy. If you anima
 A passive listener promises not to call `preventDefault()`, so the browser doesn't have to wait for it before scrolling.
 
 ```js
-window.addEventListener('touchstart', onTouch, { passive: true });
+window.addEventListener("touchstart", onTouch, { passive: true });
 ```
 
 Without it, the compositor must send the event to the main thread and wait, because the handler might cancel the scroll. If the main thread is busy, scrolling stalls. Chrome treats `touchstart`, `touchmove` and `wheel` listeners on `window`, `document` and `body` as passive by default.
@@ -1892,8 +1896,12 @@ Continuous events like `mousemove` and `touchmove` are lined up with frames (inp
 `touch-action` tells the browser which touch gestures it may handle itself, like panning or pinch-zoom, on an element.
 
 ```css
-.map { touch-action: none; }      /* the app handles all touch */
-.carousel { touch-action: pan-y; } /* browser handles vertical scroll only */
+.map {
+  touch-action: none;
+} /* the app handles all touch */
+.carousel {
+  touch-action: pan-y;
+} /* browser handles vertical scroll only */
 ```
 
 Because the compositor can read it without running JavaScript, it can start scrolling right away in allowed directions. It is better than calling `preventDefault()` in touch handlers.
@@ -1952,7 +1960,9 @@ The `contain` property tells the browser that an element's subtree is independen
 - `style`: counters and quotes don't leak.
 
 ```css
-.widget { contain: layout paint; }
+.widget {
+  contain: layout paint;
+}
 ```
 
 This lets Blink limit how much work a change causes, for example a change inside the widget doesn't need layout of the whole page.
@@ -1965,7 +1975,7 @@ Chrome decodes images during raster, mostly off the main thread, and caches deco
 
 ```js
 const img = new Image();
-img.src = '/big.jpg';
+img.src = "/big.jpg";
 await img.decode(); // decoded, safe to insert without a stutter
 document.body.append(img);
 ```
@@ -2112,14 +2122,14 @@ DevTools > Application > Back/forward cache tests a page and lists the reasons. 
 Use the `pageshow` event and check `event.persisted`:
 
 ```js
-window.addEventListener('pageshow', (event) => {
+window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     // Restored from bfcache: refresh stale data, restart timers
     refreshCart();
   }
 });
 
-window.addEventListener('pagehide', (event) => {
+window.addEventListener("pagehide", (event) => {
   if (event.persisted) {
     // Going into bfcache: close connections
   }
@@ -2139,8 +2149,8 @@ Chrome is gradually turning off `unload` handlers by default. Use `pagehide` or 
 When a page is frozen, Chrome stops running its tasks: timers, `fetch` callbacks and other task queues are paused. The page keeps its memory, and it fires a `freeze` event before and `resume` event after.
 
 ```js
-document.addEventListener('freeze', () => saveState());
-document.addEventListener('resume', () => reconnect());
+document.addEventListener("freeze", () => saveState());
+document.addEventListener("resume", () => reconnect());
 ```
 
 Pages in the bfcache are frozen. Background tabs may also be frozen when Chrome needs to save resources, especially on mobile and with Energy Saver.
@@ -2178,10 +2188,10 @@ This gives the browser a chance to handle input and paint about every 50 ms. Unl
 `scheduler.postTask()` lets you schedule a task with a priority: `user-blocking`, `user-visible` (default) or `background`.
 
 ```js
-scheduler.postTask(() => renderSearchResults(), { priority: 'user-blocking' });
-scheduler.postTask(() => sendAnalytics(), { priority: 'background' });
+scheduler.postTask(() => renderSearchResults(), { priority: "user-blocking" });
+scheduler.postTask(() => sendAnalytics(), { priority: "background" });
 
-const controller = new TaskController({ priority: 'background' });
+const controller = new TaskController({ priority: "background" });
 scheduler.postTask(prefetchImages, { signal: controller.signal });
 controller.abort(); // cancel it
 ```
@@ -2200,7 +2210,7 @@ new PerformanceObserver((list) => {
       console.log(script.sourceURL, script.invoker, script.duration);
     }
   }
-}).observe({ type: 'long-animation-frame', buffered: true });
+}).observe({ type: "long-animation-frame", buffered: true });
 ```
 
 It is the best tool for finding the cause of a bad INP in real users.
@@ -2220,10 +2230,10 @@ Fixes: break up long tasks, do only the visual update in the handler and defer t
 Use the `web-vitals` library, which wraps the right performance APIs and handles edge cases like bfcache restores and background tabs:
 
 ```js
-import { onLCP, onINP, onCLS } from 'web-vitals';
+import { onLCP, onINP, onCLS } from "web-vitals";
 
 function send(metric) {
-  navigator.sendBeacon('/vitals', JSON.stringify(metric));
+  navigator.sendBeacon("/vitals", JSON.stringify(metric));
 }
 onLCP(send);
 onINP(send);
@@ -2255,7 +2265,7 @@ function Point(x, y) {
 }
 const a = new Point(1, 2);
 const b = new Point(3, 4); // same hidden class as a
-b.z = 5;                   // b now gets a new hidden class
+b.z = 5; // b now gets a new hidden class
 ```
 
 Knowing the hidden class lets V8 read properties by a fixed offset instead of a dictionary lookup. Adding properties in different orders or deleting them creates different classes and slows things down.
@@ -2275,9 +2285,11 @@ They describe how many different hidden classes an operation sees:
 - **Megamorphic**: many shapes. V8 gives up on specializing and uses a slower general lookup.
 
 ```js
-function getX(p) { return p.x; }
-getX({ x: 1 });          // shape A
-getX({ x: 1, y: 2 });    // shape B, now polymorphic
+function getX(p) {
+  return p.x;
+}
+getX({ x: 1 }); // shape A
+getX({ x: 1, y: 2 }); // shape B, now polymorphic
 ```
 
 Hot code that always works with objects of the same shape runs faster.
@@ -2305,9 +2317,11 @@ It's the slowest to compile, so V8 only uses it for the hottest functions. Its b
 Optimized code is built on assumptions from past runs, like "`x` is always an integer" or "this object always has hidden class A." If an assumption breaks, V8 throws away the optimized code and goes back to running bytecode in the interpreter. This is called deoptimization (deopt).
 
 ```js
-function add(a, b) { return a + b; }
+function add(a, b) {
+  return a + b;
+}
 for (let i = 0; i < 1e6; i++) add(i, 1); // optimized for numbers
-add('a', 'b'); // deopt
+add("a", "b"); // deopt
 ```
 
 An occasional deopt is fine, but code that deopts again and again is slow. Keeping types stable avoids it.
@@ -2408,11 +2422,11 @@ So a content script and the page see the same `document.body`, but if the page c
 5. **Controlling**: the worker handles `fetch` events for pages in its scope.
 
 ```js
-self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open('v2').then((c) => c.addAll(['/', '/app.js'])));
+self.addEventListener("install", (e) => {
+  e.waitUntil(caches.open("v2").then((c) => c.addAll(["/", "/app.js"])));
   self.skipWaiting();
 });
-self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
+self.addEventListener("activate", (e) => e.waitUntil(clients.claim()));
 ```
 
 `skipWaiting()` and `clients.claim()` let a new worker take over right away.
@@ -2428,13 +2442,15 @@ If the bytes differ, the new worker installs and waits. Imported scripts can als
 When a Service Worker controls a page, it has to start up before it can handle a navigation request, which can take tens of milliseconds or more. Navigation preload lets the browser start the network request for the page in parallel with starting the worker.
 
 ```js
-self.addEventListener('activate', (e) => {
+self.addEventListener("activate", (e) => {
   e.waitUntil(self.registration.navigationPreload.enable());
 });
 
-self.addEventListener('fetch', (e) => {
-  if (e.request.mode === 'navigate') {
-    e.respondWith((async () => (await e.preloadResponse) || fetch(e.request))());
+self.addEventListener("fetch", (e) => {
+  if (e.request.mode === "navigate") {
+    e.respondWith(
+      (async () => (await e.preloadResponse) || fetch(e.request))(),
+    );
   }
 });
 ```
@@ -2445,12 +2461,14 @@ Speculation Rules is a Chrome API that tells the browser which pages to prefetch
 
 ```html
 <script type="speculationrules">
-{
-  "prerender": [{
-    "where": { "href_matches": "/products/*" },
-    "eagerness": "moderate"
-  }]
-}
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/products/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
 </script>
 ```
 
@@ -2462,7 +2480,7 @@ A prerendered page runs JavaScript before the user sees it. Check `document.prer
 
 ```js
 if (document.prerendering) {
-  document.addEventListener('prerenderingchange', sendPageView, { once: true });
+  document.addEventListener("prerenderingchange", sendPageView, { once: true });
 } else {
   sendPageView();
 }
@@ -2475,7 +2493,7 @@ Chrome also delays some APIs, like permission prompts, until activation. Analyti
 The Navigation API (`window.navigation`) is a modern replacement for the History API in single-page apps. It gives one `navigate` event for all navigations, including link clicks, form submits and back/forward, which you can intercept.
 
 ```js
-navigation.addEventListener('navigate', (event) => {
+navigation.addEventListener("navigate", (event) => {
   if (!event.canIntercept || event.hashChange) return;
   const url = new URL(event.destination.url);
   event.intercept({
@@ -2500,8 +2518,12 @@ document.startViewTransition(() => {
 ```
 
 ```css
-@view-transition { navigation: auto; } /* for multi-page sites */
-.card { view-transition-name: card; }
+@view-transition {
+  navigation: auto;
+} /* for multi-page sites */
+.card {
+  view-transition-name: card;
+}
 ```
 
 Same-document transitions work in single-page apps; cross-document transitions (Chrome 126+) work between pages of the same origin.
@@ -2534,12 +2556,12 @@ You can also forward ports so the phone can reach a dev server on your computer 
 ## 241: How do you automate Chrome with Puppeteer?
 
 ```js
-import puppeteer from 'puppeteer';
+import puppeteer from "puppeteer";
 
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
-await page.goto('https://example.com', { waitUntil: 'networkidle0' });
-await page.screenshot({ path: 'example.png' });
+await page.goto("https://example.com", { waitUntil: "networkidle0" });
+await page.screenshot({ path: "example.png" });
 const title = await page.title();
 console.log(title);
 await browser.close();
@@ -2556,11 +2578,13 @@ Worklets are small, lightweight scripts that run in parts of the rendering pipel
 - **Shared Storage worklets** and others for special APIs.
 
 ```js
-CSS.paintWorklet.addModule('checkerboard.js');
+CSS.paintWorklet.addModule("checkerboard.js");
 ```
 
 ```css
-.box { background-image: paint(checkerboard); }
+.box {
+  background-image: paint(checkerboard);
+}
 ```
 
 They have limited APIs and the browser can run them on other threads.
@@ -2576,7 +2600,7 @@ worker.postMessage({ canvas: offscreen }, [offscreen]);
 
 // worker.js
 onmessage = ({ data }) => {
-  const ctx = data.canvas.getContext('2d');
+  const ctx = data.canvas.getContext("2d");
   ctx.fillRect(0, 0, 100, 100);
 };
 ```
@@ -2608,7 +2632,7 @@ Content-Security-Policy: require-trusted-types-for 'script'; trusted-types app-p
 ```
 
 ```js
-const policy = trustedTypes.createPolicy('app-policy', {
+const policy = trustedTypes.createPolicy("app-policy", {
   createHTML: (s) => DOMPurify.sanitize(s),
 });
 el.innerHTML = policy.createHTML(userInput);
@@ -2704,9 +2728,9 @@ Chrome stops an extension service worker after about 30 seconds without any even
 So you shouldn't keep state in global variables. Store it in `chrome.storage` and use `chrome.alarms` instead of `setInterval` for periodic work.
 
 ```js
-chrome.alarms.create('sync', { periodInMinutes: 15 });
+chrome.alarms.create("sync", { periodInMinutes: 15 });
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === 'sync') syncData();
+  if (alarm.name === "sync") syncData();
 });
 ```
 
@@ -2715,12 +2739,17 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 `declarativeNetRequest` lets an extension block, redirect or modify requests by giving Chrome a list of rules, instead of running code for every request. Chrome checks the rules itself in the network path.
 
 ```json
-[{
-  "id": 1,
-  "priority": 1,
-  "action": { "type": "block" },
-  "condition": { "urlFilter": "||ads.example.com", "resourceTypes": ["script", "image"] }
-}]
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||ads.example.com",
+      "resourceTypes": ["script", "image"]
+    }
+  }
+]
 ```
 
 This is faster and more private, because the extension never sees your requests. It replaced blocking `webRequest` in Manifest V3, which is why ad blockers had to be rewritten.
@@ -2749,11 +2778,11 @@ They use message passing:
 
 ```js
 // content script
-const reply = await chrome.runtime.sendMessage({ type: 'getUser' });
+const reply = await chrome.runtime.sendMessage({ type: "getUser" });
 
 // service worker
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === 'getUser') {
+  if (msg.type === "getUser") {
     getUser().then(sendResponse);
     return true; // keep the channel open for the async reply
   }
@@ -2775,9 +2804,9 @@ MSE lets JavaScript feed media data into a `<video>` element piece by piece, ins
 ```js
 const ms = new MediaSource();
 video.src = URL.createObjectURL(ms);
-ms.addEventListener('sourceopen', async () => {
+ms.addEventListener("sourceopen", async () => {
   const sb = ms.addSourceBuffer('video/mp4; codecs="avc1.42E01E"');
-  sb.appendBuffer(await (await fetch('/seg1.mp4')).arrayBuffer());
+  sb.appendBuffer(await (await fetch("/seg1.mp4")).arrayBuffer());
 });
 ```
 
@@ -2798,11 +2827,14 @@ It's used for video editors, game streaming and video conferencing, where `<vide
 `requestIdleCallback` runs a callback when the main thread is idle, for example at the end of a frame with time left, or when nothing is happening.
 
 ```js
-requestIdleCallback((deadline) => {
-  while (deadline.timeRemaining() > 0 && queue.length) {
-    doWork(queue.shift());
-  }
-}, { timeout: 2000 });
+requestIdleCallback(
+  (deadline) => {
+    while (deadline.timeRemaining() > 0 && queue.length) {
+      doWork(queue.shift());
+    }
+  },
+  { timeout: 2000 },
+);
 ```
 
 It's good for low-priority work like sending analytics or warming caches. Don't change the DOM inside it, because that work happens after layout and would force another frame. In busy pages the callback can wait a long time, which is what `timeout` is for.
@@ -2812,15 +2844,18 @@ It's good for low-priority work like sending analytics or warming caches. Don't 
 Scroll listeners run on the main thread for every scroll event, and checking element positions with `getBoundingClientRect()` forces layout. IntersectionObserver lets the browser compute visibility itself as part of the rendering update and call you only when something changes.
 
 ```js
-const io = new IntersectionObserver((entries) => {
-  for (const e of entries) {
-    if (e.isIntersecting) {
-      loadImage(e.target);
-      io.unobserve(e.target);
+const io = new IntersectionObserver(
+  (entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        loadImage(e.target);
+        io.unobserve(e.target);
+      }
     }
-  }
-}, { rootMargin: '200px' });
-document.querySelectorAll('img[data-src]').forEach((img) => io.observe(img));
+  },
+  { rootMargin: "200px" },
+);
+document.querySelectorAll("img[data-src]").forEach((img) => io.observe(img));
 ```
 
 ## 268: When do ResizeObserver callbacks run?
@@ -2835,7 +2870,7 @@ MutationObserver callbacks run as microtasks, after the current script finishes 
 
 ```js
 const mo = new MutationObserver((records) => {
-  console.log(records.length, 'changes');
+  console.log(records.length, "changes");
 });
 mo.observe(list, { childList: true, subtree: true });
 ```
@@ -2852,8 +2887,12 @@ Scroll-driven animations link a CSS animation's progress to scroll position inst
   animation-timeline: scroll();
 }
 @keyframes grow {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 ```
 
@@ -2867,8 +2906,8 @@ When the animated properties are compositor-friendly (`transform`, `opacity`), C
 
 ```js
 el.animate(
-  [{ transform: 'translateY(0)' }, { transform: 'translateY(100px)' }],
-  { duration: 300, easing: 'ease-out', fill: 'forwards' }
+  [{ transform: "translateY(0)" }, { transform: "translateY(100px)" }],
+  { duration: 300, easing: "ease-out", fill: "forwards" },
 );
 ```
 
@@ -2926,7 +2965,13 @@ Fonts are always fetched in CORS mode. If you preload a font without `crossorigi
 
 ```html
 <!-- correct -->
-<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link
+  rel="preload"
+  href="/fonts/inter.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 The same mismatch happens if `as` is wrong. Chrome logs a console warning when a preloaded resource isn't used within a few seconds of the load event.
@@ -2940,7 +2985,8 @@ With `srcset` width descriptors and `sizes`, Chrome calculates how wide the imag
   src="photo-800.jpg"
   srcset="photo-400.jpg 400w, photo-800.jpg 800w, photo-1600.jpg 1600w"
   sizes="(max-width: 600px) 100vw, 50vw"
-  alt="Photo">
+  alt="Photo"
+/>
 ```
 
 If a larger version is already in the cache, Chrome may use it instead. Without `sizes`, Chrome assumes `100vw`, which often makes it download a bigger image than needed.
@@ -2951,14 +2997,16 @@ Use `@font-face` descriptors to make the fallback font take the same space as th
 
 ```css
 @font-face {
-  font-family: 'Inter Fallback';
-  src: local('Arial');
+  font-family: "Inter Fallback";
+  src: local("Arial");
   size-adjust: 107%;
   ascent-override: 90%;
   descent-override: 22%;
   line-gap-override: 0%;
 }
-body { font-family: 'Inter', 'Inter Fallback', sans-serif; }
+body {
+  font-family: "Inter", "Inter Fallback", sans-serif;
+}
 ```
 
 When the real font loads and swaps in, text barely moves, so there is less CLS. Frameworks like Next.js generate these values automatically.
@@ -2968,7 +3016,7 @@ When the real font loads and swaps in, text barely moves, so there is less CLS. 
 Origin trials let developers try a new or experimental Chrome feature on their real site for a limited time. You register your origin, get a token and add it to your pages:
 
 ```html
-<meta http-equiv="origin-trial" content="YOUR_TOKEN">
+<meta http-equiv="origin-trial" content="YOUR_TOKEN" />
 ```
 
 The feature then works for all your users without them changing flags. Chrome uses feedback from trials to adjust the API before shipping. Trials have an end date, so you must not depend on them permanently.
@@ -3003,10 +3051,10 @@ Chrome supports both. WebTransport has a more modern API based on streams.
 It lets a Service Worker tell Chrome, during install, that some requests should go straight to the network or to the cache without starting the worker at all.
 
 ```js
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.addRoutes([
-    { condition: { urlPattern: '/api/*' }, source: 'network' },
-    { condition: { urlPattern: '/static/*' }, source: 'cache' },
+    { condition: { urlPattern: "/api/*" }, source: "network" },
+    { condition: { urlPattern: "/static/*" }, source: "cache" },
   ]);
 });
 ```
@@ -3022,9 +3070,11 @@ This removes the cost of starting the worker for requests where it would just pa
 - **Web Locks API**: coordinate who does a task, like one tab keeping a WebSocket open.
 
 ```js
-const ch = new BroadcastChannel('auth');
-ch.postMessage({ type: 'logout' });
-ch.onmessage = (e) => { if (e.data.type === 'logout') location.reload(); };
+const ch = new BroadcastChannel("auth");
+ch.postMessage({ type: "logout" });
+ch.onmessage = (e) => {
+  if (e.data.type === "logout") location.reload();
+};
 ```
 
 With storage partitioning, these only reach contexts in the same partition.
@@ -3034,8 +3084,8 @@ With storage partitioning, these only reach contexts in the same partition.
 A SharedWorker is a worker that several tabs, windows or iframes of the same origin can connect to at the same time. It's useful for sharing one WebSocket connection or one in-memory cache across tabs.
 
 ```js
-const worker = new SharedWorker('shared.js');
-worker.port.postMessage('hello');
+const worker = new SharedWorker("shared.js");
+worker.port.postMessage("hello");
 worker.port.onmessage = (e) => console.log(e.data);
 ```
 
@@ -3052,7 +3102,7 @@ Origins with persistent storage (granted after `navigator.storage.persist()`) ar
 When third-party cookies are blocked (for example in Incognito or by user settings), an embedded iframe can call `document.requestStorageAccess()` to ask for access to its unpartitioned cookies.
 
 ```js
-button.addEventListener('click', async () => {
+button.addEventListener("click", async () => {
   try {
     await document.requestStorageAccess();
     loadUserComments();
@@ -3076,8 +3126,8 @@ Passkeys use the WebAuthn API. The site asks the browser to create a key pair; t
 
 ```js
 const cred = await navigator.credentials.get({
-  publicKey: { challenge, rpId: 'example.com', userVerification: 'preferred' },
-  mediation: 'conditional', // show passkeys in the autofill dropdown
+  publicKey: { challenge, rpId: "example.com", userVerification: "preferred" },
+  mediation: "conditional", // show passkeys in the autofill dropdown
 });
 ```
 
@@ -3088,9 +3138,9 @@ Passkeys can't be phished, because the browser binds them to the site's domain.
 Web Locks lets scripts of the same origin, in different tabs or workers, take named locks so only one runs a piece of code at a time.
 
 ```js
-await navigator.locks.request('token-refresh', async () => {
+await navigator.locks.request("token-refresh", async () => {
   const token = await refreshToken();
-  localStorage.setItem('token', token);
+  localStorage.setItem("token", token);
 });
 ```
 
@@ -3099,7 +3149,7 @@ It's useful when several tabs might do the same task, like refreshing an auth to
 ## 295: How does the Async Clipboard API work in Chrome?
 
 ```js
-await navigator.clipboard.writeText('Copied!');
+await navigator.clipboard.writeText("Copied!");
 const text = await navigator.clipboard.readText();
 ```
 
@@ -3134,8 +3184,8 @@ Servers and pages can respond by sending smaller images, skipping autoplay video
 `modulepreload` downloads a JavaScript module early and parses and compiles it ahead of time, so it's ready when the module graph needs it. Chrome only fetches the module you list, so list its important imports too to avoid a waterfall.
 
 ```html
-<link rel="modulepreload" href="/js/app.js">
-<link rel="modulepreload" href="/js/router.js">
+<link rel="modulepreload" href="/js/app.js" />
+<link rel="modulepreload" href="/js/router.js" />
 ```
 
 Unlike `preload` with `as="script"`, it uses the correct CORS mode and credentials for modules and puts the result straight in the module map. Build tools like Vite add these tags automatically.
@@ -3265,7 +3315,7 @@ For an accelerated canvas, the pixels live in a GPU texture in the GPU process. 
 If you need to read pixels often, create the context with `willReadFrequently`, so Chrome keeps that canvas on the CPU:
 
 ```js
-const ctx = canvas.getContext('2d', { willReadFrequently: true });
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
 ```
 
 ## 314: What is the difference between Skia Ganesh and Skia Graphite?
@@ -3657,10 +3707,10 @@ With pointer compression, Smis are 31-bit signed integers. Numbers outside that 
 V8 tracks what kind of values an array holds, called its elements kind, for example `PACKED_SMI_ELEMENTS`, `PACKED_DOUBLE_ELEMENTS`, `PACKED_ELEMENTS` (any value), and `HOLEY_*` variants when the array has holes.
 
 ```js
-const a = [1, 2, 3];   // PACKED_SMI_ELEMENTS
-a.push(4.5);           // PACKED_DOUBLE_ELEMENTS
-a.push('x');           // PACKED_ELEMENTS
-a[10] = 1;             // HOLEY_ELEMENTS
+const a = [1, 2, 3]; // PACKED_SMI_ELEMENTS
+a.push(4.5); // PACKED_DOUBLE_ELEMENTS
+a.push("x"); // PACKED_ELEMENTS
+a[10] = 1; // HOLEY_ELEMENTS
 ```
 
 Transitions only go toward more general kinds and never back. More specific kinds allow faster code, so avoid creating holes and mixing types in hot arrays.
@@ -3713,7 +3763,10 @@ V8 has two Wasm tiers:
 With dynamic tiering, V8 compiles everything with Liftoff at first and only optimizes functions that turn out to be hot. Compilation can happen while the module is still downloading (`WebAssembly.compileStreaming` / `instantiateStreaming`), and results are cached.
 
 ```js
-const { instance } = await WebAssembly.instantiateStreaming(fetch('/app.wasm'), imports);
+const { instance } = await WebAssembly.instantiateStreaming(
+  fetch("/app.wasm"),
+  imports,
+);
 ```
 
 ## 378: What is WasmGC and why does it matter?
@@ -3829,7 +3882,7 @@ If you draw a cross-origin image without CORS approval on a canvas, the canvas b
 Without this, a page could load a private image (like a profile picture on another site that uses your cookies) and read its pixels. To read pixels legally, load the image with `crossorigin` and have the server send CORS headers.
 
 ```html
-<img src="https://cdn.example.com/photo.jpg" crossorigin="anonymous">
+<img src="https://cdn.example.com/photo.jpg" crossorigin="anonymous" />
 ```
 
 ## 395: What timing attacks do browsers still need to defend against?
@@ -3994,7 +4047,9 @@ Use a compositor-only animation: animate `transform` (and maybe `opacity`) with 
   transform: translateX(-100%);
   transition: transform 250ms ease-out;
 }
-.drawer.open { transform: translateX(0); }
+.drawer.open {
+  transform: translateX(0);
+}
 ```
 
 Start the animation before doing other work, and break heavy work into chunks with `scheduler.yield()`. Since the compositor runs the transform animation, it keeps going even if the main thread is busy for a while.
@@ -4010,7 +4065,10 @@ Use the new viewport units: `svh` (small viewport), `lvh` (large) and `dvh` (dyn
 By default, when the keyboard opens, Chrome resizes the visual viewport but not the layout viewport, so the page doesn't reflow, it just becomes scrollable over a smaller visible area. You can change this with the viewport meta tag:
 
 ```html
-<meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
+/>
 ```
 
 `resizes-content` shrinks the layout viewport (like older behavior), and `overlays-content` doesn't resize anything. The VirtualKeyboard API gives more control in Chrome.
@@ -4021,7 +4079,7 @@ By default, when the keyboard opens, Chrome resizes the visual viewport but not 
 2. Collect `notRestoredReasons` from real users to see what happens in the field:
 
 ```js
-const [nav] = performance.getEntriesByType('navigation');
+const [nav] = performance.getEntriesByType("navigation");
 if (nav.notRestoredReasons) console.log(nav.notRestoredReasons);
 ```
 
@@ -4095,16 +4153,20 @@ Animating `box-shadow` changes what is painted, so each frame needs paint and ra
 A better approach is to put the final shadow on a pseudo-element and animate its `opacity`:
 
 ```css
-.card { position: relative; }
+.card {
+  position: relative;
+}
 .card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   box-shadow: 0 10px 30px rgb(0 0 0 / 0.3);
   opacity: 0;
   transition: opacity 200ms;
 }
-.card:hover::after { opacity: 1; }
+.card:hover::after {
+  opacity: 1;
+}
 ```
 
 ## 429: How does Chrome handle very long JavaScript tasks inside iframes from other sites?
@@ -4130,9 +4192,13 @@ Chrome also keeps a spare renderer around for future navigations. Process lifeti
 A normal `fetch` started while a page is being closed may be cancelled. With `keepalive: true`, the request is allowed to finish even after the page is gone, as long as the body is small (limit 64 KB across keepalive requests).
 
 ```js
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') {
-    fetch('/log', { method: 'POST', body: JSON.stringify(data), keepalive: true });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    fetch("/log", {
+      method: "POST",
+      body: JSON.stringify(data),
+      keepalive: true,
+    });
   }
 });
 ```
@@ -4169,7 +4235,7 @@ For developers this means a feature working in Chrome doesn't mean it works in S
 - Use feature detection in code:
 
 ```js
-if ('startViewTransition' in document) {
+if ("startViewTransition" in document) {
   document.startViewTransition(update);
 } else {
   update();
@@ -4177,7 +4243,9 @@ if ('startViewTransition' in document) {
 ```
 
 ```css
-@supports (container-type: inline-size) { /* ... */ }
+@supports (container-type: inline-size) {
+  /* ... */
+}
 ```
 
 ## 437: How would you design a page to load fast on a slow 3G connection in Chrome?
@@ -4229,15 +4297,15 @@ Import maps let you control how bare module specifiers like `import 'lodash'` re
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "lodash": "/vendor/lodash-es/lodash.js",
-    "app/": "/src/app/"
+  {
+    "imports": {
+      "lodash": "/vendor/lodash-es/lodash.js",
+      "app/": "/src/app/"
+    }
   }
-}
 </script>
 <script type="module">
-  import { debounce } from 'lodash';
+  import { debounce } from "lodash";
 </script>
 ```
 

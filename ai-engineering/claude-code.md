@@ -741,14 +741,14 @@ Reading files in your project usually doesn't need approval. Which actions ask d
 
 ## 32: What are the permission modes?
 
-| Mode | What runs without asking |
-| --- | --- |
-| `default` (shown as Manual) | Only reads |
-| `acceptEdits` | Reads, file edits, and simple file commands like `mkdir`, `mv`, `cp` |
-| `plan` | Reads only, Claude researches and writes a plan |
-| `auto` | Almost everything, a separate safety classifier checks each action |
-| `dontAsk` | Only pre-approved tools, everything else is denied |
-| `bypassPermissions` | Everything, no checks |
+| Mode                        | What runs without asking                                             |
+| --------------------------- | -------------------------------------------------------------------- |
+| `default` (shown as Manual) | Only reads                                                           |
+| `acceptEdits`               | Reads, file edits, and simple file commands like `mkdir`, `mv`, `cp` |
+| `plan`                      | Reads only, Claude researches and writes a plan                      |
+| `auto`                      | Almost everything, a separate safety classifier checks each action   |
+| `dontAsk`                   | Only pre-approved tools, everything else is denied                   |
+| `bypassPermissions`         | Everything, no checks                                                |
 
 Auto mode is the default starting mode for interactive sessions in recent versions. `bypassPermissions` is meant only for isolated containers or VMs.
 
@@ -1019,19 +1019,19 @@ Fast mode makes Claude Opus respond faster (up to about 2.5x), at a higher price
 
 ## 68: Which keyboard shortcuts should every Claude Code user know?
 
-| Shortcut | What it does |
-| --- | --- |
-| `Esc` | Stop Claude |
-| `Esc` `Esc` | Open rewind (on empty input) |
-| `Shift+Tab` | Cycle permission modes |
-| `Ctrl+C` | Interrupt, or clear input, press twice to exit |
-| `Ctrl+O` | Open the transcript with full tool details |
-| `Ctrl+R` | Search prompt history |
-| `Ctrl+B` | Send a running command or agent to the background |
-| `Ctrl+T` | Show or hide the task checklist |
-| `Ctrl+G` | Edit your prompt in your text editor |
-| `Ctrl+S` | Stash the prompt and get it back later |
-| `?` | Show shortcut help |
+| Shortcut    | What it does                                      |
+| ----------- | ------------------------------------------------- |
+| `Esc`       | Stop Claude                                       |
+| `Esc` `Esc` | Open rewind (on empty input)                      |
+| `Shift+Tab` | Cycle permission modes                            |
+| `Ctrl+C`    | Interrupt, or clear input, press twice to exit    |
+| `Ctrl+O`    | Open the transcript with full tool details        |
+| `Ctrl+R`    | Search prompt history                             |
+| `Ctrl+B`    | Send a running command or agent to the background |
+| `Ctrl+T`    | Show or hide the task checklist                   |
+| `Ctrl+G`    | Edit your prompt in your text editor              |
+| `Ctrl+S`    | Stash the prompt and get it back later            |
+| `?`         | Show shortcut help                                |
 
 ## 69: How do you write a prompt with several lines?
 
@@ -1583,6 +1583,7 @@ Use `@path` anywhere in the file:
 See @README.md for the project overview and @package.json for scripts.
 
 # Git workflow
+
 - @docs/git-instructions.md
 ```
 
@@ -1644,6 +1645,7 @@ Keep the main content in `AGENTS.md`, which tools like Codex, Cursor and Copilot
 @AGENTS.md
 
 ## Claude Code
+
 - Use plan mode for changes in `packages/billing`
 ```
 
@@ -1693,16 +1695,16 @@ Keys you pass override the same keys in your files for that session only. Many s
 
 Rules look like `Tool` or `Tool(specifier)`:
 
-| Rule | Meaning |
-| --- | --- |
-| `Bash` | Every Bash command |
-| `Bash(npm run build)` | Exactly `npm run build` |
-| `Bash(npm run *)` | Any `npm run ...` command |
-| `Read(./.env)` | Reading `.env` in the current folder |
-| `Edit(/src/**/*.ts)` | Editing TypeScript files under `src` in the project |
-| `WebFetch(domain:docs.python.org)` | Fetching from that domain |
-| `mcp__github__*` | All tools from the `github` MCP server |
-| `Agent(Explore)` | The Explore subagent |
+| Rule                               | Meaning                                             |
+| ---------------------------------- | --------------------------------------------------- |
+| `Bash`                             | Every Bash command                                  |
+| `Bash(npm run build)`              | Exactly `npm run build`                             |
+| `Bash(npm run *)`                  | Any `npm run ...` command                           |
+| `Read(./.env)`                     | Reading `.env` in the current folder                |
+| `Edit(/src/**/*.ts)`               | Editing TypeScript files under `src` in the project |
+| `WebFetch(domain:docs.python.org)` | Fetching from that domain                           |
+| `mcp__github__*`                   | All tools from the `github` MCP server              |
+| `Agent(Explore)`                   | The Explore subagent                                |
 
 ## 165: In what order are allow, ask and deny rules checked?
 
@@ -1727,12 +1729,12 @@ It understands shell operators like `&&`, `||`, `;` and `|`. An allow rule must 
 
 They use gitignore-style patterns with four kinds of anchors:
 
-| Pattern | Meaning |
-| --- | --- |
-| `//path` | Absolute path from the filesystem root, like `Read(//etc/hosts)` |
-| `~/path` | From your home folder, like `Read(~/.aws/**)` |
-| `/path` | Relative to the settings file's base (the project root for project settings) |
-| `path` or `./path` | Relative to the current folder |
+| Pattern            | Meaning                                                                      |
+| ------------------ | ---------------------------------------------------------------------------- |
+| `//path`           | Absolute path from the filesystem root, like `Read(//etc/hosts)`             |
+| `~/path`           | From your home folder, like `Read(~/.aws/**)`                                |
+| `/path`            | Relative to the settings file's base (the project root for project settings) |
+| `path` or `./path` | Relative to the current folder                                               |
 
 A common mistake is writing `/Users/alice/file` and expecting an absolute path. One leading slash means "relative to the settings source". Use `//` for absolute paths.
 
@@ -2040,6 +2042,7 @@ disable-model-invocation: true
 ---
 
 Fix GitHub issue $ARGUMENTS.
+
 1. Read it with `gh issue view $ARGUMENTS`
 2. Find the cause, fix it and add a test
 3. Commit with a message that references the issue
@@ -2059,9 +2062,11 @@ allowed-tools: Bash(gh *)
 ---
 
 ## PR diff
+
 !`gh pr diff`
 
 ## Comments
+
 !`gh pr view --comments`
 
 Summarize what this PR changes and list open questions from reviewers.
@@ -2099,14 +2104,14 @@ The grant ends when you send your next message. It's useful for skills that alwa
 
 ## 201: When should you use CLAUDE.md, a skill, a subagent, a hook, or an MCP server?
 
-| Need | Use |
-| --- | --- |
-| Rules that apply to almost every task | `CLAUDE.md` or rules |
-| Knowledge or a workflow needed only sometimes | Skill |
-| Side task with lots of output, or different tools or model | Subagent |
-| Something that must happen every time, no exceptions | Hook |
-| Access to an outside system (GitHub, DB, Jira) | MCP server |
-| Bundle several of these to share | Plugin |
+| Need                                                       | Use                  |
+| ---------------------------------------------------------- | -------------------- |
+| Rules that apply to almost every task                      | `CLAUDE.md` or rules |
+| Knowledge or a workflow needed only sometimes              | Skill                |
+| Side task with lots of output, or different tools or model | Subagent             |
+| Something that must happen every time, no exceptions       | Hook                 |
+| Access to an outside system (GitHub, DB, Jira)             | MCP server           |
+| Bundle several of these to share                           | Plugin               |
 
 Example: "run Prettier after every edit" is a hook, "how to write a migration" is a skill, "use pnpm" goes in `CLAUDE.md`.
 
@@ -3654,12 +3659,12 @@ They fit bigger jobs where parallel workers need to coordinate, like building a 
 
 ## 348: Compare subagents, agent teams, dynamic workflows and background sessions.
 
-| | Who decides what's next | Scale | Good for |
-| --- | --- | --- | --- |
-| Subagents | Claude in your session | A few per turn | Side tasks, research, keeping context clean |
-| Agent teams | A lead agent | A handful of long-running peers | Coordinated multi-part work |
-| Dynamic workflows | A script Claude writes | Dozens to hundreds of agents | Big audits, migrations, repeatable orchestration |
-| Background sessions | You | As many as you start | Independent tasks you hand off and check later |
+|                     | Who decides what's next | Scale                           | Good for                                         |
+| ------------------- | ----------------------- | ------------------------------- | ------------------------------------------------ |
+| Subagents           | Claude in your session  | A few per turn                  | Side tasks, research, keeping context clean      |
+| Agent teams         | A lead agent            | A handful of long-running peers | Coordinated multi-part work                      |
+| Dynamic workflows   | A script Claude writes  | Dozens to hundreds of agents    | Big audits, migrations, repeatable orchestration |
+| Background sessions | You                     | As many as you start            | Independent tasks you hand off and check later   |
 
 Pick the lightest one that does the job. Most tasks need only subagents.
 
@@ -3760,7 +3765,8 @@ A mod is a plugin with a hooks module: hooks written as JavaScript functions ins
 import { query } from "@anthropic-ai/claude-agent-sdk";
 
 for await (const message of query({
-  prompt: "Find and fix the bug in utils.ts that causes the crash on empty input.",
+  prompt:
+    "Find and fix the bug in utils.ts that causes the crash on empty input.",
   options: {
     allowedTools: ["Read", "Edit", "Grep", "Glob"],
     permissionMode: "acceptEdits",
@@ -3812,7 +3818,11 @@ Install with `pip install claude-agent-sdk`.
 Define it with `tool()`, wrap it in an in-process MCP server, and pass it to `query()`:
 
 ```typescript
-import { query, tool, createSdkMcpServer } from "@anthropic-ai/claude-agent-sdk";
+import {
+  query,
+  tool,
+  createSdkMcpServer,
+} from "@anthropic-ai/claude-agent-sdk";
 import { z } from "zod";
 
 const getOrder = tool(
@@ -3822,12 +3832,21 @@ const getOrder = tool(
   async (args) => {
     const order = await db.orders.find(args.orderId); // your code
     return {
-      content: [{ type: "text", text: JSON.stringify({ id: order.id, status: order.status }) }],
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify({ id: order.id, status: order.status }),
+        },
+      ],
     };
-  }
+  },
 );
 
-const shop = createSdkMcpServer({ name: "shop", version: "1.0.0", tools: [getOrder] });
+const shop = createSdkMcpServer({
+  name: "shop",
+  version: "1.0.0",
+  tools: [getOrder],
+});
 
 for await (const message of query({
   prompt: "What's the status of order ORD-123?",
@@ -3836,7 +3855,8 @@ for await (const message of query({
     allowedTools: ["mcp__shop__get_order"],
   },
 })) {
-  if (message.type === "result" && message.subtype === "success") console.log(message.result);
+  if (message.type === "result" && message.subtype === "success")
+    console.log(message.result);
 }
 ```
 
@@ -4017,12 +4037,12 @@ The goal is the smallest context that has what Claude needs for the current step
 
 ## 387: Compare `/goal`, `/loop`, Stop hooks and scheduled tasks for keeping Claude working.
 
-| Tool | Keeps going until | Runs where | Good for |
-| --- | --- | --- | --- |
-| `/goal` | A condition is judged met | Your session | Finishing a task with a clear end |
-| Stop hook | Your script says OK | Your session | Hard checks like "tests must pass" |
-| `/loop` | You stop it | Your session | Polling something on an interval |
-| Cloud scheduled tasks | Each run finishes | Cloud | Recurring jobs without your machine |
+| Tool                  | Keeps going until         | Runs where   | Good for                            |
+| --------------------- | ------------------------- | ------------ | ----------------------------------- |
+| `/goal`               | A condition is judged met | Your session | Finishing a task with a clear end   |
+| Stop hook             | Your script says OK       | Your session | Hard checks like "tests must pass"  |
+| `/loop`               | You stop it               | Your session | Polling something on an interval    |
+| Cloud scheduled tasks | Each run finishes         | Cloud        | Recurring jobs without your machine |
 
 A Stop hook is code you control. `/goal` uses a model to judge, which is more flexible but less strict. You can use both together.
 
@@ -4366,7 +4386,11 @@ allowed-tools: Bash(./scripts/deploy.sh staging) Bash(pnpm test *)
   "sandbox": {
     "enabled": true,
     "network": {
-      "allowedDomains": ["registry.npmjs.org", "github.com", "*.githubusercontent.com"]
+      "allowedDomains": [
+        "registry.npmjs.org",
+        "github.com",
+        "*.githubusercontent.com"
+      ]
     }
   },
   "permissions": {
@@ -4555,18 +4579,18 @@ Each subagent has its own model (from its `model` field, `CLAUDE_CODE_SUBAGENT_M
 
 ## 442: Summarize all the ways to extend Claude Code for your company.
 
-| Need | Extension point |
-| --- | --- |
-| Shared knowledge and rules | `CLAUDE.md`, rules, auto memory |
-| Reusable workflows | Skills |
-| Specialized workers | Subagents |
-| Guaranteed behavior | Hooks |
-| Access to outside systems | MCP servers |
-| Packaging and sharing | Plugins and marketplaces |
-| UI tweaks | Status line, output styles, keybindings, mods |
-| Policy | Managed settings |
-| Automation | Print mode, GitHub Actions, scheduled tasks |
-| Custom products | Agent SDK |
+| Need                       | Extension point                               |
+| -------------------------- | --------------------------------------------- |
+| Shared knowledge and rules | `CLAUDE.md`, rules, auto memory               |
+| Reusable workflows         | Skills                                        |
+| Specialized workers        | Subagents                                     |
+| Guaranteed behavior        | Hooks                                         |
+| Access to outside systems  | MCP servers                                   |
+| Packaging and sharing      | Plugins and marketplaces                      |
+| UI tweaks                  | Status line, output styles, keybindings, mods |
+| Policy                     | Managed settings                              |
+| Automation                 | Print mode, GitHub Actions, scheduled tasks   |
+| Custom products            | Agent SDK                                     |
 
 A strong answer picks a concrete example for a few of these from your own stack.
 

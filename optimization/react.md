@@ -454,7 +454,9 @@ If items are added, removed or reordered, the index of each item changes. React 
 
 ```jsx
 // Prefer a stable id from the data
-{todos.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
+{
+  todos.map((todo) => <TodoItem key={todo.id} todo={todo} />);
+}
 ```
 
 #### 48: Why should you not use `Math.random()` or `crypto.randomUUID()` as a key during render?
@@ -734,7 +736,7 @@ import { Activity } from "react";
 
 <Activity mode={tab === "posts" ? "visible" : "hidden"}>
   <Posts />
-</Activity>
+</Activity>;
 ```
 
 #### 88: What is the difference between hiding a component with `<Activity>` and with conditional rendering?
@@ -1177,10 +1179,14 @@ If the type at a given position changes, React unmounts the old subtree and moun
 
 ```jsx
 // Same type, same position: state is kept when isAdmin changes
-{isAdmin ? <Form role="admin" /> : <Form role="user" />}
+{
+  isAdmin ? <Form role="admin" /> : <Form role="user" />;
+}
 
 // Different keys: state is reset
-{isAdmin ? <Form key="admin" /> : <Form key="user" />}
+{
+  isAdmin ? <Form key="admin" /> : <Form key="user" />;
+}
 ```
 
 #### 154: How can you find out why a component re-rendered?
@@ -1434,9 +1440,8 @@ A memoized selector, like one made with Reselect's `createSelector` (included in
 ```js
 import { createSelector } from "@reduxjs/toolkit";
 
-const selectDoneTodos = createSelector(
-  [(state) => state.todos],
-  (todos) => todos.filter((t) => t.done),
+const selectDoneTodos = createSelector([(state) => state.todos], (todos) =>
+  todos.filter((t) => t.done),
 );
 ```
 
@@ -1612,14 +1617,16 @@ const results = useMemo(
 If every row receives `selectedId`, every row re-renders when it changes. Instead, pass a boolean like `isSelected={item.id === selectedId}`. With memoized rows, only the row that was selected and the one that becomes selected get a different prop, so only two rows re-render.
 
 ```jsx
-{items.map((item) => (
-  <Row
-    key={item.id}
-    item={item}
-    isSelected={item.id === selectedId}
-    onSelect={setSelectedId}
-  />
-))}
+{
+  items.map((item) => (
+    <Row
+      key={item.id}
+      item={item}
+      isSelected={item.id === selectedId}
+      onSelect={setSelectedId}
+    />
+  ));
+}
 ```
 
 #### 203: How do you handle a list that receives frequent real-time updates?
@@ -2010,7 +2017,11 @@ import { preconnect, preload } from "react-dom";
 
 function App() {
   preconnect("https://api.example.com");
-  preload("/fonts/inter.woff2", { as: "font", type: "font/woff2", crossOrigin: "" });
+  preload("/fonts/inter.woff2", {
+    as: "font",
+    type: "font/woff2",
+    crossOrigin: "",
+  });
   return <Main />;
 }
 ```
@@ -2825,7 +2836,9 @@ export default async function Page({ params }) {
 ```js
 import { cache, cacheSignal } from "react";
 
-const getUser = cache((id) => fetch(`/api/users/${id}`, { signal: cacheSignal() }));
+const getUser = cache((id) =>
+  fetch(`/api/users/${id}`, { signal: cacheSignal() }),
+);
 ```
 
 #### 364: How do you design client-side cache invalidation after a mutation?
@@ -3232,7 +3245,11 @@ function Page() {
   const [note, setNote] = useState("");
   return (
     <>
-      <input aria-label="note" value={note} onChange={(e) => setNote(e.target.value)} />
+      <input
+        aria-label="note"
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+      />
       <Results />
     </>
   );
@@ -3306,7 +3323,11 @@ Use `srcSet` and `sizes` so the browser picks the right file, `<picture>` for fo
 
 ```jsx
 <picture>
-  <source type="image/avif" srcSet="/hero-640.avif 640w, /hero-1280.avif 1280w" sizes="100vw" />
+  <source
+    type="image/avif"
+    srcSet="/hero-640.avif 640w, /hero-1280.avif 1280w"
+    sizes="100vw"
+  />
   <img
     src="/hero-1280.jpg"
     srcSet="/hero-640.jpg 640w, /hero-1280.jpg 1280w"

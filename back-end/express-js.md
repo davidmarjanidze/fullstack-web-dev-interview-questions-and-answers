@@ -487,16 +487,16 @@ Express 5 needs Node.js 18 or newer. `npm install express` installs version 5 no
 ### 4: What does a minimal Express app look like?
 
 ```js
-const express = require('express');
+const express = require("express");
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
+app.get("/", (req, res) => {
+  res.send("Hello World");
 });
 
 app.listen(3000, () => {
-  console.log('Listening on http://localhost:3000');
+  console.log("Listening on http://localhost:3000");
 });
 ```
 
@@ -507,11 +507,11 @@ app.listen(3000, () => {
 Set `"type": "module"` in `package.json` (or use `.mjs` files) and use `import`:
 
 ```js
-import express from 'express';
+import express from "express";
 
 const app = express();
 
-app.get('/', (req, res) => res.send('ok'));
+app.get("/", (req, res) => res.send("ok"));
 
 app.listen(3000);
 ```
@@ -527,7 +527,7 @@ Both styles work with Express. Just do not mix `require` and `import` in the sam
 It creates a Node HTTP server, passes `app` to it as the request handler and starts listening on the given port. It returns the `http.Server` instance, which you can keep to close the server later.
 
 ```js
-const server = app.listen(3000, () => console.log('started'));
+const server = app.listen(3000, () => console.log("started"));
 ```
 
 It is a shortcut for `http.createServer(app).listen(3000)`. In Express 5, if listening fails (for example the port is in use) the error is passed to the callback as the first argument.
@@ -537,9 +537,9 @@ It is a shortcut for `http.createServer(app).listen(3000)`. In Express 5, if lis
 Routing is deciding which code runs for a given HTTP method and URL path. A route is made of a method, a path and one or more handler functions:
 
 ```js
-app.get('/products', listProducts);
-app.post('/products', createProduct);
-app.delete('/products/:id', deleteProduct);
+app.get("/products", listProducts);
+app.post("/products", createProduct);
+app.delete("/products/:id", deleteProduct);
 ```
 
 Express checks routes in the order you added them and runs the first one that matches (unless that handler calls `next()`).
@@ -557,7 +557,7 @@ That is an HTTP difference, not an Express one, but it shows up often. `PUT` usu
 They are named parts of the path that start with `:`. Express puts their values in `req.params`:
 
 ```js
-app.get('/users/:userId/books/:bookId', (req, res) => {
+app.get("/users/:userId/books/:bookId", (req, res) => {
   res.json(req.params); // { userId: '34', bookId: '8989' }
 });
 ```
@@ -569,7 +569,7 @@ Values are always strings, so convert them yourself if you need numbers.
 Use `req.query`. For `/search?term=shoes&page=2`:
 
 ```js
-app.get('/search', (req, res) => {
+app.get("/search", (req, res) => {
   const { term, page } = req.query; // 'shoes', '2'
   res.send(`Searching ${term} on page ${page}`);
 });
@@ -588,7 +588,7 @@ Values are strings (or arrays if a key appears more than once). In Express 5, `r
 ```js
 app.use(express.json());
 
-app.post('/users', (req, res) => {
+app.post("/users", (req, res) => {
   res.status(201).json(req.body);
 });
 ```
@@ -600,7 +600,7 @@ In Express 5, `req.body` is `undefined` if no parser ran. In Express 4 it was `{
 It is built-in middleware that reads requests with a `Content-Type` of `application/json`, parses the body and puts the result in `req.body`. If the JSON is broken, it passes a 400 error to the error handler. You can set options like a size limit:
 
 ```js
-app.use(express.json({ limit: '100kb' }));
+app.use(express.json({ limit: "100kb" }));
 ```
 
 The default limit is `100kb`.
@@ -632,7 +632,7 @@ app.use(express.urlencoded({ extended: false }));
 Use `res.status()`, which returns `res` so you can chain:
 
 ```js
-res.status(404).json({ error: 'Not found' });
+res.status(404).json({ error: "Not found" });
 ```
 
 If you do not set it, the status is 200. In Express 5, `res.status()` throws if the code is not an integer from 100 to 999.
@@ -653,8 +653,8 @@ In Express 4 you could call `res.send(404)` with a number. That was removed in E
 Use `res.redirect()`. The default status is 302:
 
 ```js
-res.redirect('/login');
-res.redirect(301, 'https://example.com/new-page');
+res.redirect("/login");
+res.redirect(301, "https://example.com/new-page");
 ```
 
 In Express 5 the status comes first. The old `res.redirect(url, status)` order and the magic `'back'` value were removed. To go back, use `res.redirect(req.get('Referrer') || '/')`.
@@ -681,9 +681,9 @@ It passes control to the next matching middleware or route handler. If a middlew
 It mounts middleware. Without a path, the middleware runs for every request. With a path, it runs for requests that start with that path:
 
 ```js
-app.use(express.json());              // every request
-app.use('/admin', requireAdmin);      // /admin, /admin/users, ...
-app.use('/api', apiRouter);           // mount a router
+app.use(express.json()); // every request
+app.use("/admin", requireAdmin); // /admin, /admin/users, ...
+app.use("/api", apiRouter); // mount a router
 ```
 
 `app.use` matches any HTTP method.
@@ -706,16 +706,16 @@ It creates a router, which is like a small app that only has middleware and rout
 
 ```js
 // routes/users.js
-const { Router } = require('express');
+const { Router } = require("express");
 const router = Router();
 
-router.get('/', listUsers);
-router.get('/:id', getUser);
+router.get("/", listUsers);
+router.get("/:id", getUser);
 
 module.exports = router;
 
 // app.js
-app.use('/users', require('./routes/users'));
+app.use("/users", require("./routes/users"));
 ```
 
 Now `GET /users/5` is handled by `router.get('/:id')`.
@@ -729,7 +729,7 @@ Putting every route in one file gets messy fast. Routers let you group routes by
 Use the built-in `express.static` middleware with a folder:
 
 ```js
-app.use(express.static('public'));
+app.use(express.static("public"));
 ```
 
 Now `public/logo.png` is served at `/logo.png`. If the file is not found, it calls `next()` so later routes can still run.
@@ -739,7 +739,7 @@ Now `public/logo.png` is served at `/logo.png`. If the file is not found, it cal
 Pass a mount path to `app.use`:
 
 ```js
-app.use('/static', express.static('public'));
+app.use("/static", express.static("public"));
 ```
 
 Now `public/logo.png` is at `/static/logo.png`. The prefix does not have to exist as a folder.
@@ -749,8 +749,8 @@ Now `public/logo.png` is at `/static/logo.png`. The prefix does not have to exis
 A relative path like `'public'` is resolved from the folder where you start the `node` process, not from the file that has the code. If you start the app from another folder, it breaks. Use an absolute path:
 
 ```js
-const path = require('node:path');
-app.use(express.static(path.join(__dirname, 'public')));
+const path = require("node:path");
+app.use(express.static(path.join(__dirname, "public")));
 ```
 
 In ES modules use `import.meta.dirname` (Node 20.11+) instead of `__dirname`.
@@ -761,7 +761,7 @@ Express sends a basic 404 when nothing matches, but you usually want your own. A
 
 ```js
 app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
+  res.status(404).json({ error: "Not found" });
 });
 ```
 
@@ -774,7 +774,7 @@ Give it four arguments. Express knows it is an error handler by the number of ar
 ```js
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(err.status || 500).json({ error: 'Something went wrong' });
+  res.status(err.status || 500).json({ error: "Something went wrong" });
 });
 ```
 
@@ -785,7 +785,7 @@ Add it after all other middleware and routes. You must keep all four arguments, 
 Call `next(err)`, or in Express 5, throw it or return a rejected promise from the handler:
 
 ```js
-app.get('/users/:id', async (req, res) => {
+app.get("/users/:id", async (req, res) => {
   const user = await db.findUser(req.params.id); // if this throws, Express 5 calls next(err)
   res.json(user);
 });
@@ -847,7 +847,7 @@ It is handy for learning, but the generated code is quite old in style. Many tea
 Send a string, which Express sends as `text/html`:
 
 ```js
-app.get('/', (req, res) => res.send('<h1>Hello</h1>'));
+app.get("/", (req, res) => res.send("<h1>Hello</h1>"));
 ```
 
 For real pages, use a template engine with `res.render()`, or send a file with `res.sendFile()`.
@@ -857,11 +857,11 @@ For real pages, use a template engine with `res.render()`, or send a file with `
 A template engine fills an HTML template with data on the server. Common ones with Express are EJS, Pug and Handlebars. You set it up and then call `res.render`:
 
 ```js
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-app.get('/', (req, res) => {
-  res.render('index', { title: 'Home' }); // views/index.ejs
+app.get("/", (req, res) => {
+  res.render("index", { title: "Home" }); // views/index.ejs
 });
 ```
 
@@ -870,7 +870,7 @@ app.get('/', (req, res) => {
 It renders a view with the configured template engine and sends the HTML. You pass the view name and an object with data. You can also pass a callback to get the HTML string instead of sending it right away:
 
 ```js
-res.render('email', { name: 'Ann' }, (err, html) => {
+res.render("email", { name: "Ann" }, (err, html) => {
   if (err) return next(err);
   sendEmail(html);
   res.sendStatus(204);
@@ -882,7 +882,7 @@ res.render('email', { name: 'Ann' }, (err, html) => {
 It sends a file from disk and sets `Content-Type` based on the file extension. The path must be absolute, or you must give a `root` option:
 
 ```js
-res.sendFile('report.pdf', { root: path.join(__dirname, 'files') });
+res.sendFile("report.pdf", { root: path.join(__dirname, "files") });
 ```
 
 It supports range requests and caching headers. In Express 5 the old lowercase `res.sendfile()` was removed.
@@ -892,7 +892,7 @@ It supports range requests and caching headers. In Express 5 the old lowercase `
 `res.sendFile()` sends the file so the browser may show it inline (an image or PDF opens in a tab). `res.download()` sets `Content-Disposition: attachment`, so the browser saves it as a file. You can also give a different file name:
 
 ```js
-res.download('/data/r-123.pdf', 'report.pdf');
+res.download("/data/r-123.pdf", "report.pdf");
 ```
 
 ### 47: How do you read request headers?
@@ -900,8 +900,8 @@ res.download('/data/r-123.pdf', 'report.pdf');
 Use `req.get()` (or its alias `req.header()`). It is case-insensitive:
 
 ```js
-const auth = req.get('Authorization');
-const type = req.get('content-type');
+const auth = req.get("Authorization");
+const type = req.get("content-type");
 ```
 
 You can also read `req.headers`, which is the raw Node object with lowercase keys.
@@ -911,8 +911,8 @@ You can also read `req.headers`, which is the raw Node object with lowercase key
 Use `res.set()` (alias `res.header()`):
 
 ```js
-res.set('Cache-Control', 'no-store');
-res.set({ 'X-Request-Id': id, 'X-Version': '1.2.0' });
+res.set("Cache-Control", "no-store");
+res.set({ "X-Request-Id": id, "X-Version": "1.2.0" });
 ```
 
 `res.append()` adds a value to a header instead of replacing it, which is useful for `Set-Cookie` or `Link`.
@@ -932,8 +932,8 @@ For a router mounted at `/api` and a request to `/api/users?x=1`: `originalUrl` 
 Use `req.ip`. Behind a proxy or load balancer it shows the proxy's address unless you set `trust proxy`:
 
 ```js
-app.set('trust proxy', 1); // trust the first proxy
-app.get('/', (req, res) => res.send(req.ip));
+app.set("trust proxy", 1); // trust the first proxy
+app.get("/", (req, res) => res.send(req.ip));
 ```
 
 With `trust proxy` set, Express reads the client IP from the `X-Forwarded-For` header.
@@ -943,7 +943,7 @@ With `trust proxy` set, Express reads the client IP from the `X-Forwarded-For` h
 It adds a route that matches every HTTP method for a path. It is often used for checks that should run for all methods on a path:
 
 ```js
-app.all('/admin/*splat', requireAdmin);
+app.all("/admin/*splat", requireAdmin);
 ```
 
 The handler can call `next()` to let the more specific routes run after it.
@@ -953,14 +953,9 @@ The handler can call `next()` to let the more specific routes run after it.
 It lets you chain handlers for different methods on the same path, so you do not repeat the path:
 
 ```js
-app.route('/books')
-  .get(listBooks)
-  .post(createBook);
+app.route("/books").get(listBooks).post(createBook);
 
-app.route('/books/:id')
-  .get(getBook)
-  .put(updateBook)
-  .delete(deleteBook);
+app.route("/books/:id").get(getBook).put(updateBook).delete(deleteBook);
 ```
 
 `router.route()` works the same way on a router.
@@ -970,7 +965,7 @@ app.route('/books/:id')
 Yes. You can pass several functions, or an array. Each one calls `next()` to go to the next:
 
 ```js
-app.get('/profile', authenticate, loadUser, (req, res) => {
+app.get("/profile", authenticate, loadUser, (req, res) => {
   res.json(req.user);
 });
 ```
@@ -990,9 +985,9 @@ This is a common way to add route-specific middleware like auth or validation.
 Express 5 uses `path-to-regexp` v8, where a wildcard must have a name and start with `*`:
 
 ```js
-app.get('/files/*filepath', (req, res) => {
+app.get("/files/*filepath", (req, res) => {
   // /files/a/b/c.txt -> req.params.filepath is ['a', 'b', 'c.txt']
-  res.send(req.params.filepath.join('/'));
+  res.send(req.params.filepath.join("/"));
 });
 ```
 
@@ -1003,8 +998,8 @@ The old Express 4 style `app.get('/files/*')` throws an error in Express 5. To a
 Use braces around the optional part:
 
 ```js
-app.get('/posts{/:page}', (req, res) => {
-  const page = req.params.page ?? '1';
+app.get("/posts{/:page}", (req, res) => {
+  const page = req.params.page ?? "1";
   res.send(`Page ${page}`);
 });
 ```
@@ -1016,7 +1011,7 @@ This matches both `/posts` and `/posts/3`. Express 4 used `/posts/:page?`, but t
 Yes, you can pass a `RegExp` as the path:
 
 ```js
-app.get(/.*fly$/, (req, res) => res.send('ends with fly'));
+app.get(/.*fly$/, (req, res) => res.send("ends with fly"));
 ```
 
 In Express 5 you cannot put regex characters inside string paths anymore (like `'/user/:id(\\d+)'`). Use a `RegExp` object, or validate the parameter inside the handler or with a validation library.
@@ -1027,7 +1022,7 @@ The HTTP method in uppercase, like `'GET'`, `'POST'` or `'DELETE'`. It is useful
 
 ```js
 app.use((req, res, next) => {
-  if (req.method === 'GET') return next();
+  if (req.method === "GET") return next();
   checkCsrf(req, res, next);
 });
 ```
@@ -1042,7 +1037,7 @@ No. Once a response is sent, calling `res.send()` or `res.json()` again throws "
 
 ```js
 if (!user) {
-  return res.status(404).json({ error: 'Not found' }); // return stops the function
+  return res.status(404).json({ error: "Not found" }); // return stops the function
 }
 res.json(user);
 ```
@@ -1054,7 +1049,7 @@ A boolean that is `true` once the headers have been sent. You can check it befor
 ```js
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
-  res.status(500).json({ error: 'Server error' });
+  res.status(500).json({ error: "Server error" });
 });
 ```
 
@@ -1065,7 +1060,7 @@ Passing to `next(err)` here lets Express close the connection properly.
 Both are objects for storing values that templates and handlers can read. `app.locals` lives for the whole app, good for things like the site name. `res.locals` lives for one request, good for things like the current user set by an auth middleware. Values in both are available inside `res.render()` templates.
 
 ```js
-app.locals.siteName = 'My Shop';
+app.locals.siteName = "My Shop";
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
@@ -1078,9 +1073,9 @@ app.use((req, res, next) => {
 Settings are named options that change how Express works. You change them with `app.set()` and read them with `app.get()`:
 
 ```js
-app.set('view engine', 'pug');
-app.set('trust proxy', 1);
-app.get('env'); // 'development' or 'production'
+app.set("view engine", "pug");
+app.set("trust proxy", 1);
+app.get("env"); // 'development' or 'production'
 ```
 
 Boolean settings also have `app.enable('name')`, `app.disable('name')`, `app.enabled()` and `app.disabled()`.
@@ -1090,7 +1085,7 @@ Boolean settings also have `app.enable('name')`, `app.disable('name')`, `app.ena
 Express adds `X-Powered-By: Express` by default. Turn it off so you do not tell everyone what you run:
 
 ```js
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 ```
 
 The `helmet` package also removes it.
@@ -1104,9 +1099,9 @@ By default `/Users` and `/users` are the same route, and `/users` and `/users/` 
 CORS is a browser rule that blocks a web page from reading responses from another origin unless the server allows it with `Access-Control-Allow-*` headers. The usual way in Express is the `cors` package:
 
 ```js
-const cors = require('cors');
+const cors = require("cors");
 
-app.use(cors({ origin: 'https://app.example.com', credentials: true }));
+app.use(cors({ origin: "https://app.example.com", credentials: true }));
 ```
 
 `cors()` with no options allows every origin, which is fine for public APIs but not for APIs that use cookies.
@@ -1116,9 +1111,9 @@ app.use(cors({ origin: 'https://app.example.com', credentials: true }));
 `morgan` is HTTP request logging middleware. It prints one line per request with method, URL, status and time:
 
 ```js
-const morgan = require('morgan');
-app.use(morgan('dev'));      // short colored output for development
-app.use(morgan('combined')); // Apache style log for production
+const morgan = require("morgan");
+app.use(morgan("dev")); // short colored output for development
+app.use(morgan("combined")); // Apache style log for production
 ```
 
 For structured JSON logs in production, many teams use `pino-http` instead.
@@ -1128,7 +1123,7 @@ For structured JSON logs in production, many teams use `pino-http` instead.
 `helmet` is a middleware that sets security-related HTTP headers, like `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options` and `X-Frame-Options`, and removes `X-Powered-By`:
 
 ```js
-const helmet = require('helmet');
+const helmet = require("helmet");
 app.use(helmet());
 ```
 
@@ -1139,10 +1134,10 @@ It does not make your app secure on its own, but it is a cheap and good default.
 Express does not parse cookies by itself. Use `cookie-parser`, then read `req.cookies`:
 
 ```js
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.send(`Theme: ${req.cookies.theme}`);
 });
 ```
@@ -1152,10 +1147,10 @@ app.get('/', (req, res) => {
 Use `res.cookie(name, value, options)`:
 
 ```js
-res.cookie('session', token, {
+res.cookie("session", token, {
   httpOnly: true,
   secure: true,
-  sameSite: 'lax',
+  sameSite: "lax",
   maxAge: 24 * 60 * 60 * 1000, // in milliseconds
 });
 ```
@@ -1167,7 +1162,7 @@ res.cookie('session', token, {
 Use `res.clearCookie()` with the same `path` and `domain` you used to set it, otherwise the browser keeps it:
 
 ```js
-res.clearCookie('session', { path: '/' });
+res.clearCookie("session", { path: "/" });
 ```
 
 In Express 5, `clearCookie` ignores `maxAge` and `expires` options, because it always sets the cookie to expire in the past.
@@ -1178,7 +1173,7 @@ Signed cookies have a signature added, so you can tell if the client changed the
 
 ```js
 app.use(cookieParser(process.env.COOKIE_SECRET));
-res.cookie('userId', '42', { signed: true });
+res.cookie("userId", "42", { signed: true });
 // later
 req.signedCookies.userId; // '42', or false if it was changed
 ```
@@ -1190,16 +1185,18 @@ Signing does not hide the value. It only detects tampering.
 It is middleware that adds sessions. It stores a session ID in a cookie and keeps the data on the server. You read and write data through `req.session`:
 
 ```js
-const session = require('express-session');
+const session = require("express-session");
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { httpOnly: true, secure: true },
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { httpOnly: true, secure: true },
+  }),
+);
 
-app.post('/login', (req, res) => {
+app.post("/login", (req, res) => {
   req.session.userId = user.id;
   res.sendStatus(204);
 });
@@ -1212,10 +1209,13 @@ The default memory store is only for development; use Redis or a database store 
 Express does not parse `multipart/form-data`. Use a library like `multer`:
 
 ```js
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/', limits: { fileSize: 5 * 1024 * 1024 } });
+const multer = require("multer");
+const upload = multer({
+  dest: "uploads/",
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 
-app.post('/avatar', upload.single('avatar'), (req, res) => {
+app.post("/avatar", upload.single("avatar"), (req, res) => {
   res.json({ file: req.file.filename });
 });
 ```
@@ -1227,11 +1227,11 @@ app.post('/avatar', upload.single('avatar'), (req, res) => {
 REST is a style for HTTP APIs where URLs name resources and methods say what to do with them. In Express that usually looks like:
 
 ```js
-router.get('/', list);          // GET /articles
-router.post('/', create);       // POST /articles
-router.get('/:id', show);       // GET /articles/1
-router.patch('/:id', update);   // PATCH /articles/1
-router.delete('/:id', remove);  // DELETE /articles/1
+router.get("/", list); // GET /articles
+router.post("/", create); // POST /articles
+router.get("/:id", show); // GET /articles/1
+router.patch("/:id", update); // PATCH /articles/1
+router.delete("/:id", remove); // DELETE /articles/1
 ```
 
 ### 77: Which status codes should a REST API in Express return?
@@ -1252,9 +1252,9 @@ Common ones:
 Use `res.type()`:
 
 ```js
-res.type('json');           // application/json; charset=utf-8
-res.type('html');
-res.type('text/csv').send(csv);
+res.type("json"); // application/json; charset=utf-8
+res.type("html");
+res.type("text/csv").send(csv);
 ```
 
 `res.json()` and `res.send()` with a string set it for you, but you can always set it yourself first.
@@ -1264,8 +1264,8 @@ res.type('text/csv').send(csv);
 It checks the `Content-Type` of the request:
 
 ```js
-if (!req.is('application/json')) {
-  return res.status(415).send('Send JSON');
+if (!req.is("application/json")) {
+  return res.status(415).send("Send JSON");
 }
 ```
 
@@ -1276,9 +1276,9 @@ It returns the matching type, or `false`. It returns `null` if the request has n
 It checks the `Accept` header to see what the client can handle and returns the best match, or `false`:
 
 ```js
-const type = req.accepts(['json', 'html']);
-if (type === 'json') res.json(data);
-else res.render('page', data);
+const type = req.accepts(["json", "html"]);
+if (type === "json") res.json(data);
+else res.render("page", data);
 ```
 
 There are also `req.acceptsEncodings()`, `req.acceptsCharsets()` and `req.acceptsLanguages()`. In Express 5 the old singular versions like `req.acceptsCharset()` were removed.
@@ -1289,9 +1289,9 @@ It sends a different response based on the `Accept` header:
 
 ```js
 res.format({
-  'application/json': () => res.json(user),
-  'text/html': () => res.render('user', { user }),
-  default: () => res.status(406).send('Not Acceptable'),
+  "application/json": () => res.json(user),
+  "text/html": () => res.render("user", { user }),
+  default: () => res.status(406).send("Not Acceptable"),
 });
 ```
 
@@ -1314,13 +1314,13 @@ An array of subdomains in the host name. For `tobi.ferrets.example.com`, it is `
 A common choice is `supertest` with a test runner like Jest, Vitest or `node:test`. You export the `app` without calling `listen`, and supertest calls it directly:
 
 ```js
-const request = require('supertest');
-const app = require('./app');
+const request = require("supertest");
+const app = require("./app");
 
-test('GET /health', async () => {
-  const res = await request(app).get('/health');
+test("GET /health", async () => {
+  const res = await request(app).get("/health");
   expect(res.status).toBe(200);
-  expect(res.body).toEqual({ status: 'ok' });
+  expect(res.body).toEqual({ status: "ok" });
 });
 ```
 
@@ -1330,7 +1330,7 @@ If `app.js` only builds and exports the app, and `server.js` calls `listen`, you
 
 ```js
 // server.js
-const app = require('./app');
+const app = require("./app");
 app.listen(process.env.PORT || 3000);
 ```
 
@@ -1339,8 +1339,8 @@ app.listen(process.env.PORT || 3000);
 Add a simple route that load balancers and Kubernetes can call:
 
 ```js
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 ```
 
@@ -1365,14 +1365,14 @@ You can narrow it, like `DEBUG=express:router`.
 Express has no built-in validation. You check the input yourself, or use a library like `zod`, `joi` or `express-validator`:
 
 ```js
-const { z } = require('zod');
+const { z } = require("zod");
 
 const CreateUser = z.object({
   email: z.string().email(),
   name: z.string().min(1),
 });
 
-app.post('/users', (req, res) => {
+app.post("/users", (req, res) => {
   const result = CreateUser.safeParse(req.body);
   if (!result.success) {
     return res.status(400).json({ errors: result.error.issues });
@@ -1386,18 +1386,20 @@ app.post('/users', (req, res) => {
 It is a set of middleware for validating and cleaning request data, based on the `validator` library:
 
 ```js
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
-app.post('/signup',
-  body('email').isEmail().normalizeEmail(),
-  body('password').isLength({ min: 8 }),
+app.post(
+  "/signup",
+  body("email").isEmail().normalizeEmail(),
+  body("password").isLength({ min: 8 }),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     res.sendStatus(201);
-  });
+  },
+);
 ```
 
 ### 92: What does `express.raw()` do?
@@ -1405,8 +1407,8 @@ app.post('/signup',
 It reads the body as a Buffer and puts it in `req.body`. It is often used for webhooks (like Stripe) where you need the exact bytes to check a signature:
 
 ```js
-app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
-  verifySignature(req.body, req.get('Stripe-Signature'));
+app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
+  verifySignature(req.body, req.get("Stripe-Signature"));
   res.sendStatus(200);
 });
 ```
@@ -1416,7 +1418,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
 It reads the body as a string into `req.body`. By default it handles `text/plain`:
 
 ```js
-app.post('/notes', express.text(), (req, res) => {
+app.post("/notes", express.text(), (req, res) => {
   res.send(`Got ${req.body.length} characters`);
 });
 ```
@@ -1444,7 +1446,7 @@ A 204 response must not have a body, and Express removes any body you pass.
 Use `res.location()` and status 201:
 
 ```js
-app.post('/orders', async (req, res) => {
+app.post("/orders", async (req, res) => {
   const order = await createOrder(req.body);
   res.location(`/orders/${order.id}`).status(201).json(order);
 });
@@ -1485,7 +1487,7 @@ exports.getUser = async (req, res) => {
 };
 
 // routes/users.js
-router.get('/:id', usersController.getUser);
+router.get("/:id", usersController.getUser);
 ```
 
 Controllers should handle HTTP details and call services for the actual business logic.
@@ -1525,9 +1527,9 @@ Use `router.use()`:
 const api = express.Router();
 const v1 = express.Router();
 
-v1.get('/users', listUsers);
-api.use('/v1', v1);
-app.use('/api', api);
+v1.get("/users", listUsers);
+api.use("/v1", v1);
+app.use("/api", api);
 // GET /api/v1/users
 ```
 
@@ -1538,11 +1540,11 @@ By default, a router cannot see route params from the parent path. `mergeParams:
 ```js
 const commentsRouter = express.Router({ mergeParams: true });
 
-commentsRouter.get('/', (req, res) => {
+commentsRouter.get("/", (req, res) => {
   res.send(`Comments for post ${req.params.postId}`);
 });
 
-app.use('/posts/:postId/comments', commentsRouter);
+app.use("/posts/:postId/comments", commentsRouter);
 ```
 
 Without `mergeParams`, `req.params.postId` would be `undefined` inside `commentsRouter`.
@@ -1552,12 +1554,16 @@ Without `mergeParams`, `req.params.postId` would be `undefined` inside `comments
 It skips the rest of the handlers for the current route and moves on to the next route that matches. It only works in handlers added with `app.METHOD()` or `router.METHOD()`, not in `app.use()`:
 
 ```js
-app.get('/user/:id', (req, res, next) => {
-  if (req.params.id === '0') return next('route');
-  next();
-}, (req, res) => res.send('regular user'));
+app.get(
+  "/user/:id",
+  (req, res, next) => {
+    if (req.params.id === "0") return next("route");
+    next();
+  },
+  (req, res) => res.send("regular user"),
+);
 
-app.get('/user/:id', (req, res) => res.send('special user'));
+app.get("/user/:id", (req, res) => res.send("special user"));
 ```
 
 ### 107: What does `next('router')` do?
@@ -1566,7 +1572,7 @@ It skips the rest of the current router and goes back to the parent, continuing 
 
 ```js
 router.use((req, res, next) => {
-  if (!req.get('X-Api-Key')) return next('router');
+  if (!req.get("X-Api-Key")) return next("router");
   next();
 });
 ```
@@ -1576,14 +1582,14 @@ router.use((req, res, next) => {
 It runs a function whenever a route with a given parameter matches. It is often used to load a record once for all routes that have `:userId`:
 
 ```js
-app.param('userId', async (req, res, next, id) => {
+app.param("userId", async (req, res, next, id) => {
   const user = await User.findById(id);
   if (!user) return res.sendStatus(404);
   req.user = user;
   next();
 });
 
-app.get('/users/:userId', (req, res) => res.json(req.user));
+app.get("/users/:userId", (req, res) => res.json(req.user));
 ```
 
 It runs only once per request, even if several routes match. `router.param()` works the same on a router.
@@ -1600,7 +1606,7 @@ function requireRole(role) {
   };
 }
 
-app.delete('/users/:id', requireRole('admin'), deleteUser);
+app.delete("/users/:id", requireRole("admin"), deleteUser);
 ```
 
 ### 110: How do you add data to the request in middleware?
@@ -1613,7 +1619,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => res.send(`Requested at ${req.requestTime}`));
+app.get("/", (req, res) => res.send(`Requested at ${req.requestTime}`));
 ```
 
 With TypeScript you also need to extend the `Request` type so the new property is known.
@@ -1623,7 +1629,7 @@ With TypeScript you also need to extend the `Request` type so the new property i
 It compresses response bodies with gzip or deflate (and Brotli in recent versions) when the client supports it:
 
 ```js
-const compression = require('compression');
+const compression = require("compression");
 app.use(compression());
 ```
 
@@ -1639,11 +1645,11 @@ npm install -D typescript @types/express @types/node
 ```
 
 ```ts
-import express, { Request, Response } from 'express';
+import express, { Request, Response } from "express";
 
 const app = express();
 
-app.get('/users/:id', (req: Request<{ id: string }>, res: Response) => {
+app.get("/users/:id", (req: Request<{ id: string }>, res: Response) => {
   res.json({ id: req.params.id });
 });
 ```
@@ -1655,7 +1661,7 @@ Make sure the `@types/express` major version matches the Express version (v5 for
 It sets `Content-Disposition: attachment` so the browser downloads the response. If you pass a file name, it also sets the `Content-Type` from the extension:
 
 ```js
-res.attachment('users.csv');
+res.attachment("users.csv");
 res.send(csvString);
 ```
 
@@ -1664,7 +1670,7 @@ res.send(csvString);
 It adds a field to the `Vary` header, which tells caches that the response depends on that request header:
 
 ```js
-res.vary('Accept-Language');
+res.vary("Accept-Language");
 ```
 
 In Express 5 it throws an error if you call it without a field.
@@ -1678,7 +1684,7 @@ An ETag is a value that identifies a version of a response. Express adds a weak 
 `req.fresh` is `true` when the client's cached copy is still valid, based on `If-None-Match` / `If-Modified-Since` and the response's `ETag` / `Last-Modified`. `req.stale` is the opposite. You can use it to skip work:
 
 ```js
-res.set('ETag', etag);
+res.set("ETag", etag);
 if (req.fresh) return res.sendStatus(304);
 ```
 
@@ -1687,10 +1693,12 @@ if (req.fresh) return res.sendStatus(304);
 `express.static` has options for this:
 
 ```js
-app.use(express.static('public', {
-  maxAge: '1d',
-  immutable: true,
-}));
+app.use(
+  express.static("public", {
+    maxAge: "1d",
+    immutable: true,
+  }),
+);
 ```
 
 `maxAge` sets `Cache-Control: max-age`. Use `immutable` and long caching only for files with a hash in the name, like `app.3f9a2c.js`.
@@ -1710,8 +1718,8 @@ app.use(express.static('public', {
 Yes. Add `express.static` more than once. Express looks in them in order:
 
 ```js
-app.use(express.static('public'));
-app.use(express.static('uploads'));
+app.use(express.static("public"));
+app.use(express.static("uploads"));
 ```
 
 If `public/a.png` and `uploads/a.png` both exist, the one in `public` wins.
@@ -1721,13 +1729,13 @@ If `public/a.png` and `uploads/a.png` both exist, the one in `public` wins.
 Serve the build folder, then send `index.html` for any other GET request so the client-side router can handle it:
 
 ```js
-const dist = path.join(__dirname, 'dist');
+const dist = path.join(__dirname, "dist");
 
-app.use('/api', apiRouter);
+app.use("/api", apiRouter);
 app.use(express.static(dist));
 
-app.get('/*splat', (req, res) => {
-  res.sendFile(path.join(dist, 'index.html'));
+app.get("/*splat", (req, res) => {
+  res.sendFile(path.join(dist, "index.html"));
 });
 ```
 
@@ -1738,13 +1746,18 @@ Mount the API first, so API routes do not get `index.html`.
 Pass the app to Node's `https` module with a certificate:
 
 ```js
-const https = require('node:https');
-const fs = require('node:fs');
+const https = require("node:https");
+const fs = require("node:fs");
 
-https.createServer({
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem'),
-}, app).listen(443);
+https
+  .createServer(
+    {
+      key: fs.readFileSync("key.pem"),
+      cert: fs.readFileSync("cert.pem"),
+    },
+    app,
+  )
+  .listen(443);
 ```
 
 In production, TLS is often handled by a load balancer or reverse proxy, and the Express app listens on plain HTTP behind it.
@@ -1768,7 +1781,7 @@ It is an empty object `{}`. So `req.query.page` is `undefined` when not given. A
 That depends on the `query parser` setting. In Express 5 the default is `'simple'`, which uses Node's `querystring`. So `?a[b]=1` gives `{ 'a[b]': '1' }`. If you want nested objects, set it to `'extended'`, which uses `qs`:
 
 ```js
-app.set('query parser', 'extended');
+app.set("query parser", "extended");
 // ?filter[status]=open  ->  { filter: { status: 'open' } }
 ```
 
@@ -1779,9 +1792,10 @@ In Express 4 the default was `'extended'`.
 Route params are strings, so convert and check them:
 
 ```js
-app.get('/items/:id', (req, res) => {
+app.get("/items/:id", (req, res) => {
   const id = Number.parseInt(req.params.id, 10);
-  if (Number.isNaN(id)) return res.status(400).json({ error: 'id must be a number' });
+  if (Number.isNaN(id))
+    return res.status(400).json({ error: "id must be a number" });
   res.json({ id });
 });
 ```
@@ -1793,7 +1807,7 @@ A schema library like `zod` (`z.coerce.number().int()`) does this more cleanly.
 It holds the route that matched the request, including its `path` (the pattern like `/users/:id`) and the methods. It is handy in logs and metrics because you can group requests by route pattern instead of the actual URL:
 
 ```js
-res.on('finish', () => {
+res.on("finish", () => {
   console.log(req.method, req.route?.path, res.statusCode);
 });
 ```
@@ -1807,7 +1821,7 @@ A boolean that is `true` when the `X-Requested-With` header is `XMLHttpRequest`.
 Use the `json spaces` setting:
 
 ```js
-app.set('json spaces', 2);
+app.set("json spaces", 2);
 ```
 
 There are also `json replacer` and `json escape` settings. `json escape` escapes `<`, `>` and `&` in JSON output, which helps when JSON is placed in HTML.
@@ -1818,8 +1832,8 @@ There are also `json replacer` and `json escape` settings. `json escape` escapes
 
 ```js
 app.use((err, req, res, next) => {
-  if (err.type === 'entity.parse.failed') {
-    return res.status(400).json({ error: 'Invalid JSON' });
+  if (err.type === "entity.parse.failed") {
+    return res.status(400).json({ error: "Invalid JSON" });
   }
   next(err);
 });
@@ -1830,7 +1844,7 @@ app.use((err, req, res, next) => {
 The body parser stops and passes an error with `status: 413` and `type: 'entity.too.large'`. The default error handler responds with `413 Payload Too Large`. Raise the limit only on routes that need it:
 
 ```js
-app.post('/import', express.json({ limit: '5mb' }), importData);
+app.post("/import", express.json({ limit: "5mb" }), importData);
 ```
 
 ### 131: How do you apply middleware to only some routes?
@@ -1838,9 +1852,9 @@ app.post('/import', express.json({ limit: '5mb' }), importData);
 You can add it to the route, to a path, or to a router:
 
 ```js
-app.get('/me', authenticate, getMe);      // one route
-app.use('/admin', authenticate);          // a path prefix
-adminRouter.use(authenticate);            // every route in a router
+app.get("/me", authenticate, getMe); // one route
+app.use("/admin", authenticate); // a path prefix
+adminRouter.use(authenticate); // every route in a router
 ```
 
 ### 132: How do you run middleware for all routes except some?
@@ -1848,7 +1862,7 @@ adminRouter.use(authenticate);            // every route in a router
 Check the path inside the middleware, or mount it after the public routes:
 
 ```js
-const publicPaths = new Set(['/health', '/login']);
+const publicPaths = new Set(["/health", "/login"]);
 
 app.use((req, res, next) => {
   if (publicPaths.has(req.path)) return next();
@@ -1871,7 +1885,7 @@ app.use((err, req, res, next) => {
   const status = err.status || 500;
   res.status(status).json({
     error: {
-      message: status === 500 ? 'Internal Server Error' : err.message,
+      message: status === 500 ? "Internal Server Error" : err.message,
       code: err.code,
     },
   });
@@ -1885,11 +1899,11 @@ Some APIs use the RFC 9457 "problem details" format (`type`, `title`, `status`, 
 Make an error and set `status`, or use the `http-errors` package:
 
 ```js
-const createError = require('http-errors');
+const createError = require("http-errors");
 
-app.get('/users/:id', async (req, res) => {
+app.get("/users/:id", async (req, res) => {
   const user = await findUser(req.params.id);
-  if (!user) throw createError(404, 'User not found');
+  if (!user) throw createError(404, "User not found");
   res.json(user);
 });
 ```
@@ -1902,8 +1916,8 @@ It sets the `Link` header, which is often used for pagination:
 
 ```js
 res.links({
-  next: '/users?page=3',
-  prev: '/users?page=1',
+  next: "/users?page=3",
+  prev: "/users?page=1",
 });
 // Link: </users?page=3>; rel="next", </users?page=1>; rel="prev"
 ```
@@ -1913,10 +1927,13 @@ res.links({
 Read page and size from the query, set limits, and return the data with some info:
 
 ```js
-app.get('/articles', async (req, res) => {
+app.get("/articles", async (req, res) => {
   const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.min(100, Number(req.query.limit) || 20);
-  const { rows, total } = await Article.findPage({ offset: (page - 1) * limit, limit });
+  const { rows, total } = await Article.findPage({
+    offset: (page - 1) * limit,
+    limit,
+  });
   res.json({ data: rows, page, limit, total });
 });
 ```
@@ -1928,7 +1945,7 @@ Always cap `limit` so a client cannot ask for a million rows.
 It is the folder (or array of folders) where `res.render()` looks for templates. The default is `views` in the current working directory. Set it with an absolute path:
 
 ```js
-app.set('views', path.join(__dirname, 'views'));
+app.set("views", path.join(__dirname, "views"));
 ```
 
 ### 139: How do you use EJS with Express?
@@ -1936,10 +1953,10 @@ app.set('views', path.join(__dirname, 'views'));
 Install `ejs`, set it as the view engine and render:
 
 ```js
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-app.get('/hello', (req, res) => {
-  res.render('hello', { name: 'Ann' });
+app.get("/hello", (req, res) => {
+  res.render("hello", { name: "Ann" });
 });
 ```
 
@@ -1955,10 +1972,10 @@ app.get('/hello', (req, res) => {
 Register it with `app.engine()`:
 
 ```js
-const { engine } = require('express-handlebars');
+const { engine } = require("express-handlebars");
 
-app.engine('hbs', engine({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
+app.engine("hbs", engine({ extname: ".hbs" }));
+app.set("view engine", "hbs");
 ```
 
 `app.engine(ext, fn)` tells Express which function renders files with that extension.
@@ -1968,8 +1985,8 @@ app.set('view engine', 'hbs');
 When `trust proxy` is set, `req.ips` is an array of the IP addresses from the `X-Forwarded-For` header, starting with the client and followed by each proxy on the way. When `trust proxy` is off, it is an empty array. `req.ip` is the first trusted address from this list, so you usually read `req.ip` and use `req.ips` only for debugging proxy setups:
 
 ```js
-app.set('trust proxy', 2);
-app.get('/debug/ip', (req, res) => res.json({ ip: req.ip, ips: req.ips }));
+app.set("trust proxy", 2);
+app.get("/debug/ip", (req, res) => res.json({ ip: req.ip, ips: req.ips }));
 ```
 
 ### 142: What is the difference between `app.get('/x')` and `app.get('x')`?
@@ -1988,8 +2005,8 @@ Authentication checks who the user is, usually by checking a session cookie or a
 
 ```js
 function authenticate(req, res, next) {
-  const header = req.get('Authorization') || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+  const header = req.get("Authorization") || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
   if (!token) return res.sendStatus(401);
   try {
     req.user = jwt.verify(token, process.env.JWT_SECRET);
@@ -1999,7 +2016,7 @@ function authenticate(req, res, next) {
   }
 }
 
-app.get('/me', authenticate, (req, res) => res.json(req.user));
+app.get("/me", authenticate, (req, res) => res.json(req.user));
 ```
 
 This uses the `jsonwebtoken` package.
@@ -2013,8 +2030,8 @@ Passport is authentication middleware for Express. It uses "strategies" for diff
 It adds a value to a response header. If the header already exists, the new value is added instead of replacing it:
 
 ```js
-res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']);
-res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly');
+res.append("Link", ["<http://localhost/>", "<http://localhost:3000/>"]);
+res.append("Set-Cookie", "foo=bar; Path=/; HttpOnly");
 ```
 
 `res.set()` would replace the old value.
@@ -2026,7 +2043,7 @@ Call `close()` on the server returned by `app.listen()`. It stops new connection
 ```js
 const server = app.listen(3000);
 
-process.on('SIGTERM', () => {
+process.on("SIGTERM", () => {
   server.close(() => process.exit(0));
 });
 ```
@@ -2054,9 +2071,12 @@ In Express 4, a rejected promise in a handler was not caught, so the request hun
 const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-app.get('/users', asyncHandler(async (req, res) => {
-  res.json(await User.findAll());
-}));
+app.get(
+  "/users",
+  asyncHandler(async (req, res) => {
+    res.json(await User.findAll());
+  }),
+);
 ```
 
 Packages like `express-async-handler` and `express-async-errors` did the same. In Express 5 you do not need this, because the router catches rejected promises from handlers and middleware and calls `next(err)`.
@@ -2066,9 +2086,9 @@ Packages like `express-async-handler` and `express-async-errors` did the same. I
 No. Express 5 only catches errors thrown directly in the handler and rejected promises returned by it. An error thrown inside a `setTimeout` callback or an old callback-style API happens later, outside Express:
 
 ```js
-app.get('/bad', (req, res) => {
+app.get("/bad", (req, res) => {
   setTimeout(() => {
-    throw new Error('boom'); // crashes the process, not handled by Express
+    throw new Error("boom"); // crashes the process, not handled by Express
   }, 10);
 });
 ```
@@ -2081,7 +2101,7 @@ Make a base class with a status code and extend it:
 
 ```js
 class AppError extends Error {
-  constructor(message, status = 500, code = 'INTERNAL') {
+  constructor(message, status = 500, code = "INTERNAL") {
     super(message);
     this.name = this.constructor.name;
     this.status = status;
@@ -2090,17 +2110,21 @@ class AppError extends Error {
 }
 
 class NotFoundError extends AppError {
-  constructor(message = 'Not found') {
-    super(message, 404, 'NOT_FOUND');
+  constructor(message = "Not found") {
+    super(message, 404, "NOT_FOUND");
   }
 }
 
 app.use((err, req, res, next) => {
   if (err instanceof AppError) {
-    return res.status(err.status).json({ error: { code: err.code, message: err.message } });
+    return res
+      .status(err.status)
+      .json({ error: { code: err.code, message: err.message } });
   }
   req.log?.error(err);
-  res.status(500).json({ error: { code: 'INTERNAL', message: 'Internal Server Error' } });
+  res
+    .status(500)
+    .json({ error: { code: "INTERNAL", message: "Internal Server Error" } });
 });
 ```
 
@@ -2149,7 +2173,7 @@ const getUserSchema = z.object({
   query: z.object({}).passthrough(),
 });
 
-router.get('/:id', validate(getUserSchema), (req, res) => {
+router.get("/:id", validate(getUserSchema), (req, res) => {
   res.json({ id: req.valid.params.id });
 });
 ```
@@ -2172,9 +2196,13 @@ In Express 5, `req.query` is a getter that parses the query string each time it 
 5. When it expires, the client gets a new one with a refresh token.
 
 ```js
-const token = jwt.sign({ sub: user.id, role: user.role }, process.env.JWT_SECRET, {
-  expiresIn: '15m',
-});
+const token = jwt.sign(
+  { sub: user.id, role: user.role },
+  process.env.JWT_SECRET,
+  {
+    expiresIn: "15m",
+  },
+);
 ```
 
 Always set `algorithms` when verifying, like `jwt.verify(token, secret, { algorithms: ['HS256'] })`.
@@ -2199,20 +2227,22 @@ This lets you log users out and revoke access, which plain JWTs cannot do.
 Install `connect-redis` and a Redis client:
 
 ```js
-const session = require('express-session');
-const { RedisStore } = require('connect-redis');
-const { createClient } = require('redis');
+const session = require("express-session");
+const { RedisStore } = require("connect-redis");
+const { createClient } = require("redis");
 
 const redisClient = createClient({ url: process.env.REDIS_URL });
 await redisClient.connect();
 
-app.use(session({
-  store: new RedisStore({ client: redisClient, prefix: 'sess:' }),
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 86400000 },
-}));
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient, prefix: "sess:" }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { httpOnly: true, secure: true, sameSite: "lax", maxAge: 86400000 },
+  }),
+);
 ```
 
 With a shared store, any app instance can read any session, so you can run many instances behind a load balancer.
@@ -2227,7 +2257,7 @@ With a shared store, any app instance can read any session, so you can run many 
 To prevent session fixation. If an attacker got the victim to use a known session ID before login, that ID would become logged in. Regenerating gives a new ID:
 
 ```js
-app.post('/login', async (req, res, next) => {
+app.post("/login", async (req, res, next) => {
   const user = await checkCredentials(req.body);
   if (!user) return res.sendStatus(401);
   req.session.regenerate((err) => {
@@ -2243,10 +2273,10 @@ app.post('/login', async (req, res, next) => {
 Destroy the session and clear the cookie:
 
 ```js
-app.post('/logout', (req, res, next) => {
+app.post("/logout", (req, res, next) => {
   req.session.destroy((err) => {
     if (err) return next(err);
-    res.clearCookie('connect.sid');
+    res.clearCookie("connect.sid");
     res.sendStatus(204);
   });
 });
@@ -2257,28 +2287,37 @@ app.post('/logout', (req, res, next) => {
 ### 166: How do you set up Passport with a local strategy?
 
 ```js
-const passport = require('passport');
-const { Strategy: LocalStrategy } = require('passport-local');
+const passport = require("passport");
+const { Strategy: LocalStrategy } = require("passport-local");
 
-passport.use(new LocalStrategy(async (username, password, done) => {
-  try {
-    const user = await User.findByUsername(username);
-    if (!user || !(await user.checkPassword(password))) return done(null, false);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-}));
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await User.findByUsername(username);
+      if (!user || !(await user.checkPassword(password)))
+        return done(null, false);
+      done(null, user);
+    } catch (err) {
+      done(err);
+    }
+  }),
+);
 
 passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser((id, done) => User.findById(id).then((u) => done(null, u), done));
+passport.deserializeUser((id, done) =>
+  User.findById(id).then((u) => done(null, u), done),
+);
 
-app.use(session({ /* ... */ }));
+app.use(session({/* ... */}));
 app.use(passport.session());
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect('/');
-});
+app.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "/login" }),
+  (req, res) => {
+    res.redirect("/");
+  },
+);
 ```
 
 `serializeUser` decides what goes in the session, and `deserializeUser` loads the user on each request into `req.user`.
@@ -2288,7 +2327,7 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login' })
 For "non-simple" requests (like `PUT`, `DELETE`, JSON bodies or custom headers), the browser first sends an `OPTIONS` request with `Access-Control-Request-Method` and `Access-Control-Request-Headers`. The server must answer with the allowed origin, methods and headers. The `cors` middleware handles this when added with `app.use(cors(...))`. You can set `maxAge` so the browser caches the preflight result:
 
 ```js
-app.use(cors({ origin: 'https://app.example.com', maxAge: 600 }));
+app.use(cors({ origin: "https://app.example.com", maxAge: 600 }));
 ```
 
 ### 168: How do you allow several origins with CORS?
@@ -2296,16 +2335,21 @@ app.use(cors({ origin: 'https://app.example.com', maxAge: 600 }));
 Pass an array, a regex, or a function:
 
 ```js
-const allowed = new Set(['https://app.example.com', 'https://admin.example.com']);
+const allowed = new Set([
+  "https://app.example.com",
+  "https://admin.example.com",
+]);
 
-app.use(cors({
-  origin(origin, callback) {
-    // origin is undefined for same-origin requests and tools like curl
-    if (!origin || allowed.has(origin)) return callback(null, true);
-    callback(null, false);
-  },
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin(origin, callback) {
+      // origin is undefined for same-origin requests and tools like curl
+      if (!origin || allowed.has(origin)) return callback(null, true);
+      callback(null, false);
+    },
+    credentials: true,
+  }),
+);
 ```
 
 When `credentials: true`, the response cannot use `*` as the allowed origin, so the `cors` package echoes back the specific origin.
@@ -2315,16 +2359,16 @@ When `credentials: true`, the response cannot use `*` as the allowed origin, so 
 Use `express-rate-limit`:
 
 ```js
-const { rateLimit } = require('express-rate-limit');
+const { rateLimit } = require("express-rate-limit");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 100,
-  standardHeaders: 'draft-8',
+  standardHeaders: "draft-8",
   legacyHeaders: false,
 });
 
-app.use('/api', limiter);
+app.use("/api", limiter);
 ```
 
 The default store is in memory, so each instance counts on its own. With many instances, use a shared store like `rate-limit-redis`. Set `trust proxy` correctly, or every client will look like the proxy's IP.
@@ -2337,11 +2381,11 @@ Create a stricter limiter and put it only on the login route. You can key it by 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 5,
-  keyGenerator: (req) => `${req.ip}:${req.body?.email ?? ''}`,
+  keyGenerator: (req) => `${req.ip}:${req.body?.email ?? ""}`,
   skipSuccessfulRequests: true,
 });
 
-app.post('/login', express.json(), loginLimiter, login);
+app.post("/login", express.json(), loginLimiter, login);
 ```
 
 The body parser must run before the limiter if the key uses `req.body`. Recent versions of `express-rate-limit` warn when a custom key uses `req.ip` without the `ipKeyGenerator` helper, because of IPv6 ranges, so read its docs for your version.
@@ -2351,16 +2395,18 @@ The body parser must run before the limiter if the key uses `req.body`. Recent v
 Pass directives to `helmet.contentSecurityPolicy` or to `helmet()`:
 
 ```js
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'https://cdn.example.com'],
-      imgSrc: ["'self'", 'data:', 'https://images.example.com'],
-      connectSrc: ["'self'", 'https://api.example.com'],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://cdn.example.com"],
+        imgSrc: ["'self'", "data:", "https://images.example.com"],
+        connectSrc: ["'self'", "https://api.example.com"],
+      },
     },
-  },
-}));
+  }),
+);
 ```
 
 For a pure JSON API, CSP matters less. For apps that render HTML, a strict CSP is one of the best protections against XSS.
@@ -2380,11 +2426,11 @@ The old `csurf` package is deprecated and should not be used in new code. APIs t
 Generate or reuse an ID, put it on the request and response, and include it in logs:
 
 ```js
-const { randomUUID } = require('node:crypto');
+const { randomUUID } = require("node:crypto");
 
 app.use((req, res, next) => {
-  req.id = req.get('X-Request-Id') || randomUUID();
-  res.set('X-Request-Id', req.id);
+  req.id = req.get("X-Request-Id") || randomUUID();
+  res.set("X-Request-Id", req.id);
   next();
 });
 ```
@@ -2394,16 +2440,16 @@ This makes it easy to find all log lines for one request, and to trace it across
 ### 174: How do you set up structured logging with pino?
 
 ```js
-const pino = require('pino');
-const pinoHttp = require('pino-http');
+const pino = require("pino");
+const pinoHttp = require("pino-http");
 
-const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 
 app.use(pinoHttp({ logger }));
 
-app.get('/', (req, res) => {
-  req.log.info({ userId: req.user?.id }, 'loading home');
-  res.send('ok');
+app.get("/", (req, res) => {
+  req.log.info({ userId: req.user?.id }, "loading home");
+  res.send("ok");
 });
 ```
 
@@ -2414,7 +2460,9 @@ app.get('/', (req, res) => {
 Passwords, full tokens, session IDs, API keys, credit card numbers and other personal data you do not need. Be careful with logging the whole `req.body` or `req.headers` (which contain `Authorization` and `Cookie`). Pino has a `redact` option:
 
 ```js
-pino({ redact: ['req.headers.authorization', 'req.headers.cookie', 'body.password'] });
+pino({
+  redact: ["req.headers.authorization", "req.headers.cookie", "body.password"],
+});
 ```
 
 ### 176: How do you connect Express to PostgreSQL?
@@ -2422,11 +2470,14 @@ pino({ redact: ['req.headers.authorization', 'req.headers.cookie', 'body.passwor
 Use a connection pool from the `pg` package, created once at startup:
 
 ```js
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 10 });
 
-app.get('/users/:id', async (req, res) => {
-  const { rows } = await pool.query('SELECT id, name FROM users WHERE id = $1', [req.params.id]);
+app.get("/users/:id", async (req, res) => {
+  const { rows } = await pool.query(
+    "SELECT id, name FROM users WHERE id = $1",
+    [req.params.id],
+  );
   if (!rows[0]) return res.sendStatus(404);
   res.json(rows[0]);
 });
@@ -2443,16 +2494,22 @@ Opening a connection is slow (TCP, TLS, auth) and databases have a limit on conn
 Take one client from the pool, run `BEGIN`, do your queries, then `COMMIT` or `ROLLBACK`, and always release the client:
 
 ```js
-app.post('/transfer', async (req, res) => {
+app.post("/transfer", async (req, res) => {
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
-    await client.query('UPDATE accounts SET balance = balance - $1 WHERE id = $2', [req.body.amount, req.body.from]);
-    await client.query('UPDATE accounts SET balance = balance + $1 WHERE id = $2', [req.body.amount, req.body.to]);
-    await client.query('COMMIT');
+    await client.query("BEGIN");
+    await client.query(
+      "UPDATE accounts SET balance = balance - $1 WHERE id = $2",
+      [req.body.amount, req.body.from],
+    );
+    await client.query(
+      "UPDATE accounts SET balance = balance + $1 WHERE id = $2",
+      [req.body.amount, req.body.to],
+    );
+    await client.query("COMMIT");
     res.sendStatus(204);
   } catch (err) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     throw err;
   } finally {
     client.release();
@@ -2467,11 +2524,11 @@ Better yet, move this into a service function so the route only handles HTTP.
 Connect once before starting the server, then use models in handlers:
 
 ```js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 await mongoose.connect(process.env.MONGO_URL);
 
-app.get('/posts', async (req, res) => {
+app.get("/posts", async (req, res) => {
   const posts = await Post.find().sort({ createdAt: -1 }).limit(20).lean();
   res.json(posts);
 });
@@ -2486,11 +2543,13 @@ app.listen(3000);
 Create one `PrismaClient` and reuse it:
 
 ```js
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-app.get('/users/:id', async (req, res) => {
-  const user = await prisma.user.findUnique({ where: { id: Number(req.params.id) } });
+app.get("/users/:id", async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { id: Number(req.params.id) },
+  });
   if (!user) return res.sendStatus(404);
   res.json(user);
 });
@@ -2522,7 +2581,7 @@ Build the app with a factory function that takes its dependencies:
 function createApp({ userService, logger }) {
   const app = express();
   app.use(express.json());
-  app.get('/users/:id', async (req, res) => {
+  app.get("/users/:id", async (req, res) => {
     const user = await userService.get(req.params.id);
     if (!user) return res.sendStatus(404);
     res.json(user);
@@ -2534,7 +2593,10 @@ function createApp({ userService, logger }) {
 const app = createApp({ userService: new UserService(pool), logger });
 
 // tests
-const app = createApp({ userService: { get: async () => ({ id: 1 }) }, logger: console });
+const app = createApp({
+  userService: { get: async () => ({ id: 1 }) },
+  logger: console,
+});
 ```
 
 This makes testing simple without mocking modules. Libraries like `awilix` can help in bigger apps.
@@ -2544,12 +2606,12 @@ This makes testing simple without mocking modules. Libraries like `awilix` can h
 Call it with fake `req`, `res` and `next`:
 
 ```js
-test('requireRole blocks non-admin', () => {
-  const req = { user: { role: 'user' } };
+test("requireRole blocks non-admin", () => {
+  const req = { user: { role: "user" } };
   const res = { sendStatus: vi.fn() };
   const next = vi.fn();
 
-  requireRole('admin')(req, res, next);
+  requireRole("admin")(req, res, next);
 
   expect(res.sendStatus).toHaveBeenCalledWith(403);
   expect(next).not.toHaveBeenCalled();
@@ -2567,11 +2629,13 @@ For more complete fake objects, `node-mocks-http` creates `req` and `res` that b
 
 ```js
 beforeEach(async () => {
-  await pool.query('TRUNCATE users RESTART IDENTITY CASCADE');
+  await pool.query("TRUNCATE users RESTART IDENTITY CASCADE");
 });
 
-test('creates a user', async () => {
-  const res = await request(app).post('/users').send({ email: 'a@b.com', name: 'A' });
+test("creates a user", async () => {
+  const res = await request(app)
+    .post("/users")
+    .send({ email: "a@b.com", name: "A" });
   expect(res.status).toBe(201);
 });
 ```
@@ -2581,11 +2645,11 @@ test('creates a user', async () => {
 Create a valid token or session in the test and send it:
 
 ```js
-const token = jwt.sign({ sub: 1, role: 'admin' }, process.env.JWT_SECRET);
+const token = jwt.sign({ sub: 1, role: "admin" }, process.env.JWT_SECRET);
 
 const res = await request(app)
-  .get('/admin/stats')
-  .set('Authorization', `Bearer ${token}`);
+  .get("/admin/stats")
+  .set("Authorization", `Bearer ${token}`);
 ```
 
 For session-based apps, use `request.agent(app)`, which keeps cookies between calls, so you can log in once and then call protected routes.
@@ -2614,13 +2678,15 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-app.post('/files', upload.single('file'), async (req, res) => {
-  await s3.send(new PutObjectCommand({
-    Bucket: process.env.BUCKET,
-    Key: `uploads/${randomUUID()}`,
-    Body: req.file.buffer,
-    ContentType: req.file.mimetype,
-  }));
+app.post("/files", upload.single("file"), async (req, res) => {
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: process.env.BUCKET,
+      Key: `uploads/${randomUUID()}`,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    }),
+  );
   res.sendStatus(201);
 });
 ```
@@ -2634,7 +2700,7 @@ Do not trust the file name or `req.file.mimetype`, because the client sets them.
 ```js
 const upload = multer({
   fileFilter(req, file, cb) {
-    cb(null, ['image/png', 'image/jpeg'].includes(file.mimetype));
+    cb(null, ["image/png", "image/jpeg"].includes(file.mimetype));
   },
 });
 ```
@@ -2659,12 +2725,12 @@ app.use((err, req, res, next) => {
 Use streams with `pipeline` so memory stays low and errors are handled:
 
 ```js
-const { pipeline } = require('node:stream/promises');
-const fs = require('node:fs');
+const { pipeline } = require("node:stream/promises");
+const fs = require("node:fs");
 
-app.get('/export', async (req, res) => {
-  res.type('text/csv').attachment('export.csv');
-  await pipeline(fs.createReadStream('/data/export.csv'), res);
+app.get("/export", async (req, res) => {
+  res.type("text/csv").attachment("export.csv");
+  await pipeline(fs.createReadStream("/data/export.csv"), res);
 });
 ```
 
@@ -2675,16 +2741,16 @@ For files on disk, `res.sendFile()` already streams and also supports range requ
 Write the response bit by bit instead of building one big array:
 
 ```js
-app.get('/events', async (req, res) => {
-  res.type('json');
-  res.write('[');
+app.get("/events", async (req, res) => {
+  res.type("json");
+  res.write("[");
   let first = true;
   for await (const row of db.streamEvents()) {
-    if (!first) res.write(',');
+    if (!first) res.write(",");
     res.write(JSON.stringify(row));
     first = false;
   }
-  res.end(']');
+  res.end("]");
 });
 ```
 
@@ -2695,11 +2761,11 @@ For very large data, also respect backpressure: when `res.write()` returns `fals
 Set the right headers, keep the response open and write events:
 
 ```js
-app.get('/stream', (req, res) => {
+app.get("/stream", (req, res) => {
   res.set({
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    Connection: 'keep-alive',
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
   });
   res.flushHeaders();
 
@@ -2707,7 +2773,7 @@ app.get('/stream', (req, res) => {
     res.write(`data: ${JSON.stringify({ time: Date.now() })}\n\n`);
   }, 1000);
 
-  req.on('close', () => clearInterval(timer));
+  req.on("close", () => clearInterval(timer));
 });
 ```
 
@@ -2718,14 +2784,14 @@ Turn off compression for this route, or flush after each write, otherwise events
 Express does not handle WebSockets itself. Create an HTTP server from the app and attach a WebSocket library to it:
 
 ```js
-const http = require('node:http');
-const { WebSocketServer } = require('ws');
+const http = require("node:http");
+const { WebSocketServer } = require("ws");
 
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
-wss.on('connection', (socket) => {
-  socket.on('message', (msg) => socket.send(`echo: ${msg}`));
+wss.on("connection", (socket) => {
+  socket.on("message", (msg) => socket.send(`echo: ${msg}`));
 });
 
 server.listen(3000);
@@ -2738,12 +2804,12 @@ Socket.IO works the same way: `new Server(server)`.
 Reuse the session middleware on the Socket.IO engine:
 
 ```js
-const sessionMiddleware = session({ /* ... */ });
+const sessionMiddleware = session({/* ... */});
 app.use(sessionMiddleware);
 
 io.engine.use(sessionMiddleware);
 
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   const userId = socket.request.session.userId;
 });
 ```
@@ -2757,7 +2823,7 @@ On `SIGTERM`, stop accepting new connections, let current requests finish, then 
 ```js
 const server = app.listen(port);
 
-process.on('SIGTERM', () => {
+process.on("SIGTERM", () => {
   server.close(async () => {
     await pool.end();
     process.exit(0);
@@ -2775,8 +2841,10 @@ When a pod gets `SIGTERM`, the load balancer may still send it traffic for a few
 
 ```js
 let shuttingDown = false;
-app.get('/ready', (req, res) => res.sendStatus(shuttingDown ? 503 : 200));
-process.on('SIGTERM', () => { shuttingDown = true; /* then close */ });
+app.get("/ready", (req, res) => res.sendStatus(shuttingDown ? 503 : 200));
+process.on("SIGTERM", () => {
+  shuttingDown = true; /* then close */
+});
 ```
 
 ### 197: What is PM2 and when would you use it with Express?
@@ -2826,8 +2894,8 @@ Set it to match your real setup. A wrong value can let attackers fake their IP, 
 The most common way is a version in the URL, with one router per version:
 
 ```js
-app.use('/api/v1', v1Router);
-app.use('/api/v2', v2Router);
+app.use("/api/v1", v1Router);
+app.use("/api/v2", v2Router);
 ```
 
 Other options are a header (`Accept: application/vnd.myapp.v2+json`) or a custom header like `Api-Version`. URL versions are the easiest to cache, test and see in logs. Try to keep versions few by making changes that do not break old clients, like adding new fields instead of renaming.
@@ -2837,10 +2905,10 @@ Other options are a header (`Accept: application/vnd.myapp.v2+json`) or a custom
 Write or generate an OpenAPI file and serve it with `swagger-ui-express`:
 
 ```js
-const swaggerUi = require('swagger-ui-express');
-const openapi = require('./openapi.json');
+const swaggerUi = require("swagger-ui-express");
+const openapi = require("./openapi.json");
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapi));
 ```
 
 You can generate the spec from JSDoc comments (`swagger-jsdoc`) or from zod schemas (`@asteasolutions/zod-to-openapi`). Generating it from the same schemas you use for validation keeps docs and code in sync.
@@ -2850,14 +2918,16 @@ You can generate the spec from JSDoc comments (`swagger-jsdoc`) or from zod sche
 Use `express-openapi-validator`. It reads the spec and checks params, query, body and (optionally) responses:
 
 ```js
-const OpenApiValidator = require('express-openapi-validator');
+const OpenApiValidator = require("express-openapi-validator");
 
 app.use(express.json());
-app.use(OpenApiValidator.middleware({
-  apiSpec: './openapi.yaml',
-  validateRequests: true,
-  validateResponses: false,
-}));
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: "./openapi.yaml",
+    validateRequests: true,
+    validateResponses: false,
+  }),
+);
 ```
 
 Invalid requests get passed to your error handler with a `status` of 400. This is a "spec-first" approach where the spec is the source of truth.
@@ -2875,11 +2945,12 @@ If no route handles `OPTIONS` for a path, Express responds automatically with st
 Express returns 404 when the path exists but the method does not. To return 405, add an `all` handler at the end of a route chain:
 
 ```js
-app.route('/users')
+app
+  .route("/users")
   .get(listUsers)
   .post(createUser)
   .all((req, res) => {
-    res.set('Allow', 'GET, POST').sendStatus(405);
+    res.set("Allow", "GET, POST").sendStatus(405);
   });
 ```
 
@@ -2889,7 +2960,7 @@ Express treats `/about` and `/about/` the same unless `strict routing` is on. If
 
 ```js
 app.use((req, res, next) => {
-  if (req.path.length > 1 && req.path.endsWith('/')) {
+  if (req.path.length > 1 && req.path.endsWith("/")) {
     const query = req.url.slice(req.path.length);
     return res.redirect(301, req.path.slice(0, -1) + query);
   }
@@ -2902,10 +2973,10 @@ app.use((req, res, next) => {
 Check `req.hostname` in a middleware, or use the `vhost` package to mount different apps:
 
 ```js
-const vhost = require('vhost');
+const vhost = require("vhost");
 
-app.use(vhost('api.example.com', apiApp));
-app.use(vhost('admin.example.com', adminApp));
+app.use(vhost("api.example.com", apiApp));
+app.use(vhost("admin.example.com", adminApp));
 ```
 
 ### 209: What is a sub-app in Express, and how is it different from a router?
@@ -2914,8 +2985,8 @@ You can mount a full Express app inside another with `app.use('/blog', blogApp)`
 
 ```js
 const blog = express();
-blog.on('mount', (parent) => console.log('blog mounted at', blog.mountpath));
-app.use('/blog', blog);
+blog.on("mount", (parent) => console.log("blog mounted at", blog.mountpath));
+app.use("/blog", blog);
 ```
 
 ### 210: How do you proxy requests from Express to another service?
@@ -2923,12 +2994,15 @@ app.use('/blog', blog);
 Use `http-proxy-middleware`:
 
 ```js
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
-app.use('/api', createProxyMiddleware({
-  target: 'http://orders-service:4000',
-  changeOrigin: true,
-}));
+app.use(
+  "/api",
+  createProxyMiddleware({
+    target: "http://orders-service:4000",
+    changeOrigin: true,
+  }),
+);
 ```
 
 Mount it before `express.json()`, or the body will already be read and the proxy will forward an empty body. If you need to parse the body too, use the library's `fixRequestBody` helper.
@@ -2938,8 +3012,8 @@ Mount it before `express.json()`, or the body will already be read and the proxy
 Wrap the app with an adapter like `serverless-http` (or `@codegenie/serverless-express`):
 
 ```js
-const serverless = require('serverless-http');
-const app = require('./app');
+const serverless = require("serverless-http");
+const app = require("./app");
 
 module.exports.handler = serverless(app);
 ```
@@ -2954,13 +3028,13 @@ Node runs your JavaScript on one thread, so one process uses about one core. Opt
 - Run several containers or pods behind a load balancer.
 
 ```js
-const cluster = require('node:cluster');
-const os = require('node:os');
+const cluster = require("node:cluster");
+const os = require("node:os");
 
 if (cluster.isPrimary) {
   for (let i = 0; i < os.availableParallelism(); i++) cluster.fork();
 } else {
-  require('./server');
+  require("./server");
 }
 ```
 
@@ -2971,17 +3045,17 @@ Each process has its own memory, so sessions, rate limits and caches must live i
 Check the cache first, then fall back to the database and save the result with a TTL:
 
 ```js
-app.get('/products/:id', async (req, res) => {
+app.get("/products/:id", async (req, res) => {
   const key = `product:${req.params.id}`;
   const cached = await redis.get(key);
-  if (cached) return res.type('json').send(cached);
+  if (cached) return res.type("json").send(cached);
 
   const product = await Product.findById(req.params.id);
   if (!product) return res.sendStatus(404);
 
   const body = JSON.stringify(product);
   await redis.set(key, body, { EX: 60 });
-  res.type('json').send(body);
+  res.type("json").send(body);
 });
 ```
 
@@ -2992,13 +3066,13 @@ Delete or update the key when the product changes.
 Set `Cache-Control` per route based on how often data changes:
 
 ```js
-app.get('/countries', (req, res) => {
-  res.set('Cache-Control', 'public, max-age=3600');
+app.get("/countries", (req, res) => {
+  res.set("Cache-Control", "public, max-age=3600");
   res.json(countries);
 });
 
-app.get('/me', (req, res) => {
-  res.set('Cache-Control', 'private, no-store');
+app.get("/me", (req, res) => {
+  res.set("Cache-Control", "private, no-store");
   res.json(req.user);
 });
 ```
@@ -3027,13 +3101,14 @@ Behind an AWS load balancer, `keepAliveTimeout` should be longer than the balanc
 Node's server timeouts are global. For one route, you can race the work against a timer or use `AbortSignal.timeout`:
 
 ```js
-app.get('/report', async (req, res) => {
+app.get("/report", async (req, res) => {
   const signal = AbortSignal.timeout(5000);
   try {
     const data = await fetch(REPORT_URL, { signal }).then((r) => r.json());
     res.json(data);
   } catch (err) {
-    if (err.name === 'TimeoutError') return res.status(504).json({ error: 'Timed out' });
+    if (err.name === "TimeoutError")
+      return res.status(504).json({ error: "Timed out" });
     throw err;
   }
 });
@@ -3046,13 +3121,15 @@ There is also the `connect-timeout` middleware, but it only sets a flag; your co
 Listen for the `close` event and use an `AbortController`:
 
 ```js
-app.get('/search', async (req, res) => {
+app.get("/search", async (req, res) => {
   const controller = new AbortController();
-  req.on('close', () => {
+  req.on("close", () => {
     if (!res.writableEnded) controller.abort();
   });
 
-  const results = await searchService.run(req.query.q, { signal: controller.signal });
+  const results = await searchService.run(req.query.q, {
+    signal: controller.signal,
+  });
   if (!controller.signal.aborted) res.json(results);
 });
 ```
@@ -3064,10 +3141,10 @@ This saves CPU and database time on requests that nobody is waiting for anymore.
 Node 18+ has a global `fetch`:
 
 ```js
-app.get('/weather/:city', async (req, res) => {
+app.get("/weather/:city", async (req, res) => {
   const url = `https://api.example.com/weather?city=${encodeURIComponent(req.params.city)}`;
   const response = await fetch(url, { signal: AbortSignal.timeout(3000) });
-  if (!response.ok) return res.status(502).json({ error: 'Upstream error' });
+  if (!response.ok) return res.status(502).json({ error: "Upstream error" });
   res.json(await response.json());
 });
 ```
@@ -3079,11 +3156,13 @@ Always set a timeout, encode user input in URLs, and map upstream errors to 502 
 Use the `verify` option of `express.json()`, which gets the raw buffer before parsing:
 
 ```js
-app.use(express.json({
-  verify(req, res, buf) {
-    req.rawBody = buf;
-  },
-}));
+app.use(
+  express.json({
+    verify(req, res, buf) {
+      req.rawBody = buf;
+    },
+  }),
+);
 ```
 
 This is handy for webhooks that sign the raw body, when you still want `req.body` as an object.
@@ -3097,7 +3176,7 @@ The signature is computed over the exact bytes the sender sent. Once you parse a
 Use the `type` option. It can be a string, an array or a function:
 
 ```js
-app.use(express.json({ type: ['application/json', 'application/*+json'] }));
+app.use(express.json({ type: ["application/json", "application/*+json"] }));
 ```
 
 By default it only parses `application/json`. This is useful for things like `application/merge-patch+json` or `application/problem+json`.
@@ -3115,7 +3194,7 @@ Attackers can send objects instead of strings, like `{ "email": { "$ne": null } 
 - Use Mongoose's `sanitizeFilter` option, which wraps `$` keys in `$eq`.
 
 ```js
-mongoose.set('sanitizeFilter', true);
+mongoose.set("sanitizeFilter", true);
 ```
 
 Be careful with old sanitizer middleware that writes to `req.query`, because that breaks in Express 5.
@@ -3138,14 +3217,18 @@ Clients can send the same query key twice, like `?sort=name&sort=age`. Then `req
 Check them once and fail fast if something is missing:
 
 ```js
-const { z } = require('zod');
+const { z } = require("zod");
 
-const env = z.object({
-  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  PORT: z.coerce.number().default(3000),
-  DATABASE_URL: z.string().url(),
-  JWT_SECRET: z.string().min(32),
-}).parse(process.env);
+const env = z
+  .object({
+    NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
+    PORT: z.coerce.number().default(3000),
+    DATABASE_URL: z.string().url(),
+    JWT_SECRET: z.string().min(32),
+  })
+  .parse(process.env);
 
 module.exports = env;
 ```
@@ -3162,7 +3245,7 @@ This avoids problems like the app starting fine and then failing on the first re
 ```js
 // service
 async function registerUser({ email, password }) {
-  if (await users.findByEmail(email)) throw new ConflictError('Email taken');
+  if (await users.findByEmail(email)) throw new ConflictError("Email taken");
   return users.create({ email, passwordHash: await hash(password) });
 }
 
@@ -3189,7 +3272,7 @@ res.json(toUserResponse(user));
 Use the last item's sort key as the cursor instead of an offset:
 
 ```js
-app.get('/messages', async (req, res) => {
+app.get("/messages", async (req, res) => {
   const limit = Math.min(Number(req.query.limit) || 20, 100);
   const cursor = req.query.cursor ? Number(req.query.cursor) : null;
 
@@ -3213,12 +3296,15 @@ It stays fast on big tables and does not skip or repeat rows when new data is ad
 Use an allow list for field names and never put raw input into a query:
 
 ```js
-const SORT_FIELDS = new Set(['createdAt', 'price', 'name']);
+const SORT_FIELDS = new Set(["createdAt", "price", "name"]);
 
-app.get('/products', async (req, res) => {
-  const sort = SORT_FIELDS.has(req.query.sort) ? req.query.sort : 'createdAt';
-  const order = req.query.order === 'asc' ? 'asc' : 'desc';
-  const products = await prisma.product.findMany({ orderBy: { [sort]: order }, take: 50 });
+app.get("/products", async (req, res) => {
+  const sort = SORT_FIELDS.has(req.query.sort) ? req.query.sort : "createdAt";
+  const order = req.query.order === "asc" ? "asc" : "desc";
+  const products = await prisma.product.findMany({
+    orderBy: { [sort]: order },
+    take: 50,
+  });
   res.json(products);
 });
 ```
@@ -3228,9 +3314,9 @@ app.get('/products', async (req, res) => {
 It is a unique key the client sends with a request (often `Idempotency-Key` header) so a retry does not repeat the action, like charging a card twice. The server stores the result for that key and returns it again on retry:
 
 ```js
-app.post('/payments', async (req, res) => {
-  const key = req.get('Idempotency-Key');
-  if (!key) return res.status(400).json({ error: 'Idempotency-Key required' });
+app.post("/payments", async (req, res) => {
+  const key = req.get("Idempotency-Key");
+  if (!key) return res.status(400).json({ error: "Idempotency-Key required" });
 
   const saved = await redis.get(`idem:${key}`);
   if (saved) {
@@ -3239,7 +3325,11 @@ app.post('/payments', async (req, res) => {
   }
 
   const payment = await createPayment(req.body);
-  await redis.set(`idem:${key}`, JSON.stringify({ status: 201, body: payment }), { EX: 86400 });
+  await redis.set(
+    `idem:${key}`,
+    JSON.stringify({ status: 201, body: payment }),
+    { EX: 86400 },
+  );
   res.status(201).json(payment);
 });
 ```
@@ -3251,7 +3341,7 @@ In real code, also lock the key while the first request runs, so two parallel re
 It lets you read request data (like the request ID or user) anywhere in the call chain without passing it through every function:
 
 ```js
-const { AsyncLocalStorage } = require('node:async_hooks');
+const { AsyncLocalStorage } = require("node:async_hooks");
 const context = new AsyncLocalStorage();
 
 app.use((req, res, next) => {
@@ -3272,12 +3362,12 @@ Extend the `Express.Request` interface in a declaration file:
 
 ```ts
 // src/types/express.d.ts
-import 'express';
+import "express";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: { id: string; role: 'admin' | 'user' };
+      user?: { id: string; role: "admin" | "user" };
       id?: string;
     }
   }
@@ -3291,18 +3381,21 @@ Make sure the file is included in `tsconfig.json`. Then `req.user` is typed in e
 `Request` takes generics in this order: params, response body, request body, query:
 
 ```ts
-import type { Request, Response } from 'express';
+import type { Request, Response } from "express";
 
 type Params = { id: string };
 type Body = { name: string };
 type Query = { include?: string };
 
-app.put('/users/:id', (req: Request<Params, unknown, Body, Query>, res: Response) => {
-  req.params.id;   // string
-  req.body.name;   // string
-  req.query.include;
-  res.sendStatus(204);
-});
+app.put(
+  "/users/:id",
+  (req: Request<Params, unknown, Body, Query>, res: Response) => {
+    req.params.id; // string
+    req.body.name; // string
+    req.query.include;
+    res.sendStatus(204);
+  },
+);
 ```
 
 These are only types. Nothing checks them at runtime, so you still need validation.
@@ -3317,8 +3410,14 @@ Put it in a package or a shared folder, and export factory functions that take o
 
 ```js
 // @acme/express-common
-exports.requestId = () => (req, res, next) => { /* ... */ };
-exports.errorHandler = ({ logger }) => (err, req, res, next) => { /* ... */ };
+exports.requestId = () => (req, res, next) => {
+  /* ... */
+};
+exports.errorHandler =
+  ({ logger }) =>
+  (err, req, res, next) => {
+    /* ... */
+  };
 ```
 
 Make `express` a `peerDependency` so the services do not end up with two copies of Express.
@@ -3330,10 +3429,10 @@ Make `express` a `peerDependency` so the services do not end up with two copies 
 - Serve them with a route that checks permission and sets safe headers:
 
 ```js
-app.get('/files/:id', authenticate, async (req, res) => {
+app.get("/files/:id", authenticate, async (req, res) => {
   const file = await File.findForUser(req.params.id, req.user.id);
   if (!file) return res.sendStatus(404);
-  res.set('X-Content-Type-Options', 'nosniff');
+  res.set("X-Content-Type-Options", "nosniff");
   res.download(file.storagePath, file.originalName);
 });
 ```
@@ -3345,8 +3444,8 @@ A separate domain or a storage service (S3 with signed URLs) is even better.
 Never pass user input straight into a file path. Use the `root` option, which makes Express refuse paths that leave that folder:
 
 ```js
-app.get('/docs/:name', (req, res) => {
-  res.sendFile(req.params.name, { root: path.join(__dirname, 'docs') });
+app.get("/docs/:name", (req, res) => {
+  res.sendFile(req.params.name, { root: path.join(__dirname, "docs") });
 });
 ```
 
@@ -3369,9 +3468,9 @@ Do not try to send another response if `res.headersSent` is already true, becaus
 HTML forms only send GET and POST. The `method-override` package lets a hidden field or header change the method:
 
 ```js
-const methodOverride = require('method-override');
+const methodOverride = require("method-override");
 app.use(express.urlencoded({ extended: false }));
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 ```
 
 ```html
@@ -3393,10 +3492,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/posts', async (req, res) => {
+app.post("/posts", async (req, res) => {
   await createPost(req.body);
-  req.session.flash = { type: 'success', text: 'Post created' };
-  res.redirect('/posts');
+  req.session.flash = { type: "success", text: "Post created" };
+  res.redirect("/posts");
 });
 ```
 
@@ -3439,8 +3538,10 @@ Load the SDK before anything else, with the auto-instrumentations package:
 
 ```js
 // tracing.js
-const { NodeSDK } = require('@opentelemetry/sdk-node');
-const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
+const { NodeSDK } = require("@opentelemetry/sdk-node");
+const {
+  getNodeAutoInstrumentations,
+} = require("@opentelemetry/auto-instrumentations-node");
 
 new NodeSDK({ instrumentations: [getNodeAutoInstrumentations()] }).start();
 ```
@@ -3456,24 +3557,28 @@ It creates spans for incoming requests, Express routes and middleware, database 
 Use `prom-client` and record a histogram per request:
 
 ```js
-const client = require('prom-client');
+const client = require("prom-client");
 client.collectDefaultMetrics();
 
 const httpDuration = new client.Histogram({
-  name: 'http_request_duration_seconds',
-  help: 'HTTP request duration',
-  labelNames: ['method', 'route', 'status'],
+  name: "http_request_duration_seconds",
+  help: "HTTP request duration",
+  labelNames: ["method", "route", "status"],
 });
 
 app.use((req, res, next) => {
   const end = httpDuration.startTimer();
-  res.on('finish', () => {
-    end({ method: req.method, route: req.route?.path ?? 'unknown', status: res.statusCode });
+  res.on("finish", () => {
+    end({
+      method: req.method,
+      route: req.route?.path ?? "unknown",
+      status: res.statusCode,
+    });
   });
   next();
 });
 
-app.get('/metrics', async (req, res) => {
+app.get("/metrics", async (req, res) => {
   res.type(client.register.contentType).send(await client.register.metrics());
 });
 ```
@@ -3486,7 +3591,7 @@ Most error trackers have Express support. With Sentry, you initialize it first a
 
 ```js
 // instrument.js, loaded first
-const Sentry = require('@sentry/node');
+const Sentry = require("@sentry/node");
 Sentry.init({ dsn: process.env.SENTRY_DSN });
 
 // app.js
@@ -3501,13 +3606,13 @@ Report only unexpected errors (5xx), not normal 404s and validation errors, or t
 Log the error and exit, and let the process manager (Docker, Kubernetes, PM2) start a fresh process:
 
 ```js
-process.on('uncaughtException', (err) => {
-  logger.fatal(err, 'uncaught exception');
+process.on("uncaughtException", (err) => {
+  logger.fatal(err, "uncaught exception");
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason) => {
-  logger.fatal({ reason }, 'unhandled rejection');
+process.on("unhandledRejection", (reason) => {
+  logger.fatal({ reason }, "unhandled rejection");
   process.exit(1);
 });
 ```
@@ -3519,11 +3624,11 @@ After an uncaught exception, the app may be in a broken state, so keeping it run
 Put a 404 handler on the API router and another at the app level:
 
 ```js
-api.use((req, res) => res.status(404).json({ error: 'Not found' }));
-app.use('/api', api);
+api.use((req, res) => res.status(404).json({ error: "Not found" }));
+app.use("/api", api);
 
-app.use(express.static('public'));
-app.use((req, res) => res.status(404).render('404'));
+app.use(express.static("public"));
+app.use((req, res) => res.status(404).render("404"));
 ```
 
 Because the API router ends every unmatched `/api` request itself, website handlers never see those requests.
@@ -3535,9 +3640,11 @@ Listen to the `finish` event on `res` (and `close` for aborted requests):
 ```js
 app.use((req, res, next) => {
   const start = process.hrtime.bigint();
-  res.on('finish', () => {
+  res.on("finish", () => {
     const ms = Number(process.hrtime.bigint() - start) / 1e6;
-    console.log(`${req.method} ${req.originalUrl} ${res.statusCode} ${ms.toFixed(1)}ms`);
+    console.log(
+      `${req.method} ${req.originalUrl} ${res.statusCode} ${ms.toFixed(1)}ms`,
+    );
   });
   next();
 });
@@ -3554,10 +3661,10 @@ In Koa, middleware is `async (ctx, next) => {}` and `await next()` waits for eve
 Express accepts arrays, so you can group middleware:
 
 ```js
-const protect = [authenticate, requireRole('admin'), rateLimiter];
+const protect = [authenticate, requireRole("admin"), rateLimiter];
 
-app.delete('/users/:id', protect, deleteUser);
-app.use('/admin', protect, adminRouter);
+app.delete("/users/:id", protect, deleteUser);
+app.use("/admin", protect, adminRouter);
 ```
 
 You can also make a router that has the middleware and mount it, since a router is itself a middleware.
@@ -3567,9 +3674,10 @@ You can also make a router that has the middleware and mount it, since a router 
 Wrap it:
 
 ```js
-const when = (cond, mw) => (req, res, next) => (cond(req) ? mw(req, res, next) : next());
+const when = (cond, mw) => (req, res, next) =>
+  cond(req) ? mw(req, res, next) : next();
 
-app.use(when((req) => !req.path.startsWith('/health'), morgan('combined')));
+app.use(when((req) => !req.path.startsWith("/health"), morgan("combined")));
 ```
 
 This is handy for skipping logging or auth on health checks.
@@ -3579,10 +3687,14 @@ This is handy for skipping logging or auth on health checks.
 Mount the raw parser on the special route before the global JSON parser, or do not use a global parser at all:
 
 ```js
-app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), stripeWebhook);
+app.post(
+  "/webhooks/stripe",
+  express.raw({ type: "application/json" }),
+  stripeWebhook,
+);
 
 app.use(express.json());
-app.use('/api', apiRouter);
+app.use("/api", apiRouter);
 ```
 
 Once a body parser reads the stream, the next parser sees it as already read and skips it.
@@ -3597,20 +3709,21 @@ The body parsers mark the request as read (they check an internal flag and wheth
 function cache(ttlMs) {
   const store = new Map();
   return (req, res, next) => {
-    if (req.method !== 'GET') return next();
+    if (req.method !== "GET") return next();
     const hit = store.get(req.originalUrl);
     if (hit && hit.expires > Date.now()) return res.json(hit.body);
 
     const json = res.json.bind(res);
     res.json = (body) => {
-      if (res.statusCode === 200) store.set(req.originalUrl, { body, expires: Date.now() + ttlMs });
+      if (res.statusCode === 200)
+        store.set(req.originalUrl, { body, expires: Date.now() + ttlMs });
       return json(body);
     };
     next();
   };
 }
 
-app.get('/stats', cache(30_000), getStats);
+app.get("/stats", cache(30_000), getStats);
 ```
 
 It is per process and grows without limit, so use an LRU cache or Redis in real apps.
@@ -3625,10 +3738,12 @@ Set `req.user` if a valid token is there, but never block:
 
 ```js
 function optionalAuth(req, res, next) {
-  const token = req.get('Authorization')?.replace(/^Bearer /, '');
+  const token = req.get("Authorization")?.replace(/^Bearer /, "");
   if (token) {
     try {
-      req.user = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
+      req.user = jwt.verify(token, process.env.JWT_SECRET, {
+        algorithms: ["HS256"],
+      });
     } catch {
       // ignore bad token, treat as anonymous
     }
@@ -3645,8 +3760,8 @@ Store roles on the user, put them in the token or session, and check them in mid
 
 ```js
 const permissions = {
-  admin: ['users:read', 'users:write', 'orders:read'],
-  support: ['users:read', 'orders:read'],
+  admin: ["users:read", "users:write", "orders:read"],
+  support: ["users:read", "orders:read"],
 };
 
 const can = (perm) => (req, res, next) => {
@@ -3655,7 +3770,7 @@ const can = (perm) => (req, res, next) => {
   next();
 };
 
-router.delete('/users/:id', can('users:write'), deleteUser);
+router.delete("/users/:id", can("users:write"), deleteUser);
 ```
 
 Checking permissions instead of role names makes it easier to change roles later.
@@ -3665,10 +3780,11 @@ Checking permissions instead of role names makes it easier to change roles later
 Load the resource and compare the owner in the handler or service. Role checks are not enough for this:
 
 ```js
-router.patch('/posts/:id', authenticate, async (req, res) => {
+router.patch("/posts/:id", authenticate, async (req, res) => {
   const post = await Post.findById(req.params.id);
   if (!post) return res.sendStatus(404);
-  if (post.authorId !== req.user.id && req.user.role !== 'admin') return res.sendStatus(403);
+  if (post.authorId !== req.user.id && req.user.role !== "admin")
+    return res.sendStatus(403);
   await post.update(req.body);
   res.json(post);
 });
@@ -3681,7 +3797,7 @@ Missing this check is called IDOR (insecure direct object reference) and is one 
 Use a slow password hash like `argon2` or `bcrypt`. Never store plain or fast hashes (MD5, SHA-256):
 
 ```js
-const argon2 = require('argon2');
+const argon2 = require("argon2");
 
 const hash = await argon2.hash(password);
 const ok = await argon2.verify(hash, passwordFromLogin);
@@ -3705,9 +3821,9 @@ Never trust user info from the query string; always get it from the token exchan
 Do not send them inside the request if you can avoid it. Put a job on a queue and return right away:
 
 ```js
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   const user = await createUser(req.body);
-  await emailQueue.add('welcome', { userId: user.id }); // BullMQ, for example
+  await emailQueue.add("welcome", { userId: user.id }); // BullMQ, for example
   res.status(201).json({ id: user.id });
 });
 ```
@@ -3723,11 +3839,11 @@ For small tasks you can use timers or `node-cron` in the same process, but they 
 Set the headers and stream the data:
 
 ```js
-const { stringify } = require('csv-stringify');
-const { pipeline } = require('node:stream/promises');
+const { stringify } = require("csv-stringify");
+const { pipeline } = require("node:stream/promises");
 
-app.get('/users.csv', async (req, res) => {
-  res.type('text/csv').attachment('users.csv');
+app.get("/users.csv", async (req, res) => {
+  res.type("text/csv").attachment("users.csv");
   await pipeline(db.streamUsers(), stringify({ header: true }), res);
 });
 ```
@@ -3739,13 +3855,15 @@ Streaming means you do not hold the whole file in memory.
 `compression` has a `threshold` option (default `1kb`) and a `filter` function:
 
 ```js
-app.use(compression({
-  threshold: 2048,
-  filter: (req, res) => {
-    if (req.get('x-no-compression')) return false;
-    return compression.filter(req, res);
-  },
-}));
+app.use(
+  compression({
+    threshold: 2048,
+    filter: (req, res) => {
+      if (req.get("x-no-compression")) return false;
+      return compression.filter(req, res);
+    },
+  }),
+);
 ```
 
 Small responses are not worth the CPU time, and already compressed data like images gains nothing.
@@ -3771,10 +3889,10 @@ Node itself has no limit. You can:
 let active = 0;
 const MAX = 50;
 
-app.use('/reports', (req, res, next) => {
-  if (active >= MAX) return res.set('Retry-After', '5').sendStatus(503);
+app.use("/reports", (req, res, next) => {
+  if (active >= MAX) return res.set("Retry-After", "5").sendStatus(503);
   active++;
-  res.on('close', () => active--);
+  res.on("close", () => active--);
   next();
 });
 ```
@@ -3784,11 +3902,11 @@ app.use('/reports', (req, res, next) => {
 Use `req.acceptsLanguages()` to pick the best supported language:
 
 ```js
-const supported = ['en', 'de', 'fr'];
+const supported = ["en", "de", "fr"];
 
 app.use((req, res, next) => {
-  req.lang = req.acceptsLanguages(...supported) || 'en';
-  res.vary('Accept-Language');
+  req.lang = req.acceptsLanguages(...supported) || "en";
+  res.vary("Accept-Language");
   next();
 });
 ```
@@ -3800,9 +3918,9 @@ Then pass `req.lang` to your translation library, like `i18next`. Setting `Vary`
 It is passed as the second argument to `JSON.stringify` in `res.json()`. You can use it to hide fields or convert types globally:
 
 ```js
-app.set('json replacer', (key, value) => {
-  if (key === 'passwordHash') return undefined;
-  if (typeof value === 'bigint') return value.toString();
+app.set("json replacer", (key, value) => {
+  if (key === "passwordHash") return undefined;
+  if (typeof value === "bigint") return value.toString();
   return value;
 });
 ```
@@ -3818,9 +3936,11 @@ It runs for every key of every response, so keep it simple. Explicit response ma
 With `morgan`, use the `skip` option:
 
 ```js
-app.use(morgan('combined', {
-  skip: (req) => req.path === '/health' || req.path === '/ready',
-}));
+app.use(
+  morgan("combined", {
+    skip: (req) => req.path === "/health" || req.path === "/ready",
+  }),
+);
 ```
 
 With `pino-http`, use `autoLogging: { ignore: (req) => req.url === '/health' }`.
@@ -3834,12 +3954,12 @@ Sessions keep data on the server and send only an ID cookie. They are easy to re
 Give each client a random key, store only its hash, and check it in middleware:
 
 ```js
-const crypto = require('node:crypto');
+const crypto = require("node:crypto");
 
 async function apiKeyAuth(req, res, next) {
-  const key = req.get('X-Api-Key');
+  const key = req.get("X-Api-Key");
   if (!key) return res.sendStatus(401);
-  const hash = crypto.createHash('sha256').update(key).digest('hex');
+  const hash = crypto.createHash("sha256").update(key).digest("hex");
   const client = await ApiKey.findOne({ hash, revoked: false });
   if (!client) return res.sendStatus(401);
   req.client = client;
@@ -3864,21 +3984,28 @@ Use it for webhook signatures, static tokens and HMAC checks.
 ### 277: How do you verify a webhook HMAC signature in Express?
 
 ```js
-app.post('/webhooks/github', express.raw({ type: 'application/json' }), (req, res) => {
-  const expected = 'sha256=' + crypto
-    .createHmac('sha256', process.env.GITHUB_WEBHOOK_SECRET)
-    .update(req.body)
-    .digest('hex');
-  const given = req.get('X-Hub-Signature-256') || '';
+app.post(
+  "/webhooks/github",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const expected =
+      "sha256=" +
+      crypto
+        .createHmac("sha256", process.env.GITHUB_WEBHOOK_SECRET)
+        .update(req.body)
+        .digest("hex");
+    const given = req.get("X-Hub-Signature-256") || "";
 
-  const ok = given.length === expected.length &&
-    crypto.timingSafeEqual(Buffer.from(given), Buffer.from(expected));
-  if (!ok) return res.sendStatus(401);
+    const ok =
+      given.length === expected.length &&
+      crypto.timingSafeEqual(Buffer.from(given), Buffer.from(expected));
+    if (!ok) return res.sendStatus(401);
 
-  const event = JSON.parse(req.body.toString('utf8'));
-  handleEvent(event);
-  res.sendStatus(204);
-});
+    const event = JSON.parse(req.body.toString("utf8"));
+    handleEvent(event);
+    res.sendStatus(204);
+  },
+);
 ```
 
 Answer webhooks quickly and do slow work in a background job, or the sender may time out and retry.
@@ -3888,8 +4015,8 @@ Answer webhooks quickly and do slow work in a background job, or the sender may 
 `express-session` (and `res.cookie` with `secure`) only sends secure cookies when it thinks the connection is HTTPS. Behind a proxy that ends TLS, Express sees HTTP. Set `trust proxy` so it reads `X-Forwarded-Proto`:
 
 ```js
-app.set('trust proxy', 1);
-app.use(session({ cookie: { secure: true }, /* ... */ }));
+app.set("trust proxy", 1);
+app.use(session({ cookie: { secure: true } /* ... */ }));
 ```
 
 Without it, the session cookie is never set and logins seem to "not stick".
@@ -3908,12 +4035,12 @@ Without it, the session cookie is never set and logins seem to "not stick".
 In Express 5 you do not need `try/catch` for errors you want to pass on; just let them throw. Catch only when you want to change the error, like turning a database "unique violation" into a 409:
 
 ```js
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const user = await User.create(req.body);
     res.status(201).json(user);
   } catch (err) {
-    if (err.code === '23505') throw new ConflictError('Email already used');
+    if (err.code === "23505") throw new ConflictError("Email already used");
     throw err;
   }
 });
@@ -3927,9 +4054,11 @@ Check the error type in an error handler before the final one:
 
 ```js
 app.use((err, req, res, next) => {
-  if (err.code === '23505') return res.status(409).json({ error: 'Already exists' });   // Postgres unique
-  if (err.code === 'P2025') return res.status(404).json({ error: 'Not found' });        // Prisma record not found
-  if (err.name === 'CastError') return res.status(400).json({ error: 'Invalid id' });   // Mongoose
+  if (err.code === "23505")
+    return res.status(409).json({ error: "Already exists" }); // Postgres unique
+  if (err.code === "P2025") return res.status(404).json({ error: "Not found" }); // Prisma record not found
+  if (err.name === "CastError")
+    return res.status(400).json({ error: "Invalid id" }); // Mongoose
   next(err);
 });
 ```
@@ -3960,12 +4089,12 @@ Add both parsers. Each only runs for its own `Content-Type`:
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.post('/contact', (req, res) => {
+app.post("/contact", (req, res) => {
   // works for application/json and application/x-www-form-urlencoded
   saveMessage(req.body);
   res.format({
     json: () => res.status(201).json({ ok: true }),
-    html: () => res.redirect('/thanks'),
+    html: () => res.redirect("/thanks"),
   });
 });
 ```
@@ -3976,10 +4105,10 @@ If the app is built with a factory, pass a fake:
 
 ```js
 const app = createApp({
-  paymentService: { charge: vi.fn().mockResolvedValue({ id: 'p_1' }) },
+  paymentService: { charge: vi.fn().mockResolvedValue({ id: "p_1" }) },
 });
 
-const res = await request(app).post('/checkout').send({ amount: 100 });
+const res = await request(app).post("/checkout").send({ amount: 100 });
 expect(res.status).toBe(201);
 ```
 
@@ -3991,12 +4120,16 @@ Make a test-only route that throws, then check the response:
 
 ```js
 const app = createApp();
-app.get('/boom', () => { throw new Error('test'); });
+app.get("/boom", () => {
+  throw new Error("test");
+});
 app.use(errorHandler);
 
-const res = await request(app).get('/boom');
+const res = await request(app).get("/boom");
 expect(res.status).toBe(500);
-expect(res.body).toEqual({ error: { code: 'INTERNAL', message: 'Internal Server Error' } });
+expect(res.body).toEqual({
+  error: { code: "INTERNAL", message: "Internal Server Error" },
+});
 ```
 
 Make sure the error handler is added after the test route.
@@ -4007,10 +4140,10 @@ Use `.attach()` for files and `.field()` for other form fields:
 
 ```js
 const res = await request(app)
-  .post('/avatar')
-  .set('Authorization', `Bearer ${token}`)
-  .field('description', 'me')
-  .attach('avatar', Buffer.from('fake image'), 'me.png');
+  .post("/avatar")
+  .set("Authorization", `Bearer ${token}`)
+  .field("description", "me")
+  .attach("avatar", Buffer.from("fake image"), "me.png");
 
 expect(res.status).toBe(201);
 ```
@@ -4025,15 +4158,15 @@ expect(res.status).toBe(201);
 ### 288: How do you use the built-in `node:test` runner with Express?
 
 ```js
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const request = require('supertest');
-const app = require('../app');
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
+const request = require("supertest");
+const app = require("../app");
 
-test('GET /health returns ok', async () => {
-  const res = await request(app).get('/health');
+test("GET /health returns ok", async () => {
+  const res = await request(app).get("/health");
   assert.equal(res.status, 200);
-  assert.deepEqual(res.body, { status: 'ok' });
+  assert.deepEqual(res.body, { status: "ok" });
 });
 ```
 
@@ -4046,7 +4179,7 @@ Either allow the dev origin with `cors({ origin: 'http://localhost:5173' })`, or
 ```js
 // vite.config.js
 export default {
-  server: { proxy: { '/api': 'http://localhost:3000' } },
+  server: { proxy: { "/api": "http://localhost:3000" } },
 };
 ```
 
@@ -4059,10 +4192,10 @@ Set them in a middleware:
 ```js
 app.use((req, res, next) => {
   res.set({
-    'X-Content-Type-Options': 'nosniff',
-    'Referrer-Policy': 'no-referrer',
-    'X-Frame-Options': 'DENY',
-    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "no-referrer",
+    "X-Frame-Options": "DENY",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
   });
   next();
 });
@@ -4084,21 +4217,21 @@ Do not keep the HTTP request open for minutes. Instead:
 4. When done, the status endpoint returns a link to download the file.
 
 ```js
-app.post('/reports', async (req, res) => {
-  const job = await reportQueue.add('build', req.body);
-  res.location(`/reports/${job.id}`).status(202).json({ id: job.id, status: 'queued' });
+app.post("/reports", async (req, res) => {
+  const job = await reportQueue.add("build", req.body);
+  res
+    .location(`/reports/${job.id}`)
+    .status(202)
+    .json({ id: job.id, status: "queued" });
 });
 ```
 
 ### 293: How do you return `201 Created` with the new resource and the right headers?
 
 ```js
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const product = await productService.create(req.valid.body);
-  res
-    .status(201)
-    .location(`${req.baseUrl}/${product.id}`)
-    .json(product);
+  res.status(201).location(`${req.baseUrl}/${product.id}`).json(product);
 });
 ```
 
@@ -4109,13 +4242,13 @@ Using `req.baseUrl` keeps the link right even if you mount the router at a diffe
 Return an ETag with the resource, and require clients to send it back in `If-Match` when updating:
 
 ```js
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   const doc = await Doc.findById(req.params.id);
   if (!doc) return res.sendStatus(404);
   const etag = `"${doc.version}"`;
-  if (req.get('If-Match') !== etag) return res.sendStatus(412); // Precondition Failed
+  if (req.get("If-Match") !== etag) return res.sendStatus(412); // Precondition Failed
   const updated = await doc.updateWithVersion(req.body, doc.version);
-  res.set('ETag', `"${updated.version}"`).json(updated);
+  res.set("ETag", `"${updated.version}"`).json(updated);
 });
 ```
 
@@ -4126,14 +4259,21 @@ This is optimistic locking over HTTP: if someone else changed it, the second wri
 Accept an array, check its size, and report results per item:
 
 ```js
-router.post('/batch', async (req, res) => {
+router.post("/batch", async (req, res) => {
   const items = req.body.items;
   if (!Array.isArray(items) || items.length > 100) {
-    return res.status(400).json({ error: 'Send 1 to 100 items' });
+    return res.status(400).json({ error: "Send 1 to 100 items" });
   }
   const results = await Promise.allSettled(items.map((i) => service.create(i)));
-  res.status(207).json(results.map((r) =>
-    r.status === 'fulfilled' ? { ok: true, id: r.value.id } : { ok: false, error: r.reason.message }));
+  res
+    .status(207)
+    .json(
+      results.map((r) =>
+        r.status === "fulfilled"
+          ? { ok: true, id: r.value.id }
+          : { ok: false, error: r.reason.message },
+      ),
+    );
 });
 ```
 
@@ -4145,8 +4285,11 @@ A middleware early in the stack can return 503 for most routes:
 
 ```js
 app.use((req, res, next) => {
-  if (process.env.MAINTENANCE === 'true' && req.path !== '/health') {
-    return res.set('Retry-After', '600').status(503).json({ error: 'Down for maintenance' });
+  if (process.env.MAINTENANCE === "true" && req.path !== "/health") {
+    return res
+      .set("Retry-After", "600")
+      .status(503)
+      .json({ error: "Down for maintenance" });
   }
   next();
 });
@@ -4164,7 +4307,7 @@ const flag = (name) => async (req, res, next) => {
   res.sendStatus(404);
 };
 
-router.get('/new-dashboard', flag('new-dashboard'), newDashboard);
+router.get("/new-dashboard", flag("new-dashboard"), newDashboard);
 ```
 
 Tools like Unleash, LaunchDarkly or a simple database table can store flags. Remove old flags once a feature is fully released.
@@ -4185,13 +4328,17 @@ While one request blocks the loop, every other request on that process waits.
 Use `perf_hooks.monitorEventLoopDelay`:
 
 ```js
-const { monitorEventLoopDelay } = require('node:perf_hooks');
+const { monitorEventLoopDelay } = require("node:perf_hooks");
 
 const h = monitorEventLoopDelay({ resolution: 20 });
 h.enable();
 
-app.get('/debug/loop', (req, res) => {
-  res.json({ p50: h.percentile(50) / 1e6, p99: h.percentile(99) / 1e6, maxMs: h.max / 1e6 });
+app.get("/debug/loop", (req, res) => {
+  res.json({
+    p50: h.percentile(50) / 1e6,
+    p99: h.percentile(99) / 1e6,
+    maxMs: h.max / 1e6,
+  });
 });
 ```
 
@@ -4217,10 +4364,14 @@ It looks at `fn.length`, the number of declared parameters. If it is 4, the laye
 
 ```js
 // NOT an error handler: default param makes length 3
-app.use((err, req, res, next = () => {}) => { /* ... */ });
+app.use((err, req, res, next = () => {}) => {
+  /* ... */
+});
 
 // NOT an error handler: rest params have length 0
-app.use((...args) => { /* ... */ });
+app.use((...args) => {
+  /* ... */
+});
 ```
 
 Wrapping an error handler in another function (for logging or tracing) can also change `length`. Always write error handlers with exactly four plain parameters.
@@ -4271,7 +4422,7 @@ If you redirect to a URL from user input, attackers can make links on your domai
 
 ```js
 // bad
-app.get('/login', (req, res) => res.redirect(req.query.next));
+app.get("/login", (req, res) => res.redirect(req.query.next));
 // /login?next=https://evil.example
 ```
 
@@ -4279,8 +4430,9 @@ Only allow relative paths on your site, or check against an allow list:
 
 ```js
 function safeNext(next) {
-  if (typeof next !== 'string') return '/';
-  if (!next.startsWith('/') || next.startsWith('//') || next.startsWith('/\\')) return '/';
+  if (typeof next !== "string") return "/";
+  if (!next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\"))
+    return "/";
   return next;
 }
 res.redirect(safeNext(req.query.next));
@@ -4333,24 +4485,28 @@ Response splitting used to be possible when user input with `\r\n` went into hea
 Generate a random nonce per request, put it in `res.locals`, and use it in the CSP and in your templates:
 
 ```js
-const crypto = require('node:crypto');
+const crypto = require("node:crypto");
 
 app.use((req, res, next) => {
-  res.locals.cspNonce = crypto.randomBytes(16).toString('base64');
+  res.locals.cspNonce = crypto.randomBytes(16).toString("base64");
   next();
 });
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+      },
     },
-  },
-}));
+  }),
+);
 ```
 
 ```html
-<script nonce="<%= cspNonce %>">/* inline code */</script>
+<script nonce="<%= cspNonce %>">
+  /* inline code */
+</script>
 ```
 
 Only scripts with the right nonce run, so injected inline scripts are blocked.
@@ -4370,17 +4526,19 @@ Only scripts with the right nonce run, so injected inline scripts are blocked.
 Fetch the provider's public keys from its JWKS endpoint and verify the signature and claims. The `jose` library does this well:
 
 ```js
-const { createRemoteJWKSet, jwtVerify } = require('jose');
+const { createRemoteJWKSet, jwtVerify } = require("jose");
 
-const JWKS = createRemoteJWKSet(new URL('https://auth.example.com/.well-known/jwks.json'));
+const JWKS = createRemoteJWKSet(
+  new URL("https://auth.example.com/.well-known/jwks.json"),
+);
 
 async function authenticate(req, res, next) {
-  const token = req.get('Authorization')?.replace(/^Bearer /, '');
+  const token = req.get("Authorization")?.replace(/^Bearer /, "");
   if (!token) return res.sendStatus(401);
   try {
     const { payload } = await jwtVerify(token, JWKS, {
-      issuer: 'https://auth.example.com/',
-      audience: 'my-api',
+      issuer: "https://auth.example.com/",
+      audience: "my-api",
     });
     req.user = payload;
     next();
@@ -4464,8 +4622,8 @@ The router still calls `next(err)`. Your error handler runs, but `res.headersSen
 Split the code by business area (users, billing, catalog), not by technical layer only. Each module has its own router, services, data access and tests, and exposes a small public API to other modules. The main `app.js` only mounts module routers and shared middleware:
 
 ```js
-app.use('/users', usersModule.router);
-app.use('/billing', billingModule.router);
+app.use("/users", usersModule.router);
+app.use("/billing", billingModule.router);
 ```
 
 Rules like "modules do not import each other's internals" can be checked with lint rules (for example `eslint-plugin-boundaries`). This keeps the option to split a module into a service later.
@@ -4475,7 +4633,7 @@ Rules like "modules do not import each other's internals" can be checked with li
 Treat Express as one adapter at the edge. The core has use cases and domain logic with no Express or database imports. Ports are interfaces the core needs (like `UserRepository`, `EmailSender`). Adapters implement them (Postgres repository, SMTP sender). Express handlers only turn HTTP into use case calls and results back into HTTP:
 
 ```js
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const result = await registerUser(deps)(req.valid.body);
   res.status(201).json(result);
 });
@@ -4512,9 +4670,9 @@ The client can send its own `X-Forwarded-For` header. If `trust proxy` is `true`
 Each proxy adds the address it sees to `X-Forwarded-For`. Set `trust proxy` to the number of hops you control, or list their subnets:
 
 ```js
-app.set('trust proxy', 2); // CDN + load balancer
+app.set("trust proxy", 2); // CDN + load balancer
 // or
-app.set('trust proxy', ['loopback', '10.0.0.0/8', '130.176.0.0/16']);
+app.set("trust proxy", ["loopback", "10.0.0.0/8", "130.176.0.0/16"]);
 ```
 
 Then check by logging `req.ip` and `req.ips` for a known client. Some CDNs also send their own header with the client IP (like `CF-Connecting-IP`), which you can read when the request is known to come from the CDN.
@@ -4597,8 +4755,8 @@ Node's HTTP server automatically answers `100 Continue` unless you listen for th
 
 ```js
 const server = http.createServer(app);
-server.on('checkContinue', (req, res) => {
-  if (Number(req.headers['content-length']) > 10 * 1024 * 1024) {
+server.on("checkContinue", (req, res) => {
+  if (Number(req.headers["content-length"]) > 10 * 1024 * 1024) {
     res.writeHead(413).end();
     return;
   }
@@ -4614,15 +4772,19 @@ This is rare, but useful for big file upload APIs.
 `res.sendFile()` and `express.static` already support `Range` headers and return `206 Partial Content`. If the file lives in S3, pass the `Range` header to S3 and stream the result back:
 
 ```js
-app.get('/videos/:id', async (req, res) => {
-  const out = await s3.send(new GetObjectCommand({
-    Bucket: BUCKET, Key: `videos/${req.params.id}.mp4`, Range: req.get('Range'),
-  }));
-  res.status(req.get('Range') ? 206 : 200).set({
-    'Content-Type': 'video/mp4',
-    'Accept-Ranges': 'bytes',
-    'Content-Length': out.ContentLength,
-    ...(out.ContentRange && { 'Content-Range': out.ContentRange }),
+app.get("/videos/:id", async (req, res) => {
+  const out = await s3.send(
+    new GetObjectCommand({
+      Bucket: BUCKET,
+      Key: `videos/${req.params.id}.mp4`,
+      Range: req.get("Range"),
+    }),
+  );
+  res.status(req.get("Range") ? 206 : 200).set({
+    "Content-Type": "video/mp4",
+    "Accept-Ranges": "bytes",
+    "Content-Length": out.ContentLength,
+    ...(out.ContentRange && { "Content-Range": out.ContentRange }),
   });
   out.Body.pipe(res);
 });
@@ -4635,10 +4797,10 @@ Often it is better to give the client a signed URL and let it stream from S3 or 
 `res.write()` returns `false` when the internal buffer is full. You should wait for `'drain'` before writing more:
 
 ```js
-const { once } = require('node:events');
+const { once } = require("node:events");
 
 for await (const chunk of source) {
-  if (!res.write(chunk)) await once(res, 'drain');
+  if (!res.write(chunk)) await once(res, "drain");
 }
 res.end();
 ```
@@ -4662,7 +4824,10 @@ Rate limiting controls how much one client can do, to be fair and stop abuse. Lo
 When you return 429 or 503, tell the client when to try again:
 
 ```js
-res.set('Retry-After', String(secondsUntilReset)).status(429).json({ error: 'Too many requests' });
+res
+  .set("Retry-After", String(secondsUntilReset))
+  .status(429)
+  .json({ error: "Too many requests" });
 ```
 
 `express-rate-limit` can also send the standard `RateLimit` and `RateLimit-Policy` headers (`standardHeaders: 'draft-8'`), so clients can slow down before hitting the limit.
@@ -4699,14 +4864,16 @@ The `extended` parser (`qs`) turns strings like `a[b][c]=1` into nested objects 
 Set the `query parser` setting to a function that takes the raw string and returns an object:
 
 ```js
-const qs = require('qs');
+const qs = require("qs");
 
-app.set('query parser', (str) => qs.parse(str, {
-  depth: 2,
-  arrayLimit: 20,
-  parameterLimit: 100,
-  allowPrototypes: false,
-}));
+app.set("query parser", (str) =>
+  qs.parse(str, {
+    depth: 2,
+    arrayLimit: 20,
+    parameterLimit: 100,
+    allowPrototypes: false,
+  }),
+);
 ```
 
 This lets you keep nested queries but with tight limits.
@@ -4750,12 +4917,12 @@ const als = new AsyncLocalStorage();
 async function withTransaction(fn) {
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
     const result = await als.run({ client }, fn);
-    await client.query('COMMIT');
+    await client.query("COMMIT");
     return result;
   } catch (err) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     throw err;
   } finally {
     client.release();
@@ -4787,11 +4954,11 @@ Add it to every error response and to the logs:
 ```js
 app.use((err, req, res, next) => {
   const status = err.status ?? 500;
-  req.log.error({ err, requestId: req.id }, 'request failed');
+  req.log.error({ err, requestId: req.id }, "request failed");
   if (res.headersSent) return next(err);
   res.status(status).json({
-    type: 'about:blank',
-    title: status === 500 ? 'Internal Server Error' : err.message,
+    type: "about:blank",
+    title: status === 500 ? "Internal Server Error" : err.message,
     status,
     requestId: req.id,
   });
@@ -4827,7 +4994,7 @@ Two things are needed:
 - An adapter so events reach clients on other instances, like `@socket.io/redis-adapter` or `@socket.io/redis-streams-adapter`.
 
 ```js
-const { createAdapter } = require('@socket.io/redis-adapter');
+const { createAdapter } = require("@socket.io/redis-adapter");
 io.adapter(createAdapter(pubClient, subClient));
 ```
 
@@ -4840,11 +5007,13 @@ The upgrade request is a normal HTTP request, so check it before accepting:
 - Limit message size and rate.
 
 ```js
-server.on('upgrade', (req, socket, head) => {
+server.on("upgrade", (req, socket, head) => {
   if (!allowedOrigins.has(req.headers.origin)) return socket.destroy();
   sessionParser(req, {}, () => {
     if (!req.session?.userId) return socket.destroy();
-    wss.handleUpgrade(req, socket, head, (ws) => wss.emit('connection', ws, req));
+    wss.handleUpgrade(req, socket, head, (ws) =>
+      wss.emit("connection", ws, req),
+    );
   });
 });
 ```
@@ -4857,8 +5026,14 @@ Use Express for auth, rate limits, request IDs and routing, and proxy the rest:
 
 ```js
 app.use(requestId, authenticate, rateLimiter);
-app.use('/orders', createProxyMiddleware({ target: ORDERS_URL, changeOrigin: true }));
-app.use('/users', createProxyMiddleware({ target: USERS_URL, changeOrigin: true }));
+app.use(
+  "/orders",
+  createProxyMiddleware({ target: ORDERS_URL, changeOrigin: true }),
+);
+app.use(
+  "/users",
+  createProxyMiddleware({ target: USERS_URL, changeOrigin: true }),
+);
 ```
 
 Pass identity to the services in headers they trust only from the gateway (and strip those headers from incoming requests). For higher traffic or more features (retries, circuit breaking, metrics), a dedicated gateway like Envoy, Kong or a cloud API gateway is often a better fit.
@@ -4868,18 +5043,21 @@ Pass identity to the services in headers they trust only from the gateway (and s
 Use a library like `opossum`:
 
 ```js
-const CircuitBreaker = require('opossum');
+const CircuitBreaker = require("opossum");
 
 const breaker = new CircuitBreaker(
-  (id) => fetch(`${INVENTORY_URL}/items/${id}`, { signal: AbortSignal.timeout(2000) }).then((r) => {
-    if (!r.ok) throw new Error(`status ${r.status}`);
-    return r.json();
-  }),
+  (id) =>
+    fetch(`${INVENTORY_URL}/items/${id}`, {
+      signal: AbortSignal.timeout(2000),
+    }).then((r) => {
+      if (!r.ok) throw new Error(`status ${r.status}`);
+      return r.json();
+    }),
   { errorThresholdPercentage: 50, resetTimeout: 10_000 },
 );
 breaker.fallback(() => ({ stock: null }));
 
-app.get('/items/:id/stock', async (req, res) => {
+app.get("/items/:id/stock", async (req, res) => {
   res.json(await breaker.fire(req.params.id));
 });
 ```
@@ -4930,10 +5108,17 @@ async function getCached(key, load) {
   const hit = await redis.get(key);
   if (hit) return JSON.parse(hit);
   if (!inflight.has(key)) {
-    inflight.set(key, load().then(async (v) => {
-      await redis.set(key, JSON.stringify(v), { EX: 60 + Math.floor(Math.random() * 10) });
-      return v;
-    }).finally(() => inflight.delete(key)));
+    inflight.set(
+      key,
+      load()
+        .then(async (v) => {
+          await redis.set(key, JSON.stringify(v), {
+            EX: 60 + Math.floor(Math.random() * 10),
+          });
+          return v;
+        })
+        .finally(() => inflight.delete(key)),
+    );
   }
   return inflight.get(key);
 }
@@ -5004,7 +5189,10 @@ Give each partner a secret, and have them sign the method, path, timestamp and b
 
 ```js
 const payload = `${req.method}\n${req.originalUrl}\n${timestamp}\n${sha256(req.rawBody)}`;
-const expected = crypto.createHmac('sha256', partner.secret).update(payload).digest('hex');
+const expected = crypto
+  .createHmac("sha256", partner.secret)
+  .update(payload)
+  .digest("hex");
 ```
 
 This proves who sent the request and that nothing changed on the way.
@@ -5014,12 +5202,18 @@ This proves who sent the request and that nothing changed on the way.
 Usually mTLS is handled by a proxy or service mesh. If Node handles it, use the `https` module with `requestCert`:
 
 ```js
-https.createServer({
-  key, cert,
-  ca: [partnerCa],
-  requestCert: true,
-  rejectUnauthorized: true,
-}, app).listen(8443);
+https
+  .createServer(
+    {
+      key,
+      cert,
+      ca: [partnerCa],
+      requestCert: true,
+      rejectUnauthorized: true,
+    },
+    app,
+  )
+  .listen(8443);
 
 app.use((req, res, next) => {
   const peer = req.socket.getPeerCertificate();
@@ -5047,7 +5241,14 @@ Record who did what on which resource, with before and after values for importan
 await db.tx(async (t) => {
   const before = await t.orders.find(id);
   const after = await t.orders.update(id, changes);
-  await t.audit.insert({ actor: req.user.id, action: 'order.update', entityId: id, before, after, requestId: req.id });
+  await t.audit.insert({
+    actor: req.user.id,
+    action: "order.update",
+    entityId: id,
+    before,
+    after,
+    requestId: req.id,
+  });
 });
 ```
 
@@ -5072,7 +5273,7 @@ If you send a user string with `res.send()`, Express sets `Content-Type: text/ht
 
 ```js
 // bad: /hello?name=<script>alert(1)</script>
-app.get('/hello', (req, res) => res.send(`Hello ${req.query.name}`));
+app.get("/hello", (req, res) => res.send(`Hello ${req.query.name}`));
 ```
 
 ### 391: How do you handle timezones and dates in an Express API?
@@ -5113,15 +5314,20 @@ In development, `node --watch` restart is simplest and reliable. Real hot reload
 Mount a GraphQL server on its own path, reuse the same auth middleware and services:
 
 ```js
-const { ApolloServer } = require('@apollo/server');
-const { expressMiddleware } = require('@as-integrations/express5');
+const { ApolloServer } = require("@apollo/server");
+const { expressMiddleware } = require("@as-integrations/express5");
 
 const server = new ApolloServer({ typeDefs, resolvers });
 await server.start();
 
-app.use('/graphql', authenticate, express.json(), expressMiddleware(server, {
-  context: async ({ req }) => ({ user: req.user, services }),
-}));
+app.use(
+  "/graphql",
+  authenticate,
+  express.json(),
+  expressMiddleware(server, {
+    context: async ({ req }) => ({ user: req.user, services }),
+  }),
+);
 ```
 
 Resolvers call the same service layer as REST controllers, so business logic stays in one place. The Express 5 integration package is separate from the older Express 4 one, so pick the one matching your Express version.
@@ -5139,7 +5345,7 @@ Export a `createApp()` from a shared package, and have thin entry points:
 createApp(deps).listen(process.env.PORT);
 
 // apps/api/lambda.js
-const serverless = require('serverless-http');
+const serverless = require("serverless-http");
 module.exports.handler = serverless(createApp(deps));
 ```
 
@@ -5162,13 +5368,17 @@ Some async operations in Node run on a small thread pool (4 threads by default):
 Use a worker pool like `piscina`:
 
 ```js
-const Piscina = require('piscina');
-const pool = new Piscina({ filename: require.resolve('./resize-worker.js') });
+const Piscina = require("piscina");
+const pool = new Piscina({ filename: require.resolve("./resize-worker.js") });
 
-app.post('/resize', express.raw({ type: 'image/*', limit: '10mb' }), async (req, res) => {
-  const output = await pool.run({ image: req.body, width: 300 });
-  res.type('png').send(Buffer.from(output));
-});
+app.post(
+  "/resize",
+  express.raw({ type: "image/*", limit: "10mb" }),
+  async (req, res) => {
+    const output = await pool.run({ image: req.body, width: 300 });
+    res.type("png").send(Buffer.from(output));
+  },
+);
 ```
 
 The event loop stays free to handle other requests while the worker does the work. Limit the queue size so a burst of work cannot use all memory.
@@ -5196,10 +5406,12 @@ Add them per app on `app.response`, which is the prototype for that app's `res` 
 
 ```js
 app.response.problem = function (status, title, detail) {
-  return this.status(status).type('application/problem+json').json({ status, title, detail });
+  return this.status(status)
+    .type("application/problem+json")
+    .json({ status, title, detail });
 };
 
-app.get('/x', (req, res) => res.problem(404, 'Not Found', 'No such x'));
+app.get("/x", (req, res) => res.problem(404, "Not Found", "No such x"));
 ```
 
 For TypeScript, also extend `Express.Response`. A plain helper function (`sendProblem(res, ...)`) is often clearer and easier to type.
@@ -5213,8 +5425,9 @@ Changing an object's prototype can make V8 drop some optimizations for that obje
 `res.json()` writes the body and ends the response. Errors after that (like the client closing the connection) show up as `error` or `close` events on `res`, not in the error handler. Usually you can ignore a client disconnect. If you need to know whether the response was fully sent, check `res.writableFinished` in a `close` listener:
 
 ```js
-res.on('close', () => {
-  if (!res.writableFinished) req.log.warn('client disconnected before response finished');
+res.on("close", () => {
+  if (!res.writableFinished)
+    req.log.warn("client disconnected before response finished");
 });
 ```
 
@@ -5226,7 +5439,9 @@ Define a plugin as a function that gets the app (or a router) and some shared se
 // plugin
 module.exports = function auditPlugin({ router, services }) {
   router.use(services.auth.required);
-  router.get('/audit', async (req, res) => res.json(await services.audit.list()));
+  router.get("/audit", async (req, res) =>
+    res.json(await services.audit.list()),
+  );
 };
 
 // app
@@ -5245,12 +5460,13 @@ Make the safe option the default: add authentication globally, and opt out for p
 
 ```js
 const PUBLIC = [
-  { method: 'GET', path: '/health' },
-  { method: 'POST', path: '/login' },
+  { method: "GET", path: "/health" },
+  { method: "POST", path: "/login" },
 ];
 
 app.use((req, res, next) => {
-  if (PUBLIC.some((p) => p.method === req.method && p.path === req.path)) return next();
+  if (PUBLIC.some((p) => p.method === req.method && p.path === req.path))
+    return next();
   authenticate(req, res, next);
 });
 ```
@@ -5263,8 +5479,8 @@ There is no official API. You can walk `app.router.stack` (Express 5) or `app._r
 
 ```js
 const routes = [
-  { method: 'get', path: '/users', handler: listUsers },
-  { method: 'post', path: '/users', handler: createUser },
+  { method: "get", path: "/users", handler: listUsers },
+  { method: "post", path: "/users", handler: createUser },
 ];
 routes.forEach((r) => router[r.method](r.path, r.handler));
 ```
@@ -5282,12 +5498,16 @@ routes.forEach((r) => router[r.method](r.path, r.handler));
 Announce it, keep it working, and add headers so clients can detect it:
 
 ```js
-router.get('/v1/orders', (req, res, next) => {
-  res.set('Deprecation', '@1767225600');            // RFC 9745 date format
-  res.set('Sunset', 'Thu, 01 Jul 2027 00:00:00 GMT'); // RFC 8594
-  res.set('Link', '</v2/orders>; rel="successor-version"');
-  next();
-}, listOrdersV1);
+router.get(
+  "/v1/orders",
+  (req, res, next) => {
+    res.set("Deprecation", "@1767225600"); // RFC 9745 date format
+    res.set("Sunset", "Thu, 01 Jul 2027 00:00:00 GMT"); // RFC 8594
+    res.set("Link", '</v2/orders>; rel="successor-version"');
+    next();
+  },
+  listOrdersV1,
+);
 ```
 
 Track who still calls it (by API key or user agent), contact them, and remove it only after usage is gone or the sunset date passes.
@@ -5304,7 +5524,9 @@ await User.update(req.params.id, req.body);
 Only pick the allowed fields, ideally with a schema that strips unknown keys:
 
 ```js
-const UpdateProfile = z.object({ name: z.string().max(100), bio: z.string().max(500) }).strict();
+const UpdateProfile = z
+  .object({ name: z.string().max(100), bio: z.string().max(500) })
+  .strict();
 const data = UpdateProfile.parse(req.body);
 await User.update(req.user.id, data);
 ```
@@ -5314,13 +5536,17 @@ await User.update(req.user.id, data);
 With `application/merge-patch+json` (RFC 7396), fields in the body replace fields in the resource, and `null` means delete. Validate the patch against a schema of allowed fields, apply it to the current resource, then validate the full result before saving:
 
 ```js
-router.patch('/:id', express.json({ type: 'application/merge-patch+json' }), async (req, res) => {
-  const patch = PatchSchema.parse(req.body);
-  const current = await repo.get(req.params.id);
-  const next = applyMergePatch(current, patch);
-  const valid = ProductSchema.parse(next);
-  res.json(await repo.save(valid));
-});
+router.patch(
+  "/:id",
+  express.json({ type: "application/merge-patch+json" }),
+  async (req, res) => {
+    const patch = PatchSchema.parse(req.body);
+    const current = await repo.get(req.params.id);
+    const next = applyMergePatch(current, patch);
+    const valid = ProductSchema.parse(next);
+    res.json(await repo.save(valid));
+  },
+);
 ```
 
 ### 416: How do you avoid N+1 queries in Express endpoints?
@@ -5342,13 +5568,19 @@ Keep the request open until data is ready or a timeout passes:
 ```js
 const waiters = new Map(); // topic -> Set of res
 
-app.get('/poll/:topic', (req, res) => {
+app.get("/poll/:topic", (req, res) => {
   const set = waiters.get(req.params.topic) ?? new Set();
   waiters.set(req.params.topic, set);
   set.add(res);
 
-  const timer = setTimeout(() => { set.delete(res); res.sendStatus(204); }, 25_000);
-  req.on('close', () => { clearTimeout(timer); set.delete(res); });
+  const timer = setTimeout(() => {
+    set.delete(res);
+    res.sendStatus(204);
+  }, 25_000);
+  req.on("close", () => {
+    clearTimeout(timer);
+    set.delete(res);
+  });
 });
 
 function publish(topic, data) {
@@ -5411,8 +5643,11 @@ Review the order in `app.js` as part of security reviews.
 Make it a config value:
 
 ```js
-const trustProxy = process.env.TRUST_PROXY ?? 'loopback';
-app.set('trust proxy', /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy);
+const trustProxy = process.env.TRUST_PROXY ?? "loopback";
+app.set(
+  "trust proxy",
+  /^\d+$/.test(trustProxy) ? Number(trustProxy) : trustProxy,
+);
 ```
 
 Then production sets `TRUST_PROXY=1` (or a subnet list) based on the real network setup, and nobody uses `true` by accident.
@@ -5430,8 +5665,11 @@ Benchmark a trivial route (like `/ping` that returns `ok`) with all your global 
 One endpoint calls several services in parallel and combines the results:
 
 ```js
-app.get('/dashboard', authenticate, async (req, res) => {
-  const opts = { signal: AbortSignal.timeout(2000), headers: { 'X-User-Id': req.user.id } };
+app.get("/dashboard", authenticate, async (req, res) => {
+  const opts = {
+    signal: AbortSignal.timeout(2000),
+    headers: { "X-User-Id": req.user.id },
+  };
   const [profile, orders, notifications] = await Promise.allSettled([
     fetch(`${USERS}/me`, opts).then((r) => r.json()),
     fetch(`${ORDERS}/recent`, opts).then((r) => r.json()),
@@ -5441,7 +5679,9 @@ app.get('/dashboard', authenticate, async (req, res) => {
     profile: profile.value ?? null,
     orders: orders.value ?? [],
     notifications: notifications.value ?? [],
-    partial: [profile, orders, notifications].some((r) => r.status === 'rejected'),
+    partial: [profile, orders, notifications].some(
+      (r) => r.status === "rejected",
+    ),
   });
 });
 ```
@@ -5458,7 +5698,9 @@ Use a child logger per request and pass it through `AsyncLocalStorage`, or use `
 
 ```js
 const als = new AsyncLocalStorage();
-app.use((req, res, next) => als.run({ log: logger.child({ reqId: req.id }) }, next));
+app.use((req, res, next) =>
+  als.run({ log: logger.child({ reqId: req.id }) }, next),
+);
 const log = () => als.getStore()?.log ?? logger;
 ```
 
@@ -5481,7 +5723,7 @@ Load tenant config once per request (cached in memory with a short TTL, or in Re
 ```js
 const limiter = rateLimit({
   windowMs: 60_000,
-  limit: (req) => req.tenant.plan === 'pro' ? 1000 : 100,
+  limit: (req) => (req.tenant.plan === "pro" ? 1000 : 100),
   keyGenerator: (req) => `tenant:${req.tenant.id}`,
   store: new RedisStore({ sendCommand: (...args) => redis.sendCommand(args) }),
 });
@@ -5498,18 +5740,18 @@ The CDN caches by URL (and some headers). If your response depends on a header t
 Write tests with supertest that check headers:
 
 ```js
-test('preflight from unknown origin is not allowed', async () => {
+test("preflight from unknown origin is not allowed", async () => {
   const res = await request(app)
-    .options('/api/orders')
-    .set('Origin', 'https://evil.example')
-    .set('Access-Control-Request-Method', 'POST');
-  expect(res.headers['access-control-allow-origin']).toBeUndefined();
+    .options("/api/orders")
+    .set("Origin", "https://evil.example")
+    .set("Access-Control-Request-Method", "POST");
+  expect(res.headers["access-control-allow-origin"]).toBeUndefined();
 });
 
-test('security headers present', async () => {
-  const res = await request(app).get('/');
-  expect(res.headers['x-content-type-options']).toBe('nosniff');
-  expect(res.headers['x-powered-by']).toBeUndefined();
+test("security headers present", async () => {
+  const res = await request(app).get("/");
+  expect(res.headers["x-content-type-options"]).toBe("nosniff");
+  expect(res.headers["x-powered-by"]).toBeUndefined();
 });
 ```
 
@@ -5552,7 +5794,7 @@ By default `express.json()` has `strict: true`, which only accepts objects and a
 Validate outgoing data against the same schema you document, but only in development and test, because it costs CPU:
 
 ```js
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = process.env.NODE_ENV !== "production";
 
 function sendValid(res, schema, data) {
   if (isDev) schema.parse(data); // throws if the handler returns the wrong shape
@@ -5572,8 +5814,8 @@ With `"type": "module"`, you can use top-level `await` for setup:
 
 ```js
 // server.js
-import { createApp } from './app.js';
-import { connectDb } from './db.js';
+import { createApp } from "./app.js";
+import { connectDb } from "./db.js";
 
 const db = await connectDb(process.env.DATABASE_URL);
 const app = createApp({ db });

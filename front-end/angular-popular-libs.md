@@ -496,17 +496,17 @@ It installs `@angular/material` and `@angular/cdk`, asks you to pick a theme, ad
 You import the component (or its module) into the `imports` array of your component:
 
 ```ts
-import { Component } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { Component } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
-  selector: 'app-save-bar',
+  selector: "app-save-bar",
   imports: [MatButtonModule],
   template: `<button matButton="filled" (click)="save()">Save</button>`,
 })
 export class SaveBar {
   save() {
-    console.log('saved');
+    console.log("saved");
   }
 }
 ```
@@ -589,11 +589,17 @@ NgRx is the most popular state management library for Angular. It has several pa
 SignalStore (`@ngrx/signals`) is a newer, lighter store from the NgRx team built on Angular signals. You create a store with `signalStore()` and add features like state, computed values and methods. It needs much less boilerplate than the classic Store.
 
 ```ts
-import { computed } from '@angular/core';
-import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
+import { computed } from "@angular/core";
+import {
+  signalStore,
+  withState,
+  withComputed,
+  withMethods,
+  patchState,
+} from "@ngrx/signals";
 
 export const CounterStore = signalStore(
-  { providedIn: 'root' },
+  { providedIn: "root" },
   withState({ count: 0 }),
   withComputed(({ count }) => ({
     double: computed(() => count() * 2),
@@ -619,17 +625,20 @@ Akita was a state management library from Datorama (Salesforce) based on stores 
 Elf (`@ngneat/elf`) is a small reactive state management library built on RxJS. It is framework agnostic but popular in Angular. You create a store with `createStore()` and add features like `withProps`, `withEntities` or `withRequestsStatus`, and you read data as observables.
 
 ```ts
-import { createStore, withProps, select } from '@ngneat/elf';
+import { createStore, withProps, select } from "@ngneat/elf";
 
 interface AuthProps {
   user: { name: string } | null;
 }
 
-const authStore = createStore({ name: 'auth' }, withProps<AuthProps>({ user: null }));
+const authStore = createStore(
+  { name: "auth" },
+  withProps<AuthProps>({ user: null }),
+);
 
 export const user$ = authStore.pipe(select((state) => state.user));
 
-export function setUser(user: AuthProps['user']) {
+export function setUser(user: AuthProps["user"]) {
   authStore.update((state) => ({ ...state, user }));
 }
 ```
@@ -722,14 +731,14 @@ ngx-mask is a directive and pipe for input masks, for example phone numbers, dat
 ngx-toastr shows toast notifications (small pop-up messages) for success, error, info and warning. You register it with `provideToastr()` and `provideAnimations()` (or the newer animation setup), then inject `ToastrService`:
 
 ```ts
-import { inject } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { inject } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 
 export class ProfilePage {
   private toastr = inject(ToastrService);
 
   onSaved() {
-    this.toastr.success('Profile updated', 'Done');
+    this.toastr.success("Profile updated", "Done");
   }
 }
 ```
@@ -739,14 +748,14 @@ export class ProfilePage {
 `MatSnackBar` is Material's built-in way to show short messages at the bottom (or top) of the screen. You inject the service and call `open()`:
 
 ```ts
-import { inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { inject } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 export class OrdersPage {
   private snackBar = inject(MatSnackBar);
 
   showSaved() {
-    this.snackBar.open('Order saved', 'Undo', { duration: 3000 });
+    this.snackBar.open("Order saved", "Undo", { duration: 3000 });
   }
 }
 ```
@@ -758,18 +767,18 @@ If you already use Material, you usually do not need a separate toast library.
 Spectator (`@ngneat/spectator`) is a testing library that removes a lot of `TestBed` boilerplate. You create a factory once, and it gives you a `spectator` object with helpers to query elements, trigger events, set inputs and get services.
 
 ```ts
-import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
-import { Counter } from './counter';
+import { createComponentFactory, Spectator } from "@ngneat/spectator/jest";
+import { Counter } from "./counter";
 
-describe('Counter', () => {
+describe("Counter", () => {
   let spectator: Spectator<Counter>;
   const createComponent = createComponentFactory(Counter);
 
   beforeEach(() => (spectator = createComponent()));
 
-  it('increments on click', () => {
-    spectator.click('button');
-    expect(spectator.query('span')).toHaveText('1');
+  it("increments on click", () => {
+    spectator.click("button");
+    expect(spectator.query("span")).toHaveText("1");
   });
 });
 ```
@@ -783,14 +792,14 @@ ng-mocks is a testing library that creates mocks of components, directives, pipe
 Angular Testing Library (`@testing-library/angular`) is the Angular version of Testing Library. Its idea is to test components the way a user uses them: find elements by role, label or text, click and type, and check what is on the screen, instead of checking internal component state.
 
 ```ts
-import { render, screen } from '@testing-library/angular';
-import userEvent from '@testing-library/user-event';
-import { Counter } from './counter';
+import { render, screen } from "@testing-library/angular";
+import userEvent from "@testing-library/user-event";
+import { Counter } from "./counter";
 
-it('shows the new count after click', async () => {
+it("shows the new count after click", async () => {
   await render(Counter);
-  await userEvent.click(screen.getByRole('button', { name: /increment/i }));
-  expect(screen.getByText('Count: 1')).toBeTruthy();
+  await userEvent.click(screen.getByRole("button", { name: /increment/i }));
+  expect(screen.getByText("Count: 1")).toBeTruthy();
 });
 ```
 
@@ -861,7 +870,7 @@ ngx-infinite-scroll is a directive that emits an event when the user scrolls clo
 ```html
 <div infiniteScroll [infiniteScrollDistance]="2" (scrolled)="loadMore()">
   @for (item of items(); track item.id) {
-    <app-item [item]="item" />
+  <app-item [item]="item" />
   }
 </div>
 ```
@@ -872,9 +881,9 @@ ngx-cookie-service gives you a `CookieService` to read, set and delete browser c
 
 ```ts
 const cookies = inject(CookieService);
-cookies.set('theme', 'dark', { expires: 30, path: '/' });
-const theme = cookies.get('theme');
-cookies.delete('theme', '/');
+cookies.set("theme", "dark", { expires: 30, path: "/" });
+const theme = cookies.get("theme");
+cookies.delete("theme", "/");
 ```
 
 It also has an SSR version (`ngx-cookie-service-ssr`) that reads cookies from the server request.
@@ -884,8 +893,7 @@ It also has an SSR version (`ngx-cookie-service-ssr`) that reads cookies from th
 ngx-markdown renders Markdown in Angular using marked. It can load Markdown from a string or a file, and optionally adds syntax highlighting (Prism), math (KaTeX), diagrams (Mermaid) and emoji.
 
 ```html
-<markdown [data]="readme" />
-<markdown src="assets/docs/intro.md" />
+<markdown [data]="readme" /> <markdown src="assets/docs/intro.md" />
 ```
 
 ## 50: What is @angular/google-maps?
@@ -930,9 +938,9 @@ Running `ng update` with no arguments lists the packages that have updates avail
 In standalone Angular, libraries expose functions such as `provideStore()`, `provideToastr()`, `provideTransloco()` or `provideCharts()` that return the providers the library needs. You add them to the `providers` array in `app.config.ts`.
 
 ```ts
-import { ApplicationConfig } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
-import { provideToastr } from 'ngx-toastr';
+import { ApplicationConfig } from "@angular/core";
+import { provideHttpClient } from "@angular/common/http";
+import { provideToastr } from "ngx-toastr";
 
 export const appConfig: ApplicationConfig = {
   providers: [provideHttpClient(), provideToastr({ timeOut: 3000 })],
@@ -946,8 +954,8 @@ This replaced the older `SomeModule.forRoot()` pattern.
 You can still use it in a standalone app with `importProvidersFrom()`:
 
 ```ts
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { FormlyModule } from '@ngx-formly/core';
+import { ApplicationConfig, importProvidersFrom } from "@angular/core";
+import { FormlyModule } from "@ngx-formly/core";
 
 export const appConfig: ApplicationConfig = {
   providers: [importProvidersFrom(FormlyModule.forRoot())],
@@ -972,22 +980,22 @@ You can also register your own SVG icons with `MatIconRegistry`.
 Inject `MatDialog` and call `open()` with the component you want to show:
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialog } from './confirm-dialog';
+import { Component, inject } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDialog } from "./confirm-dialog";
 
 @Component({
-  selector: 'app-user-row',
+  selector: "app-user-row",
   template: `<button (click)="remove()">Delete</button>`,
 })
 export class UserRow {
   private dialog = inject(MatDialog);
 
   remove() {
-    const ref = this.dialog.open(ConfirmDialog, { data: { name: 'Anna' } });
+    const ref = this.dialog.open(ConfirmDialog, { data: { name: "Anna" } });
     ref.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        console.log('deleting');
+        console.log("deleting");
       }
     });
   }
@@ -999,11 +1007,15 @@ export class UserRow {
 Inject `MAT_DIALOG_DATA` inside the dialog component, and `MatDialogRef` to close it with a result:
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject } from "@angular/core";
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-confirm-dialog',
+  selector: "app-confirm-dialog",
   imports: [MatDialogModule],
   template: `
     <h2 mat-dialog-title>Delete {{ data.name }}?</h2>
@@ -1029,7 +1041,7 @@ export class ConfirmDialog {
   <input matInput type="email" [formControl]="email" />
   <mat-hint>We never share it</mat-hint>
   @if (email.hasError('required')) {
-    <mat-error>Email is required</mat-error>
+  <mat-error>Email is required</mat-error>
   }
 </mat-form-field>
 ```
@@ -1060,15 +1072,15 @@ export class ConfirmDialog {
 Use `MatTableDataSource` together with `MatSort` and `MatPaginator`:
 
 ```ts
-import { Component, viewChild, effect } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { Component, viewChild, effect } from "@angular/core";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
+import { MatSort, MatSortModule } from "@angular/material/sort";
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 
 @Component({
-  selector: 'app-users-table',
+  selector: "app-users-table",
   imports: [MatTableModule, MatSortModule, MatPaginatorModule],
-  templateUrl: './users-table.html',
+  templateUrl: "./users-table.html",
 })
 export class UsersTable {
   dataSource = new MatTableDataSource<{ name: string; age: number }>([]);
@@ -1091,7 +1103,7 @@ In the template you add `matSort` on the table, `mat-sort-header` on header cell
 You need a date adapter. The simplest is the native one:
 
 ```ts
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { provideNativeDateAdapter } from "@angular/material/core";
 
 export const appConfig = {
   providers: [provideNativeDateAdapter()],
@@ -1114,11 +1126,16 @@ There are also adapters for date-fns, Luxon and Moment if you need better parsin
 `@angular/cdk/drag-drop` lets you make elements draggable and reorder lists. You put `cdkDropList` on the container, `cdkDrag` on each item, and handle the `cdkDropListDropped` event.
 
 ```ts
-import { Component, signal } from '@angular/core';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, signal } from "@angular/core";
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  moveItemInArray,
+} from "@angular/cdk/drag-drop";
 
 @Component({
-  selector: 'app-todo-list',
+  selector: "app-todo-list",
   imports: [CdkDropList, CdkDrag],
   template: `
     <ul cdkDropList (cdkDropListDropped)="drop($event)">
@@ -1129,7 +1146,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
   `,
 })
 export class TodoList {
-  tasks = signal(['Write tests', 'Review PR', 'Deploy']);
+  tasks = signal(["Write tests", "Review PR", "Deploy"]);
 
   drop(event: CdkDragDrop<string[]>) {
     this.tasks.update((list) => {
@@ -1158,10 +1175,10 @@ Virtual scrolling renders only the items that are visible on the screen, instead
 `BreakpointObserver` from `@angular/cdk/layout` tells you when media queries match, so you can change layout in code. It has predefined breakpoints in `Breakpoints`.
 
 ```ts
-import { inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map } from 'rxjs';
+import { inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { map } from "rxjs";
 
 export class Shell {
   private bo = inject(BreakpointObserver);
@@ -1183,7 +1200,7 @@ export class Shell {
 
 ```ts
 const clipboard = inject(Clipboard);
-clipboard.copy('some text');
+clipboard.copy("some text");
 ```
 
 ## 67: What is cdkTextareaAutosize?
@@ -1191,7 +1208,11 @@ clipboard.copy('some text');
 It is a directive from `@angular/cdk/text-field` that makes a `<textarea>` grow and shrink with its content.
 
 ```html
-<textarea cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="8"></textarea>
+<textarea
+  cdkTextareaAutosize
+  cdkAutosizeMinRows="2"
+  cdkAutosizeMaxRows="8"
+></textarea>
 ```
 
 ## 68: What is a theme in Angular Material?
@@ -1199,15 +1220,17 @@ It is a directive from `@angular/cdk/text-field` that makes a `<textarea>` grow 
 A theme defines the colors, typography and density used by all Material components. In current versions you define it with the `mat.theme` Sass mixin, which outputs CSS variables (system tokens like `--mat-sys-primary`):
 
 ```scss
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 html {
   color-scheme: light dark;
-  @include mat.theme((
-    color: mat.$violet-palette,
-    typography: Roboto,
-    density: 0,
-  ));
+  @include mat.theme(
+    (
+      color: mat.$violet-palette,
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 ```
 
@@ -1222,10 +1245,10 @@ npm install primeng @primeuix/themes
 ```
 
 ```ts
-import { ApplicationConfig } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
+import { ApplicationConfig } from "@angular/core";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { providePrimeNG } from "primeng/config";
+import Aura from "@primeuix/themes/aura";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -1242,12 +1265,12 @@ Older PrimeNG versions used CSS theme files and later `@primeng/themes`. You wil
 Import the component from its entry point and use it in the template:
 
 ```ts
-import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import { Component } from "@angular/core";
+import { ButtonModule } from "primeng/button";
+import { InputTextModule } from "primeng/inputtext";
 
 @Component({
-  selector: 'app-search',
+  selector: "app-search",
   imports: [ButtonModule, InputTextModule],
   template: `
     <input pInputText placeholder="Search" />
@@ -1264,19 +1287,19 @@ Icons come from the `primeicons` package.
 `NgbModal` is a service for opening modal windows:
 
 ```ts
-import { inject } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EditUserModal } from './edit-user-modal';
+import { inject } from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { EditUserModal } from "./edit-user-modal";
 
 export class UsersPage {
   private modal = inject(NgbModal);
 
   edit() {
-    const ref = this.modal.open(EditUserModal, { size: 'lg' });
+    const ref = this.modal.open(EditUserModal, { size: "lg" });
     ref.componentInstance.userId = 42;
     ref.result.then(
-      (result) => console.log('closed', result),
-      () => console.log('dismissed'),
+      (result) => console.log("closed", result),
+      () => console.log("dismissed"),
     );
   }
 }
@@ -1295,17 +1318,17 @@ npm install @ngx-translate/core @ngx-translate/http-loader
 ```
 
 ```ts
-import { ApplicationConfig } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
-import { provideTranslateService } from '@ngx-translate/core';
-import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ApplicationConfig } from "@angular/core";
+import { provideHttpClient } from "@angular/common/http";
+import { provideTranslateService } from "@ngx-translate/core";
+import { provideTranslateHttpLoader } from "@ngx-translate/http-loader";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     provideTranslateService({
-      loader: provideTranslateHttpLoader({ prefix: '/i18n/', suffix: '.json' }),
-      fallbackLang: 'en',
+      loader: provideTranslateHttpLoader({ prefix: "/i18n/", suffix: ".json" }),
+      fallbackLang: "en",
     }),
   ],
 };
@@ -1325,8 +1348,8 @@ With the pipe, the directive or the service:
 
 ```ts
 const translate = inject(TranslateService);
-const label = translate.instant('home.title');
-translate.get('home.title').subscribe((text) => console.log(text));
+const label = translate.instant("home.title");
+translate.get("home.title").subscribe((text) => console.log(text));
 ```
 
 You need to import `TranslatePipe` (or `TranslateDirective`) in the component.
@@ -1337,7 +1360,7 @@ Call `use()` on `TranslateService`. It loads the file if needed and updates all 
 
 ```ts
 const translate = inject(TranslateService);
-translate.use('de');
+translate.use("de");
 ```
 
 ## 76: How do you install Transloco?
@@ -1351,16 +1374,16 @@ ng add @jsverse/transloco
 It creates a loader and adds the config:
 
 ```ts
-import { provideTransloco } from '@jsverse/transloco';
-import { TranslocoHttpLoader } from './transloco-loader';
+import { provideTransloco } from "@jsverse/transloco";
+import { TranslocoHttpLoader } from "./transloco-loader";
 
 export const appConfig = {
   providers: [
     provideHttpClient(),
     provideTransloco({
       config: {
-        availableLangs: ['en', 'es'],
-        defaultLang: 'en',
+        availableLangs: ["en", "es"],
+        defaultLang: "en",
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
@@ -1396,13 +1419,13 @@ Inject `TranslocoService`:
 const transloco = inject(TranslocoService);
 
 // sync, works only if the language file is already loaded
-const title = transloco.translate('home.title');
+const title = transloco.translate("home.title");
 
 // async, waits for the file
-transloco.selectTranslate('home.title').subscribe((text) => console.log(text));
+transloco.selectTranslate("home.title").subscribe((text) => console.log(text));
 
 // switch language
-transloco.setActiveLang('es');
+transloco.setActiveLang("es");
 ```
 
 ## 79: How do you add an NgRx store to a standalone app?
@@ -1414,12 +1437,12 @@ ng add @ngrx/store-devtools
 ```
 
 ```ts
-import { ApplicationConfig, isDevMode } from '@angular/core';
-import { provideStore, provideState } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { booksFeature } from './books/books.feature';
-import * as booksEffects from './books/books.effects';
+import { ApplicationConfig, isDevMode } from "@angular/core";
+import { provideStore, provideState } from "@ngrx/store";
+import { provideEffects } from "@ngrx/effects";
+import { provideStoreDevtools } from "@ngrx/store-devtools";
+import { booksFeature } from "./books/books.feature";
+import * as booksEffects from "./books/books.effects";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -1442,9 +1465,9 @@ ng add @ngxs/store
 ```
 
 ```ts
-import { provideStore } from '@ngxs/store';
-import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
-import { TodosState } from './todos.state';
+import { provideStore } from "@ngxs/store";
+import { withNgxsReduxDevtoolsPlugin } from "@ngxs/devtools-plugin";
+import { TodosState } from "./todos.state";
 
 export const appConfig = {
   providers: [provideStore([TodosState], withNgxsReduxDevtoolsPlugin())],
@@ -1456,11 +1479,11 @@ Note that both NgRx and NGXS export a function named `provideStore`. They come f
 ## 82: What does a basic NGXS state look like?
 
 ```ts
-import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Injectable } from "@angular/core";
+import { Action, Selector, State, StateContext } from "@ngxs/store";
 
 export class AddTodo {
-  static readonly type = '[Todos] Add';
+  static readonly type = "[Todos] Add";
   constructor(public title: string) {}
 }
 
@@ -1468,7 +1491,7 @@ export interface TodosModel {
   items: string[];
 }
 
-@State<TodosModel>({ name: 'todos', defaults: { items: [] } })
+@State<TodosModel>({ name: "todos", defaults: { items: [] } })
 @Injectable()
 export class TodosState {
   @Selector()
@@ -1492,9 +1515,12 @@ npm install @tanstack/angular-query-experimental
 ```
 
 ```ts
-import { ApplicationConfig } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
-import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
+import { ApplicationConfig } from "@angular/core";
+import { provideHttpClient } from "@angular/common/http";
+import {
+  provideTanStackQuery,
+  QueryClient,
+} from "@tanstack/angular-query-experimental";
 
 export const appConfig: ApplicationConfig = {
   providers: [provideHttpClient(), provideTanStackQuery(new QueryClient())],
@@ -1504,10 +1530,10 @@ export const appConfig: ApplicationConfig = {
 ## 84: How do you fetch data with injectQuery?
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { injectQuery } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
+import { Component, inject } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { injectQuery } from "@tanstack/angular-query-experimental";
+import { lastValueFrom } from "rxjs";
 
 interface Todo {
   id: number;
@@ -1515,7 +1541,7 @@ interface Todo {
 }
 
 @Component({
-  selector: 'app-todos',
+  selector: "app-todos",
   template: `
     @if (todos.isPending()) {
       <p>Loading...</p>
@@ -1532,8 +1558,8 @@ export class Todos {
   private http = inject(HttpClient);
 
   todos = injectQuery(() => ({
-    queryKey: ['todos'],
-    queryFn: () => lastValueFrom(this.http.get<Todo[]>('/api/todos')),
+    queryKey: ["todos"],
+    queryFn: () => lastValueFrom(this.http.get<Todo[]>("/api/todos")),
   }));
 }
 ```
@@ -1549,11 +1575,11 @@ ng add apollo-angular
 This installs `apollo-angular`, `@apollo/client` and `graphql`, and creates a config like this:
 
 ```ts
-import { inject } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
-import { provideApollo } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache } from '@apollo/client/core';
+import { inject } from "@angular/core";
+import { provideHttpClient } from "@angular/common/http";
+import { provideApollo } from "apollo-angular";
+import { HttpLink } from "apollo-angular/http";
+import { InMemoryCache } from "@apollo/client/core";
 
 export const appConfig = {
   providers: [
@@ -1561,7 +1587,7 @@ export const appConfig = {
     provideApollo(() => {
       const httpLink = inject(HttpLink);
       return {
-        link: httpLink.create({ uri: '/graphql' }),
+        link: httpLink.create({ uri: "/graphql" }),
         cache: new InMemoryCache(),
       };
     }),
@@ -1572,10 +1598,10 @@ export const appConfig = {
 ## 86: How do you run a GraphQL query with Apollo Angular?
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Apollo, gql } from 'apollo-angular';
-import { map } from 'rxjs';
+import { Component, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { Apollo, gql } from "apollo-angular";
+import { map } from "rxjs";
 
 const GET_BOOKS = gql`
   query GetBooks {
@@ -1587,7 +1613,7 @@ const GET_BOOKS = gql`
 `;
 
 @Component({
-  selector: 'app-books',
+  selector: "app-books",
   template: `
     @for (book of books(); track book.id) {
       <p>{{ book.title }}</p>
@@ -1599,7 +1625,9 @@ export class Books {
 
   books = toSignal(
     this.apollo
-      .watchQuery<{ books: { id: string; title: string }[] }>({ query: GET_BOOKS })
+      .watchQuery<{ books: { id: string; title: string }[] }>({
+        query: GET_BOOKS,
+      })
       .valueChanges.pipe(map((result) => result.data.books)),
     { initialValue: [] },
   );
@@ -1615,10 +1643,10 @@ ng add @angular/fire
 ```
 
 ```ts
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { environment } from '../environments/environment';
+import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
+import { provideAuth, getAuth } from "@angular/fire/auth";
+import { provideFirestore, getFirestore } from "@angular/fire/firestore";
+import { environment } from "../environments/environment";
 
 export const appConfig = {
   providers: [
@@ -1632,9 +1660,9 @@ export const appConfig = {
 ## 88: How do you read a Firestore collection with AngularFire?
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Component, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { Firestore, collection, collectionData } from "@angular/fire/firestore";
 
 interface Note {
   id: string;
@@ -1642,7 +1670,7 @@ interface Note {
 }
 
 @Component({
-  selector: 'app-notes',
+  selector: "app-notes",
   template: `
     @for (note of notes(); track note.id) {
       <p>{{ note.text }}</p>
@@ -1653,7 +1681,7 @@ export class Notes {
   private firestore = inject(Firestore);
 
   notes = toSignal(
-    collectionData(collection(this.firestore, 'notes'), { idField: 'id' }),
+    collectionData(collection(this.firestore, "notes"), { idField: "id" }),
     { initialValue: [] as Note[] },
   );
 }
@@ -1664,9 +1692,9 @@ The observable emits a new array every time the collection changes on the server
 ## 89: How do you show a basic AG Grid table?
 
 ```ts
-import { Component } from '@angular/core';
-import { AgGridAngular } from 'ag-grid-angular';
-import { AllCommunityModule, ColDef, ModuleRegistry } from 'ag-grid-community';
+import { Component } from "@angular/core";
+import { AgGridAngular } from "ag-grid-angular";
+import { AllCommunityModule, ColDef, ModuleRegistry } from "ag-grid-community";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -1677,22 +1705,26 @@ interface Car {
 }
 
 @Component({
-  selector: 'app-cars',
+  selector: "app-cars",
   imports: [AgGridAngular],
   template: `
-    <ag-grid-angular style="height: 400px" [rowData]="rowData" [columnDefs]="colDefs" />
+    <ag-grid-angular
+      style="height: 400px"
+      [rowData]="rowData"
+      [columnDefs]="colDefs"
+    />
   `,
 })
 export class Cars {
   rowData: Car[] = [
-    { make: 'Tesla', model: 'Model Y', price: 64950 },
-    { make: 'Ford', model: 'F-Series', price: 33850 },
+    { make: "Tesla", model: "Model Y", price: 64950 },
+    { make: "Ford", model: "F-Series", price: 33850 },
   ];
 
   colDefs: ColDef<Car>[] = [
-    { field: 'make', filter: true },
-    { field: 'model' },
-    { field: 'price', sortable: true },
+    { field: "make", filter: true },
+    { field: "model" },
+    { field: "price", sortable: true },
   ];
 }
 ```
@@ -1702,8 +1734,8 @@ Recent AG Grid versions require you to register modules. `AllCommunityModule` is
 ## 90: How do you show a chart with ng2-charts?
 
 ```ts
-import { ApplicationConfig } from '@angular/core';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { ApplicationConfig } from "@angular/core";
+import { provideCharts, withDefaultRegisterables } from "ng2-charts";
 
 export const appConfig: ApplicationConfig = {
   providers: [provideCharts(withDefaultRegisterables())],
@@ -1711,19 +1743,19 @@ export const appConfig: ApplicationConfig = {
 ```
 
 ```ts
-import { Component } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
-import { ChartData } from 'chart.js';
+import { Component } from "@angular/core";
+import { BaseChartDirective } from "ng2-charts";
+import { ChartData } from "chart.js";
 
 @Component({
-  selector: 'app-sales-chart',
+  selector: "app-sales-chart",
   imports: [BaseChartDirective],
   template: `<canvas baseChart type="bar" [data]="data"></canvas>`,
 })
 export class SalesChart {
-  data: ChartData<'bar'> = {
-    labels: ['Jan', 'Feb', 'Mar'],
-    datasets: [{ label: 'Sales', data: [120, 150, 90] }],
+  data: ChartData<"bar"> = {
+    labels: ["Jan", "Feb", "Mar"],
+    datasets: [{ label: "Sales", data: [120, 150, 90] }],
   };
 }
 ```
@@ -1737,10 +1769,10 @@ npm install echarts ngx-echarts
 ```
 
 ```ts
-import { provideEchartsCore } from 'ngx-echarts';
+import { provideEchartsCore } from "ngx-echarts";
 
 export const appConfig = {
-  providers: [provideEchartsCore({ echarts: () => import('echarts') })],
+  providers: [provideEchartsCore({ echarts: () => import("echarts") })],
 };
 ```
 
@@ -1757,12 +1789,12 @@ ngx-charts is a chart library that uses Angular for rendering SVG and D3 only fo
 ## 93: How do you define a simple Formly form?
 
 ```ts
-import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
+import { Component } from "@angular/core";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { FormlyFieldConfig, FormlyModule } from "@ngx-formly/core";
 
 @Component({
-  selector: 'app-signup',
+  selector: "app-signup",
   imports: [ReactiveFormsModule, FormlyModule],
   template: `
     <form [formGroup]="form" (ngSubmit)="submit()">
@@ -1773,12 +1805,12 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 })
 export class Signup {
   form = new FormGroup({});
-  model = { email: '' };
+  model = { email: "" };
   fields: FormlyFieldConfig[] = [
     {
-      key: 'email',
-      type: 'input',
-      props: { label: 'Email', type: 'email', required: true },
+      key: "email",
+      type: "input",
+      props: { label: "Email", type: "email", required: true },
     },
   ];
 
@@ -1793,7 +1825,7 @@ You also need to register Formly and a UI package (for example `FormlyMaterialMo
 ## 94: How do you set up ngx-mask in a standalone app?
 
 ```ts
-import { provideNgxMask } from 'ngx-mask';
+import { provideNgxMask } from "ngx-mask";
 
 export const appConfig = {
   providers: [provideNgxMask()],
@@ -1801,17 +1833,17 @@ export const appConfig = {
 ```
 
 ```ts
-import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
-import { NgxMaskDirective } from 'ngx-mask';
+import { Component } from "@angular/core";
+import { ReactiveFormsModule, FormControl } from "@angular/forms";
+import { NgxMaskDirective } from "ngx-mask";
 
 @Component({
-  selector: 'app-phone',
+  selector: "app-phone",
   imports: [ReactiveFormsModule, NgxMaskDirective],
   template: `<input mask="(000) 000-0000" [formControl]="phone" />`,
 })
 export class Phone {
-  phone = new FormControl('');
+  phone = new FormControl("");
 }
 ```
 
@@ -1833,11 +1865,11 @@ It is a library for logging in with OAuth 2 and OpenID Connect providers (Keyclo
 ```ts
 const oauth = inject(OAuthService);
 oauth.configure({
-  issuer: 'https://login.example.com',
-  clientId: 'spa',
+  issuer: "https://login.example.com",
+  clientId: "spa",
   redirectUri: window.location.origin,
-  responseType: 'code',
-  scope: 'openid profile email offline_access',
+  responseType: "code",
+  scope: "openid profile email offline_access",
 });
 await oauth.loadDiscoveryDocumentAndTryLogin();
 if (!oauth.hasValidAccessToken()) {
@@ -1877,7 +1909,7 @@ Lodash is a utility library with functions like `debounce`, `groupBy`, `cloneDee
 If you use it, install `lodash-es` and import single functions, so the bundler can tree-shake the rest:
 
 ```ts
-import { debounce } from 'lodash-es';
+import { debounce } from "lodash-es";
 ```
 
 ## 102: Which date libraries are common in Angular apps?
@@ -1895,9 +1927,9 @@ It shows grey placeholder shapes (skeletons) while content is loading, which fee
 
 ```html
 @if (loading()) {
-  <ngx-skeleton-loader count="5" appearance="line" />
+<ngx-skeleton-loader count="5" appearance="line" />
 } @else {
-  <app-user-list [users]="users()" />
+<app-user-list [users]="users()" />
 }
 ```
 
@@ -1944,17 +1976,17 @@ It is a PDF viewer component built on Mozilla's pdf.js. It gives you a full view
 ## 109: How do you use ngx-quill with a reactive form?
 
 ```ts
-import { Component } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { QuillEditorComponent } from 'ngx-quill';
+import { Component } from "@angular/core";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { QuillEditorComponent } from "ngx-quill";
 
 @Component({
-  selector: 'app-post-editor',
+  selector: "app-post-editor",
   imports: [ReactiveFormsModule, QuillEditorComponent],
   template: `<quill-editor [formControl]="content" />`,
 })
 export class PostEditor {
-  content = new FormControl('');
+  content = new FormControl("");
 }
 ```
 
@@ -1973,7 +2005,7 @@ ngx-logger is a logging library with log levels (`trace`, `debug`, `info`, `warn
 Tailwind is a utility-first CSS framework: you style elements with small classes like `p-4`, `flex` and `text-gray-700` right in the template. The Angular CLI supports it directly. In current versions you install `tailwindcss` and `@tailwindcss/postcss`, add a PostCSS config, and import Tailwind in `styles.css`:
 
 ```css
-@import 'tailwindcss';
+@import "tailwindcss";
 ```
 
 Many Angular UI libraries (Spartan, PrimeNG unstyled mode) are built to work with Tailwind.
@@ -1997,12 +2029,12 @@ For interactive parts (modals, dropdowns) use ng-bootstrap or ngx-bootstrap inst
 `@fortawesome/angular-fontawesome` is the official component for Font Awesome icons. You import `FaIconComponent` and pass an icon object, so only the icons you use end up in the bundle:
 
 ```ts
-import { Component } from '@angular/core';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { Component } from "@angular/core";
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
-  selector: 'app-break',
+  selector: "app-break",
   imports: [FaIconComponent],
   template: `<fa-icon [icon]="coffee" />`,
 })
@@ -2094,15 +2126,15 @@ A portal is a piece of UI (a component or a template) that can be rendered somew
 ## 126: How do you announce a message to screen readers with the CDK?
 
 ```ts
-import { inject } from '@angular/core';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { inject } from "@angular/core";
+import { LiveAnnouncer } from "@angular/cdk/a11y";
 
 export class Cart {
   private announcer = inject(LiveAnnouncer);
 
   addItem() {
     // ...add to cart
-    this.announcer.announce('Item added to cart', 'polite');
+    this.announcer.announce("Item added to cart", "polite");
   }
 }
 ```
@@ -2112,7 +2144,7 @@ export class Cart {
 `SelectionModel` from `@angular/cdk/collections` keeps track of selected items. It supports single or multiple selection and emits changes. It is often used with `mat-table` checkboxes.
 
 ```ts
-import { SelectionModel } from '@angular/cdk/collections';
+import { SelectionModel } from "@angular/cdk/collections";
 
 const selection = new SelectionModel<number>(true, []);
 selection.select(1, 2);
@@ -2136,8 +2168,8 @@ Capacitor is a native runtime from the Ionic team. It wraps a web app (Angular o
 ## 131: How do you add Ionic to a standalone Angular app?
 
 ```ts
-import { ApplicationConfig } from '@angular/core';
-import { provideIonicAngular } from '@ionic/angular/standalone';
+import { ApplicationConfig } from "@angular/core";
+import { provideIonicAngular } from "@ionic/angular/standalone";
 
 export const appConfig: ApplicationConfig = {
   providers: [provideIonicAngular()],
@@ -2147,7 +2179,13 @@ export const appConfig: ApplicationConfig = {
 Then import each Ionic component from `@ionic/angular/standalone` into your components:
 
 ```ts
-import { IonButton, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/angular/standalone";
 ```
 
 Importing single components lets the bundler drop the ones you don't use.
@@ -2157,7 +2195,7 @@ Importing single components lets the bundler drop the ones you don't use.
 `@ngrx/entity` helps you store collections of records in a normalized way: an `ids` array and an `entities` dictionary. `createEntityAdapter()` gives you functions like `addOne`, `setAll`, `updateOne`, `removeOne` and ready selectors like `selectAll` and `selectTotal`.
 
 ```ts
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from "@ngrx/entity";
 
 interface Book {
   id: string;
@@ -2168,7 +2206,9 @@ export const adapter = createEntityAdapter<Book>();
 export interface BooksState extends EntityState<Book> {
   loading: boolean;
 }
-export const initialState: BooksState = adapter.getInitialState({ loading: false });
+export const initialState: BooksState = adapter.getInitialState({
+  loading: false,
+});
 ```
 
 ## 133: What is NgRx Router Store?
@@ -2184,8 +2224,8 @@ providers: [provideStore({ router: routerReducer }), provideRouterStore()];
 `ngrx-immer` is a small community library that lets you write NgRx reducers (and SignalStore updates) with Immer. You write code that looks like mutation, and Immer creates a new immutable state for you.
 
 ```ts
-import { on } from '@ngrx/store';
-import { immerOn } from 'ngrx-immer/store';
+import { on } from "@ngrx/store";
+import { immerOn } from "ngrx-immer/store";
 
 // plain NgRx
 on(addTodo, (state, { title }) => ({
@@ -2214,17 +2254,17 @@ immerOn(addTodo, (state, { title }) => {
 ## 137: How do you use RxJS webSocket in a service?
 
 ```ts
-import { Injectable } from '@angular/core';
-import { webSocket } from 'rxjs/webSocket';
+import { Injectable } from "@angular/core";
+import { webSocket } from "rxjs/webSocket";
 
 interface ChatMessage {
   user: string;
   text: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ChatService {
-  private socket = webSocket<ChatMessage>('wss://example.com/chat');
+  private socket = webSocket<ChatMessage>("wss://example.com/chat");
 
   messages$ = this.socket.asObservable();
 
@@ -2294,8 +2334,9 @@ Clarity is an open source design system from VMware with Angular components (`@c
 ngx-pagination gives you a `paginate` pipe and a `<pagination-controls>` component for simple client-side or server-side paging of lists.
 
 ```html
-@for (item of items | paginate: { itemsPerPage: 10, currentPage: page }; track item.id) {
-  <p>{{ item.name }}</p>
+@for (item of items | paginate: { itemsPerPage: 10, currentPage: page }; track
+item.id) {
+<p>{{ item.name }}</p>
 }
 <pagination-controls (pageChange)="page = $event" />
 ```
@@ -2314,7 +2355,7 @@ It provides component test harnesses: classes that let tests interact with a com
 
 ```ts
 const loader = TestbedHarnessEnvironment.loader(fixture);
-const button = await loader.getHarness(MatButtonHarness.with({ text: 'Save' }));
+const button = await loader.getHarness(MatButtonHarness.with({ text: "Save" }));
 await button.click();
 ```
 
@@ -2325,13 +2366,15 @@ await button.click();
 Each component has an overrides mixin that changes its design tokens without touching internal CSS classes:
 
 ```scss
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 .danger-zone {
-  @include mat.button-overrides((
-    filled-container-color: #b00020,
-    filled-label-text-color: white,
-  ));
+  @include mat.button-overrides(
+    (
+      filled-container-color: #b00020,
+      filled-label-text-color: white,
+    )
+  );
 }
 ```
 
@@ -2357,7 +2400,13 @@ Set `color-scheme` on the element where you include the theme. With `light dark`
 ```scss
 html {
   color-scheme: light;
-  @include mat.theme((color: mat.$azure-palette, typography: Roboto, density: 0));
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
 html.dark {
@@ -2383,7 +2432,11 @@ Density makes components more compact. Pass a number from `0` (default) down to 
 
 ```scss
 .data-heavy-page {
-  @include mat.theme((density: -2));
+  @include mat.theme(
+    (
+      density: -2,
+    )
+  );
 }
 ```
 
@@ -2394,12 +2447,15 @@ This is useful for admin screens with many fields and tables.
 Most components have an injection token for default options. For example:
 
 ```ts
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from "@angular/material/form-field";
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from "@angular/material/snack-bar";
 
 export const appConfig = {
   providers: [
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: "outline" },
+    },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3000 } },
   ],
 };
@@ -2414,9 +2470,12 @@ export const appConfig = {
   <mat-label>Password</mat-label>
   <input matInput type="password" [formControl]="password" />
   @if (password.hasError('required')) {
-    <mat-error>Password is required</mat-error>
+  <mat-error>Password is required</mat-error>
   } @else if (password.hasError('minlength')) {
-    <mat-error>At least {{ password.getError('minlength').requiredLength }} characters</mat-error>
+  <mat-error
+    >At least {{ password.getError('minlength').requiredLength }}
+    characters</mat-error
+  >
   }
 </mat-form-field>
 ```
@@ -2426,11 +2485,14 @@ export const appConfig = {
 It decides when a Material input shows its error state. The default shows errors when the control is invalid and touched (or the parent form was submitted). You can write your own, for example to show errors while typing:
 
 ```ts
-import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
+import { ErrorStateMatcher } from "@angular/material/core";
 
 export class InstantErrorMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null,
+  ): boolean {
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
 }
@@ -2449,16 +2511,16 @@ This is how you build things like a phone input with country code that looks and
 Listen to the input, debounce it, call the API with `switchMap`, and show results in `<mat-autocomplete>`:
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs';
-import { CityApi } from './city-api';
+import { Component, inject } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatInputModule } from "@angular/material/input";
+import { debounceTime, distinctUntilChanged, switchMap, filter } from "rxjs";
+import { CityApi } from "./city-api";
 
 @Component({
-  selector: 'app-city-search',
+  selector: "app-city-search",
   imports: [ReactiveFormsModule, MatAutocompleteModule, MatInputModule],
   template: `
     <mat-form-field>
@@ -2473,7 +2535,7 @@ import { CityApi } from './city-api';
 })
 export class CitySearch {
   private api = inject(CityApi);
-  query = new FormControl('', { nonNullable: true });
+  query = new FormControl("", { nonNullable: true });
 
   cities = toSignal(
     this.query.valueChanges.pipe(
@@ -2496,13 +2558,13 @@ Set the option value to the object and give `displayWith` a function that turns 
 ```html
 <mat-autocomplete #auto [displayWith]="displayUser">
   @for (user of users(); track user.id) {
-    <mat-option [value]="user">{{ user.name }}</mat-option>
+  <mat-option [value]="user">{{ user.name }}</mat-option>
   }
 </mat-autocomplete>
 ```
 
 ```ts
-displayUser = (user: User | null) => (user ? user.name : '');
+displayUser = (user: User | null) => (user ? user.name : "");
 ```
 
 Note that while the user is typing, the form control value is a string, and after they select an option it is the object. Handle both cases.
@@ -2512,13 +2574,19 @@ Note that while the user is typing, the form control value is a string, and afte
 Don't use `MatTableDataSource` for this. Instead, combine the sort and page events and fetch data:
 
 ```ts
-import { Component, inject, viewChild, AfterViewInit, signal } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { merge, startWith, switchMap } from 'rxjs';
-import { OrdersApi, Order } from './orders-api';
+import {
+  Component,
+  inject,
+  viewChild,
+  AfterViewInit,
+  signal,
+} from "@angular/core";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { merge, startWith, switchMap } from "rxjs";
+import { OrdersApi, Order } from "./orders-api";
 
-@Component({ selector: 'app-orders', templateUrl: './orders.html' })
+@Component({ selector: "app-orders", templateUrl: "./orders.html" })
 export class Orders implements AfterViewInit {
   private api = inject(OrdersApi);
   sort = viewChild.required(MatSort);
@@ -2565,7 +2633,10 @@ Use `SelectionModel` and add a select column:
     />
   </th>
   <td mat-cell *matCellDef="let row">
-    <mat-checkbox [checked]="selection.isSelected(row)" (change)="selection.toggle(row)" />
+    <mat-checkbox
+      [checked]="selection.isSelected(row)"
+      (change)="selection.toggle(row)"
+    />
   </td>
 </ng-container>
 ```
@@ -2630,11 +2701,14 @@ Nesting a `matMenuTriggerFor` inside a menu item creates a sub menu.
 Use the generic types of `MatDialog.open` and `MatDialogRef`:
 
 ```ts
-const ref = this.dialog.open<EditUserDialog, EditUserData, User | undefined>(EditUserDialog, {
-  data: { id: 5 },
-  width: '480px',
-  disableClose: true,
-});
+const ref = this.dialog.open<EditUserDialog, EditUserData, User | undefined>(
+  EditUserDialog,
+  {
+    data: { id: 5 },
+    width: "480px",
+    disableClose: true,
+  },
+);
 
 ref.afterClosed().subscribe((user) => {
   if (user) {
@@ -2650,39 +2724,58 @@ Inside the dialog, `inject(MatDialogRef<EditUserDialog, User>)` and call `close(
 `Dialog` from `@angular/cdk/dialog` has the same features (focus trap, backdrop, ESC to close, data passing, ARIA roles) but no Material styling. Use it when your app has its own design system and you want a dialog behavior without fighting Material's styles.
 
 ```ts
-import { Dialog } from '@angular/cdk/dialog';
+import { Dialog } from "@angular/cdk/dialog";
 
 const dialog = inject(Dialog);
-dialog.open(MyDialog, { data: { id: 1 }, panelClass: 'my-dialog' });
+dialog.open(MyDialog, { data: { id: 1 }, panelClass: "my-dialog" });
 ```
 
 ## 169: How do you create a tooltip-like popup with the CDK Overlay?
 
 ```ts
-import { Directive, ElementRef, HostListener, inject, input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  TemplateRef,
+  ViewContainerRef,
+} from "@angular/core";
+import { Overlay, OverlayRef } from "@angular/cdk/overlay";
+import { TemplatePortal } from "@angular/cdk/portal";
 
-@Directive({ selector: '[appPopover]' })
+@Directive({ selector: "[appPopover]" })
 export class Popover {
-  content = input.required<TemplateRef<unknown>>({ alias: 'appPopover' });
+  content = input.required<TemplateRef<unknown>>({ alias: "appPopover" });
   private overlay = inject(Overlay);
   private el = inject(ElementRef);
   private vcr = inject(ViewContainerRef);
   private ref?: OverlayRef;
 
-  @HostListener('mouseenter')
+  @HostListener("mouseenter")
   show() {
     const positionStrategy = this.overlay
       .position()
       .flexibleConnectedTo(this.el)
-      .withPositions([{ originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top', offsetY: 8 }]);
+      .withPositions([
+        {
+          originX: "center",
+          originY: "bottom",
+          overlayX: "center",
+          overlayY: "top",
+          offsetY: 8,
+        },
+      ]);
 
-    this.ref = this.overlay.create({ positionStrategy, scrollStrategy: this.overlay.scrollStrategies.reposition() });
+    this.ref = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+    });
     this.ref.attach(new TemplatePortal(this.content(), this.vcr));
   }
 
-  @HostListener('mouseleave')
+  @HostListener("mouseleave")
   hide() {
     this.ref?.dispose();
   }
@@ -2723,8 +2816,12 @@ drop(event: CdkDragDrop<string[]>) {
 
 ```html
 <div cdkDropListGroup>
-  <ul cdkDropList [cdkDropListData]="todo" (cdkDropListDropped)="drop($event)">...</ul>
-  <ul cdkDropList [cdkDropListData]="done" (cdkDropListDropped)="drop($event)">...</ul>
+  <ul cdkDropList [cdkDropListData]="todo" (cdkDropListDropped)="drop($event)">
+    ...
+  </ul>
+  <ul cdkDropList [cdkDropListData]="done" (cdkDropListDropped)="drop($event)">
+    ...
+  </ul>
 </div>
 ```
 
@@ -2754,8 +2851,14 @@ Options for variable heights:
 Listen to `scrolledIndexChange` on the viewport and load more data when the user is near the end:
 
 ```html
-<cdk-virtual-scroll-viewport itemSize="56" class="list" (scrolledIndexChange)="onScroll($event)">
-  <div *cdkVirtualFor="let item of items(); trackBy: trackById" class="row">{{ item.name }}</div>
+<cdk-virtual-scroll-viewport
+  itemSize="56"
+  class="list"
+  (scrolledIndexChange)="onScroll($event)"
+>
+  <div *cdkVirtualFor="let item of items(); trackBy: trackById" class="row">
+    {{ item.name }}
+  </div>
 </cdk-virtual-scroll-viewport>
 ```
 
@@ -2776,15 +2879,20 @@ Use `mat-sidenav-container` and switch the mode based on `BreakpointObserver`:
 
 ```html
 <mat-sidenav-container class="h-full">
-  <mat-sidenav [mode]="isHandset() ? 'over' : 'side'" [opened]="!isHandset()" #drawer>
+  <mat-sidenav
+    [mode]="isHandset() ? 'over' : 'side'"
+    [opened]="!isHandset()"
+    #drawer
+  >
     <app-nav-links (navigate)="isHandset() && drawer.close()" />
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar>
       @if (isHandset()) {
-        <button matIconButton (click)="drawer.toggle()"><mat-icon>menu</mat-icon></button>
-      }
-      My App
+      <button matIconButton (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      } My App
     </mat-toolbar>
     <router-outlet />
   </mat-sidenav-content>
@@ -2807,24 +2915,26 @@ There are also migration schematics run by `ng update`.
 ## 177: How do you test a component that uses Material with harnesses?
 
 ```ts
-import { TestBed } from '@angular/core/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatSelectHarness } from '@angular/material/select/testing';
-import { MatButtonHarness } from '@angular/material/button/testing';
-import { Filters } from './filters';
+import { TestBed } from "@angular/core/testing";
+import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";
+import { MatSelectHarness } from "@angular/material/select/testing";
+import { MatButtonHarness } from "@angular/material/button/testing";
+import { Filters } from "./filters";
 
-it('applies the selected status', async () => {
+it("applies the selected status", async () => {
   const fixture = TestBed.createComponent(Filters);
   const loader = TestbedHarnessEnvironment.loader(fixture);
 
   const select = await loader.getHarness(MatSelectHarness);
   await select.open();
-  await select.clickOptions({ text: 'Active' });
+  await select.clickOptions({ text: "Active" });
 
-  const apply = await loader.getHarness(MatButtonHarness.with({ text: 'Apply' }));
+  const apply = await loader.getHarness(
+    MatButtonHarness.with({ text: "Apply" }),
+  );
   await apply.click();
 
-  expect(fixture.componentInstance.status()).toBe('active');
+  expect(fixture.componentInstance.status()).toBe("active");
 });
 ```
 
@@ -2837,7 +2947,7 @@ For a dialog that is opened in an overlay, use `TestbedHarnessEnvironment.docume
 ```ts
 const rootLoader = TestbedHarnessEnvironment.documentRootLoader(fixture);
 const dialog = await rootLoader.getHarness(MatDialogHarness);
-expect(await dialog.getTitleText()).toBe('Delete Anna?');
+expect(await dialog.getTitleText()).toBe("Delete Anna?");
 await dialog.close();
 ```
 
@@ -2848,17 +2958,22 @@ Another option is to mock `MatDialog` and check that `open` was called with the 
 Use `MatIconRegistry` with `DomSanitizer`, usually in an app initializer:
 
 ```ts
-import { inject, provideAppInitializer } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import { inject, provideAppInitializer } from "@angular/core";
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
 
 export const appConfig = {
   providers: [
     provideAppInitializer(() => {
       const registry = inject(MatIconRegistry);
       const sanitizer = inject(DomSanitizer);
-      registry.addSvgIconSet(sanitizer.bypassSecurityTrustResourceUrl('/icons/sprite.svg'));
-      registry.addSvgIcon('logo', sanitizer.bypassSecurityTrustResourceUrl('/icons/logo.svg'));
+      registry.addSvgIconSet(
+        sanitizer.bypassSecurityTrustResourceUrl("/icons/sprite.svg"),
+      );
+      registry.addSvgIcon(
+        "logo",
+        sanitizer.bypassSecurityTrustResourceUrl("/icons/logo.svg"),
+      );
     }),
   ],
 };
@@ -2875,11 +2990,11 @@ Only trust URLs you control.
 Load the Material Symbols font in `index.html` and set it as the default font set:
 
 ```ts
-import { inject, provideAppInitializer } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
+import { inject, provideAppInitializer } from "@angular/core";
+import { MatIconRegistry } from "@angular/material/icon";
 
 provideAppInitializer(() => {
-  inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined');
+  inject(MatIconRegistry).setDefaultFontSetClass("material-symbols-outlined");
 });
 ```
 
@@ -2932,21 +3047,21 @@ Recent PrimeNG versions use template reference names like `#header` and `#body`.
 Use `definePreset` to extend a built-in preset and change design tokens:
 
 ```ts
-import { definePreset } from '@primeuix/themes';
-import Aura from '@primeuix/themes/aura';
+import { definePreset } from "@primeuix/themes";
+import Aura from "@primeuix/themes/aura";
 
 const MyPreset = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '{indigo.50}',
-      500: '{indigo.500}',
-      900: '{indigo.900}',
+      50: "{indigo.50}",
+      500: "{indigo.500}",
+      900: "{indigo.900}",
     },
   },
 });
 
 providePrimeNG({
-  theme: { preset: MyPreset, options: { darkModeSelector: '.app-dark' } },
+  theme: { preset: MyPreset, options: { darkModeSelector: ".app-dark" } },
 });
 ```
 
@@ -2983,12 +3098,12 @@ You can also set it globally in `providePrimeNG({ pt: { ... } })`.
 Use `ConfirmationService` with the `<p-confirmdialog>` component:
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
-import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Component, inject } from "@angular/core";
+import { ConfirmationService } from "primeng/api";
+import { ConfirmDialog } from "primeng/confirmdialog";
 
 @Component({
-  selector: 'app-account',
+  selector: "app-account",
   imports: [ConfirmDialog],
   providers: [ConfirmationService],
   template: `
@@ -3001,8 +3116,8 @@ export class Account {
 
   deleteAccount() {
     this.confirm.confirm({
-      message: 'This cannot be undone. Continue?',
-      header: 'Delete account',
+      message: "This cannot be undone. Continue?",
+      header: "Delete account",
       accept: () => this.doDelete(),
     });
   }
@@ -3018,9 +3133,9 @@ export class Account {
 After `ng add ng-zorro-antd`, import components from their entry points and provide the locale and icons:
 
 ```ts
-import { provideNzI18n, en_US } from 'ng-zorro-antd/i18n';
-import { provideNzIcons } from 'ng-zorro-antd/icon';
-import { UserOutline, LockOutline } from '@ant-design/icons-angular/icons';
+import { provideNzI18n, en_US } from "ng-zorro-antd/i18n";
+import { provideNzIcons } from "ng-zorro-antd/icon";
+import { UserOutline, LockOutline } from "@ant-design/icons-angular/icons";
 
 export const appConfig = {
   providers: [provideNzI18n(en_US), provideNzIcons([UserOutline, LockOutline])],
@@ -3028,8 +3143,8 @@ export const appConfig = {
 ```
 
 ```ts
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzButtonModule } from "ng-zorro-antd/button";
+import { NzTableModule } from "ng-zorro-antd/table";
 ```
 
 Registering only the icons you use keeps the bundle small. If you load all icons, NG-ZORRO adds every icon file.
@@ -3039,14 +3154,14 @@ Registering only the icons you use keeps the bundle small. If you load all icons
 `ngbTypeahead` takes a function that receives an observable of search text and returns an observable of results:
 
 ```ts
-import { Component } from '@angular/core';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, debounceTime, distinctUntilChanged, map } from 'rxjs';
+import { Component } from "@angular/core";
+import { NgbTypeahead } from "@ng-bootstrap/ng-bootstrap";
+import { Observable, debounceTime, distinctUntilChanged, map } from "rxjs";
 
-const states = ['Alabama', 'Alaska', 'Arizona', 'California', 'Colorado'];
+const states = ["Alabama", "Alaska", "Arizona", "California", "Colorado"];
 
 @Component({
-  selector: 'app-state-picker',
+  selector: "app-state-picker",
   imports: [NgbTypeahead],
   template: `<input class="form-control" [ngbTypeahead]="search" />`,
 })
@@ -3056,7 +3171,11 @@ export class StatePicker {
       debounceTime(200),
       distinctUntilChanged(),
       map((term) =>
-        term.length < 2 ? [] : states.filter((s) => s.toLowerCase().includes(term.toLowerCase())).slice(0, 10),
+        term.length < 2
+          ? []
+          : states
+              .filter((s) => s.toLowerCase().includes(term.toLowerCase()))
+              .slice(0, 10),
       ),
     );
 }
@@ -3068,11 +3187,11 @@ Each component has a config service you can inject and change, for example in an
 
 ```ts
 const tooltipConfig = inject(NgbTooltipConfig);
-tooltipConfig.placement = 'bottom';
-tooltipConfig.container = 'body';
+tooltipConfig.placement = "bottom";
+tooltipConfig.container = "body";
 
 const modalConfig = inject(NgbModalConfig);
-modalConfig.backdrop = 'static';
+modalConfig.backdrop = "static";
 modalConfig.keyboard = false;
 ```
 
@@ -3081,13 +3200,13 @@ modalConfig.keyboard = false;
 Use scopes. Put translations in a folder like `i18n/admin/en.json`, and provide the scope on the lazy route:
 
 ```ts
-import { provideTranslocoScope } from '@jsverse/transloco';
+import { provideTranslocoScope } from "@jsverse/transloco";
 
 export const routes: Routes = [
   {
-    path: 'admin',
-    providers: [provideTranslocoScope('admin')],
-    loadComponent: () => import('./admin/admin-page').then((m) => m.AdminPage),
+    path: "admin",
+    providers: [provideTranslocoScope("admin")],
+    loadComponent: () => import("./admin/admin-page").then((m) => m.AdminPage),
   },
 ];
 ```
@@ -3153,15 +3272,15 @@ Logging missing keys in development and sending them to monitoring in production
 Read the language from storage, the URL, or `navigator.language`, check it is supported, and set it before the first render. With Transloco:
 
 ```ts
-import { inject, provideAppInitializer } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
-import { firstValueFrom } from 'rxjs';
+import { inject, provideAppInitializer } from "@angular/core";
+import { TranslocoService } from "@jsverse/transloco";
+import { firstValueFrom } from "rxjs";
 
 provideAppInitializer(() => {
   const transloco = inject(TranslocoService);
-  const saved = localStorage.getItem('lang');
-  const browser = navigator.language.split('-')[0];
-  const lang = [saved, browser].find((l) => l && transloco.isLang(l)) ?? 'en';
+  const saved = localStorage.getItem("lang");
+  const browser = navigator.language.split("-")[0];
+  const lang = [saved, browser].find((l) => l && transloco.isLang(l)) ?? "en";
   transloco.setActiveLang(lang);
   return firstValueFrom(transloco.load(lang));
 });
@@ -3172,11 +3291,11 @@ Waiting for the file avoids a flash of raw keys. Guard `localStorage` and `navig
 ## 195: How do you write a classic NgRx effect with HTTP?
 
 ```ts
-import { inject } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
-import { BooksApi } from './books-api';
-import { BooksPageActions, BooksApiActions } from './books.actions';
+import { inject } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { catchError, exhaustMap, map, of } from "rxjs";
+import { BooksApi } from "./books-api";
+import { BooksPageActions, BooksApiActions } from "./books.actions";
 
 export const loadBooks = createEffect(
   (actions$ = inject(Actions), api = inject(BooksApi)) =>
@@ -3185,7 +3304,9 @@ export const loadBooks = createEffect(
       exhaustMap(() =>
         api.getAll().pipe(
           map((books) => BooksApiActions.loadSuccess({ books })),
-          catchError((error) => of(BooksApiActions.loadFailure({ error: error.message }))),
+          catchError((error) =>
+            of(BooksApiActions.loadFailure({ error: error.message })),
+          ),
         ),
       ),
     ),
@@ -3200,12 +3321,12 @@ export const loadBooks = createEffect(
 Use `selectSignal`:
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { booksFeature } from './books.feature';
+import { Component, inject } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { booksFeature } from "./books.feature";
 
 @Component({
-  selector: 'app-book-list',
+  selector: "app-book-list",
   template: `
     @for (book of books(); track book.id) {
       <p>{{ book.title }}</p>
@@ -3223,12 +3344,12 @@ export class BookList {
 Use `rxMethod` from `@ngrx/signals/rxjs-interop` for RxJS-based loading, or a plain async method:
 
 ```ts
-import { inject } from '@angular/core';
-import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { tapResponse } from '@ngrx/operators';
-import { pipe, switchMap, tap, debounceTime } from 'rxjs';
-import { BooksApi, Book } from './books-api';
+import { inject } from "@angular/core";
+import { signalStore, withState, withMethods, patchState } from "@ngrx/signals";
+import { rxMethod } from "@ngrx/signals/rxjs-interop";
+import { tapResponse } from "@ngrx/operators";
+import { pipe, switchMap, tap, debounceTime } from "rxjs";
+import { BooksApi, Book } from "./books-api";
 
 export const BooksStore = signalStore(
   withState({ books: [] as Book[], loading: false }),
@@ -3258,8 +3379,13 @@ export const BooksStore = signalStore(
 Use `withEntities` from `@ngrx/signals/entities`:
 
 ```ts
-import { signalStore, withMethods, patchState } from '@ngrx/signals';
-import { withEntities, addEntity, removeEntity, updateEntity } from '@ngrx/signals/entities';
+import { signalStore, withMethods, patchState } from "@ngrx/signals";
+import {
+  withEntities,
+  addEntity,
+  removeEntity,
+  updateEntity,
+} from "@ngrx/signals/entities";
 
 interface Todo {
   id: number;
@@ -3274,7 +3400,10 @@ export const TodosStore = signalStore(
       patchState(store, addEntity(todo));
     },
     toggle(id: number) {
-      patchState(store, updateEntity({ id, changes: (t) => ({ done: !t.done }) }));
+      patchState(
+        store,
+        updateEntity({ id, changes: (t) => ({ done: !t.done }) }),
+      );
     },
     remove(id: number) {
       patchState(store, removeEntity(id));
@@ -3290,7 +3419,7 @@ The store gets `entities()`, `ids()` and `entityMap()` signals.
 `withHooks` lets you run code when the store is created or destroyed, for example to load data:
 
 ```ts
-import { withHooks } from '@ngrx/signals';
+import { withHooks } from "@ngrx/signals";
 
 export const BooksStore = signalStore(
   withState({ books: [] as Book[] }),
@@ -3300,7 +3429,7 @@ export const BooksStore = signalStore(
       store.loadAll();
     },
     onDestroy() {
-      console.log('store destroyed');
+      console.log("store destroyed");
     },
   }),
 );
@@ -3331,7 +3460,7 @@ load(ctx: StateContext<BooksModel>) {
 ```
 
 ```ts
-this.store.dispatch(new LoadBooks()).subscribe(() => console.log('loaded'));
+this.store.dispatch(new LoadBooks()).subscribe(() => console.log("loaded"));
 ```
 
 ## 202: What NGXS plugins are commonly used?
@@ -3346,12 +3475,15 @@ this.store.dispatch(new LoadBooks()).subscribe(() => console.log('loaded'));
 ## 203: How do you persist state to localStorage with NGXS?
 
 ```ts
-import { provideStore } from '@ngxs/store';
-import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
+import { provideStore } from "@ngxs/store";
+import { withNgxsStoragePlugin } from "@ngxs/storage-plugin";
 
 export const appConfig = {
   providers: [
-    provideStore([AuthState, SettingsState], withNgxsStoragePlugin({ keys: ['settings'] })),
+    provideStore(
+      [AuthState, SettingsState],
+      withNgxsStoragePlugin({ keys: ["settings"] }),
+    ),
   ],
 };
 ```
@@ -3369,18 +3501,23 @@ All three are actively maintained. The choice often depends on team preference a
 ## 205: How do you use mutations in TanStack Query for Angular?
 
 ```ts
-import { inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { injectMutation, QueryClient } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
+import { inject } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import {
+  injectMutation,
+  QueryClient,
+} from "@tanstack/angular-query-experimental";
+import { lastValueFrom } from "rxjs";
 
 export class AddTodo {
   private http = inject(HttpClient);
   private queryClient = inject(QueryClient);
 
   addTodo = injectMutation(() => ({
-    mutationFn: (title: string) => lastValueFrom(this.http.post('/api/todos', { title })),
-    onSuccess: () => this.queryClient.invalidateQueries({ queryKey: ['todos'] }),
+    mutationFn: (title: string) =>
+      lastValueFrom(this.http.post("/api/todos", { title })),
+    onSuccess: () =>
+      this.queryClient.invalidateQueries({ queryKey: ["todos"] }),
   }));
 
   save(title: string) {
@@ -3399,8 +3536,9 @@ Read the signal inside the options function. The query reruns when the signal ch
 userId = input.required<number>();
 
 user = injectQuery(() => ({
-  queryKey: ['user', this.userId()],
-  queryFn: () => lastValueFrom(this.http.get<User>(`/api/users/${this.userId()}`)),
+  queryKey: ["user", this.userId()],
+  queryFn: () =>
+    lastValueFrom(this.http.get<User>(`/api/users/${this.userId()}`)),
   enabled: this.userId() > 0,
 }));
 ```
@@ -3442,7 +3580,7 @@ this.apollo
   .mutate<{ addTodo: Todo }>({
     mutation: ADD_TODO,
     variables: { title },
-    refetchQueries: ['GetTodos'],
+    refetchQueries: ["GetTodos"],
   })
   .subscribe();
 ```
@@ -3454,8 +3592,8 @@ If the mutation returns an object with `id` and `__typename` that is already in 
 Since `HttpLink` uses `HttpClient`, the easiest way is an Angular HTTP interceptor. You can also use `setContext` from Apollo:
 
 ```ts
-import { setContext } from '@apollo/client/link/context';
-import { ApolloLink, InMemoryCache } from '@apollo/client/core';
+import { setContext } from "@apollo/client/link/context";
+import { ApolloLink, InMemoryCache } from "@apollo/client/core";
 
 provideApollo(() => {
   const httpLink = inject(HttpLink);
@@ -3466,7 +3604,7 @@ provideApollo(() => {
   }));
 
   return {
-    link: ApolloLink.from([authLink, httpLink.create({ uri: '/graphql' })]),
+    link: ApolloLink.from([authLink, httpLink.create({ uri: "/graphql" })]),
     cache: new InMemoryCache(),
   };
 });
@@ -3493,14 +3631,14 @@ This gives you full type safety for variables and results.
 AngularFire ships guards in `@angular/fire/auth-guard`:
 
 ```ts
-import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { AuthGuard, redirectUnauthorizedTo } from "@angular/fire/auth-guard";
 
-const redirectToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectToLogin = () => redirectUnauthorizedTo(["login"]);
 
 export const routes: Routes = [
   {
-    path: 'account',
-    loadComponent: () => import('./account').then((m) => m.Account),
+    path: "account",
+    loadComponent: () => import("./account").then((m) => m.Account),
     canActivate: [AuthGuard],
     data: { authGuardPipe: redirectToLogin },
   },
@@ -3514,16 +3652,16 @@ You can also write your own functional guard that reads `authState(inject(Auth))
 Write a component that implements `ICellRendererAngularComp` and set it as `cellRenderer` in the column definition:
 
 ```ts
-import { Component } from '@angular/core';
-import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { ICellRendererParams } from 'ag-grid-community';
+import { Component } from "@angular/core";
+import { ICellRendererAngularComp } from "ag-grid-angular";
+import { ICellRendererParams } from "ag-grid-community";
 
 @Component({
-  selector: 'app-status-cell',
+  selector: "app-status-cell",
   template: `<span [class]="'badge badge-' + value">{{ value }}</span>`,
 })
 export class StatusCell implements ICellRendererAngularComp {
-  value = '';
+  value = "";
 
   agInit(params: ICellRendererParams): void {
     this.value = params.value;
@@ -3563,7 +3701,11 @@ clearFilters() {
 ```
 
 ```html
-<ag-grid-angular [rowData]="rows" [columnDefs]="cols" (gridReady)="onGridReady($event)" />
+<ag-grid-angular
+  [rowData]="rows"
+  [columnDefs]="cols"
+  (gridReady)="onGridReady($event)"
+/>
 ```
 
 ## 216: Why should you set getRowId in AG Grid?
@@ -3602,21 +3744,27 @@ Creating a new object (`this.data = { ...newData }`) is the cleaner option and w
 Create a component that extends `FieldType` and register it:
 
 ```ts
-import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
+import { Component } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import { FieldType, FieldTypeConfig, FormlyModule } from "@ngx-formly/core";
 
 @Component({
-  selector: 'app-formly-color',
+  selector: "app-formly-color",
   imports: [ReactiveFormsModule, FormlyModule],
-  template: `<input type="color" [formControl]="formControl" [formlyAttributes]="field" />`,
+  template: `<input
+    type="color"
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+  />`,
 })
 export class FormlyColorField extends FieldType<FieldTypeConfig> {}
 ```
 
 ```ts
 importProvidersFrom(
-  FormlyModule.forRoot({ types: [{ name: 'color', component: FormlyColorField }] }),
+  FormlyModule.forRoot({
+    types: [{ name: "color", component: FormlyColorField }],
+  }),
 );
 ```
 
@@ -3653,8 +3801,8 @@ export function ipValidator(control: AbstractControl): ValidationErrors | null {
 }
 
 FormlyModule.forRoot({
-  validators: [{ name: 'ip', validation: ipValidator }],
-  validationMessages: [{ name: 'ip', message: 'Not a valid IP address' }],
+  validators: [{ name: "ip", validation: ipValidator }],
+  validationMessages: [{ name: "ip", message: "Not a valid IP address" }],
 });
 ```
 
@@ -3675,14 +3823,14 @@ In those cases plain reactive forms (or the new signal forms) are easier to read
 ## 223: How do you use ng-select with async search?
 
 ```ts
-import { Component, inject } from '@angular/core';
-import { NgSelectComponent } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
-import { Subject, debounceTime, switchMap, concat, of } from 'rxjs';
-import { UsersApi, User } from './users-api';
+import { Component, inject } from "@angular/core";
+import { NgSelectComponent } from "@ng-select/ng-select";
+import { FormsModule } from "@angular/forms";
+import { Subject, debounceTime, switchMap, concat, of } from "rxjs";
+import { UsersApi, User } from "./users-api";
 
 @Component({
-  selector: 'app-user-picker',
+  selector: "app-user-picker",
   imports: [NgSelectComponent, FormsModule],
   template: `
     <ng-select
@@ -3716,7 +3864,8 @@ Add `AsyncPipe` to imports. `[typeahead]` turns off local filtering and sends ev
 ```html
 <ng-select [items]="users" bindLabel="name" [(ngModel)]="selected">
   <ng-template ng-option-tmp let-item="item">
-    <img [src]="item.avatar" width="20" /> {{ item.name }} <small>{{ item.email }}</small>
+    <img [src]="item.avatar" width="20" /> {{ item.name }}
+    <small>{{ item.email }}</small>
   </ng-template>
   <ng-template ng-label-tmp let-item="item">{{ item.name }}</ng-template>
 </ng-select>
@@ -3725,13 +3874,17 @@ Add `AsyncPipe` to imports. `[typeahead]` turns off local filtering and sends ev
 ## 225: How do you set up ngx-toastr in a standalone app?
 
 ```ts
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { provideToastr } from "ngx-toastr";
 
 export const appConfig = {
   providers: [
     provideAnimations(),
-    provideToastr({ timeOut: 4000, positionClass: 'toast-bottom-right', preventDuplicates: true }),
+    provideToastr({
+      timeOut: 4000,
+      positionClass: "toast-bottom-right",
+      preventDuplicates: true,
+    }),
   ],
 };
 ```
@@ -3743,17 +3896,17 @@ Also add `node_modules/ngx-toastr/toastr.css` to the styles in `angular.json`.
 Use a functional interceptor:
 
 ```ts
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, throwError } from 'rxjs';
+import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
+import { inject } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
+import { catchError, throwError } from "rxjs";
 
 export const errorToastInterceptor: HttpInterceptorFn = (req, next) => {
   const toastr = inject(ToastrService);
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status !== 401) {
-        toastr.error(error.error?.message ?? 'Something went wrong');
+        toastr.error(error.error?.message ?? "Something went wrong");
       }
       return throwError(() => error);
     }),
@@ -3770,15 +3923,15 @@ Rethrow the error so the calling code can still react to it.
 ## 227: How do you set up angular-oauth2-oidc in a standalone app?
 
 ```ts
-import { provideHttpClient } from '@angular/common/http';
-import { provideOAuthClient } from 'angular-oauth2-oidc';
+import { provideHttpClient } from "@angular/common/http";
+import { provideOAuthClient } from "angular-oauth2-oidc";
 
 export const appConfig = {
   providers: [
     provideHttpClient(),
     provideOAuthClient({
       resourceServer: {
-        allowedUrls: ['https://api.example.com'],
+        allowedUrls: ["https://api.example.com"],
         sendAccessToken: true,
       },
     }),
@@ -3826,21 +3979,21 @@ You also need to handle the redirect result, usually with `MsalRedirectComponent
 ## 230: How do you add the Auth0 access token to API calls?
 
 ```ts
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideAuth0, authHttpInterceptorFn } from '@auth0/auth0-angular';
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import { provideAuth0, authHttpInterceptorFn } from "@auth0/auth0-angular";
 
 export const appConfig = {
   providers: [
     provideHttpClient(withInterceptors([authHttpInterceptorFn])),
     provideAuth0({
-      domain: 'my-tenant.eu.auth0.com',
-      clientId: 'abc123',
+      domain: "my-tenant.eu.auth0.com",
+      clientId: "abc123",
       authorizationParams: {
         redirect_uri: window.location.origin,
-        audience: 'https://api.example.com',
+        audience: "https://api.example.com",
       },
       httpInterceptor: {
-        allowedList: ['https://api.example.com/*'],
+        allowedList: ["https://api.example.com/*"],
       },
     }),
   ],
@@ -3854,13 +4007,21 @@ Only requests matching `allowedList` get the token, so you don't leak it to thir
 Recent versions use `provideKeycloak`:
 
 ```ts
-import { provideKeycloak } from 'keycloak-angular';
+import { provideKeycloak } from "keycloak-angular";
 
 export const appConfig = {
   providers: [
     provideKeycloak({
-      config: { url: 'https://auth.example.com', realm: 'demo', clientId: 'spa' },
-      initOptions: { onLoad: 'check-sso', silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html' },
+      config: {
+        url: "https://auth.example.com",
+        realm: "demo",
+        clientId: "spa",
+      },
+      initOptions: {
+        onLoad: "check-sso",
+        silentCheckSsoRedirectUri:
+          window.location.origin + "/silent-check-sso.html",
+      },
     }),
   ],
 };
@@ -3872,20 +4033,20 @@ Then you can inject `Keycloak` (from `keycloak-js`) to get tokens and user info,
 
 ```ts
 // main.ts
-import * as Sentry from '@sentry/angular';
+import * as Sentry from "@sentry/angular";
 
 Sentry.init({
-  dsn: 'https://key@o0.ingest.sentry.io/0',
+  dsn: "https://key@o0.ingest.sentry.io/0",
   integrations: [Sentry.browserTracingIntegration()],
   tracesSampleRate: 0.2,
-  environment: 'production',
+  environment: "production",
 });
 ```
 
 ```ts
 // app.config.ts
-import { ErrorHandler } from '@angular/core';
-import * as Sentry from '@sentry/angular';
+import { ErrorHandler } from "@angular/core";
+import * as Sentry from "@sentry/angular";
 
 export const appConfig = {
   providers: [{ provide: ErrorHandler, useValue: Sentry.createErrorHandler() }],
@@ -3904,12 +4065,12 @@ npm install -D jest jest-preset-angular @types/jest
 
 ```ts
 // jest.config.ts
-import type { Config } from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
-  preset: 'jest-preset-angular',
-  setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  preset: "jest-preset-angular",
+  setupFilesAfterEnv: ["<rootDir>/setup-jest.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };
 
 export default config;
@@ -3917,7 +4078,7 @@ export default config;
 
 ```ts
 // setup-jest.ts
-import { setupZonelessTestEnv } from 'jest-preset-angular/setup-env/zoneless';
+import { setupZonelessTestEnv } from "jest-preset-angular/setup-env/zoneless";
 
 setupZonelessTestEnv();
 ```
@@ -3955,12 +4116,16 @@ Angular has a schematic for moving to Vitest that rewrites many of these, and th
 ## 236: How do you test a service with Spectator?
 
 ```ts
-import { createServiceFactory, SpectatorService, mockProvider } from '@ngneat/spectator/vitest';
-import { of } from 'rxjs';
-import { CartService } from './cart.service';
-import { PricesApi } from './prices-api';
+import {
+  createServiceFactory,
+  SpectatorService,
+  mockProvider,
+} from "@ngneat/spectator/vitest";
+import { of } from "rxjs";
+import { CartService } from "./cart.service";
+import { PricesApi } from "./prices-api";
 
-describe('CartService', () => {
+describe("CartService", () => {
   let spectator: SpectatorService<CartService>;
   const createService = createServiceFactory({
     service: CartService,
@@ -3969,8 +4134,8 @@ describe('CartService', () => {
 
   beforeEach(() => (spectator = createService()));
 
-  it('calculates the total', () => {
-    spectator.service.add('apple', 3);
+  it("calculates the total", () => {
+    spectator.service.add("apple", 3);
     expect(spectator.service.total()).toBe(30);
   });
 });
@@ -3983,19 +4148,23 @@ Spectator has entry points for Jasmine, Jest (`/jest`) and Vitest (`/vitest`), s
 Use `createHttpFactory`:
 
 ```ts
-import { createHttpFactory, HttpMethod, SpectatorHttp } from '@ngneat/spectator/jest';
-import { TodosApi } from './todos-api';
+import {
+  createHttpFactory,
+  HttpMethod,
+  SpectatorHttp,
+} from "@ngneat/spectator/jest";
+import { TodosApi } from "./todos-api";
 
-describe('TodosApi', () => {
+describe("TodosApi", () => {
   let spectator: SpectatorHttp<TodosApi>;
   const createHttp = createHttpFactory(TodosApi);
 
   beforeEach(() => (spectator = createHttp()));
 
-  it('loads todos', () => {
+  it("loads todos", () => {
     spectator.service.getAll().subscribe();
-    const req = spectator.expectOne('/api/todos', HttpMethod.GET);
-    req.flush([{ id: 1, title: 'Test' }]);
+    const req = spectator.expectOne("/api/todos", HttpMethod.GET);
+    req.flush([{ id: 1, title: "Test" }]);
   });
 });
 ```
@@ -4007,12 +4176,12 @@ It uses `HttpTestingController` under the hood.
 ```ts
 const createComponent = createComponentFactory(Rating);
 
-it('emits the selected value', () => {
+it("emits the selected value", () => {
   const spectator = createComponent({ props: { max: 5 } });
   let selected = 0;
-  spectator.output('rated').subscribe((value) => (selected = value as number));
+  spectator.output("rated").subscribe((value) => (selected = value as number));
 
-  spectator.setInput('max', 3);
+  spectator.setInput("max", 3);
   spectator.click('[data-star="2"]');
 
   expect(selected).toBe(2);
@@ -4026,18 +4195,20 @@ it('emits the selected value', () => {
 `MockBuilder` sets up the testing module for you: it keeps the thing you test real and mocks everything else it depends on.
 
 ```ts
-import { MockBuilder, MockRender, ngMocks } from 'ng-mocks';
-import { ProfilePage } from './profile-page';
-import { UserService } from './user.service';
+import { MockBuilder, MockRender, ngMocks } from "ng-mocks";
+import { ProfilePage } from "./profile-page";
+import { UserService } from "./user.service";
 
-describe('ProfilePage', () => {
+describe("ProfilePage", () => {
   beforeEach(() =>
-    MockBuilder(ProfilePage).mock(UserService, { current: () => ({ name: 'Anna' }) }),
+    MockBuilder(ProfilePage).mock(UserService, {
+      current: () => ({ name: "Anna" }),
+    }),
   );
 
-  it('shows the user name', () => {
+  it("shows the user name", () => {
     MockRender(ProfilePage);
-    expect(ngMocks.formatText(ngMocks.find('h1'))).toBe('Anna');
+    expect(ngMocks.formatText(ngMocks.find("h1"))).toBe("Anna");
   });
 });
 ```
@@ -4072,7 +4243,7 @@ await render(OrderSummary, {
   providers: [{ provide: OrdersApi, useValue: { get: () => of(mockOrder) } }],
 });
 
-expect(await screen.findByText('Total: $30.00')).toBeTruthy();
+expect(await screen.findByText("Total: $30.00")).toBeTruthy();
 ```
 
 ## 243: How do you set up Cypress component testing in Angular?
@@ -4080,13 +4251,13 @@ expect(await screen.findByText('Total: $30.00')).toBeTruthy();
 Run Cypress and pick component testing, which detects the Angular CLI and creates the config. Then:
 
 ```ts
-import { Counter } from './counter';
+import { Counter } from "./counter";
 
-describe('Counter', () => {
-  it('increments', () => {
+describe("Counter", () => {
+  it("increments", () => {
     cy.mount(Counter, { componentProperties: { start: 5 } });
-    cy.contains('button', '+').click();
-    cy.contains('6');
+    cy.contains("button", "+").click();
+    cy.contains("6");
   });
 });
 ```
@@ -4103,24 +4274,28 @@ Point `baseURL` and `webServer` at your dev server:
 
 ```ts
 // playwright.config.ts
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
-  testDir: './e2e',
-  use: { baseURL: 'http://localhost:4200' },
-  webServer: { command: 'npm start', url: 'http://localhost:4200', reuseExistingServer: true },
+  testDir: "./e2e",
+  use: { baseURL: "http://localhost:4200" },
+  webServer: {
+    command: "npm start",
+    url: "http://localhost:4200",
+    reuseExistingServer: true,
+  },
 });
 ```
 
 ```ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('user can log in', async ({ page }) => {
-  await page.goto('/login');
-  await page.getByLabel('Email').fill('anna@example.com');
-  await page.getByLabel('Password').fill('secret');
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+test("user can log in", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByLabel("Email").fill("anna@example.com");
+  await page.getByLabel("Password").fill("secret");
+  await page.getByRole("button", { name: "Log in" }).click();
+  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 });
 ```
 
@@ -4129,10 +4304,10 @@ test('user can log in', async ({ page }) => {
 Use `page.route`:
 
 ```ts
-test('shows empty state', async ({ page }) => {
-  await page.route('**/api/orders', (route) => route.fulfill({ json: [] }));
-  await page.goto('/orders');
-  await expect(page.getByText('No orders yet')).toBeVisible();
+test("shows empty state", async ({ page }) => {
+  await page.route("**/api/orders", (route) => route.fulfill({ json: [] }));
+  await page.goto("/orders");
+  await expect(page.getByText("No orders yet")).toBeVisible();
 });
 ```
 
@@ -4143,20 +4318,24 @@ This makes e2e tests independent from the real backend. Keep a few tests against
 Use `applicationConfig` for app-level providers and `moduleMetadata` for imports:
 
 ```ts
-import type { Meta, StoryObj } from '@storybook/angular';
-import { applicationConfig } from '@storybook/angular';
-import { provideHttpClient } from '@angular/common/http';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { UserCard } from './user-card';
+import type { Meta, StoryObj } from "@storybook/angular";
+import { applicationConfig } from "@storybook/angular";
+import { provideHttpClient } from "@angular/common/http";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { UserCard } from "./user-card";
 
 const meta: Meta<UserCard> = {
   component: UserCard,
-  decorators: [applicationConfig({ providers: [provideHttpClient(), provideAnimationsAsync()] })],
+  decorators: [
+    applicationConfig({
+      providers: [provideHttpClient(), provideAnimationsAsync()],
+    }),
+  ],
 };
 export default meta;
 
 export const Default: StoryObj<UserCard> = {
-  args: { name: 'Anna', role: 'Admin' },
+  args: { name: "Anna", role: "Admin" },
 };
 ```
 
@@ -4179,8 +4358,14 @@ You tag projects (for example `type:feature`, `type:ui`, `type:data-access`, `sc
 ```json
 {
   "depConstraints": [
-    { "sourceTag": "type:ui", "onlyDependOnLibsWithTags": ["type:ui", "type:util"] },
-    { "sourceTag": "scope:admin", "onlyDependOnLibsWithTags": ["scope:admin", "scope:shared"] }
+    {
+      "sourceTag": "type:ui",
+      "onlyDependOnLibsWithTags": ["type:ui", "type:util"]
+    },
+    {
+      "sourceTag": "scope:admin",
+      "onlyDependOnLibsWithTags": ["scope:admin", "scope:shared"]
+    }
   ]
 }
 ```
@@ -4192,22 +4377,32 @@ Lint fails if someone imports a feature library from a UI library, which keeps t
 `ng add angular-eslint` creates an `eslint.config.js` similar to this:
 
 ```js
-const eslint = require('@eslint/js');
-const tseslint = require('typescript-eslint');
-const angular = require('angular-eslint');
+const eslint = require("@eslint/js");
+const tseslint = require("typescript-eslint");
+const angular = require("angular-eslint");
 
 module.exports = tseslint.config(
   {
-    files: ['**/*.ts'],
-    extends: [eslint.configs.recommended, ...tseslint.configs.recommended, ...angular.configs.tsRecommended],
+    files: ["**/*.ts"],
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+      ...angular.configs.tsRecommended,
+    ],
     processor: angular.processInlineTemplates,
     rules: {
-      '@angular-eslint/component-selector': ['error', { type: 'element', prefix: 'app', style: 'kebab-case' }],
+      "@angular-eslint/component-selector": [
+        "error",
+        { type: "element", prefix: "app", style: "kebab-case" },
+      ],
     },
   },
   {
-    files: ['**/*.html'],
-    extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
+    files: ["**/*.html"],
+    extends: [
+      ...angular.configs.templateRecommended,
+      ...angular.configs.templateAccessibility,
+    ],
     rules: {},
   },
 );
@@ -4236,22 +4431,35 @@ ng add @angular-architects/native-federation --project mfe1 --type remote --port
 The remote exposes files in `federation.config.js`:
 
 ```js
-const { withNativeFederation, shareAll } = require('@angular-architects/native-federation/config');
+const {
+  withNativeFederation,
+  shareAll,
+} = require("@angular-architects/native-federation/config");
 
 module.exports = withNativeFederation({
-  name: 'mfe1',
-  exposes: { './routes': './projects/mfe1/src/app/app.routes.ts' },
-  shared: { ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }) },
+  name: "mfe1",
+  exposes: { "./routes": "./projects/mfe1/src/app/app.routes.ts" },
+  shared: {
+    ...shareAll({
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: "auto",
+    }),
+  },
 });
 ```
 
 The host loads it in a route:
 
 ```ts
-import { loadRemoteModule } from '@angular-architects/native-federation';
+import { loadRemoteModule } from "@angular-architects/native-federation";
 
 export const routes: Routes = [
-  { path: 'flights', loadChildren: () => loadRemoteModule('mfe1', './routes').then((m) => m.routes) },
+  {
+    path: "flights",
+    loadChildren: () =>
+      loadRemoteModule("mfe1", "./routes").then((m) => m.routes),
+  },
 ];
 ```
 
@@ -4267,14 +4475,17 @@ For new Angular projects, Native Federation is the usual recommendation. Older m
 ## 254: How do you get route params as signals with ngxtension?
 
 ```ts
-import { Component, computed } from '@angular/core';
-import { injectParams } from 'ngxtension/inject-params';
-import { injectQueryParams } from 'ngxtension/inject-query-params';
+import { Component, computed } from "@angular/core";
+import { injectParams } from "ngxtension/inject-params";
+import { injectQueryParams } from "ngxtension/inject-query-params";
 
-@Component({ selector: 'app-product', template: `Product {{ id() }}, tab {{ tab() }}` })
+@Component({
+  selector: "app-product",
+  template: `Product {{ id() }}, tab {{ tab() }}`,
+})
 export class Product {
-  id = injectParams('id');
-  tab = injectQueryParams('tab');
+  id = injectParams("id");
+  tab = injectQueryParams("tab");
   numericId = computed(() => Number(this.id()));
 }
 ```
@@ -4286,7 +4497,7 @@ Angular can also bind route params to signal inputs with `withComponentInputBind
 `derivedAsync` creates a signal from an async source (observable or promise) that depends on other signals. When the signals change, it runs again and cancels the previous one, similar to `switchMap`:
 
 ```ts
-import { derivedAsync } from 'ngxtension/derived-async';
+import { derivedAsync } from "ngxtension/derived-async";
 
 userId = input.required<number>();
 user = derivedAsync(() => this.api.getUser(this.userId()));
@@ -4299,7 +4510,9 @@ Today Angular's `resource()` and `rxResource()` solve the same problem in the fr
 `*rxLet` renders the value of an observable (or signal) and updates only that part of the template when it emits, without running change detection for the whole component. It also has templates for suspense, error and complete states.
 
 ```html
-<ng-container *rxLet="price$; let price; suspense: loading">{{ price | currency }}</ng-container>
+<ng-container *rxLet="price$; let price; suspense: loading"
+  >{{ price | currency }}</ng-container
+>
 <ng-template #loading>Loading...</ng-template>
 ```
 
@@ -4310,12 +4523,14 @@ It's useful for very frequent updates, like live prices. With signals and zonele
 `@ngneat/until-destroy` added a decorator and an `untilDestroyed(this)` operator to unsubscribe when a component is destroyed. Angular now has this built in:
 
 ```ts
-import { DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DestroyRef, inject } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 export class Clock {
   constructor() {
-    interval(1000).pipe(takeUntilDestroyed()).subscribe(() => this.tick());
+    interval(1000)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.tick());
   }
 
   tick() {}
@@ -4335,9 +4550,11 @@ Auth tokens are best kept in `HttpOnly` cookies set by the server, which JavaScr
 Install Prism and enable it:
 
 ```ts
-import { provideMarkdown } from 'ngx-markdown';
+import { provideMarkdown } from "ngx-markdown";
 
-export const appConfig = { providers: [provideHttpClient(), provideMarkdown()] };
+export const appConfig = {
+  providers: [provideHttpClient(), provideMarkdown()],
+};
 ```
 
 ```json
@@ -4354,8 +4571,12 @@ ngx-markdown sanitizes the HTML by default. Don't turn sanitization off for user
 ## 260: How do you use @angular/google-maps with markers from data?
 
 ```ts
-import { Component, input } from '@angular/core';
-import { GoogleMap, MapAdvancedMarker, MapInfoWindow } from '@angular/google-maps';
+import { Component, input } from "@angular/core";
+import {
+  GoogleMap,
+  MapAdvancedMarker,
+  MapInfoWindow,
+} from "@angular/google-maps";
 
 interface Store {
   id: number;
@@ -4364,10 +4585,16 @@ interface Store {
 }
 
 @Component({
-  selector: 'app-store-map',
+  selector: "app-store-map",
   imports: [GoogleMap, MapAdvancedMarker],
   template: `
-    <google-map height="500px" width="100%" [center]="{ lat: 52.52, lng: 13.4 }" [zoom]="11" mapId="DEMO_MAP_ID">
+    <google-map
+      height="500px"
+      width="100%"
+      [center]="{ lat: 52.52, lng: 13.4 }"
+      [zoom]="11"
+      mapId="DEMO_MAP_ID"
+    >
       @for (store of stores(); track store.id) {
         <map-advanced-marker [position]="store.position" [title]="store.name" />
       }
@@ -4394,10 +4621,18 @@ Many teams use Leaflet or OpenLayers directly in a component, since the wrappers
 Create the library instance after the view is ready, pass inputs through, and destroy it on cleanup. For example with a chart or map library:
 
 ```ts
-import { Component, ElementRef, afterNextRender, effect, inject, input, DestroyRef } from '@angular/core';
-import { Chart, ChartConfiguration } from 'chart.js/auto';
+import {
+  Component,
+  ElementRef,
+  afterNextRender,
+  effect,
+  inject,
+  input,
+  DestroyRef,
+} from "@angular/core";
+import { Chart, ChartConfiguration } from "chart.js/auto";
 
-@Component({ selector: 'app-line-chart', template: `<canvas></canvas>` })
+@Component({ selector: "app-line-chart", template: `<canvas></canvas>` })
 export class LineChart {
   config = input.required<ChartConfiguration>();
   private host = inject(ElementRef<HTMLElement>);
@@ -4405,7 +4640,7 @@ export class LineChart {
 
   constructor() {
     afterNextRender(() => {
-      const canvas = this.host.nativeElement.querySelector('canvas')!;
+      const canvas = this.host.nativeElement.querySelector("canvas")!;
       this.chart = new Chart(canvas, this.config());
     });
 
@@ -4444,11 +4679,11 @@ For components that use a heavy library, wrap them in `@defer` in the template s
 
 ```html
 @defer (on viewport) {
-  <app-sales-chart [data]="sales()" />
+<app-sales-chart [data]="sales()" />
 } @placeholder {
-  <div class="chart-placeholder">Chart</div>
+<div class="chart-placeholder">Chart</div>
 } @loading (minimum 300ms) {
-  <app-spinner />
+<app-spinner />
 }
 ```
 
@@ -4480,7 +4715,7 @@ On the server there is no `window`. Options:
 
 ```ts
 afterNextRender(async () => {
-  const { default: Swiper } = await import('swiper');
+  const { default: Swiper } = await import("swiper");
   new Swiper(this.el.nativeElement);
 });
 ```
@@ -4499,11 +4734,14 @@ Angular Material and the CDK support SSR and hydration out of the box. Things to
 2. Replace the Moment adapter provider:
 
 ```ts
-import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { enUS } from 'date-fns/locale';
+import { provideDateFnsAdapter } from "@angular/material-date-fns-adapter";
+import { MAT_DATE_LOCALE } from "@angular/material/core";
+import { enUS } from "date-fns/locale";
 
-providers: [provideDateFnsAdapter(), { provide: MAT_DATE_LOCALE, useValue: enUS }];
+providers: [
+  provideDateFnsAdapter(),
+  { provide: MAT_DATE_LOCALE, useValue: enUS },
+];
 ```
 
 3. Replace `moment()` calls with date-fns functions (`format`, `addDays`, `parseISO`).
@@ -4514,15 +4752,15 @@ providers: [provideDateFnsAdapter(), { provide: MAT_DATE_LOCALE, useValue: enUS 
 Provide `MAT_DATE_FORMATS` (with the adapter you use):
 
 ```ts
-import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_DATE_FORMATS } from "@angular/material/core";
 
 export const MY_FORMATS = {
-  parse: { dateInput: 'dd.MM.yyyy' },
+  parse: { dateInput: "dd.MM.yyyy" },
   display: {
-    dateInput: 'dd.MM.yyyy',
-    monthYearLabel: 'MMM yyyy',
-    dateA11yLabel: 'PP',
-    monthYearA11yLabel: 'MMMM yyyy',
+    dateInput: "dd.MM.yyyy",
+    monthYearLabel: "MMM yyyy",
+    dateA11yLabel: "PP",
+    monthYearA11yLabel: "MMMM yyyy",
   },
 };
 
@@ -4540,7 +4778,7 @@ They can live together, but watch for:
 - Map Material system tokens into your Tailwind theme so both use the same colors:
 
 ```css
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   --color-primary: var(--mat-sys-primary);
@@ -4566,7 +4804,12 @@ Ionic inputs (`ion-input`, `ion-select`, `ion-checkbox`, `ion-toggle`) have valu
 
 ```html
 <form [formGroup]="form">
-  <ion-input label="Email" labelPlacement="floating" formControlName="email" type="email" />
+  <ion-input
+    label="Email"
+    labelPlacement="floating"
+    formControlName="email"
+    type="email"
+  />
   <ion-toggle formControlName="newsletter">Newsletter</ion-toggle>
 </form>
 ```
@@ -4579,9 +4822,9 @@ Ionic uses the Angular router with `ion-router-outlet`, which adds mobile-style 
 
 ```ts
 const nav = inject(NavController);
-nav.navigateForward('/details/1');
-nav.navigateBack('/list');
-nav.navigateRoot('/home');
+nav.navigateForward("/details/1");
+nav.navigateBack("/list");
+nav.navigateRoot("/home");
 ```
 
 Because pages stay alive in the stack, use Ionic's `ionViewWillEnter`/`ionViewDidEnter` hooks for code that should run every time a page is shown, since `ngOnInit` runs only once.
@@ -4609,18 +4852,15 @@ buildForm(fields: FieldDef[]) {
 ```
 
 ```html
-@for (f of fields(); track f.key) {
-  @switch (f.type) {
-    @case ('select') {
-      <select [formControlName]="f.key">
-        @for (o of f.options; track o) { <option [value]="o">{{ o }}</option> }
-      </select>
-    }
-    @default {
-      <input [type]="f.type" [formControlName]="f.key" [placeholder]="f.label" />
-    }
+@for (f of fields(); track f.key) { @switch (f.type) { @case ('select') {
+<select [formControlName]="f.key">
+  @for (o of f.options; track o) {
+  <option [value]="o">{{ o }}</option>
   }
-}
+</select>
+} @default {
+<input [type]="f.type" [formControlName]="f.key" [placeholder]="f.label" />
+} } }
 ```
 
 For a few field types this is easier to own than Formly.
@@ -4634,7 +4874,11 @@ For a few field types this is easier to own than Formly.
 `@angular/cdk/listbox` and `@angular/cdk/menu` give you accessible behavior without styles:
 
 ```html
-<ul cdkListbox [cdkListboxValue]="['red']" (cdkListboxValueChange)="onChange($event)">
+<ul
+  cdkListbox
+  [cdkListboxValue]="['red']"
+  (cdkListboxValueChange)="onChange($event)"
+>
   <li cdkOption="red">Red</li>
   <li cdkOption="green">Green</li>
 </ul>
@@ -4653,7 +4897,13 @@ Keyboard navigation, focus and ARIA roles are handled for you. Newer projects ca
 ## 279: How do you trap focus inside a custom modal?
 
 ```html
-<div class="modal" role="dialog" aria-modal="true" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
+<div
+  class="modal"
+  role="dialog"
+  aria-modal="true"
+  cdkTrapFocus
+  [cdkTrapFocusAutoCapture]="true"
+>
   <h2>Settings</h2>
   <input />
   <button (click)="close()">Close</button>
@@ -4681,11 +4931,11 @@ Today the CSS `:focus-visible` selector solves most of this without JavaScript.
 ## 281: How do you use Lucide icons in Angular?
 
 ```ts
-import { Component } from '@angular/core';
-import { LucideAngularModule, Trash2 } from 'lucide-angular';
+import { Component } from "@angular/core";
+import { LucideAngularModule, Trash2 } from "lucide-angular";
 
 @Component({
-  selector: 'app-delete-button',
+  selector: "app-delete-button",
   imports: [LucideAngularModule],
   template: `<button><lucide-icon [img]="trash" size="16" /> Delete</button>`,
 })
@@ -4701,16 +4951,20 @@ Passing the icon object means only that icon is bundled.
 A small interceptor and a signal is often enough instead of a library:
 
 ```ts
-import { Injectable, computed, signal, inject } from '@angular/core';
-import { HttpInterceptorFn } from '@angular/common/http';
-import { finalize } from 'rxjs';
+import { Injectable, computed, signal, inject } from "@angular/core";
+import { HttpInterceptorFn } from "@angular/common/http";
+import { finalize } from "rxjs";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class LoadingService {
   private active = signal(0);
   loading = computed(() => this.active() > 0);
-  start() { this.active.update((n) => n + 1); }
-  stop() { this.active.update((n) => n - 1); }
+  start() {
+    this.active.update((n) => n + 1);
+  }
+  stop() {
+    this.active.update((n) => n - 1);
+  }
 }
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
@@ -4722,7 +4976,7 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 
 ```html
 @if (loading.loading()) {
-  <mat-progress-bar mode="indeterminate" />
+<mat-progress-bar mode="indeterminate" />
 }
 ```
 
@@ -4731,14 +4985,14 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 Add a `play` function to a story. It runs after the story renders and uses Testing Library style queries:
 
 ```ts
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from "storybook/test";
 
 export const SubmitsForm: StoryObj<LoginForm> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByLabelText('Email'), 'anna@example.com');
-    await userEvent.click(canvas.getByRole('button', { name: 'Log in' }));
-    await expect(canvas.getByText('Welcome')).toBeInTheDocument();
+    await userEvent.type(canvas.getByLabelText("Email"), "anna@example.com");
+    await userEvent.click(canvas.getByRole("button", { name: "Log in" }));
+    await expect(canvas.getByText("Welcome")).toBeInTheDocument();
   },
 };
 ```
@@ -4757,27 +5011,33 @@ npm install -D @analogjs/vite-plugin-angular @analogjs/vitest-angular vitest jsd
 
 ```ts
 // vite.config.mts
-import { defineConfig } from 'vite';
-import angular from '@analogjs/vite-plugin-angular';
+import { defineConfig } from "vite";
+import angular from "@analogjs/vite-plugin-angular";
 
 export default defineConfig({
   plugins: [angular()],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: ['src/test-setup.ts'],
+    environment: "jsdom",
+    setupFiles: ["src/test-setup.ts"],
   },
 });
 ```
 
 ```ts
 // src/test-setup.ts
-import '@angular/compiler';
-import '@analogjs/vitest-angular/setup-zone';
-import { getTestBed } from '@angular/core/testing';
-import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
+import "@angular/compiler";
+import "@analogjs/vitest-angular/setup-zone";
+import { getTestBed } from "@angular/core/testing";
+import {
+  BrowserTestingModule,
+  platformBrowserTesting,
+} from "@angular/platform-browser/testing";
 
-getTestBed().initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
+getTestBed().initTestEnvironment(
+  BrowserTestingModule,
+  platformBrowserTesting(),
+);
 ```
 
 Now that the CLI has its own Vitest builder, many projects use that instead, but Analog's plugin gives you full control over the Vite config.
@@ -4805,7 +5065,7 @@ nx g @nx/angular:library --name=ui-buttons --directory=libs/shared/ui-buttons
 Nx adds a path alias to `tsconfig.base.json`, for example `@myorg/shared/ui-buttons`. Apps import from it like a package:
 
 ```ts
-import { PrimaryButton } from '@myorg/shared/ui-buttons';
+import { PrimaryButton } from "@myorg/shared/ui-buttons";
 ```
 
 Only the library's `index.ts` is the public API. Importing deep files is blocked by lint rules.
@@ -4860,8 +5120,8 @@ This lets a library built with one Angular version work with apps on later versi
 ## 293: How do you set up Sentry performance tracing for Angular routes?
 
 ```ts
-import { inject, provideAppInitializer } from '@angular/core';
-import * as Sentry from '@sentry/angular';
+import { inject, provideAppInitializer } from "@angular/core";
+import * as Sentry from "@sentry/angular";
 
 export const appConfig = {
   providers: [
@@ -4903,12 +5163,12 @@ Normally `@angular/localize` builds one app per language. You can load translati
 
 ```ts
 // main.ts
-import { loadTranslations } from '@angular/localize';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { App } from './app/app';
-import { appConfig } from './app/app.config';
+import { loadTranslations } from "@angular/localize";
+import { bootstrapApplication } from "@angular/platform-browser";
+import { App } from "./app/app";
+import { appConfig } from "./app/app.config";
 
-const lang = localStorage.getItem('lang') ?? 'en';
+const lang = localStorage.getItem("lang") ?? "en";
 const translations = await fetch(`/i18n/${lang}.json`).then((r) => r.json());
 loadTranslations(translations.translations);
 
@@ -4960,7 +5220,7 @@ By default it listens to window scroll. For a container, set `scrollWindow` to f
   (scrolled)="loadMore()"
 >
   @for (item of items(); track item.id) {
-    <app-row [item]="item" />
+  <app-row [item]="item" />
   }
 </div>
 ```
@@ -4970,15 +5230,11 @@ Make sure `loadMore()` ignores calls while a request is already running, and sto
 ## 300: How do you show a skeleton for each item in a @defer or loading state?
 
 ```html
-@if (products.isLoading()) {
-  @for (i of [1, 2, 3, 4]; track i) {
-    <ngx-skeleton-loader [theme]="{ height: '120px', 'border-radius': '8px' }" />
-  }
-} @else {
-  @for (p of products.value(); track p.id) {
-    <app-product-card [product]="p" />
-  }
-}
+@if (products.isLoading()) { @for (i of [1, 2, 3, 4]; track i) {
+<ngx-skeleton-loader [theme]="{ height: '120px', 'border-radius': '8px' }" />
+} } @else { @for (p of products.value(); track p.id) {
+<app-product-card [product]="p" />
+} }
 ```
 
 Showing skeletons with the same size as the real cards prevents layout shift (CLS) when data arrives.
@@ -5020,26 +5276,32 @@ Because harness code never touches the DOM directly, the same harness works in u
 ## 306: How do you write your own component harness?
 
 ```ts
-import { ComponentHarness, BaseHarnessFilters, HarnessPredicate } from '@angular/cdk/testing';
+import {
+  ComponentHarness,
+  BaseHarnessFilters,
+  HarnessPredicate,
+} from "@angular/cdk/testing";
 
 export interface RatingHarnessFilters extends BaseHarnessFilters {
   value?: number;
 }
 
 export class RatingHarness extends ComponentHarness {
-  static hostSelector = 'app-rating';
+  static hostSelector = "app-rating";
 
-  private stars = this.locatorForAll('[data-star]');
+  private stars = this.locatorForAll("[data-star]");
 
   static with(options: RatingHarnessFilters = {}) {
-    return new HarnessPredicate(RatingHarness, options).addOption('value', options.value, async (h, v) =>
-      (await h.getValue()) === v,
+    return new HarnessPredicate(RatingHarness, options).addOption(
+      "value",
+      options.value,
+      async (h, v) => (await h.getValue()) === v,
     );
   }
 
   async getValue(): Promise<number> {
     const host = await this.host();
-    return Number(await host.getAttribute('data-value'));
+    return Number(await host.getAttribute("data-value"));
   }
 
   async rate(value: number): Promise<void> {
@@ -5116,25 +5378,33 @@ State is kept in a single `WritableSignal` (internally a state source). `withSta
 Use `signalStoreFeature`:
 
 ```ts
-import { computed } from '@angular/core';
-import { signalStoreFeature, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
+import { computed } from "@angular/core";
+import {
+  signalStoreFeature,
+  withState,
+  withComputed,
+  withMethods,
+  patchState,
+} from "@ngrx/signals";
 
-export type RequestStatus = 'idle' | 'pending' | 'fulfilled' | { error: string };
+export type RequestStatus =
+  "idle" | "pending" | "fulfilled" | { error: string };
 
 export function withRequestStatus() {
   return signalStoreFeature(
-    withState<{ requestStatus: RequestStatus }>({ requestStatus: 'idle' }),
+    withState<{ requestStatus: RequestStatus }>({ requestStatus: "idle" }),
     withComputed(({ requestStatus }) => ({
-      isPending: computed(() => requestStatus() === 'pending'),
+      isPending: computed(() => requestStatus() === "pending"),
       error: computed(() => {
         const s = requestStatus();
-        return typeof s === 'object' ? s.error : null;
+        return typeof s === "object" ? s.error : null;
       }),
     })),
     withMethods((store) => ({
-      setPending: () => patchState(store, { requestStatus: 'pending' }),
-      setFulfilled: () => patchState(store, { requestStatus: 'fulfilled' }),
-      setError: (error: string) => patchState(store, { requestStatus: { error } }),
+      setPending: () => patchState(store, { requestStatus: "pending" }),
+      setFulfilled: () => patchState(store, { requestStatus: "fulfilled" }),
+      setError: (error: string) =>
+        patchState(store, { requestStatus: { error } }),
     })),
   );
 }
@@ -5147,23 +5417,29 @@ Any store can now add `withRequestStatus()`. You can also require that a store a
 Provide it in `TestBed` with mocked dependencies and call its methods:
 
 ```ts
-import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { BooksStore } from './books.store';
-import { BooksApi } from './books-api';
+import { TestBed } from "@angular/core/testing";
+import { of } from "rxjs";
+import { BooksStore } from "./books.store";
+import { BooksApi } from "./books-api";
 
-describe('BooksStore', () => {
-  it('loads books', () => {
+describe("BooksStore", () => {
+  it("loads books", () => {
     TestBed.configureTestingModule({
-      providers: [BooksStore, { provide: BooksApi, useValue: { search: () => of([{ id: 1, title: 'Dune' }]) } }],
+      providers: [
+        BooksStore,
+        {
+          provide: BooksApi,
+          useValue: { search: () => of([{ id: 1, title: "Dune" }]) },
+        },
+      ],
     });
     const store = TestBed.inject(BooksStore);
 
-    store.search('dune');
+    store.search("dune");
     // rxMethod with debounceTime: use fake timers
     vi.advanceTimersByTime(300);
 
-    expect(store.books()).toEqual([{ id: 1, title: 'Dune' }]);
+    expect(store.books()).toEqual([{ id: 1, title: "Dune" }]);
   });
 });
 ```
@@ -5253,16 +5529,16 @@ Because it relies on the injection context, `injectQuery` must be called in a co
 Use a resolver or a guard that calls `prefetchQuery` (or `ensureQueryData`), then use the same query key in the component:
 
 ```ts
-import { ResolveFn } from '@angular/router';
-import { inject } from '@angular/core';
-import { QueryClient } from '@tanstack/angular-query-experimental';
+import { ResolveFn } from "@angular/router";
+import { inject } from "@angular/core";
+import { QueryClient } from "@tanstack/angular-query-experimental";
 
 export const productResolver: ResolveFn<unknown> = (route) => {
   const queryClient = inject(QueryClient);
   const api = inject(ProductsApi);
-  const id = route.paramMap.get('id')!;
+  const id = route.paramMap.get("id")!;
   return queryClient.ensureQueryData({
-    queryKey: ['product', id],
+    queryKey: ["product", id],
     queryFn: () => lastValueFrom(api.get(id)),
   });
 };
@@ -5274,19 +5550,22 @@ The component's `injectQuery` with key `['product', id]` gets the data from cach
 
 ```ts
 toggleTodo = injectMutation(() => ({
-  mutationFn: (todo: Todo) => lastValueFrom(this.http.patch(`/api/todos/${todo.id}`, { done: !todo.done })),
+  mutationFn: (todo: Todo) =>
+    lastValueFrom(
+      this.http.patch(`/api/todos/${todo.id}`, { done: !todo.done }),
+    ),
   onMutate: async (todo) => {
-    await this.queryClient.cancelQueries({ queryKey: ['todos'] });
-    const previous = this.queryClient.getQueryData<Todo[]>(['todos']);
-    this.queryClient.setQueryData<Todo[]>(['todos'], (old = []) =>
+    await this.queryClient.cancelQueries({ queryKey: ["todos"] });
+    const previous = this.queryClient.getQueryData<Todo[]>(["todos"]);
+    this.queryClient.setQueryData<Todo[]>(["todos"], (old = []) =>
       old.map((t) => (t.id === todo.id ? { ...t, done: !t.done } : t)),
     );
     return { previous };
   },
   onError: (_err, _todo, context) => {
-    this.queryClient.setQueryData(['todos'], context?.previous);
+    this.queryClient.setQueryData(["todos"], context?.previous);
   },
-  onSettled: () => this.queryClient.invalidateQueries({ queryKey: ['todos'] }),
+  onSettled: () => this.queryClient.invalidateQueries({ queryKey: ["todos"] }),
 }));
 ```
 
@@ -5317,9 +5596,12 @@ new InMemoryCache({
     Query: {
       fields: {
         feed: {
-          keyArgs: ['filter'],
+          keyArgs: ["filter"],
           merge(existing = { items: [] }, incoming) {
-            return { ...incoming, items: [...existing.items, ...incoming.items] };
+            return {
+              ...incoming,
+              items: [...existing.items, ...incoming.items],
+            };
           },
         },
       },
@@ -5341,18 +5623,22 @@ loadMore() {
 Add a WebSocket link with `graphql-ws` and split traffic between HTTP and WS:
 
 ```ts
-import { split } from '@apollo/client/core';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { createClient } from 'graphql-ws';
+import { split } from "@apollo/client/core";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { createClient } from "graphql-ws";
 
-const ws = new GraphQLWsLink(createClient({ url: 'wss://api.example.com/graphql' }));
-const http = httpLink.create({ uri: '/graphql' });
+const ws = new GraphQLWsLink(
+  createClient({ url: "wss://api.example.com/graphql" }),
+);
+const http = httpLink.create({ uri: "/graphql" });
 
 const link = split(
   ({ query }) => {
     const def = getMainDefinition(query);
-    return def.kind === 'OperationDefinition' && def.operation === 'subscription';
+    return (
+      def.kind === "OperationDefinition" && def.operation === "subscription"
+    );
   },
   ws,
   http,
@@ -5392,7 +5678,7 @@ Transloco's structural directive (`*transloco="let t"`) creates one subscription
 - Validation messages: map error keys to translation keys in one place (a pipe or component that shows errors), instead of hard-coding messages in every form.
 
 ```ts
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class TranslatedTitleStrategy extends TitleStrategy {
   private title = inject(Title);
   private transloco = inject(TranslocoService);
@@ -5400,7 +5686,10 @@ export class TranslatedTitleStrategy extends TitleStrategy {
   override updateTitle(snapshot: RouterStateSnapshot) {
     const key = this.buildTitle(snapshot);
     if (key) {
-      this.transloco.selectTranslate(key).pipe(take(1)).subscribe((t) => this.title.setTitle(t));
+      this.transloco
+        .selectTranslate(key)
+        .pipe(take(1))
+        .subscribe((t) => this.title.setTitle(t));
     }
   }
 }
@@ -5443,7 +5732,9 @@ PrimeNG's styled mode generates CSS variables from the preset (primitive, semant
 providePrimeNG({
   theme: {
     preset: Aura,
-    options: { cssLayer: { name: 'primeng', order: 'theme, base, primeng, utilities' } },
+    options: {
+      cssLayer: { name: "primeng", order: "theme, base, primeng, utilities" },
+    },
   },
 });
 ```
@@ -5482,10 +5773,13 @@ export abstract class Notifier {
 export class SnackBarNotifier extends Notifier {
   private snackBar = inject(MatSnackBar);
   success(message: string) {
-    this.snackBar.open(message, undefined, { duration: 3000, panelClass: 'success' });
+    this.snackBar.open(message, undefined, {
+      duration: 3000,
+      panelClass: "success",
+    });
   }
   error(message: string) {
-    this.snackBar.open(message, 'Close', { panelClass: 'error' });
+    this.snackBar.open(message, "Close", { panelClass: "error" });
   }
 }
 
@@ -5622,10 +5916,21 @@ Common problems:
 Share one refresh request between all requests that failed with 401:
 
 ```ts
-import { HttpErrorResponse, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Observable, catchError, finalize, shareReplay, switchMap, throwError } from 'rxjs';
-import { AuthService } from './auth.service';
+import {
+  HttpErrorResponse,
+  HttpInterceptorFn,
+  HttpRequest,
+} from "@angular/common/http";
+import { inject } from "@angular/core";
+import {
+  Observable,
+  catchError,
+  finalize,
+  shareReplay,
+  switchMap,
+  throwError,
+} from "rxjs";
+import { AuthService } from "./auth.service";
 
 let refresh$: Observable<string> | null = null;
 
@@ -5634,7 +5939,7 @@ const withToken = (req: HttpRequest<unknown>, token: string) =>
 
 export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
-  if (req.url.includes('/auth/refresh')) {
+  if (req.url.includes("/auth/refresh")) {
     return next(req);
   }
 
@@ -5767,15 +6072,17 @@ Run tests in random order (Jasmine does by default, Vitest with `sequence.shuffl
 By default, `TestBed` uses `DeferBlockBehavior.Playthrough` in recent versions, which renders defer blocks like in the browser. To control it manually:
 
 ```ts
-TestBed.configureTestingModule({ deferBlockBehavior: DeferBlockBehavior.Manual });
+TestBed.configureTestingModule({
+  deferBlockBehavior: DeferBlockBehavior.Manual,
+});
 const fixture = TestBed.createComponent(Dashboard);
 
 const [chartBlock] = await fixture.getDeferBlocks();
 await chartBlock.render(DeferBlockState.Placeholder);
-expect(fixture.nativeElement.textContent).toContain('Chart');
+expect(fixture.nativeElement.textContent).toContain("Chart");
 
 await chartBlock.render(DeferBlockState.Complete);
-expect(fixture.nativeElement.querySelector('app-sales-chart')).toBeTruthy();
+expect(fixture.nativeElement.querySelector("app-sales-chart")).toBeTruthy();
 ```
 
 This lets you test placeholder, loading, error and complete states without real lazy loading.
@@ -5794,23 +6101,28 @@ AG Grid renders asynchronously and uses its own DOM. Options:
 Use `ApolloTestingModule` and `ApolloTestingController`:
 
 ```ts
-import { TestBed } from '@angular/core/testing';
-import { ApolloTestingController, ApolloTestingModule } from 'apollo-angular/testing';
+import { TestBed } from "@angular/core/testing";
+import {
+  ApolloTestingController,
+  ApolloTestingModule,
+} from "apollo-angular/testing";
 
 beforeEach(() => {
   TestBed.configureTestingModule({ imports: [ApolloTestingModule] });
 });
 
-it('shows books', () => {
+it("shows books", () => {
   const fixture = TestBed.createComponent(Books);
   const controller = TestBed.inject(ApolloTestingController);
   fixture.detectChanges();
 
   const op = controller.expectOne(GET_BOOKS);
-  op.flush({ data: { books: [{ id: '1', title: 'Dune', __typename: 'Book' }] } });
+  op.flush({
+    data: { books: [{ id: "1", title: "Dune", __typename: "Book" }] },
+  });
   fixture.detectChanges();
 
-  expect(fixture.nativeElement.textContent).toContain('Dune');
+  expect(fixture.nativeElement.textContent).toContain("Dune");
   controller.verify();
 });
 ```
@@ -5822,23 +6134,28 @@ Include `__typename` in mock data, or the cache can't normalize it.
 Use `provideMockActions` and a fake API:
 
 ```ts
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable, of, throwError, firstValueFrom } from 'rxjs';
-import { Action } from '@ngrx/store';
-import { loadBooks } from './books.effects';
+import { TestBed } from "@angular/core/testing";
+import { provideMockActions } from "@ngrx/effects/testing";
+import { Observable, of, throwError, firstValueFrom } from "rxjs";
+import { Action } from "@ngrx/store";
+import { loadBooks } from "./books.effects";
 
-it('maps an error to loadFailure', async () => {
+it("maps an error to loadFailure", async () => {
   let actions$: Observable<Action> = of(BooksPageActions.opened());
   TestBed.configureTestingModule({
     providers: [
       provideMockActions(() => actions$),
-      { provide: BooksApi, useValue: { getAll: () => throwError(() => new Error('boom')) } },
+      {
+        provide: BooksApi,
+        useValue: { getAll: () => throwError(() => new Error("boom")) },
+      },
     ],
   });
 
-  const result = await TestBed.runInInjectionContext(() => firstValueFrom(loadBooks()));
-  expect(result).toEqual(BooksApiActions.loadFailure({ error: 'boom' }));
+  const result = await TestBed.runInInjectionContext(() =>
+    firstValueFrom(loadBooks()),
+  );
+  expect(result).toEqual(BooksApiActions.loadFailure({ error: "boom" }));
 });
 ```
 
@@ -5847,21 +6164,26 @@ For timing-based effects (debounce), use RxJS marble tests with `TestScheduler`.
 ## 366: How do you use `provideMockStore` to test components that use NgRx?
 
 ```ts
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { provideMockStore, MockStore } from "@ngrx/store/testing";
 
 beforeEach(() => {
   TestBed.configureTestingModule({
     providers: [
       provideMockStore({
-        selectors: [{ selector: booksFeature.selectBooks, value: [{ id: '1', title: 'Dune' }] }],
+        selectors: [
+          {
+            selector: booksFeature.selectBooks,
+            value: [{ id: "1", title: "Dune" }],
+          },
+        ],
       }),
     ],
   });
 });
 
-it('dispatches opened on init', () => {
+it("dispatches opened on init", () => {
   const store = TestBed.inject(MockStore);
-  const dispatch = vi.spyOn(store, 'dispatch');
+  const dispatch = vi.spyOn(store, "dispatch");
   TestBed.createComponent(BookList).detectChanges();
   expect(dispatch).toHaveBeenCalledWith(BooksPageActions.opened());
 });
@@ -5913,7 +6235,7 @@ Exceptions: draft saving, multi-step wizards spread over routes, or forms that m
 
 ```ts
 export const ProductsStore = signalStore(
-  withState({ page: 1, pageSize: 20, query: '', total: 0 }),
+  withState({ page: 1, pageSize: 20, query: "", total: 0 }),
   withEntities<Product>(),
   withRequestStatus(),
   withMethods((store, api = inject(ProductsApi)) => ({
@@ -5931,7 +6253,9 @@ export const ProductsStore = signalStore(
           api.list(params).pipe(
             tapResponse({
               next: (res) => {
-                patchState(store, setAllEntities(res.items), { total: res.total });
+                patchState(store, setAllEntities(res.items), {
+                  total: res.total,
+                });
                 store.setFulfilled();
               },
               error: (e: Error) => store.setError(e.message),
@@ -5943,7 +6267,13 @@ export const ProductsStore = signalStore(
   })),
   withHooks({
     onInit(store) {
-      store.load(computed(() => ({ page: store.page(), pageSize: store.pageSize(), query: store.query() })));
+      store.load(
+        computed(() => ({
+          page: store.page(),
+          pageSize: store.pageSize(),
+          query: store.query(),
+        })),
+      );
     },
   }),
 );
@@ -5985,7 +6315,11 @@ With classic NgRx, a meta-reducer that returns `undefined` state on logout, so e
 
 ```ts
 export function clearOnLogout(reducer: ActionReducer<any>): ActionReducer<any> {
-  return (state, action) => reducer(action.type === AuthActions.logout.type ? undefined : state, action);
+  return (state, action) =>
+    reducer(
+      action.type === AuthActions.logout.type ? undefined : state,
+      action,
+    );
 }
 ```
 
@@ -5999,7 +6333,7 @@ Keep server data only in TanStack Query's cache, and keep only client state (sel
 selectedId = this.store.selectedProductId;
 
 product = injectQuery(() => ({
-  queryKey: ['product', this.selectedId()],
+  queryKey: ["product", this.selectedId()],
   queryFn: () => lastValueFrom(this.api.get(this.selectedId()!)),
   enabled: this.selectedId() !== null,
 }));
@@ -6055,10 +6389,10 @@ Angular Material and Angular Aria put a lot of work into accessibility. Some sma
 - `@axe-core/playwright` in e2e tests:
 
 ```ts
-import AxeBuilder from '@axe-core/playwright';
+import AxeBuilder from "@axe-core/playwright";
 
-test('checkout has no a11y violations', async ({ page }) => {
-  await page.goto('/checkout');
+test("checkout has no a11y violations", async ({ page }) => {
+  await page.goto("/checkout");
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
@@ -6112,8 +6446,10 @@ export class TranslatedPaginatorIntl extends MatPaginatorIntl {
   constructor() {
     super();
     this.transloco.langChanges$.subscribe(() => {
-      this.itemsPerPageLabel = this.transloco.translate('paginator.itemsPerPage');
-      this.nextPageLabel = this.transloco.translate('paginator.next');
+      this.itemsPerPageLabel = this.transloco.translate(
+        "paginator.itemsPerPage",
+      );
+      this.nextPageLabel = this.transloco.translate("paginator.next");
       this.changes.next();
     });
   }
@@ -6145,12 +6481,23 @@ This mismatch (translated text but English number formats) is a common bug in ru
 Import only the parts you use from `echarts/core`:
 
 ```ts
-import * as echarts from 'echarts/core';
-import { BarChart, LineChart } from 'echarts/charts';
-import { GridComponent, TooltipComponent, LegendComponent } from 'echarts/components';
-import { CanvasRenderer } from 'echarts/renderers';
+import * as echarts from "echarts/core";
+import { BarChart, LineChart } from "echarts/charts";
+import {
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+} from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
 
-echarts.use([BarChart, LineChart, GridComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
+echarts.use([
+  BarChart,
+  LineChart,
+  GridComponent,
+  TooltipComponent,
+  LegendComponent,
+  CanvasRenderer,
+]);
 
 export const appConfig = {
   providers: [provideEchartsCore({ echarts })],
@@ -6162,10 +6509,22 @@ Importing the full `echarts` package adds around 1 MB of JavaScript. The core ap
 ## 390: How do you build a reusable chart wrapper that works with signals?
 
 ```ts
-import { Component, ElementRef, afterNextRender, effect, inject, input, DestroyRef } from '@angular/core';
-import type { ECharts, EChartsCoreOption } from 'echarts/core';
+import {
+  Component,
+  ElementRef,
+  afterNextRender,
+  effect,
+  inject,
+  input,
+  DestroyRef,
+} from "@angular/core";
+import type { ECharts, EChartsCoreOption } from "echarts/core";
 
-@Component({ selector: 'app-echart', template: '', styles: ':host { display: block; height: 320px; }' })
+@Component({
+  selector: "app-echart",
+  template: "",
+  styles: ":host { display: block; height: 320px; }",
+})
 export class EChart {
   options = input.required<EChartsCoreOption>();
   private el = inject(ElementRef<HTMLElement>);
@@ -6174,7 +6533,7 @@ export class EChart {
 
   constructor() {
     afterNextRender(async () => {
-      const echarts = await import('./echarts-setup').then((m) => m.echarts);
+      const echarts = await import("./echarts-setup").then((m) => m.echarts);
       this.chart = echarts.init(this.el.nativeElement);
       this.chart.setOption(this.options());
       const observer = new ResizeObserver(() => this.chart?.resize());
@@ -6291,13 +6650,15 @@ Options: use the library's theming API, put overrides in global styles scoped by
 - Override mixins (`mat.form-field-overrides`, `mat.button-overrides`) scoped to a class in global styles or in the component's styles with `:host`:
 
 ```scss
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 :host {
-  @include mat.form-field-overrides((
-    outlined-outline-color: var(--mat-sys-outline-variant),
-    container-height: 40px,
-  ));
+  @include mat.form-field-overrides(
+    (
+      outlined-outline-color: var(--mat-sys-outline-variant),
+      container-height: 40px,
+    )
+  );
 }
 ```
 
@@ -6399,29 +6760,37 @@ Limits: mocked components don't behave like the real ones, so tests can pass whi
 Provide a fresh `QueryClient` per test with retries off, and mock the HTTP layer:
 
 ```ts
-import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+import {
+  provideTanStackQuery,
+  QueryClient,
+} from "@tanstack/angular-query-experimental";
+import { provideHttpClient } from "@angular/common/http";
+import {
+  provideHttpClientTesting,
+  HttpTestingController,
+} from "@angular/common/http/testing";
 
 beforeEach(() => {
   TestBed.configureTestingModule({
     providers: [
       provideHttpClient(),
       provideHttpClientTesting(),
-      provideTanStackQuery(new QueryClient({ defaultOptions: { queries: { retry: false } } })),
+      provideTanStackQuery(
+        new QueryClient({ defaultOptions: { queries: { retry: false } } }),
+      ),
     ],
   });
 });
 
-it('shows todos', async () => {
+it("shows todos", async () => {
   const fixture = TestBed.createComponent(Todos);
   const http = TestBed.inject(HttpTestingController);
   fixture.detectChanges();
 
-  http.expectOne('/api/todos').flush([{ id: 1, title: 'Write tests' }]);
+  http.expectOne("/api/todos").flush([{ id: 1, title: "Write tests" }]);
   await fixture.whenStable();
 
-  expect(fixture.nativeElement.textContent).toContain('Write tests');
+  expect(fixture.nativeElement.textContent).toContain("Write tests");
 });
 ```
 
@@ -6432,13 +6801,13 @@ Sharing one `QueryClient` between tests leaks cached data from one test to anoth
 Put it in `.storybook/preview.ts`:
 
 ```ts
-import type { Preview } from '@storybook/angular';
-import { applicationConfig } from '@storybook/angular';
-import { provideRouter } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideTransloco } from '@jsverse/transloco';
-import { provideHttpClient } from '@angular/common/http';
-import { StorybookTranslocoLoader } from './transloco-loader';
+import type { Preview } from "@storybook/angular";
+import { applicationConfig } from "@storybook/angular";
+import { provideRouter } from "@angular/router";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { provideTransloco } from "@jsverse/transloco";
+import { provideHttpClient } from "@angular/common/http";
+import { StorybookTranslocoLoader } from "./transloco-loader";
 
 const preview: Preview = {
   decorators: [
@@ -6447,7 +6816,10 @@ const preview: Preview = {
         provideRouter([]),
         provideAnimationsAsync(),
         provideHttpClient(),
-        provideTransloco({ config: { availableLangs: ['en'], defaultLang: 'en' }, loader: StorybookTranslocoLoader }),
+        provideTransloco({
+          config: { availableLangs: ["en"], defaultLang: "en" },
+          loader: StorybookTranslocoLoader,
+        }),
       ],
     }),
   ],
@@ -6486,28 +6858,39 @@ Add a toolbar global (Storybook `globalTypes`) to switch theme or language acros
 ## 419: How do you write a provider function with features, like `provideHttpClient(withInterceptors())`?
 
 ```ts
-import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders, Provider } from '@angular/core';
+import {
+  EnvironmentProviders,
+  InjectionToken,
+  makeEnvironmentProviders,
+  Provider,
+} from "@angular/core";
 
 export interface NotifyConfig {
   duration: number;
 }
 
-export const NOTIFY_SOUND = new InjectionToken<string>('NOTIFY_SOUND');
+export const NOTIFY_SOUND = new InjectionToken<string>("NOTIFY_SOUND");
 
-export const NOTIFY_CONFIG = new InjectionToken<NotifyConfig>('NOTIFY_CONFIG', {
+export const NOTIFY_CONFIG = new InjectionToken<NotifyConfig>("NOTIFY_CONFIG", {
   factory: () => ({ duration: 3000 }),
 });
 
 export interface NotifyFeature {
-  kind: 'sound' | 'position';
+  kind: "sound" | "position";
   providers: Provider[];
 }
 
 export function withSound(src: string): NotifyFeature {
-  return { kind: 'sound', providers: [{ provide: NOTIFY_SOUND, useValue: src }] };
+  return {
+    kind: "sound",
+    providers: [{ provide: NOTIFY_SOUND, useValue: src }],
+  };
 }
 
-export function provideNotify(config: Partial<NotifyConfig> = {}, ...features: NotifyFeature[]): EnvironmentProviders {
+export function provideNotify(
+  config: Partial<NotifyConfig> = {},
+  ...features: NotifyFeature[]
+): EnvironmentProviders {
   return makeEnvironmentProviders([
     { provide: NOTIFY_CONFIG, useValue: { duration: 3000, ...config } },
     ...features.flatMap((f) => f.providers),
@@ -6536,8 +6919,8 @@ export class LocalStorageAdapter implements StorageAdapter {
   }
 }
 
-export const STORAGE = new InjectionToken<StorageAdapter>('STORAGE', {
-  providedIn: 'root',
+export const STORAGE = new InjectionToken<StorageAdapter>("STORAGE", {
+  providedIn: "root",
   factory: () => new LocalStorageAdapter(),
 });
 ```
@@ -6795,4 +7178,3 @@ If the library also depends on removed APIs (like `ComponentFactoryResolver` pat
 - Review dependencies once or twice a year: remove unused ones, replace abandoned ones, and check that each one still supports your Angular version.
 
 This keeps upgrades from turning into big projects every time Angular releases a new major version.
-

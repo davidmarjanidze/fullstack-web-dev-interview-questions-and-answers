@@ -7342,9 +7342,7 @@ Priorities are `"user-blocking"`, `"user-visible"` (default) and `"background"`.
 `requestIdleCallback` runs a callback when the browser is idle, so low-priority work doesn't slow down important work.
 
 ```js
-const tasks = [
-  /* small pieces of work */
-];
+const tasks = [/* small pieces of work */];
 
 function work(deadline) {
   while (deadline.timeRemaining() > 0 && tasks.length) {

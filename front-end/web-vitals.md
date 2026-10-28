@@ -137,11 +137,11 @@ For most pages, the LCP element is a hero image, a product photo, a banner or a 
 
 ## 4: What is a good LCP score?
 
-| Rating | LCP |
-| --- | --- |
-| Good | 2.5 s or less |
-| Needs improvement | 2.5 s to 4 s |
-| Poor | more than 4 s |
+| Rating            | LCP           |
+| ----------------- | ------------- |
+| Good              | 2.5 s or less |
+| Needs improvement | 2.5 s to 4 s  |
+| Poor              | more than 4 s |
 
 The score is checked at the 75th percentile of page loads, split by mobile and desktop. So at least 75% of visits should have LCP of 2.5 seconds or less.
 
@@ -163,11 +163,11 @@ A low INP means the page feels fast when you use it. A high INP means the user c
 
 ## 7: What is a good INP score?
 
-| Rating | INP |
-| --- | --- |
-| Good | 200 ms or less |
+| Rating            | INP              |
+| ----------------- | ---------------- |
+| Good              | 200 ms or less   |
 | Needs improvement | 200 ms to 500 ms |
-| Poor | more than 500 ms |
+| Poor              | more than 500 ms |
 
 As with the other Core Web Vitals, it's checked at the 75th percentile of page visits.
 
@@ -191,11 +191,11 @@ CLS is a score without units. It's not a time. A page where nothing moves has a 
 
 ## 10: What is a good CLS score?
 
-| Rating | CLS |
-| --- | --- |
-| Good | 0.1 or less |
-| Needs improvement | 0.1 to 0.25 |
-| Poor | more than 0.25 |
+| Rating            | CLS            |
+| ----------------- | -------------- |
+| Good              | 0.1 or less    |
+| Needs improvement | 0.1 to 0.25    |
+| Poor              | more than 0.25 |
 
 Checked at the 75th percentile of page visits.
 
@@ -218,11 +218,11 @@ On March 12, 2024, INP replaced FID as a Core Web Vital. FID is deprecated, and 
 
 Time to First Byte is the time from the start of the navigation until the browser gets the first byte of the HTML response. It includes redirects, service worker startup, DNS lookup, connection setup (TCP and TLS) and the time the server needs to start sending the response.
 
-| Rating | TTFB |
-| --- | --- |
-| Good | 0.8 s or less |
-| Needs improvement | 0.8 s to 1.8 s |
-| Poor | more than 1.8 s |
+| Rating            | TTFB            |
+| ----------------- | --------------- |
+| Good              | 0.8 s or less   |
+| Needs improvement | 0.8 s to 1.8 s  |
+| Poor              | more than 1.8 s |
 
 TTFB is not a Core Web Vital, but a slow TTFB makes FCP and LCP slow too, because nothing can render before the HTML arrives.
 
@@ -230,11 +230,11 @@ TTFB is not a Core Web Vital, but a slow TTFB makes FCP and LCP slow too, becaus
 
 First Contentful Paint is the time from the start of the navigation until the browser renders the first piece of content: text, an image, an SVG or a non-white `<canvas>`. It tells the user "something is happening".
 
-| Rating | FCP |
-| --- | --- |
-| Good | 1.8 s or less |
-| Needs improvement | 1.8 s to 3 s |
-| Poor | more than 3 s |
+| Rating            | FCP           |
+| ----------------- | ------------- |
+| Good              | 1.8 s or less |
+| Needs improvement | 1.8 s to 3 s  |
+| Poor              | more than 3 s |
 
 ## 15: What is the difference between FCP and LCP?
 
@@ -300,7 +300,7 @@ npm install web-vitals
 ```
 
 ```js
-import { onCLS, onINP, onLCP, onFCP, onTTFB } from 'web-vitals';
+import { onCLS, onINP, onLCP, onFCP, onTTFB } from "web-vitals";
 
 onCLS(console.log);
 onINP(console.log);
@@ -342,7 +342,7 @@ Long tasks usually come from big JavaScript bundles being parsed and executed, h
 Always tell the browser how big the image will be before it downloads. The simplest way is to set `width` and `height` attributes. Browsers use them to calculate the aspect ratio and reserve space, even if CSS makes the image responsive.
 
 ```html
-<img src="/photo.jpg" width="800" height="600" alt="Product photo">
+<img src="/photo.jpg" width="800" height="600" alt="Product photo" />
 ```
 
 ```css
@@ -399,7 +399,8 @@ If the LCP element is text, parts 2 and 3 are zero. Splitting LCP like this tell
   width="1200"
   height="600"
   fetchpriority="high"
-  alt="Summer sale">
+  alt="Summer sale"
+/>
 ```
 
 ## 33: Why shouldn't you lazy-load the LCP image?
@@ -415,9 +416,9 @@ Lazy loading is great for images below the fold. A common mistake is a component
 By default, Chrome loads images with low priority until it knows they are in the viewport, and only the first few large images get a small boost. With `fetchpriority="high"`, the LCP image starts with high priority right away.
 
 ```html
-<img src="/hero.jpg" fetchpriority="high" alt="">
-<link rel="preload" href="/hero.jpg" as="image" fetchpriority="high">
-<img src="/carousel-slide-2.jpg" fetchpriority="low" alt="">
+<img src="/hero.jpg" fetchpriority="high" alt="" />
+<link rel="preload" href="/hero.jpg" as="image" fetchpriority="high" />
+<img src="/carousel-slide-2.jpg" fetchpriority="low" alt="" />
 ```
 
 It's a hint, not a command, and it should be used on one or two resources. If everything is high priority, nothing is.
@@ -429,9 +430,15 @@ It's a hint, not a command, and it should be used on one or two resources. If ev
 - **`preload`**: actually downloads a specific file early, because you know the page needs it soon. Use it for resources the browser finds late, like a font referenced in CSS or a background image.
 
 ```html
-<link rel="preconnect" href="https://cdn.example.com">
-<link rel="dns-prefetch" href="https://analytics.example.com">
-<link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://cdn.example.com" />
+<link rel="dns-prefetch" href="https://analytics.example.com" />
+<link
+  rel="preload"
+  href="/fonts/inter.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 ```
 
 Too many preloads compete with each other for bandwidth and can make LCP worse.
@@ -515,10 +522,10 @@ Yielding every ~50 ms keeps tasks short without adding too much overhead. Yieldi
 Do the minimum work needed to show feedback, let the browser paint, and do the rest later.
 
 ```js
-button.addEventListener('click', async () => {
+button.addEventListener("click", async () => {
   // 1. Visible feedback first
   button.disabled = true;
-  status.textContent = 'Saving...';
+  status.textContent = "Saving...";
 
   // 2. Let the browser paint (yieldToMain from the previous question)
   await yieldToMain();
@@ -543,13 +550,13 @@ Layout thrashing (also called forced synchronous layout) happens when JavaScript
 ```js
 // Bad: read and write mixed in a loop
 for (const box of boxes) {
-  box.style.width = container.offsetWidth / 2 + 'px';
+  box.style.width = container.offsetWidth / 2 + "px";
 }
 
 // Good: read once, then write
 const half = container.offsetWidth / 2;
 for (const box of boxes) {
-  box.style.width = half + 'px';
+  box.style.width = half + "px";
 }
 ```
 
@@ -603,7 +610,7 @@ Animating `transform` and `opacity` doesn't change the layout, doesn't cause lay
 Use the `web-vitals` library and send each metric when it's reported. Use `navigator.sendBeacon()` (or `fetch` with `keepalive: true`), because CLS and INP are often reported when the page is being hidden or closed, and normal requests might be cancelled.
 
 ```js
-import { onCLS, onINP, onLCP } from 'web-vitals';
+import { onCLS, onINP, onLCP } from "web-vitals";
 
 function sendToAnalytics(metric) {
   const body = JSON.stringify({
@@ -616,8 +623,8 @@ function sendToAnalytics(metric) {
     page: location.pathname,
   });
 
-  if (!navigator.sendBeacon('/analytics', body)) {
-    fetch('/analytics', { body, method: 'POST', keepalive: true });
+  if (!navigator.sendBeacon("/analytics", body)) {
+    fetch("/analytics", { body, method: "POST", keepalive: true });
   }
 }
 
@@ -639,24 +646,28 @@ CLS and INP can be reported more than once on the same page. If your analytics t
 
 ## 46: What is the attribution build of web-vitals?
 
-It's a version of the library that adds an `attribution` object to each metric with debug information. It tells you *why* a metric has its value, which is the hard part of fixing field data. It's about 1.5 KB bigger.
+It's a version of the library that adds an `attribution` object to each metric with debug information. It tells you _why_ a metric has its value, which is the hard part of fixing field data. It's about 1.5 KB bigger.
 
 ```js
-import { onLCP, onINP, onCLS } from 'web-vitals/attribution';
+import { onLCP, onINP, onCLS } from "web-vitals/attribution";
 
 onLCP(({ value, attribution }) => {
-  console.log('LCP', value, attribution.target, attribution.url);
-  console.log('Load delay', attribution.resourceLoadDelay);
-  console.log('Render delay', attribution.elementRenderDelay);
+  console.log("LCP", value, attribution.target, attribution.url);
+  console.log("Load delay", attribution.resourceLoadDelay);
+  console.log("Render delay", attribution.elementRenderDelay);
 });
 
 onINP(({ value, attribution }) => {
-  console.log('INP', value, attribution.interactionTarget);
-  console.log(attribution.inputDelay, attribution.processingDuration, attribution.presentationDelay);
+  console.log("INP", value, attribution.interactionTarget);
+  console.log(
+    attribution.inputDelay,
+    attribution.processingDuration,
+    attribution.presentationDelay,
+  );
 });
 
 onCLS(({ value, attribution }) => {
-  console.log('CLS', value, attribution.largestShiftTarget);
+  console.log("CLS", value, attribution.largestShiftTarget);
 });
 ```
 
@@ -700,15 +711,15 @@ Lighthouse CI (`@lhci/cli`) runs Lighthouse on every commit or pull request and 
 module.exports = {
   ci: {
     collect: {
-      url: ['http://localhost:3000/', 'http://localhost:3000/product/1'],
-      startServerCommand: 'npm run start',
+      url: ["http://localhost:3000/", "http://localhost:3000/product/1"],
+      startServerCommand: "npm run start",
       numberOfRuns: 3,
     },
     assert: {
       assertions: {
-        'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
-        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
-        'total-blocking-time': ['warn', { maxNumericValue: 200 }],
+        "largest-contentful-paint": ["error", { maxNumericValue: 2500 }],
+        "cumulative-layout-shift": ["error", { maxNumericValue: 0.1 }],
+        "total-blocking-time": ["warn", { maxNumericValue: 200 }],
       },
     },
   },
@@ -787,9 +798,9 @@ A big image takes longer to download, which increases the resource load duration
 
 ```html
 <picture>
-  <source srcset="/hero.avif" type="image/avif">
-  <source srcset="/hero.webp" type="image/webp">
-  <img src="/hero.jpg" width="1200" height="600" fetchpriority="high" alt="">
+  <source srcset="/hero.avif" type="image/avif" />
+  <source srcset="/hero.webp" type="image/webp" />
+  <img src="/hero.jpg" width="1200" height="600" fetchpriority="high" alt="" />
 </picture>
 ```
 
@@ -887,17 +898,17 @@ Also note:
 new PerformanceObserver((list) => {
   const entries = list.getEntries();
   const last = entries[entries.length - 1];
-  console.log('LCP candidate', last.startTime, last.element);
-}).observe({ type: 'largest-contentful-paint', buffered: true });
+  console.log("LCP candidate", last.startTime, last.element);
+}).observe({ type: "largest-contentful-paint", buffered: true });
 
 // Layout shifts
 new PerformanceObserver((list) => {
   for (const entry of list.getEntries()) {
     if (!entry.hadRecentInput) {
-      console.log('Layout shift', entry.value, entry.sources);
+      console.log("Layout shift", entry.value, entry.sources);
     }
   }
-}).observe({ type: 'layout-shift', buffered: true });
+}).observe({ type: "layout-shift", buffered: true });
 ```
 
 `buffered: true` gives you entries that happened before the observer was created. This is fine for debugging, but in production you should use `web-vitals`. It handles many edge cases: session windows for CLS, pages loaded in the background, prerendered pages, bfcache restores, `activationStart`, reporting on `visibilitychange` and more. Writing all this yourself is easy to get wrong.
@@ -917,7 +928,7 @@ new PerformanceObserver((list) => {
     const processing = entry.processingEnd - entry.processingStart;
     console.log(entry.name, entry.duration, { inputDelay, processing });
   }
-}).observe({ type: 'event', durationThreshold: 16, buffered: true });
+}).observe({ type: "event", durationThreshold: 16, buffered: true });
 ```
 
 The `web-vitals` library uses a threshold of 40 ms by default. You can change it with the `durationThreshold` option of `onINP()`. A lower threshold gives more accurate INP on pages where all interactions are fast, at the cost of more entries.
@@ -933,7 +944,7 @@ new PerformanceObserver((list) => {
       console.log(script.sourceURL, script.sourceFunctionName, script.duration);
     }
   }
-}).observe({ type: 'long-animation-frame', buffered: true });
+}).observe({ type: "long-animation-frame", buffered: true });
 ```
 
 In the field, this is how you find out that a slow interaction was caused by a specific third-party script. The `web-vitals` attribution build already links LoAF entries to the INP interaction and gives `longestScript`, `totalScriptDuration` and `totalStyleAndLayoutDuration`. LoAF is currently available in Chromium only.
@@ -950,7 +961,7 @@ Chrome added soft navigation measurement in Chromium 151. A soft navigation is d
 The `web-vitals` library supports this with the `reportSoftNavs` option:
 
 ```js
-import { onCLS, onINP, onLCP } from 'web-vitals';
+import { onCLS, onINP, onLCP } from "web-vitals";
 
 const opts = { reportSoftNavs: true };
 
@@ -972,12 +983,14 @@ With the Speculation Rules API, you can tell the browser to prerender a page the
 
 ```html
 <script type="speculationrules">
-{
-  "prerender": [{
-    "where": { "href_matches": "/products/*" },
-    "eagerness": "moderate"
-  }]
-}
+  {
+    "prerender": [
+      {
+        "where": { "href_matches": "/products/*" },
+        "eagerness": "moderate"
+      }
+    ]
+  }
 </script>
 ```
 
@@ -1000,9 +1013,9 @@ When a page is restored from bfcache, the `pageshow` event fires with `event.per
 `web-vitals` treats a restore as a new page visit. It creates new metric instances with new ids and `navigationType: 'back-forward-cache'`. LCP and FCP are measured as the time from the restore until the next frames are painted, using `requestAnimationFrame`. CLS and INP start from zero again.
 
 ```js
-window.addEventListener('pageshow', (event) => {
+window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
-    console.log('Restored from bfcache');
+    console.log("Restored from bfcache");
   }
 });
 ```
@@ -1041,7 +1054,7 @@ Server-Timing: db;dur=53, cache;desc="miss", render;dur=120
 ```
 
 ```js
-const [nav] = performance.getEntriesByType('navigation');
+const [nav] = performance.getEntriesByType("navigation");
 for (const timing of nav.serverTiming) {
   console.log(timing.name, timing.duration, timing.description);
 }
@@ -1099,7 +1112,7 @@ Both give the main thread back to the browser so it can handle input and paint. 
 async function handleClick() {
   updateButtonState();
   await scheduler.yield(); // paint can happen here
-  runHeavyFilter();         // continues before most other queued tasks
+  runHeavyFilter(); // continues before most other queued tasks
 }
 ```
 
@@ -1128,7 +1141,7 @@ Presentation delay is the time between the end of the event handlers and the nex
 - Avoid rendering a large amount of HTML with `innerHTML` in the handler.
 
 ```jsx
-const [query, setQuery] = useState('');
+const [query, setQuery] = useState("");
 const deferredQuery = useDeferredValue(query);
 
 return (
@@ -1217,11 +1230,13 @@ A Web Worker runs JavaScript on a separate thread, so long calculations don't bl
 
 ```js
 // main.js
-const worker = new Worker(new URL('./filter-worker.js', import.meta.url), { type: 'module' });
+const worker = new Worker(new URL("./filter-worker.js", import.meta.url), {
+  type: "module",
+});
 
 worker.onmessage = (event) => renderResults(event.data);
 
-input.addEventListener('input', () => {
+input.addEventListener("input", () => {
   worker.postMessage({ query: input.value });
 });
 ```
@@ -1240,7 +1255,7 @@ Core Web Vitals are generic. For your own important moments, use custom metrics:
 - **Element Timing API** to know when a specific image or text element was painted. Add the `elementtiming` attribute. It's Chromium only.
 
 ```html
-<img src="/product.jpg" elementtiming="product-image" alt="">
+<img src="/product.jpg" elementtiming="product-image" alt="" />
 ```
 
 ```js
@@ -1248,12 +1263,12 @@ new PerformanceObserver((list) => {
   for (const entry of list.getEntries()) {
     console.log(entry.identifier, entry.renderTime || entry.loadTime);
   }
-}).observe({ type: 'element', buffered: true });
+}).observe({ type: "element", buffered: true });
 
-performance.mark('search-start');
+performance.mark("search-start");
 await runSearch();
-performance.mark('search-end');
-performance.measure('search', 'search-start', 'search-end');
+performance.mark("search-end");
+performance.measure("search", "search-start", "search-end");
 ```
 
 User Timing marks also appear in the DevTools Performance panel, which makes traces easier to read.

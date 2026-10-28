@@ -523,7 +523,7 @@ For you as a user it mostly matters when installing and operating RabbitMQ: you 
 A producer (or publisher) is the application that sends messages. In AMQP 0-9-1 it publishes to an exchange with a routing key, and it doesn't know which queues will end up with the message.
 
 ```js
-channel.publish('orders', 'order.created', Buffer.from(JSON.stringify(order)));
+channel.publish("orders", "order.created", Buffer.from(JSON.stringify(order)));
 ```
 
 ## 8: What is a consumer?
@@ -531,7 +531,7 @@ channel.publish('orders', 'order.created', Buffer.from(JSON.stringify(order)));
 A consumer is the application that receives and processes messages from a queue. It subscribes to a queue, RabbitMQ pushes messages to it, and the consumer acknowledges each message when it is done with it.
 
 ```js
-await channel.consume('emails', async (msg) => {
+await channel.consume("emails", async (msg) => {
   await sendEmail(JSON.parse(msg.content.toString()));
   channel.ack(msg);
 });
@@ -554,7 +554,7 @@ How the exchange picks the queues depends on its type (direct, fanout, topic or 
 A binding is a rule that connects an exchange to a queue (or to another exchange). It says "messages from this exchange that match this condition should go to this queue". For direct and topic exchanges the condition is a binding key; for headers exchanges it is a set of header values.
 
 ```js
-await channel.bindQueue('eu-orders', 'orders', 'order.eu.*');
+await channel.bindQueue("eu-orders", "orders", "order.eu.*");
 ```
 
 ## 12: What is a routing key?
@@ -587,9 +587,9 @@ A direct exchange sends a message to every queue whose binding key is exactly th
 It's a good fit when you route by a known value, for example log level:
 
 ```js
-await channel.assertExchange('logs', 'direct', { durable: true });
-await channel.bindQueue('error-logs', 'logs', 'error');
-channel.publish('logs', 'error', Buffer.from('Disk is full'));
+await channel.assertExchange("logs", "direct", { durable: true });
+await channel.bindQueue("error-logs", "logs", "error");
+channel.publish("logs", "error", Buffer.from("Disk is full"));
 ```
 
 ## 16: How does a fanout exchange work?
@@ -612,11 +612,11 @@ So a queue bound with `order.*.created` gets `order.eu.created` and `order.us.cr
 `*` replaces exactly one word, and `#` replaces zero or more words.
 
 | Binding key | `order.created` | `order.eu.created` | `order` |
-| --- | --- | --- | --- |
-| `order.*` | yes | no | no |
-| `order.#` | yes | yes | yes |
-| `*.created` | yes | no | no |
-| `#` | yes | yes | yes |
+| ----------- | --------------- | ------------------ | ------- |
+| `order.*`   | yes             | no                 | no      |
+| `order.#`   | yes             | yes                | yes     |
+| `*.created` | yes             | no                 | no      |
+| `#`         | yes             | yes                | yes     |
 
 A binding of just `#` makes a topic exchange act like a fanout, and a binding with no wildcards makes it act like a direct exchange.
 
@@ -629,10 +629,10 @@ A headers exchange ignores the routing key and looks at the message headers. The
 - `all-with-x` and `any-with-x`: same, but also compare headers starting with `x-`
 
 ```js
-await channel.bindQueue('pdf-reports', 'reports', '', {
-  'x-match': 'all',
-  format: 'pdf',
-  type: 'report',
+await channel.bindQueue("pdf-reports", "reports", "", {
+  "x-match": "all",
+  format: "pdf",
+  type: "report",
 });
 ```
 
@@ -645,9 +645,9 @@ The default exchange is a direct exchange with an empty name (`""`) that every v
 That's why you can "send to a queue directly":
 
 ```js
-channel.sendToQueue('tasks', Buffer.from('hello'));
+channel.sendToQueue("tasks", Buffer.from("hello"));
 // same as
-channel.publish('', 'tasks', Buffer.from('hello'));
+channel.publish("", "tasks", Buffer.from("hello"));
 ```
 
 You can't bind or unbind queues to the default exchange or delete it.
@@ -677,7 +677,7 @@ A channel is a lightweight virtual connection inside a real TCP connection. Almo
 One connection can have many channels. Each channel has its own ID, and if something goes wrong on a channel (for example you declare a queue with conflicting arguments), RabbitMQ closes only that channel, not the whole connection.
 
 ```js
-const connection = await amqp.connect('amqp://localhost');
+const connection = await amqp.connect("amqp://localhost");
 const channel = await connection.createChannel();
 ```
 
@@ -726,10 +726,14 @@ With automatic ack (`noAck: true` in amqplib), RabbitMQ considers a message deli
 With manual ack, the consumer calls `ack` after the work is done. If it crashes before that, the message gets redelivered. This is what you want for anything important.
 
 ```js
-await channel.consume('tasks', async (msg) => {
-  await doWork(msg);
-  channel.ack(msg);
-}, { noAck: false });
+await channel.consume(
+  "tasks",
+  async (msg) => {
+    await doWork(msg);
+    channel.ack(msg);
+  },
+  { noAck: false },
+);
 ```
 
 ## 30: What happens if a consumer dies without acknowledging a message?
@@ -749,7 +753,7 @@ Both take a `requeue` flag. With `requeue: true` the message goes back to the qu
 
 ```js
 channel.nack(msg, false, false); // allUpTo = false, requeue = false
-channel.reject(msg, true);       // requeue = true
+channel.reject(msg, true); // requeue = true
 ```
 
 ## 32: What does requeue mean?
@@ -766,7 +770,7 @@ It's a hint, not a guarantee that the message was already processed. The previou
 
 ```js
 if (msg.fields.redelivered) {
-  console.log('Seen before, checking if already processed');
+  console.log("Seen before, checking if already processed");
 }
 ```
 
@@ -777,7 +781,7 @@ A durable queue survives a broker restart. Its definition is stored on disk, so 
 Durability is about the queue itself, not its messages. Messages survive a restart only if they were also published as persistent and the queue is durable. Quorum queues and streams are always durable.
 
 ```js
-await channel.assertQueue('orders', { durable: true });
+await channel.assertQueue("orders", { durable: true });
 ```
 
 ## 35: What is a persistent message?
@@ -785,7 +789,7 @@ await channel.assertQueue('orders', { durable: true });
 A persistent message is one published with `delivery_mode = 2`. RabbitMQ writes it to disk, so it survives a broker restart if it's in a durable queue.
 
 ```js
-channel.sendToQueue('orders', Buffer.from(body), { persistent: true });
+channel.sendToQueue("orders", Buffer.from(body), { persistent: true });
 ```
 
 Transient messages (`delivery_mode = 1`) may be kept only in memory and are lost on restart. In quorum queues and streams all messages are stored on disk anyway, no matter what `delivery_mode` says.
@@ -806,7 +810,7 @@ An exclusive queue can be used only by the connection that declared it, and it's
 It's used for temporary, private queues, like a reply queue for RPC or a per-instance queue that receives broadcast events. Only classic queues can be exclusive; quorum queues and streams can't.
 
 ```js
-const { queue } = await channel.assertQueue('', { exclusive: true });
+const { queue } = await channel.assertQueue("", { exclusive: true });
 ```
 
 ## 38: What is an auto-delete queue?
@@ -820,8 +824,8 @@ Don't confuse it with exclusive queues. An exclusive queue is tied to its connec
 If you declare a queue with an empty name, RabbitMQ creates one with a random unique name like `amq.gen-JzTY20BRgKO-HjmUJj0wLg` and returns it. These are usually exclusive and used for temporary queues.
 
 ```js
-const { queue } = await channel.assertQueue('', { exclusive: true });
-await channel.bindQueue(queue, 'notifications', '');
+const { queue } = await channel.assertQueue("", { exclusive: true });
+await channel.bindQueue(queue, "notifications", "");
 ```
 
 ## 40: What queue types does RabbitMQ have?
@@ -847,9 +851,9 @@ A quorum queue is a durable, replicated queue based on the Raft consensus algori
 If the node with the leader fails, one of the followers becomes the new leader and the queue keeps working with no message loss. Quorum queues are the recommended choice for important data and replaced classic mirrored queues.
 
 ```js
-await channel.assertQueue('payments', {
+await channel.assertQueue("payments", {
   durable: true,
-  arguments: { 'x-queue-type': 'quorum' },
+  arguments: { "x-queue-type": "quorum" },
 });
 ```
 
@@ -1044,13 +1048,13 @@ npm install amqplib
 ```
 
 ```js
-import amqp from 'amqplib';
+import amqp from "amqplib";
 
-const connection = await amqp.connect('amqp://user:pass@localhost:5672/');
+const connection = await amqp.connect("amqp://user:pass@localhost:5672/");
 const channel = await connection.createChannel();
 
-connection.on('error', (err) => console.error('Connection error', err));
-connection.on('close', () => console.log('Connection closed'));
+connection.on("error", (err) => console.error("Connection error", err));
+connection.on("close", () => console.log("Connection closed"));
 ```
 
 Open the connection once when the app starts and reuse it.
@@ -1058,18 +1062,18 @@ Open the connection once when the app starts and reuse it.
 ## 61: How do you send a message to a queue in Node.js?
 
 ```js
-import amqp from 'amqplib';
+import amqp from "amqplib";
 
-const connection = await amqp.connect('amqp://localhost');
+const connection = await amqp.connect("amqp://localhost");
 const channel = await connection.createChannel();
 
-const queue = 'emails';
+const queue = "emails";
 await channel.assertQueue(queue, { durable: true });
 
-const payload = { to: 'user@example.com', subject: 'Welcome' };
+const payload = { to: "user@example.com", subject: "Welcome" };
 channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), {
   persistent: true,
-  contentType: 'application/json',
+  contentType: "application/json",
 });
 
 await channel.close();
@@ -1081,15 +1085,15 @@ await connection.close();
 ## 62: How do you consume messages in Node.js?
 
 ```js
-import amqp from 'amqplib';
+import amqp from "amqplib";
 
-const connection = await amqp.connect('amqp://localhost');
+const connection = await amqp.connect("amqp://localhost");
 const channel = await connection.createChannel();
 
-await channel.assertQueue('emails', { durable: true });
+await channel.assertQueue("emails", { durable: true });
 await channel.prefetch(10);
 
-await channel.consume('emails', async (msg) => {
+await channel.consume("emails", async (msg) => {
   if (msg === null) return; // consumer was cancelled by the broker
   try {
     const data = JSON.parse(msg.content.toString());
@@ -1106,13 +1110,17 @@ The callback gets `null` if RabbitMQ cancels the consumer, for example when the 
 ## 63: How do you publish a message to an exchange in Node.js?
 
 ```js
-await channel.assertExchange('orders', 'topic', { durable: true });
+await channel.assertExchange("orders", "topic", { durable: true });
 
 channel.publish(
-  'orders',
-  'order.created',
+  "orders",
+  "order.created",
   Buffer.from(JSON.stringify({ id: 42, total: 99.5 })),
-  { persistent: true, contentType: 'application/json', messageId: 'order-42-created' }
+  {
+    persistent: true,
+    contentType: "application/json",
+    messageId: "order-42-created",
+  },
 );
 ```
 
@@ -1179,10 +1187,12 @@ The client sends a request message with two properties:
 The server processes the request and publishes the result to the `replyTo` queue with the same `correlationId`. The client listens on that queue and matches responses by ID.
 
 ```js
-const { queue: replyQueue } = await channel.assertQueue('', { exclusive: true });
+const { queue: replyQueue } = await channel.assertQueue("", {
+  exclusive: true,
+});
 const correlationId = crypto.randomUUID();
 
-channel.sendToQueue('rpc.prices', Buffer.from(JSON.stringify({ sku: 'A1' })), {
+channel.sendToQueue("rpc.prices", Buffer.from(JSON.stringify({ sku: "A1" })), {
   replyTo: replyQueue,
   correlationId,
 });
@@ -1204,10 +1214,10 @@ You can set it for the whole queue or for each message:
 
 ```js
 // per queue
-await channel.assertQueue('prices', { arguments: { 'x-message-ttl': 60000 } });
+await channel.assertQueue("prices", { arguments: { "x-message-ttl": 60000 } });
 
 // per message (string, in milliseconds)
-channel.sendToQueue('prices', body, { expiration: '60000' });
+channel.sendToQueue("prices", body, { expiration: "60000" });
 ```
 
 If both are set, the lower value wins. It's useful for data that becomes useless after some time, like price quotes or one-time codes.
@@ -1217,7 +1227,9 @@ If both are set, the lower value wins. It's useful for data that becomes useless
 Queue TTL deletes the queue itself after it has been unused for the given time. "Unused" means no consumers, no `basic.get` calls and no redeclaration during that time.
 
 ```js
-await channel.assertQueue('session-123', { arguments: { 'x-expires': 30 * 60 * 1000 } });
+await channel.assertQueue("session-123", {
+  arguments: { "x-expires": 30 * 60 * 1000 },
+});
 ```
 
 It's a good way to clean up queues created per user or per session that might otherwise be left behind.
@@ -1227,16 +1239,16 @@ It's a good way to clean up queues created per user or per session that might ot
 A dead letter exchange is a normal exchange that receives messages that "died" in another queue. You set it on a queue with the `x-dead-letter-exchange` argument or with a policy, and you bind a queue to it (often called a dead letter queue, or DLQ) to keep those messages.
 
 ```js
-await channel.assertExchange('dlx', 'direct', { durable: true });
-await channel.assertQueue('orders.dlq', { durable: true });
-await channel.bindQueue('orders.dlq', 'dlx', 'orders');
+await channel.assertExchange("dlx", "direct", { durable: true });
+await channel.assertQueue("orders.dlq", { durable: true });
+await channel.bindQueue("orders.dlq", "dlx", "orders");
 
-await channel.assertQueue('orders', {
+await channel.assertQueue("orders", {
   durable: true,
   arguments: {
-    'x-queue-type': 'quorum',
-    'x-dead-letter-exchange': 'dlx',
-    'x-dead-letter-routing-key': 'orders',
+    "x-queue-type": "quorum",
+    "x-dead-letter-exchange": "dlx",
+    "x-dead-letter-routing-key": "orders",
   },
 });
 ```
@@ -1282,7 +1294,7 @@ For persistent messages in durable queues, the ack is sent after the message is 
 
 ```js
 const channel = await connection.createConfirmChannel();
-channel.publish('orders', 'order.created', body, { persistent: true });
+channel.publish("orders", "order.created", body, { persistent: true });
 await channel.waitForConfirms();
 ```
 
@@ -1291,11 +1303,11 @@ await channel.waitForConfirms();
 When you publish with `mandatory: true` and the message can't be routed to any queue, RabbitMQ sends it back to the publisher with a `basic.return`, instead of silently dropping it.
 
 ```js
-channel.on('return', (msg) => {
-  console.warn('Unroutable message', msg.fields.routingKey);
+channel.on("return", (msg) => {
+  console.warn("Unroutable message", msg.fields.routingKey);
 });
 
-channel.publish('orders', 'order.unknown', body, { mandatory: true });
+channel.publish("orders", "order.unknown", body, { mandatory: true });
 ```
 
 This helps catch mistakes like a typo in the routing key or a missing binding.
@@ -1314,13 +1326,13 @@ To avoid losing such messages, you can:
 An alternate exchange (AE) is an exchange where messages go when they can't be routed by the original exchange. You set it with the `alternate-exchange` argument or a policy.
 
 ```js
-await channel.assertExchange('unrouted', 'fanout', { durable: true });
-await channel.assertQueue('unrouted.messages', { durable: true });
-await channel.bindQueue('unrouted.messages', 'unrouted', '');
+await channel.assertExchange("unrouted", "fanout", { durable: true });
+await channel.assertQueue("unrouted.messages", { durable: true });
+await channel.bindQueue("unrouted.messages", "unrouted", "");
 
-await channel.assertExchange('orders', 'topic', {
+await channel.assertExchange("orders", "topic", {
   durable: true,
-  alternateExchange: 'unrouted',
+  alternateExchange: "unrouted",
 });
 ```
 
@@ -1331,8 +1343,8 @@ It's a simple way to make sure no message disappears because of a routing mistak
 Yes. For classic queues you declare a priority queue with `x-max-priority` (1 to 255, but up to 10 is recommended) and publish with a `priority` property. Higher priority messages are delivered first.
 
 ```js
-await channel.assertQueue('jobs', { arguments: { 'x-max-priority': 5 } });
-channel.sendToQueue('jobs', body, { priority: 4 });
+await channel.assertQueue("jobs", { arguments: { "x-max-priority": 5 } });
+channel.sendToQueue("jobs", body, { priority: 4 });
 ```
 
 Quorum queues support priorities since RabbitMQ 4.0 without any extra argument. Priority only matters when messages are waiting in the queue; if consumers are fast and the queue is empty, there's nothing to reorder.
@@ -1346,7 +1358,7 @@ rabbitmqctl purge_queue orders -p shop
 ```
 
 ```js
-await channel.purgeQueue('orders');
+await channel.purgeQueue("orders");
 ```
 
 You can also click "Purge Messages" on the queue page in the management UI. Be careful, purged messages are gone for good.
@@ -1358,7 +1370,7 @@ rabbitmqctl delete_queue orders -p shop
 ```
 
 ```js
-await channel.deleteQueue('orders', { ifUnused: true, ifEmpty: true });
+await channel.deleteQueue("orders", { ifUnused: true, ifEmpty: true });
 ```
 
 `ifUnused` only deletes it if it has no consumers, and `ifEmpty` only if it has no messages. Deleting a queue removes its messages and bindings, and its consumers get a cancel notification.
@@ -1418,7 +1430,7 @@ Heartbeats are small frames that the client and server send to each other when a
 The client and server agree on a timeout when connecting (the server suggests 60 seconds by default). If no data or heartbeat arrives for about two intervals, the connection is considered dead and closed.
 
 ```js
-const connection = await amqp.connect('amqp://localhost?heartbeat=30');
+const connection = await amqp.connect("amqp://localhost?heartbeat=30");
 ```
 
 Don't set it to 0 (disabled) or to very low values like 1 second.
@@ -1434,7 +1446,7 @@ Delivery tags are per channel, so you must ack on the same channel the message w
 A consumer tag is the identifier of a subscription on a channel. RabbitMQ generates one if you don't give one. You use it to cancel that consumer later.
 
 ```js
-const { consumerTag } = await channel.consume('tasks', onMessage);
+const { consumerTag } = await channel.consume("tasks", onMessage);
 // later
 await channel.cancel(consumerTag);
 ```
@@ -1455,7 +1467,7 @@ This is useful during a graceful shutdown: cancel the consumer, wait for in-flig
 - `basic.get` (pull) asks for one message at a time with a separate request. It's slow because each message needs a round trip, and polling an empty queue wastes resources.
 
 ```js
-const msg = await channel.get('tasks', { noAck: false });
+const msg = await channel.get("tasks", { noAck: false });
 if (msg) channel.ack(msg);
 ```
 
@@ -1530,9 +1542,9 @@ Even if you can raise it, large messages are a bad idea: they use a lot of memor
 Set the `content_type` property (and `content_encoding` if the body is compressed). RabbitMQ doesn't use these values, they're just for your applications.
 
 ```js
-channel.publish('events', 'user.created', Buffer.from(JSON.stringify(user)), {
-  contentType: 'application/json',
-  headers: { 'schema-version': 2 },
+channel.publish("events", "user.created", Buffer.from(JSON.stringify(user)), {
+  contentType: "application/json",
+  headers: { "schema-version": 2 },
 });
 ```
 
@@ -1545,11 +1557,14 @@ The body must be a Buffer, so convert it yourself on both sides:
 ```js
 // producer
 const body = Buffer.from(JSON.stringify({ orderId: 1, items: 3 }));
-channel.sendToQueue('orders', body, { contentType: 'application/json', persistent: true });
+channel.sendToQueue("orders", body, {
+  contentType: "application/json",
+  persistent: true,
+});
 
 // consumer
-channel.consume('orders', (msg) => {
-  const order = JSON.parse(msg.content.toString('utf8'));
+channel.consume("orders", (msg) => {
+  const order = JSON.parse(msg.content.toString("utf8"));
   // ...
   channel.ack(msg);
 });
@@ -1592,8 +1607,10 @@ Set the limit to something that gives you time to react, for example a few GB or
 RabbitMQ stops reading from the sockets of connections that publish. The connection state shows as `blocking` or `blocked`. The publisher's writes just hang, and the client may not notice anything unless it listens for the `connection.blocked` notification.
 
 ```js
-connection.on('blocked', (reason) => console.warn('Blocked by broker:', reason));
-connection.on('unblocked', () => console.log('Unblocked'));
+connection.on("blocked", (reason) =>
+  console.warn("Blocked by broker:", reason),
+);
+connection.on("unblocked", () => console.log("Unblocked"));
 ```
 
 This is one reason to use separate connections for publishing and consuming: if they share a connection, a blocked publisher could also stop the consumer from acking, and the queues never drain.
@@ -1654,7 +1671,10 @@ Yes.
 - An **auto-delete** exchange is deleted when its last binding is removed.
 
 ```js
-await channel.assertExchange('events', 'topic', { durable: true, autoDelete: false });
+await channel.assertExchange("events", "topic", {
+  durable: true,
+  autoDelete: false,
+});
 ```
 
 If a durable queue is bound to a transient exchange, the binding is lost when the exchange disappears on restart, so keep exchanges durable for anything that matters.
@@ -1664,7 +1684,10 @@ If a durable queue is bound to a transient exchange, the binding is lost when th
 An internal exchange can't receive messages directly from publishers. It can only receive messages from other exchanges through exchange-to-exchange bindings.
 
 ```js
-await channel.assertExchange('billing.internal', 'topic', { durable: true, internal: true });
+await channel.assertExchange("billing.internal", "topic", {
+  durable: true,
+  internal: true,
+});
 ```
 
 It's used to build routing layers where you want to make sure clients don't bypass the main entry exchange.
@@ -1674,7 +1697,7 @@ It's used to build routing layers where you want to make sure clients don't bypa
 RabbitMQ lets you bind an exchange to another exchange, not just to a queue. Messages routed to the destination exchange then follow that exchange's own bindings.
 
 ```js
-await channel.bindExchange('audit', 'orders', '#'); // destination, source, pattern
+await channel.bindExchange("audit", "orders", "#"); // destination, source, pattern
 ```
 
 This lets you build layered routing: for example, a topic exchange `orders` sends everything to a fanout `audit` exchange, which copies it to several audit queues. It's a RabbitMQ extension to AMQP 0-9-1.
@@ -1690,8 +1713,8 @@ Headers are custom key-value pairs on a message. Common uses:
 - Routing in headers exchanges
 
 ```js
-channel.publish('events', 'user.updated', body, {
-  headers: { 'x-tenant-id': 'acme', 'schema-version': 3 },
+channel.publish("events", "user.updated", body, {
+  headers: { "x-tenant-id": "acme", "schema-version": 3 },
 });
 ```
 
@@ -1702,7 +1725,7 @@ RabbitMQ also adds its own headers, like `x-death` when a message is dead-letter
 Use the `expiration` property. The value is a string with the number of milliseconds.
 
 ```js
-channel.sendToQueue('otp', body, { expiration: '30000' }); // 30 seconds
+channel.sendToQueue("otp", body, { expiration: "30000" }); // 30 seconds
 ```
 
 amqplib also accepts a number and converts it. Note that in classic queues a message with per-message TTL is only removed when it reaches the head of the queue, so expired messages behind a long-lived one can stay in the queue longer than their TTL.
@@ -1715,7 +1738,7 @@ RabbitMQ doesn't generate IDs or timestamps for you. Setting them yourself helps
 - `timestamp` tells you how old the message is when it's processed, which helps you measure lag or skip stale messages.
 
 ```js
-channel.publish('orders', 'order.created', body, {
+channel.publish("orders", "order.created", body, {
   messageId: crypto.randomUUID(),
   timestamp: Math.floor(Date.now() / 1000),
 });
@@ -1889,11 +1912,14 @@ ssl_options.fail_if_no_peer_cert = false
 In Node.js:
 
 ```js
-import fs from 'node:fs';
+import fs from "node:fs";
 
-const connection = await amqp.connect('amqps://app:secret@rabbit.example.com:5671', {
-  ca: [fs.readFileSync('ca.pem')],
-});
+const connection = await amqp.connect(
+  "amqps://app:secret@rabbit.example.com:5671",
+  {
+    ca: [fs.readFileSync("ca.pem")],
+  },
+);
 ```
 
 Managed services like CloudAMQP and Amazon MQ give you an `amqps://` URL that works out of the box.
@@ -1905,7 +1931,7 @@ When an app exits without closing, RabbitMQ only finds out when the TCP connecti
 Closing cleanly also makes sure pending publishes and acks are flushed. A common shutdown handler:
 
 ```js
-process.on('SIGTERM', async () => {
+process.on("SIGTERM", async () => {
   await channel.close();
   await connection.close();
   process.exit(0);
@@ -1917,9 +1943,9 @@ process.on('SIGTERM', async () => {
 Single active consumer (SAC) is a queue feature where many consumers can subscribe, but only one of them gets messages at a time. If the active consumer goes away, the next one takes over automatically.
 
 ```js
-await channel.assertQueue('invoices', {
+await channel.assertQueue("invoices", {
   durable: true,
-  arguments: { 'x-queue-type': 'quorum', 'x-single-active-consumer': true },
+  arguments: { "x-queue-type": "quorum", "x-single-active-consumer": true },
 });
 ```
 
@@ -1930,7 +1956,7 @@ It gives you strict ordering (only one consumer processes the queue) and failove
 Consumer priorities let you say which consumers should get messages first. RabbitMQ sends messages to the highest-priority consumer that can take them (not blocked by its prefetch), and only uses lower-priority ones when the higher ones are full.
 
 ```js
-await channel.consume('tasks', onMessage, { priority: 10 });
+await channel.consume("tasks", onMessage, { priority: 10 });
 ```
 
 It's useful when you have a fast primary worker and slower backup workers. This is different from message priority, which orders messages inside a queue.
@@ -1946,7 +1972,7 @@ Since classic queues version 2 (the only version since 4.3), classic queues alre
 An exclusive consumer is a subscription where you ask to be the only consumer of a queue. If another consumer already exists, the request fails, and while you're subscribed, nobody else can subscribe.
 
 ```js
-await channel.consume('reports', onMessage, { exclusive: true });
+await channel.consume("reports", onMessage, { exclusive: true });
 ```
 
 Unlike single active consumer, there's no automatic failover: if the exclusive consumer leaves, another app has to retry subscribing. Single active consumer is usually the better choice.
@@ -1956,9 +1982,9 @@ Unlike single active consumer, there's no automatic failover: if the exclusive c
 Yes. A queue can be bound to the same exchange with several keys, or to several exchanges. It gets a message if any of its bindings matches, but it receives only one copy even if several bindings match the same message.
 
 ```js
-await channel.bindQueue('alerts', 'logs', 'error');
-await channel.bindQueue('alerts', 'logs', 'critical');
-await channel.bindQueue('alerts', 'security', 'login.failed');
+await channel.bindQueue("alerts", "logs", "error");
+await channel.bindQueue("alerts", "logs", "critical");
+await channel.bindQueue("alerts", "security", "login.failed");
 ```
 
 ## 141: When a message goes to several queues, is it copied?
@@ -1972,8 +1998,8 @@ Internally RabbitMQ avoids copying the body when it can. Classic queues on the s
 Yes. A consumer can subscribe to several queues on the same channel, each with its own consumer tag.
 
 ```js
-await channel.consume('orders.eu', handleOrder);
-await channel.consume('orders.us', handleOrder);
+await channel.consume("orders.eu", handleOrder);
+await channel.consume("orders.us", handleOrder);
 ```
 
 The prefetch limit applies per consumer by default, so each subscription gets its own limit. If the queues have very different importance, use separate channels or consumer priorities instead of relying on the order of delivery.
@@ -2062,8 +2088,8 @@ Use a confirm channel, persistent messages, durable (ideally quorum) queues and 
 ```js
 const channel = await connection.createConfirmChannel();
 
-channel.on('return', (msg) => {
-  console.error('Unroutable:', msg.fields.exchange, msg.fields.routingKey);
+channel.on("return", (msg) => {
+  console.error("Unroutable:", msg.fields.exchange, msg.fields.routingKey);
 });
 
 function publish(exchange, key, payload) {
@@ -2073,12 +2099,12 @@ function publish(exchange, key, payload) {
       key,
       Buffer.from(JSON.stringify(payload)),
       { persistent: true, mandatory: true, messageId: crypto.randomUUID() },
-      (err) => (err ? reject(err) : resolve())
+      (err) => (err ? reject(err) : resolve()),
     );
   });
 }
 
-await publish('orders', 'order.created', { id: 1 });
+await publish("orders", "order.created", { id: 1 });
 ```
 
 If the promise rejects or the connection drops before the confirm arrives, you don't know if the broker got the message, so you publish it again. That's why consumers must handle duplicates.
@@ -2091,7 +2117,7 @@ If the promise rejects or the connection drops before the confirm arrives, you d
 async function publishWithBackpressure(channel, ex, key, body) {
   const ok = channel.publish(ex, key, body, { persistent: true });
   if (!ok) {
-    await new Promise((resolve) => channel.once('drain', resolve));
+    await new Promise((resolve) => channel.once("drain", resolve));
   }
 }
 ```
@@ -2106,16 +2132,16 @@ amqplib doesn't reconnect on its own. You need to listen for `close` and `error`
 async function connect() {
   try {
     const conn = await amqp.connect(process.env.AMQP_URL);
-    conn.on('error', (err) => console.error('AMQP error', err.message));
-    conn.on('close', () => {
-      console.warn('AMQP closed, reconnecting');
+    conn.on("error", (err) => console.error("AMQP error", err.message));
+    conn.on("close", () => {
+      console.warn("AMQP closed, reconnecting");
       setTimeout(connect, 5000);
     });
     const ch = await conn.createChannel();
     await setupTopology(ch);
     await startConsumers(ch);
   } catch (err) {
-    console.error('Connect failed', err.message);
+    console.error("Connect failed", err.message);
     setTimeout(connect, 5000);
   }
 }
@@ -2176,7 +2202,7 @@ Use the `multiple` flag. It acks the given message and all earlier unacked messa
 
 ```js
 let count = 0;
-await channel.consume('metrics', (msg) => {
+await channel.consume("metrics", (msg) => {
   buffer.push(msg);
   if (++count % 100 === 0) {
     saveBatch(buffer);
@@ -2203,29 +2229,35 @@ Most real systems combine an in-process retry for quick errors, delayed retries 
 Use a main queue, a retry (wait) queue with a TTL that dead-letters back to the main queue, and a final DLQ.
 
 ```js
-await ch.assertExchange('orders', 'direct', { durable: true });
-await ch.assertExchange('orders.retry', 'direct', { durable: true });
-await ch.assertExchange('orders.dlx', 'direct', { durable: true });
+await ch.assertExchange("orders", "direct", { durable: true });
+await ch.assertExchange("orders.retry", "direct", { durable: true });
+await ch.assertExchange("orders.dlx", "direct", { durable: true });
 
-await ch.assertQueue('orders.work', {
-  durable: true,
-  arguments: { 'x-queue-type': 'quorum', 'x-dead-letter-exchange': 'orders.retry' },
-});
-await ch.bindQueue('orders.work', 'orders', 'work');
-
-await ch.assertQueue('orders.wait-30s', {
+await ch.assertQueue("orders.work", {
   durable: true,
   arguments: {
-    'x-queue-type': 'quorum',
-    'x-message-ttl': 30000,
-    'x-dead-letter-exchange': 'orders',
-    'x-dead-letter-routing-key': 'work',
+    "x-queue-type": "quorum",
+    "x-dead-letter-exchange": "orders.retry",
   },
 });
-await ch.bindQueue('orders.wait-30s', 'orders.retry', 'work');
+await ch.bindQueue("orders.work", "orders", "work");
 
-await ch.assertQueue('orders.dlq', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
-await ch.bindQueue('orders.dlq', 'orders.dlx', 'work');
+await ch.assertQueue("orders.wait-30s", {
+  durable: true,
+  arguments: {
+    "x-queue-type": "quorum",
+    "x-message-ttl": 30000,
+    "x-dead-letter-exchange": "orders",
+    "x-dead-letter-routing-key": "work",
+  },
+});
+await ch.bindQueue("orders.wait-30s", "orders.retry", "work");
+
+await ch.assertQueue("orders.dlq", {
+  durable: true,
+  arguments: { "x-queue-type": "quorum" },
+});
+await ch.bindQueue("orders.dlq", "orders.dlx", "work");
 ```
 
 The consumer rejects failed messages with `requeue: false` (they go to the wait queue). It reads the attempt count from `x-death`, and once it's too high, it publishes the message to `orders.dlx` itself and acks the original.
@@ -2259,7 +2291,7 @@ When a message is dead-lettered, RabbitMQ adds or updates the `x-death` header. 
 
 ```js
 function deathCount(msg, queue) {
-  const deaths = msg.properties.headers?.['x-death'] ?? [];
+  const deaths = msg.properties.headers?.["x-death"] ?? [];
   const entry = deaths.find((d) => d.queue === queue);
   return entry ? entry.count : 0;
 }
@@ -2278,7 +2310,7 @@ It's useful when one DLX handles failures from many queues and you want each que
 Quorum queues add an `x-delivery-count` header to redelivered messages. It tells the consumer how many times the message was delivered and returned before (it's not set on the first delivery).
 
 ```js
-const attempts = msg.properties.headers?.['x-delivery-count'] ?? 0;
+const attempts = msg.properties.headers?.["x-delivery-count"] ?? 0;
 if (attempts >= 3) {
   await logPoison(msg);
   channel.nack(msg, false, false);
@@ -2306,8 +2338,8 @@ RabbitMQ queues don't de-duplicate on their own (streams have publisher de-dupli
 ```js
 await db.transaction(async (tx) => {
   const inserted = await tx.query(
-    'INSERT INTO processed_messages (id) VALUES ($1) ON CONFLICT DO NOTHING',
-    [msg.properties.messageId]
+    "INSERT INTO processed_messages (id) VALUES ($1) ON CONFLICT DO NOTHING",
+    [msg.properties.messageId],
   );
   if (inserted.rowCount === 0) return; // duplicate
   await handleOrder(tx, payload);
@@ -2435,13 +2467,13 @@ You can also set `default_queue_type = quorum` in `rabbitmq.conf` for new vhosts
 ## 178: How do you declare a quorum queue and what are its options?
 
 ```js
-await channel.assertQueue('payments', {
+await channel.assertQueue("payments", {
   durable: true, // must be true for quorum queues
   arguments: {
-    'x-queue-type': 'quorum',
-    'x-quorum-initial-group-size': 3,
-    'x-delivery-limit': 10,
-    'x-dead-letter-exchange': 'payments.dlx',
+    "x-queue-type": "quorum",
+    "x-quorum-initial-group-size": 3,
+    "x-delivery-limit": 10,
+    "x-dead-letter-exchange": "payments.dlx",
   },
 });
 ```
@@ -2453,19 +2485,19 @@ Other useful settings (most better set with policies): `x-max-length`, `x-overfl
 Declare it with `x-queue-type: stream`, set a prefetch, use manual acks, and pass `x-stream-offset` to choose where to start.
 
 ```js
-await channel.assertQueue('events.stream', {
+await channel.assertQueue("events.stream", {
   durable: true,
-  arguments: { 'x-queue-type': 'stream', 'x-max-age': '7D' },
+  arguments: { "x-queue-type": "stream", "x-max-age": "7D" },
 });
 
 await channel.prefetch(100);
 await channel.consume(
-  'events.stream',
+  "events.stream",
   (msg) => {
     handle(msg);
     channel.ack(msg); // required, but it only moves the credit window
   },
-  { noAck: false, arguments: { 'x-stream-offset': 'first' } }
+  { noAck: false, arguments: { "x-stream-offset": "first" } },
 );
 ```
 
@@ -2486,13 +2518,13 @@ Since RabbitMQ 4.4 you can also set `x-stream-initial-offset` on the stream to c
 With retention settings, based on size, age or both:
 
 ```js
-await channel.assertQueue('clicks', {
+await channel.assertQueue("clicks", {
   durable: true,
   arguments: {
-    'x-queue-type': 'stream',
-    'x-max-length-bytes': 20_000_000_000, // 20 GB
-    'x-max-age': '7D',
-    'x-stream-max-segment-size-bytes': 100_000_000,
+    "x-queue-type": "stream",
+    "x-max-length-bytes": 20_000_000_000, // 20 GB
+    "x-max-age": "7D",
+    "x-stream-max-segment-size-bytes": 100_000_000,
   },
 });
 ```
@@ -2529,8 +2561,8 @@ More replicas means more safety but slower publishes and more disk and network u
 Since RabbitMQ 4.0, quorum queues support message priority without any extra queue argument. By default they use two levels: messages with priority 0 to 4 are "normal" and 5 or above are "high". High priority messages are delivered more often, but normal ones aren't starved completely.
 
 ```js
-channel.sendToQueue('jobs', body, { priority: 9 }); // high
-channel.sendToQueue('jobs', body, { priority: 1 }); // normal
+channel.sendToQueue("jobs", body, { priority: 9 }); // high
+channel.sendToQueue("jobs", body, { priority: 1 }); // normal
 ```
 
 RabbitMQ 4.3 added a strict priority option, where higher priority messages always go first. If you need many fine-grained levels, separate queues per priority with dedicated consumers is still a simple option.
@@ -2577,20 +2609,24 @@ Direct reply-to lets the client receive replies without declaring a reply queue.
 ```js
 const pending = new Map();
 
-await channel.consume('amq.rabbitmq.reply-to', (msg) => {
-  const resolve = pending.get(msg.properties.correlationId);
-  if (resolve) {
-    pending.delete(msg.properties.correlationId);
-    resolve(JSON.parse(msg.content.toString()));
-  }
-}, { noAck: true });
+await channel.consume(
+  "amq.rabbitmq.reply-to",
+  (msg) => {
+    const resolve = pending.get(msg.properties.correlationId);
+    if (resolve) {
+      pending.delete(msg.properties.correlationId);
+      resolve(JSON.parse(msg.content.toString()));
+    }
+  },
+  { noAck: true },
+);
 
 function call(queue, payload) {
   const correlationId = crypto.randomUUID();
   return new Promise((resolve) => {
     pending.set(correlationId, resolve);
     channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), {
-      replyTo: 'amq.rabbitmq.reply-to',
+      replyTo: "amq.rabbitmq.reply-to",
       correlationId,
     });
   });
@@ -2607,7 +2643,9 @@ The client should never wait forever. Start a timer for each request, reject the
 function callWithTimeout(queue, payload, ms = 5000) {
   return Promise.race([
     call(queue, payload),
-    new Promise((_, reject) => setTimeout(() => reject(new Error('RPC timeout')), ms)),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("RPC timeout")), ms),
+    ),
   ]);
 }
 ```
@@ -2627,15 +2665,21 @@ Publish once to a topic (or fanout) exchange and let each service bind its own q
 
 ```js
 // producer: orders service
-channel.publish('orders.events', 'order.created', body, { persistent: true });
+channel.publish("orders.events", "order.created", body, { persistent: true });
 
 // billing service
-await ch.assertQueue('billing.order-created', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
-await ch.bindQueue('billing.order-created', 'orders.events', 'order.created');
+await ch.assertQueue("billing.order-created", {
+  durable: true,
+  arguments: { "x-queue-type": "quorum" },
+});
+await ch.bindQueue("billing.order-created", "orders.events", "order.created");
 
 // shipping service
-await ch.assertQueue('shipping.orders', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
-await ch.bindQueue('shipping.orders', 'orders.events', 'order.*');
+await ch.assertQueue("shipping.orders", {
+  durable: true,
+  arguments: { "x-queue-type": "quorum" },
+});
+await ch.bindQueue("shipping.orders", "orders.events", "order.*");
 ```
 
 Each service processes, retries and fails independently. Adding a new consumer means adding a queue and binding, with no change to the producer.
@@ -2661,14 +2705,17 @@ Some teams use Avro, Protobuf or JSON Schema with a schema registry to check com
 Pass the trace context in message headers. With OpenTelemetry, the producer injects the current context (the `traceparent` header) when publishing, and the consumer extracts it and starts a child span.
 
 ```js
-import { context, propagation } from '@opentelemetry/api';
+import { context, propagation } from "@opentelemetry/api";
 
 const headers = {};
 propagation.inject(context.active(), headers);
-channel.publish('orders', 'order.created', body, { headers });
+channel.publish("orders", "order.created", body, { headers });
 
 // consumer
-const parent = propagation.extract(context.active(), msg.properties.headers ?? {});
+const parent = propagation.extract(
+  context.active(),
+  msg.properties.headers ?? {},
+);
 ```
 
 OpenTelemetry also has auto-instrumentation for amqplib that does this for you. It lets you follow one request from the HTTP API through the queue to the worker.
@@ -2679,16 +2726,19 @@ NestJS microservices have a built-in RMQ transport (`@nestjs/microservices` with
 
 ```ts
 // main.ts
-const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-  transport: Transport.RMQ,
-  options: {
-    urls: ['amqp://localhost:5672'],
-    queue: 'orders',
-    queueOptions: { durable: true },
-    noAck: false,
-    prefetchCount: 10,
+const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+  AppModule,
+  {
+    transport: Transport.RMQ,
+    options: {
+      urls: ["amqp://localhost:5672"],
+      queue: "orders",
+      queueOptions: { durable: true },
+      noAck: false,
+      prefetchCount: 10,
+    },
   },
-});
+);
 ```
 
 ```ts
@@ -2707,9 +2757,11 @@ The built-in transport is simple and uses one queue per service. For topic routi
 - **Integration tests:** start a real RabbitMQ in Docker, for example with Testcontainers, declare the topology and check that messages flow end to end.
 
 ```js
-import { RabbitMQContainer } from '@testcontainers/rabbitmq';
+import { RabbitMQContainer } from "@testcontainers/rabbitmq";
 
-const container = await new RabbitMQContainer('rabbitmq:4.4-management').start();
+const container = await new RabbitMQContainer(
+  "rabbitmq:4.4-management",
+).start();
 const connection = await amqp.connect(container.getAmqpUrl());
 ```
 
@@ -2946,11 +2998,11 @@ In the management UI the connection shows state `flow`. It's normal for short pe
 RabbitMQ sends `connection.blocked` (with a reason, like low memory) and later `connection.unblocked` to clients that support it. Most clients advertise support automatically.
 
 ```js
-connection.on('blocked', (reason) => {
-  metrics.increment('amqp.blocked');
-  logger.warn({ reason }, 'publishing blocked');
+connection.on("blocked", (reason) => {
+  metrics.increment("amqp.blocked");
+  logger.warn({ reason }, "publishing blocked");
 });
-connection.on('unblocked', () => logger.info('publishing unblocked'));
+connection.on("unblocked", () => logger.info("publishing unblocked"));
 ```
 
 The app can then stop accepting new work, return 503s or buffer, instead of piling up hanging publishes.
@@ -3125,9 +3177,9 @@ Give the client a list of node addresses and let it try them in order (or shuffl
 
 ```js
 const urls = [
-  'amqp://app:pass@rmq-0:5672',
-  'amqp://app:pass@rmq-1:5672',
-  'amqp://app:pass@rmq-2:5672',
+  "amqp://app:pass@rmq-0:5672",
+  "amqp://app:pass@rmq-1:5672",
+  "amqp://app:pass@rmq-2:5672",
 ];
 
 async function connectAny() {
@@ -3135,10 +3187,10 @@ async function connectAny() {
     try {
       return await amqp.connect(url);
     } catch (err) {
-      console.warn('Failed', url, err.message);
+      console.warn("Failed", url, err.message);
     }
   }
-  throw new Error('No RabbitMQ node available');
+  throw new Error("No RabbitMQ node available");
 }
 ```
 
@@ -3283,12 +3335,14 @@ All messages for one entity land in the same queue and are processed in order, w
 It's an exchange type from the `rabbitmq_consistent_hash_exchange` plugin (shipped with RabbitMQ). It hashes the routing key (or a header or property) and picks one of the bound queues. The binding key is a number that sets the queue's weight.
 
 ```js
-await channel.assertExchange('orders.sharded', 'x-consistent-hash', { durable: true });
+await channel.assertExchange("orders.sharded", "x-consistent-hash", {
+  durable: true,
+});
 for (let i = 0; i < 4; i++) {
   await channel.assertQueue(`orders.shard.${i}`, { durable: true });
-  await channel.bindQueue(`orders.shard.${i}`, 'orders.sharded', '1'); // weight 1
+  await channel.bindQueue(`orders.shard.${i}`, "orders.sharded", "1"); // weight 1
 }
-channel.publish('orders.sharded', `order-${orderId}`, body);
+channel.publish("orders.sharded", `order-${orderId}`, body);
 ```
 
 The same routing key always goes to the same queue (as long as the bindings don't change), which is useful for per-key ordering and spreading load.
@@ -3321,11 +3375,13 @@ Stream filtering lets a consumer receive only some messages from a stream withou
 
 ```js
 // AMQP 0-9-1: publisher sets a filter value
-channel.sendToQueue('events.stream', body, { headers: { 'x-stream-filter-value': 'eu' } });
+channel.sendToQueue("events.stream", body, {
+  headers: { "x-stream-filter-value": "eu" },
+});
 
 // consumer asks for it
-await channel.consume('events.stream', onMsg, {
-  arguments: { 'x-stream-filter': 'eu', 'x-stream-offset': 'first' },
+await channel.consume("events.stream", onMsg, {
+  arguments: { "x-stream-filter": "eu", "x-stream-offset": "first" },
 });
 ```
 
@@ -3338,8 +3394,8 @@ With the stream protocol, a consumer can store its offset on the broker under a 
 Over AMQP 0-9-1 there's no server-side offset tracking, so you store the last processed offset yourself (it's in `msg.properties.headers['x-stream-offset']`) in a database and pass it as `x-stream-offset` when subscribing.
 
 ```js
-const offset = msg.properties.headers['x-stream-offset'];
-await saveOffset('report-builder', offset);
+const offset = msg.properties.headers["x-stream-offset"];
+await saveOffset("report-builder", offset);
 ```
 
 ## 252: Should you use the stream protocol or AMQP to work with streams?
@@ -3364,11 +3420,16 @@ Use the claim check pattern: upload the file to object storage (S3, GCS, Azure B
 
 ```js
 const key = `uploads/${crypto.randomUUID()}.pdf`;
-await s3.send(new PutObjectCommand({ Bucket: 'docs', Key: key, Body: file }));
+await s3.send(new PutObjectCommand({ Bucket: "docs", Key: key, Body: file }));
 
-channel.publish('docs', 'document.uploaded', Buffer.from(JSON.stringify({ bucket: 'docs', key })), {
-  persistent: true,
-});
+channel.publish(
+  "docs",
+  "document.uploaded",
+  Buffer.from(JSON.stringify({ bucket: "docs", key })),
+  {
+    persistent: true,
+  },
+);
 ```
 
 The consumer downloads the file when it needs it. This keeps messages small, keeps the broker fast and lets you use storage made for large files. Plan for cleanup of files that are no longer needed.
@@ -3378,15 +3439,18 @@ The consumer downloads the file when it needs it. This keeps messages small, kee
 It can help when messages are large (tens of KB or more) and compress well, like JSON or text. It lowers network and disk use, especially with quorum queues that replicate every message. For small messages, the CPU cost isn't worth it.
 
 ```js
-import { gzipSync, gunzipSync } from 'node:zlib';
+import { gzipSync, gunzipSync } from "node:zlib";
 
-channel.publish('logs', 'app', gzipSync(Buffer.from(json)), {
-  contentType: 'application/json',
-  contentEncoding: 'gzip',
+channel.publish("logs", "app", gzipSync(Buffer.from(json)), {
+  contentType: "application/json",
+  contentEncoding: "gzip",
 });
 
 // consumer
-const body = msg.properties.contentEncoding === 'gzip' ? gunzipSync(msg.content) : msg.content;
+const body =
+  msg.properties.contentEncoding === "gzip"
+    ? gunzipSync(msg.content)
+    : msg.content;
 ```
 
 ## 256: How do you publish many messages quickly and still be safe?
@@ -3397,8 +3461,13 @@ Don't wait for a confirm after every message; that limits you to one message per
 const channel = await connection.createConfirmChannel();
 
 for (const event of events) {
-  const ok = channel.publish('events', event.type, Buffer.from(JSON.stringify(event)), { persistent: true });
-  if (!ok) await new Promise((r) => channel.once('drain', r));
+  const ok = channel.publish(
+    "events",
+    event.type,
+    Buffer.from(JSON.stringify(event)),
+    { persistent: true },
+  );
+  if (!ok) await new Promise((r) => channel.once("drain", r));
 }
 await channel.waitForConfirms(); // throws if any message was nacked
 ```
@@ -3412,7 +3481,7 @@ Node.js is single-threaded, but handlers usually wait on I/O, so you can process
 ```js
 await channel.prefetch(20); // up to 20 messages in progress
 
-await channel.consume('thumbnails', async (msg) => {
+await channel.consume("thumbnails", async (msg) => {
   try {
     await makeThumbnail(JSON.parse(msg.content.toString()));
     channel.ack(msg);
@@ -3432,7 +3501,7 @@ For CPU-heavy work, use worker threads or several processes; otherwise one slow 
 
 ```js
 let inFlight = 0;
-const { consumerTag } = await channel.consume('jobs', async (msg) => {
+const { consumerTag } = await channel.consume("jobs", async (msg) => {
   inFlight++;
   try {
     await handle(msg);
@@ -3442,7 +3511,7 @@ const { consumerTag } = await channel.consume('jobs', async (msg) => {
   }
 });
 
-process.on('SIGTERM', async () => {
+process.on("SIGTERM", async () => {
   await channel.cancel(consumerTag);
   while (inFlight > 0) await new Promise((r) => setTimeout(r, 100));
   await channel.close();
@@ -3458,7 +3527,7 @@ Make sure the Kubernetes `terminationGracePeriodSeconds` is long enough for your
 Stop accepting new work (for example stop the HTTP server), then wait for all outstanding publisher confirms before closing:
 
 ```js
-process.on('SIGTERM', async () => {
+process.on("SIGTERM", async () => {
   await new Promise((r) => server.close(r));
   await confirmChannel.waitForConfirms();
   await confirmChannel.close();
@@ -3545,12 +3614,13 @@ For "temporary but survive short disconnects", use a normal queue with `x-expire
 A common setup: each API instance declares an exclusive server-named queue bound to a `notifications` exchange. When an event arrives, the instance pushes it to its local WebSocket or SSE clients.
 
 ```js
-const { queue } = await channel.assertQueue('', { exclusive: true });
-await channel.bindQueue(queue, 'notifications', `user.#`);
+const { queue } = await channel.assertQueue("", { exclusive: true });
+await channel.bindQueue(queue, "notifications", `user.#`);
 
 await channel.consume(queue, (msg) => {
   const { userId, payload } = JSON.parse(msg.content.toString());
-  for (const socket of socketsByUser.get(userId) ?? []) socket.send(JSON.stringify(payload));
+  for (const socket of socketsByUser.get(userId) ?? [])
+    socket.send(JSON.stringify(payload));
   channel.ack(msg);
 });
 ```
@@ -3674,9 +3744,9 @@ Use `rabbitmq.conf` for everything else; it's easier to read and validate.
 RabbitMQ sends a `basic.cancel` to the consumer (if the client supports consumer cancel notifications, which all modern ones do). In amqplib, your consume callback is called with `null`.
 
 ```js
-await channel.consume('jobs', (msg) => {
+await channel.consume("jobs", (msg) => {
   if (msg === null) {
-    console.warn('Consumer cancelled by broker, resubscribing later');
+    console.warn("Consumer cancelled by broker, resubscribing later");
     scheduleResubscribe();
     return;
   }
@@ -3709,12 +3779,12 @@ When you dead-letter a message by rejecting it, you can't change its headers. If
 
 ```js
 async function sendToDlq(msg, err) {
-  channel.publish('orders.dlx', 'orders', msg.content, {
+  channel.publish("orders.dlx", "orders", msg.content, {
     ...msg.properties,
     headers: {
       ...msg.properties.headers,
-      'x-error-message': String(err.message).slice(0, 500),
-      'x-failed-at': new Date().toISOString(),
+      "x-error-message": String(err.message).slice(0, 500),
+      "x-failed-at": new Date().toISOString(),
     },
   });
   channel.ack(msg);
@@ -3735,11 +3805,11 @@ Republishing is the usual way to build custom retry logic with delays and backof
 Do the DB write first, then ack only after it commits. If the process crashes between commit and ack, the message is redelivered and processed again, so make the write idempotent (unique key or processed-ID table).
 
 ```js
-await channel.consume('payments', async (msg) => {
+await channel.consume("payments", async (msg) => {
   const payment = JSON.parse(msg.content.toString());
   await db.query(
-    'INSERT INTO payments (id, amount) VALUES ($1, $2) ON CONFLICT (id) DO NOTHING',
-    [payment.id, payment.amount]
+    "INSERT INTO payments (id, amount) VALUES ($1, $2) ON CONFLICT (id) DO NOTHING",
+    [payment.id, payment.amount],
   );
   channel.ack(msg);
 });
@@ -3853,7 +3923,10 @@ Split errors into two groups:
 
 ```js
 function isRetryable(err) {
-  return ['ETIMEDOUT', 'ECONNRESET', 'ECONNREFUSED'].includes(err.code) || [429, 503].includes(err.status);
+  return (
+    ["ETIMEDOUT", "ECONNRESET", "ECONNREFUSED"].includes(err.code) ||
+    [429, 503].includes(err.status)
+  );
 }
 ```
 
@@ -4263,8 +4336,8 @@ CREATE TABLE inbox (
 ```js
 await db.transaction(async (tx) => {
   const { rowCount } = await tx.query(
-    'INSERT INTO inbox (message_id) VALUES ($1) ON CONFLICT DO NOTHING',
-    [msg.properties.messageId]
+    "INSERT INTO inbox (message_id) VALUES ($1) ON CONFLICT DO NOTHING",
+    [msg.properties.messageId],
   );
   if (rowCount === 1) await applyBusinessChange(tx, payload);
 });
@@ -4748,15 +4821,15 @@ The main reasons to migrate are usually durability, replication, routing to many
 
 ## 383: Compare RabbitMQ and Kafka in depth.
 
-| | RabbitMQ | Kafka |
-| --- | --- | --- |
-| Model | Broker pushes messages from queues; messages deleted after ack (streams keep them) | Distributed log; consumers pull and track offsets |
-| Routing | Rich: exchanges, bindings, patterns, headers | By topic and partition only |
-| Per-message features | Acks, redelivery, TTL, priorities, DLX, delays | None per message; retries are an app concern |
-| Ordering | Per queue; per partition in super streams | Per partition |
-| Replay | Streams only | Built in |
-| Throughput | High; streams very high | Very high |
-| Ops | Simpler for small/medium setups | More moving parts, but huge ecosystem (Connect, Streams) |
+|                      | RabbitMQ                                                                           | Kafka                                                    |
+| -------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Model                | Broker pushes messages from queues; messages deleted after ack (streams keep them) | Distributed log; consumers pull and track offsets        |
+| Routing              | Rich: exchanges, bindings, patterns, headers                                       | By topic and partition only                              |
+| Per-message features | Acks, redelivery, TTL, priorities, DLX, delays                                     | None per message; retries are an app concern             |
+| Ordering             | Per queue; per partition in super streams                                          | Per partition                                            |
+| Replay               | Streams only                                                                       | Built in                                                 |
+| Throughput           | High; streams very high                                                            | Very high                                                |
+| Ops                  | Simpler for small/medium setups                                                    | More moving parts, but huge ecosystem (Connect, Streams) |
 
 Choose RabbitMQ for task queues, complex routing, RPC and per-message handling. Choose Kafka for large-scale event streaming, long retention and stream processing. Many companies run both.
 
@@ -5147,11 +5220,14 @@ Generated docs and code from AsyncAPI help teams find what events exist and what
 Validate the payload against a schema as the first step in the handler, and treat invalid messages as permanent failures:
 
 ```js
-import { z } from 'zod';
+import { z } from "zod";
 
-const OrderCreated = z.object({ orderId: z.string(), total: z.number().nonnegative() });
+const OrderCreated = z.object({
+  orderId: z.string(),
+  total: z.number().nonnegative(),
+});
 
-await channel.consume('billing.order-created', async (msg) => {
+await channel.consume("billing.order-created", async (msg) => {
   const result = OrderCreated.safeParse(JSON.parse(msg.content.toString()));
   if (!result.success) {
     await sendToDlq(msg, new Error(result.error.message));

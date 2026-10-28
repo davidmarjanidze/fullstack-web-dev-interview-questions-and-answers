@@ -249,7 +249,7 @@ The answers target current Node.js (24 LTS, 25 and 26) and Express 5, and they m
 - [232: What is server-side template injection?](#232-what-is-server-side-template-injection)
 - [233: Why can passing req.query into res.render be dangerous?](#233-why-can-passing-reqquery-into-resrender-be-dangerous)
 - [234: How do you prevent prototype pollution in your own code?](#234-how-do-you-prevent-prototype-pollution-in-your-own-code)
-- [235: Why does JSON.parse create a __proto__ key that's dangerous later?](#235-why-does-jsonparse-create-a-__proto__-key-thats-dangerous-later)
+- [235: Why does JSON.parse create a **proto** key that's dangerous later?](#235-why-does-jsonparse-create-a-__proto__-key-thats-dangerous-later)
 - [236: How do you find vulnerable regular expressions in a codebase?](#236-how-do-you-find-vulnerable-regular-expressions-in-a-codebase)
 - [237: How do you make regex-based validation safe from ReDoS?](#237-how-do-you-make-regex-based-validation-safe-from-redos)
 - [238: How do you protect the event loop from expensive requests?](#238-how-do-you-protect-the-event-loop-from-expensive-requests)
@@ -577,7 +577,7 @@ For session IDs, reset tokens, API keys or OTP codes, use the `crypto` module:
 import { randomBytes, randomInt, randomUUID } from "node:crypto";
 
 randomBytes(32).toString("base64url"); // token
-randomInt(0, 1_000_000);               // 6-digit code
+randomInt(0, 1_000_000); // 6-digit code
 randomUUID();
 ```
 
@@ -693,7 +693,10 @@ NoSQL injection is when an attacker sends objects instead of strings, and those 
 
 ```js
 // Body: { "email": "admin@site.com", "password": { "$ne": null } }
-const user = await User.findOne({ email: req.body.email, password: req.body.password });
+const user = await User.findOne({
+  email: req.body.email,
+  password: req.body.password,
+});
 // matches the admin without knowing the password
 ```
 
@@ -767,11 +770,13 @@ Use the `cors` package and list the allowed origins.
 ```js
 import cors from "cors";
 
-app.use(cors({
-  origin: ["https://app.example.com", "https://admin.example.com"],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-}));
+app.use(
+  cors({
+    origin: ["https://app.example.com", "https://admin.example.com"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  }),
+);
 ```
 
 Avoid `origin: "*"` together with cookies, and don't reflect whatever `Origin` the client sends.
@@ -939,6 +944,7 @@ Common second factors are TOTP apps (Google Authenticator), passkeys and hardwar
 A passkey is a login credential based on public-key cryptography (WebAuthn/FIDO2). The device creates a key pair for your site. The private key stays on the device (or in the user's password manager), and the server stores only the public key.
 
 At login the server sends a challenge, the device signs it after a fingerprint, face or PIN check, and the server verifies the signature. Passkeys can't be phished, because they're bound to your domain, and there is no password database to leak.
+
 ## 51: What is OAuth 2.0?
 
 OAuth 2.0 is a protocol for delegated authorization. It lets a user give an app limited access to their data on another service without sharing their password. For example, "let this app read my GitHub repos".
@@ -1290,14 +1296,16 @@ With JWTs, delete the tokens on the client, and revoke the refresh token on the 
 ```js
 import session from "express-session";
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  name: "sid",
-  cookie: { httpOnly: true, secure: true, sameSite: "lax", maxAge: 86400000 },
-  store: redisStore,
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    name: "sid",
+    cookie: { httpOnly: true, secure: true, sameSite: "lax", maxAge: 86400000 },
+    store: redisStore,
+  }),
+);
 ```
 
 The default memory store leaks memory and isn't shared between instances, so use Redis or a database store in production.
@@ -1326,7 +1334,11 @@ Only redirect to relative paths or to an allowlist of hosts:
 
 ```js
 const next = req.query.next;
-const safe = typeof next === "string" && next.startsWith("/") && !next.startsWith("//") && !next.includes("\\");
+const safe =
+  typeof next === "string" &&
+  next.startsWith("/") &&
+  !next.startsWith("//") &&
+  !next.includes("\\");
 res.redirect(safe ? next : "/");
 ```
 
@@ -1396,6 +1408,7 @@ The app should be able to handle rotation without downtime, for example by accep
 A CVE (Common Vulnerabilities and Exposures) ID is a unique identifier for a publicly known vulnerability, like `CVE-2024-27980`. It helps everyone talk about the same bug. A CVSS score (0-10) usually comes with it to show how severe it is.
 
 Node.js security releases, npm advisories and tools like `npm audit` all refer to CVE or GHSA (GitHub Security Advisory) IDs.
+
 ## 101: How do you find out about Node.js security releases?
 
 - The Node.js blog posts security release announcements a few days before the fix, with the affected versions and severity.
@@ -1503,7 +1516,9 @@ It makes key rotation easy: the auth server adds a new key, starts signing with 
 ```js
 import { createRemoteJWKSet, jwtVerify } from "jose";
 
-const JWKS = createRemoteJWKSet(new URL("https://auth.example.com/.well-known/jwks.json"));
+const JWKS = createRemoteJWKSet(
+  new URL("https://auth.example.com/.well-known/jwks.json"),
+);
 const { payload } = await jwtVerify(token, JWKS, {
   issuer: "https://auth.example.com",
   audience: "orders-api",
@@ -1666,7 +1681,10 @@ function decrypt(b64) {
   const buf = Buffer.from(b64, "base64");
   const decipher = createDecipheriv("aes-256-gcm", key, buf.subarray(0, 12));
   decipher.setAuthTag(buf.subarray(12, 28));
-  return Buffer.concat([decipher.update(buf.subarray(28)), decipher.final()]).toString("utf8");
+  return Buffer.concat([
+    decipher.update(buf.subarray(28)),
+    decipher.final(),
+  ]).toString("utf8");
 }
 ```
 
@@ -1807,14 +1825,23 @@ app.set("trust proxy", 1);
 app.use(helmet());
 app.use(cors({ origin: ["https://app.example.com"], credentials: true }));
 app.use(express.json({ limit: "100kb" }));
-app.use(rateLimit({ windowMs: 60_000, limit: 300, standardHeaders: "draft-7", legacyHeaders: false }));
+app.use(
+  rateLimit({
+    windowMs: 60_000,
+    limit: 300,
+    standardHeaders: "draft-7",
+    legacyHeaders: false,
+  }),
+);
 
 // routes with validation, auth and authorization...
 
 app.use((req, res) => res.status(404).json({ error: "Not found" }));
 app.use((err, req, res, next) => {
   req.log?.error({ err });
-  res.status(err.status ?? 500).json({ error: err.expose ? err.message : "Internal error" });
+  res
+    .status(err.status ?? 500)
+    .json({ error: err.expose ? err.message : "Internal error" });
 });
 ```
 
@@ -1890,14 +1917,22 @@ import { createClient } from "redis";
 const redisClient = createClient({ url: process.env.REDIS_URL });
 await redisClient.connect();
 
-app.use(session({
-  store: new RedisStore({ client: redisClient, prefix: "sess:" }),
-  secret: [process.env.SESSION_SECRET_NEW, process.env.SESSION_SECRET_OLD],
-  name: "__Host-sid",
-  resave: false,
-  saveUninitialized: false,
-  cookie: { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 8 * 3600_000 },
-}));
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient, prefix: "sess:" }),
+    secret: [process.env.SESSION_SECRET_NEW, process.env.SESSION_SECRET_OLD],
+    name: "__Host-sid",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 8 * 3600_000,
+    },
+  }),
+);
 ```
 
 Passing an array of secrets lets you rotate: the first signs new cookies and all are accepted for verifying. Protect Redis with a password or ACL and TLS, and don't expose it publicly.
@@ -1945,7 +1980,8 @@ app.use((req, res, next) => {
   const site = req.get("sec-fetch-site");
   if (!site) return next(); // old browser or non-browser client
   if (["same-origin", "same-site", "none"].includes(site)) return next();
-  if (req.method === "GET" && req.get("sec-fetch-mode") === "navigate") return next();
+  if (req.method === "GET" && req.get("sec-fetch-mode") === "navigate")
+    return next();
   res.status(403).end();
 });
 ```
@@ -1966,14 +2002,16 @@ Use an exact set of allowed origins.
 ```js
 const allowedOrigins = new Set(process.env.CORS_ORIGINS.split(","));
 
-app.use(cors({
-  origin(origin, callback) {
-    // allow requests without Origin (curl, server-to-server)
-    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
-    callback(null, false);
-  },
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin(origin, callback) {
+      // allow requests without Origin (curl, server-to-server)
+      if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+      callback(null, false);
+    },
+    credentials: true,
+  }),
+);
 ```
 
 Compare full origins exactly. The `cors` package also sets `Vary: Origin` so caches don't serve one origin's headers to another.
@@ -1989,17 +2027,23 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`, "'strict-dynamic'"],
-      objectSrc: ["'none'"],
-      baseUri: ["'none'"],
-      frameAncestors: ["'none'"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          (req, res) => `'nonce-${res.locals.cspNonce}'`,
+          "'strict-dynamic'",
+        ],
+        objectSrc: ["'none'"],
+        baseUri: ["'none'"],
+        frameAncestors: ["'none'"],
+      },
     },
-  },
-}));
+  }),
+);
 ```
 
 Then put the nonce on your script tags in the template: `<script nonce="<%= cspNonce %>">`. The nonce must be new on every response.
@@ -2009,9 +2053,11 @@ Then put the nonce on your script tags in the template: `<script nonce="<%= cspN
 Start with `Content-Security-Policy-Report-Only`. The browser reports violations but doesn't block anything. Collect reports with the `report-to` directive (and the `Reporting-Endpoints` header) or the older `report-uri`, fix the real violations, then switch to the enforcing header.
 
 ```js
-app.use(helmet({
-  contentSecurityPolicy: { reportOnly: true, directives: { /* ... */ } },
-}));
+app.use(
+  helmet({
+    contentSecurityPolicy: { reportOnly: true, directives: {/* ... */} },
+  }),
+);
 ```
 
 Expect noise from browser extensions in the reports.
@@ -2039,7 +2085,9 @@ const limiter = rateLimit({
   limit: 100,
   standardHeaders: "draft-7",
   legacyHeaders: false,
-  store: new RedisStore({ sendCommand: (...args) => redisClient.sendCommand(args) }),
+  store: new RedisStore({
+    sendCommand: (...args) => redisClient.sendCommand(args),
+  }),
 });
 ```
 
@@ -2078,7 +2126,9 @@ async function isBreached(password) {
     headers: { "Add-Padding": "true" },
   });
   const text = await res.text();
-  return text.split("\n").some((line) => line.startsWith(suffix) && !line.endsWith(":0"));
+  return text
+    .split("\n")
+    .some((line) => line.startsWith(suffix) && !line.endsWith(":0"));
 }
 ```
 
@@ -2111,14 +2161,24 @@ const scryptAsync = promisify(scrypt);
 
 export async function hashPassword(password) {
   const salt = randomBytes(16);
-  const key = await scryptAsync(password, salt, 64, { N: 2 ** 17, r: 8, p: 1, maxmem: 256 * 1024 * 1024 });
+  const key = await scryptAsync(password, salt, 64, {
+    N: 2 ** 17,
+    r: 8,
+    p: 1,
+    maxmem: 256 * 1024 * 1024,
+  });
   return `scrypt$${salt.toString("base64")}$${key.toString("base64")}`;
 }
 
 export async function verifyPassword(password, stored) {
   const [, saltB64, keyB64] = stored.split("$");
   const expected = Buffer.from(keyB64, "base64");
-  const key = await scryptAsync(password, Buffer.from(saltB64, "base64"), expected.length, { N: 2 ** 17, r: 8, p: 1, maxmem: 256 * 1024 * 1024 });
+  const key = await scryptAsync(
+    password,
+    Buffer.from(saltB64, "base64"),
+    expected.length,
+    { N: 2 ** 17, r: 8, p: 1, maxmem: 256 * 1024 * 1024 },
+  );
   return timingSafeEqual(key, expected);
 }
 ```
@@ -2230,17 +2290,24 @@ Verify the signature that the sender adds, using the raw body and a constant-tim
 ```js
 import { createHmac, timingSafeEqual } from "node:crypto";
 
-app.post("/webhooks/payments", express.raw({ type: "application/json" }), (req, res) => {
-  const signature = req.get("x-signature") ?? "";
-  const expected = createHmac("sha256", process.env.WEBHOOK_SECRET).update(req.body).digest("hex");
-  const a = Buffer.from(signature);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length || !timingSafeEqual(a, b)) return res.status(401).end();
+app.post(
+  "/webhooks/payments",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    const signature = req.get("x-signature") ?? "";
+    const expected = createHmac("sha256", process.env.WEBHOOK_SECRET)
+      .update(req.body)
+      .digest("hex");
+    const a = Buffer.from(signature);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length || !timingSafeEqual(a, b))
+      return res.status(401).end();
 
-  const event = JSON.parse(req.body.toString("utf8"));
-  // process event idempotently
-  res.sendStatus(200);
-});
+    const event = JSON.parse(req.body.toString("utf8"));
+    // process event idempotently
+    res.sendStatus(200);
+  },
+);
 ```
 
 Also check a timestamp to block replays, handle duplicate events, and use the provider's SDK when one exists (for example Stripe's `constructEvent`).
@@ -2290,7 +2357,8 @@ if (!Number.isFinite(ts) || Math.abs(Date.now() / 1000 - ts) > 300) {
 ```js
 const can = {
   "invoice:read": (user, invoice) => invoice.orgId === user.orgId,
-  "invoice:delete": (user, invoice) => invoice.orgId === user.orgId && user.role === "admin",
+  "invoice:delete": (user, invoice) =>
+    invoice.orgId === user.orgId && user.role === "admin",
 };
 ```
 
@@ -2351,7 +2419,10 @@ const sortColumns = { name: "name", created: "created_at", price: "price" };
 const column = sortColumns[req.query.sort] ?? "created_at";
 const direction = req.query.dir === "asc" ? "ASC" : "DESC";
 
-await pool.query(`SELECT * FROM products ORDER BY ${column} ${direction} LIMIT $1`, [limit]);
+await pool.query(
+  `SELECT * FROM products ORDER BY ${column} ${direction} LIMIT $1`,
+  [limit],
+);
 ```
 
 Never put the raw user value into the SQL text.
@@ -2423,6 +2494,7 @@ Options: don't accept SVG, convert it to PNG, sanitize it with DOMPurify, or ser
 Best: in object storage (S3, GCS, Azure Blob) in a private bucket, with random object keys, and served through short-lived signed URLs or a separate domain/CDN. That keeps uploads out of your app server's disk and away from your main origin.
 
 If you must store them locally, keep them outside any folder served statically, use generated names, and set strict permissions.
+
 ## 201: How do you serve user-uploaded files safely?
 
 - Serve them from a different domain (like `usercontent.example.net`) so any script in them can't touch your main site's cookies or origin.
@@ -2492,7 +2564,10 @@ Without the `env` option, the child gets the whole `process.env`, including `DAT
 ## 207: How do you load secrets from AWS Secrets Manager in Node.js?
 
 ```js
-import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager";
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from "@aws-sdk/client-secrets-manager";
 
 const client = new SecretsManagerClient({});
 
@@ -2524,11 +2599,14 @@ Some tools help: MongoDB Client-Side Field Level Encryption and Queryable Encryp
 import https from "node:https";
 import fs from "node:fs";
 
-const server = https.createServer({
-  key: fs.readFileSync("/etc/tls/tls.key"),
-  cert: fs.readFileSync("/etc/tls/tls.crt"),
-  minVersion: "TLSv1.2",
-}, app);
+const server = https.createServer(
+  {
+    key: fs.readFileSync("/etc/tls/tls.key"),
+    cert: fs.readFileSync("/etc/tls/tls.crt"),
+    minVersion: "TLSv1.2",
+  },
+  app,
+);
 
 server.listen(443);
 ```
@@ -2546,15 +2624,19 @@ It's often added "temporarily" to fix a self-signed cert issue and then forgotte
 In normal TLS only the server shows a certificate. In mTLS the client also shows a certificate, and the server checks it. It's used for service-to-service authentication, often set up automatically by a service mesh like Istio or Linkerd.
 
 ```js
-https.createServer({
-  key, cert,
-  ca: fs.readFileSync("internal-ca.pem"),
-  requestCert: true,
-  rejectUnauthorized: true,
-}, (req, res) => {
-  const peer = req.socket.getPeerCertificate();
-  res.end(`hello ${peer.subject.CN}`);
-});
+https.createServer(
+  {
+    key,
+    cert,
+    ca: fs.readFileSync("internal-ca.pem"),
+    requestCert: true,
+    rejectUnauthorized: true,
+  },
+  (req, res) => {
+    const peer = req.socket.getPeerCertificate();
+    res.end(`hello ${peer.subject.CN}`);
+  },
+);
 ```
 
 ## 213: How do you make outgoing HTTP calls safely?
@@ -2566,7 +2648,10 @@ https.createServer({
 - Be careful with redirects: a redirect can send you to an internal address or to `http://`.
 
 ```js
-const res = await fetch(url, { signal: AbortSignal.timeout(5000), redirect: "manual" });
+const res = await fetch(url, {
+  signal: AbortSignal.timeout(5000),
+  redirect: "manual",
+});
 ```
 
 ## 214: What HTTP server timeouts should you know in Node.js?
@@ -2633,7 +2718,10 @@ Set a default and a maximum page size. For large data sets, prefer cursor pagina
 app.use((err, req, res, next) => {
   if (res.headersSent) return next(err);
 
-  const status = Number.isInteger(err.status) && err.status >= 400 && err.status < 600 ? err.status : 500;
+  const status =
+    Number.isInteger(err.status) && err.status >= 400 && err.status < 600
+      ? err.status
+      : 500;
   req.log.error({ err, status, reqId: req.id }, "request failed");
 
   res.status(status).json({
@@ -2694,8 +2782,12 @@ GraphQL lets you send many operations in one HTTP request (array batching) or ca
 
 ```graphql
 mutation {
-  a: login(email: "x@y.com", password: "123456") { token }
-  b: login(email: "x@y.com", password: "password") { token }
+  a: login(email: "x@y.com", password: "123456") {
+    token
+  }
+  b: login(email: "x@y.com", password: "password") {
+    token
+  }
   # ... 1000 more
 }
 ```
@@ -2717,7 +2809,9 @@ server.on("upgrade", async (req, socket, head) => {
   if (req.headers.origin !== "https://app.example.com") return socket.destroy();
   const user = await getUserFromCookie(req.headers.cookie);
   if (!user) return socket.destroy();
-  wss.handleUpgrade(req, socket, head, (ws) => wss.emit("connection", ws, req, user));
+  wss.handleUpgrade(req, socket, head, (ws) =>
+    wss.emit("connection", ws, req, user),
+  );
 });
 ```
 
@@ -2737,7 +2831,12 @@ If you really need shell features (pipes, globs), don't put user input into the 
 import { execFile } from "node:child_process";
 
 // value passed as an argument to the script, not parsed by the shell
-execFile("/bin/sh", ["-c", 'grep -- "$1" /var/log/app.log | tail -n 100', "sh", term]);
+execFile("/bin/sh", [
+  "-c",
+  'grep -- "$1" /var/log/app.log | tail -n 100',
+  "sh",
+  term,
+]);
 ```
 
 Here `term` is `$1` inside the script. But usually it's better to do the pipe in Node with streams and `spawn` each program separately.
@@ -2767,7 +2866,9 @@ SSTI is when user input is used as the template itself, not as data passed to th
 const html = ejs.render(`<h1>Hello ${req.query.name}</h1>`);
 
 // Safe: the input is data
-const html2 = ejs.render("<h1>Hello <%= name %></h1>", { name: req.query.name });
+const html2 = ejs.render("<h1>Hello <%= name %></h1>", {
+  name: req.query.name,
+});
 ```
 
 Never let users write templates in a full template engine. If users need custom templates, use a logic-less engine in a sandboxed setup.
@@ -2792,12 +2893,13 @@ res.render("search", { q: String(req.query.q ?? "") });
 
 ```js
 function safeSet(obj, key, value) {
-  if (key === "__proto__" || key === "constructor" || key === "prototype") return;
+  if (key === "__proto__" || key === "constructor" || key === "prototype")
+    return;
   obj[key] = value;
 }
 ```
 
-## 235: Why does JSON.parse create a __proto__ key that's dangerous later?
+## 235: Why does JSON.parse create a **proto** key that's dangerous later?
 
 `JSON.parse('{"__proto__": {"x": 1}}')` creates an object with an own property named `__proto__`. That alone doesn't pollute anything. The problem comes when another function copies it with normal assignment, like `target[key] = source[key]`. When `key` is `"__proto__"`, the assignment changes the target's prototype instead of creating a property, and a recursive merge then writes into `Object.prototype`.
 
@@ -2836,7 +2938,8 @@ const h = monitorEventLoopDelay({ resolution: 20 });
 h.enable();
 
 app.use((req, res, next) => {
-  if (h.mean / 1e6 > 200) { // over 200ms average lag
+  if (h.mean / 1e6 > 200) {
+    // over 200ms average lag
     res.set("Retry-After", "5");
     return res.status(503).end();
   }
@@ -2976,6 +3079,7 @@ Yarn uses `resolutions` and pnpm uses `pnpm.overrides` (or `overrides` in `pnpm-
 - Bun also blocks dependency scripts unless the package is listed in `trustedDependencies`.
 
 Most packages don't need install scripts. The ones that do are usually native addons like `bcrypt`, `sharp` or `esbuild`.
+
 ## 251: How do you protect against newly published malicious package versions?
 
 Most malicious versions are found and removed within hours or days. You can avoid installing versions that are too new:
@@ -3130,7 +3234,9 @@ CREATE POLICY tenant_isolation ON invoices
 
 ```js
 await client.query("BEGIN");
-await client.query("SELECT set_config('app.tenant_id', $1, true)", [req.user.tenantId]);
+await client.query("SELECT set_config('app.tenant_id', $1, true)", [
+  req.user.tenantId,
+]);
 const { rows } = await client.query("SELECT * FROM invoices");
 await client.query("COMMIT");
 ```
@@ -3218,12 +3324,19 @@ It prevents double charges from retries and network issues, and it makes some re
 Use `express.static` or `res.sendFile` with a `root` option instead of joining paths yourself. They normalize the path and refuse to go above the root.
 
 ```js
-app.use("/assets", express.static("public", { dotfiles: "ignore", index: false }));
+app.use(
+  "/assets",
+  express.static("public", { dotfiles: "ignore", index: false }),
+);
 
 app.get("/docs/:name", (req, res, next) => {
-  res.sendFile(req.params.name, { root: "/srv/docs", dotfiles: "deny" }, (err) => {
-    if (err) next();
-  });
+  res.sendFile(
+    req.params.name,
+    { root: "/srv/docs", dotfiles: "deny" },
+    (err) => {
+      if (err) next();
+    },
+  );
 });
 ```
 
@@ -3290,12 +3403,14 @@ Reactions can be: require re-authentication, notify the user, or revoke the sess
 Browsers send an `OPTIONS` preflight for cross-origin requests with non-simple methods or headers (like `Authorization` or `Content-Type: application/json`). The server must answer with matching `Access-Control-Allow-*` headers.
 
 ```js
-app.use(cors({
-  origin: ["https://app.example.com"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  maxAge: 600,
-}));
+app.use(
+  cors({
+    origin: ["https://app.example.com"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    maxAge: 600,
+  }),
+);
 ```
 
 Make sure auth middleware doesn't reject `OPTIONS` requests before CORS handles them. `maxAge` caches the preflight result in the browser.
@@ -3334,7 +3449,13 @@ Fastify validates requests with JSON Schema on each route (using AJV), which giv
 - Exception filters to control error output.
 
 ```ts
-app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
+app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }),
+);
 ```
 
 ## 285: How do you hash API keys and look them up efficiently?
@@ -3346,7 +3467,9 @@ import { createHash } from "node:crypto";
 
 const hashKey = (key) => createHash("sha256").update(key).digest("hex");
 
-const record = await ApiKey.findOne({ hash: hashKey(req.get("x-api-key") ?? "") });
+const record = await ApiKey.findOne({
+  hash: hashKey(req.get("x-api-key") ?? ""),
+});
 if (!record || record.revokedAt) return res.status(401).end();
 ```
 
@@ -3575,7 +3698,8 @@ const baseline = new Set(Object.getOwnPropertyNames(Object.prototype));
 
 setInterval(() => {
   for (const key of Object.getOwnPropertyNames(Object.prototype)) {
-    if (!baseline.has(key)) logger.error({ key }, "Object.prototype was modified");
+    if (!baseline.has(key))
+      logger.error({ key }, "Object.prototype was modified");
   }
 }, 60_000).unref();
 ```
@@ -3670,7 +3794,8 @@ const DUMMY_HASH = await argon2.hash("dummy-password");
 
 const user = await findUser(email);
 const ok = await argon2.verify(user?.passwordHash ?? DUMMY_HASH, password);
-if (!user || !ok) return res.status(401).json({ error: "Invalid email or password" });
+if (!user || !ok)
+  return res.status(401).json({ error: "Invalid email or password" });
 ```
 
 ## 321: How would you design a split token for password resets or API keys?
@@ -3720,7 +3845,11 @@ const agent = new Agent({
   },
 });
 
-await fetch(url, { dispatcher: agent, redirect: "manual", signal: AbortSignal.timeout(5000) });
+await fetch(url, {
+  dispatcher: agent,
+  redirect: "manual",
+  signal: AbortSignal.timeout(5000),
+});
 ```
 
 Then handle redirects yourself and check each hop, and also block it at the network level with an egress proxy or firewall rules.
@@ -3830,7 +3959,10 @@ Store refresh tokens with a family ID and a status. When a token is used, mark i
 const record = await RefreshToken.findOne({ hash: sha256(token) });
 if (!record) return deny();
 if (record.usedAt || record.revokedAt) {
-  await RefreshToken.updateMany({ familyId: record.familyId }, { revokedAt: new Date() });
+  await RefreshToken.updateMany(
+    { familyId: record.familyId },
+    { revokedAt: new Date() },
+  );
   await alertSecurity(record.userId, "refresh token reuse");
   return deny();
 }
@@ -3925,7 +4057,9 @@ import { hkdfSync } from "node:crypto";
 const master = Buffer.from(process.env.MASTER_SECRET, "base64");
 const salt = Buffer.from("myapp-v1");
 const encKey = Buffer.from(hkdfSync("sha256", master, salt, "encryption", 32));
-const macKey = Buffer.from(hkdfSync("sha256", master, salt, "webhook-signing", 32));
+const macKey = Buffer.from(
+  hkdfSync("sha256", master, salt, "webhook-signing", 32),
+);
 ```
 
 HKDF is for high-entropy secrets. For passwords, use a password hash (Argon2, scrypt) instead.
@@ -3941,6 +4075,7 @@ OpenSSL 3 also changed defaults: some old algorithms (like MD4, used by old webp
 FIPS 140 is a US government standard for crypto modules, required in some government and regulated environments. Node can run with a FIPS provider when built against or configured with a FIPS-validated OpenSSL 3, using `--enable-fips` or `--force-fips`, or `crypto.setFips(true)`.
 
 In FIPS mode, non-approved algorithms (like MD5 for security uses, some curves, or certain key sizes) fail. Test the whole app and dependencies, because some libraries use non-approved algorithms internally. Bcrypt isn't FIPS-approved, while PBKDF2 is.
+
 ## 351: How can NODE_OPTIONS be abused by an attacker?
 
 `NODE_OPTIONS` adds command-line flags to every Node process that reads it, including `--require` and `--import`, which load a file before the app starts. If an attacker can set environment variables for a Node process (through prototype pollution reaching `spawn` options, a CI config, a `.npmrc`/`.env` they control, or a compromised parent process), they can run their own code in every Node child.
@@ -4163,7 +4298,9 @@ const Filter = z.object({
 const ops = { eq: "$eq", gt: "$gt", lt: "$lt", in: "$in" };
 
 function toMongo(filters) {
-  return Object.fromEntries(filters.map((f) => [f.field, { [ops[f.op]]: f.value }]));
+  return Object.fromEntries(
+    filters.map((f) => [f.field, { [ops[f.op]]: f.value }]),
+  );
 }
 ```
 
@@ -4175,7 +4312,9 @@ Pass JSON and arrays as parameters too, not as text:
 
 ```js
 await pool.query("SELECT * FROM products WHERE tags && $1::text[]", [tags]);
-await pool.query("SELECT * FROM events WHERE data @> $1::jsonb", [JSON.stringify({ type })]);
+await pool.query("SELECT * FROM events WHERE data @> $1::jsonb", [
+  JSON.stringify({ type }),
+]);
 ```
 
 Avoid building JSON path strings with user input. If you need dynamic paths, validate each segment against an allowlist. Query builders like Knex and Drizzle have helpers for JSON operators, but their `raw` functions still need bound parameters.
@@ -4369,6 +4508,7 @@ Business logic bugs don't look like attacks: normal requests in an unexpected or
 - Signed URL and webhook timestamp checks become too strict or too loose.
 
 Keep NTP running, allow a small skew in checks (JWT libraries have `clockTolerance`, a few seconds is enough), and use monotonic clocks (`performance.now()`, `process.hrtime.bigint()`) for timeouts and rate limit windows inside a process.
+
 ## 401: How do you safely implement "magic link" passwordless login?
 
 - Generate a random single-use token, store its hash with a short expiry (10-15 minutes), and email the link.
@@ -4535,7 +4675,8 @@ const base = await realpath("/srv/uploads");
 async function safeResolve(userPath) {
   const full = await realpath(path.resolve(base, userPath)); // throws if missing
   const rel = path.relative(base, full);
-  if (rel.startsWith("..") || path.isAbsolute(rel)) throw new Error("Outside base dir");
+  if (rel.startsWith("..") || path.isAbsolute(rel))
+    throw new Error("Outside base dir");
   return full;
 }
 ```
@@ -4784,7 +4925,23 @@ A weak HS256 secret can be brute-forced offline from any token, letting attacker
 import sanitizeHtml from "sanitize-html";
 
 const clean = sanitizeHtml(dirty, {
-  allowedTags: ["p", "b", "i", "em", "strong", "a", "ul", "ol", "li", "br", "h2", "h3", "blockquote", "code", "pre"],
+  allowedTags: [
+    "p",
+    "b",
+    "i",
+    "em",
+    "strong",
+    "a",
+    "ul",
+    "ol",
+    "li",
+    "br",
+    "h2",
+    "h3",
+    "blockquote",
+    "code",
+    "pre",
+  ],
   allowedAttributes: { a: ["href"] },
   allowedSchemes: ["https", "mailto"],
 });

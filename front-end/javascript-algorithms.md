@@ -492,9 +492,9 @@ Time complexity is about how many steps the algorithm takes as the input grows. 
 O(1) is constant time. The work doesn't change with the size of the input.
 
 ```js
-const first = arr[0];        // O(1)
+const first = arr[0]; // O(1)
 const has = set.has("apple"); // O(1) on average
-arr.push(42);                 // O(1) amortized
+arr.push(42); // O(1) amortized
 ```
 
 It doesn't mean "fast", it means "doesn't grow". A constant-time operation can still be slow if it does a lot of fixed work.
@@ -850,7 +850,7 @@ O(n) time, O(1) extra space. This is what `arr.reverse()` does for you.
 ```js
 const a = [1, 2, 3];
 const b = a.toReversed(); // [3, 2, 1], a is still [1, 2, 3]
-a.reverse();              // a is now [3, 2, 1]
+a.reverse(); // a is now [3, 2, 1]
 ```
 
 The same pair exists for sorting and splicing: `sort()`/`toSorted()` and `splice()`/`toSpliced()`. The non-mutating versions are handy with React or other state that should not be changed directly.
@@ -898,8 +898,8 @@ const users = [
   { name: "Ben", age: 25 },
 ];
 
-users.toSorted((a, b) => a.age - b.age);                 // by number
-users.toSorted((a, b) => a.name.localeCompare(b.name));  // by string
+users.toSorted((a, b) => a.age - b.age); // by number
+users.toSorted((a, b) => a.name.localeCompare(b.name)); // by string
 ```
 
 Use subtraction for numbers and `localeCompare` for strings. Don't return `a.age > b.age`, because a boolean is not a valid comparator result.
@@ -909,11 +909,11 @@ Use subtraction for numbers and `localeCompare` for strings. Don't return `a.age
 The default comparison uses code unit values, so `"Z"` comes before `"a"` and accented letters end up in odd places. `localeCompare` sorts the way people expect in a given language.
 
 ```js
-["b", "Z", "é", "a"].sort();                            // ["Z", "a", "b", "é"]
+["b", "Z", "é", "a"].sort(); // ["Z", "a", "b", "é"]
 ["b", "Z", "é", "a"].sort((a, b) => a.localeCompare(b)); // ["a", "b", "é", "Z"]
 
 ["file10", "file2"].sort((a, b) =>
-  a.localeCompare(b, undefined, { numeric: true })
+  a.localeCompare(b, undefined, { numeric: true }),
 ); // ["file2", "file10"]
 ```
 
@@ -1059,7 +1059,7 @@ const isDigits = (str) => /^\d+$/.test(str);
 
 isDigits("12345"); // true
 isDigits("12a45"); // false
-isDigits("");      // false
+isDigits(""); // false
 ```
 
 `^` and `$` make the regex match the whole string. Don't use `!isNaN(str)`, because it accepts things like `" "`, `"1e3"` and `"0x1f"`.
@@ -1172,7 +1172,7 @@ O(n) time. This comes up when you send items to an API in batches or render a gr
 ## 66: How do you flatten a nested array?
 
 ```js
-[1, [2, [3, [4]]]].flat();         // [1, 2, [3, [4]]]
+[1, [2, [3, [4]]]].flat(); // [1, 2, [3, [4]]]
 [1, [2, [3, [4]]]].flat(Infinity); // [1, 2, 3, 4]
 ```
 
@@ -1381,7 +1381,7 @@ It runs in O(log(min(a, b))) steps.
 ## 81: How do you find the least common multiple (LCM)?
 
 ```js
-const lcm = (a, b) => (a === 0 || b === 0 ? 0 : Math.abs(a / gcd(a, b) * b));
+const lcm = (a, b) => (a === 0 || b === 0 ? 0 : Math.abs((a / gcd(a, b)) * b));
 
 lcm(4, 6); // 12
 ```
@@ -1415,7 +1415,7 @@ function reverseInt(n) {
 }
 
 reverseInt(-123); // -321
-reverseInt(120);  // 21
+reverseInt(120); // 21
 ```
 
 Handle the sign separately, and know that trailing zeros disappear. Some versions of this question also ask you to return 0 if the result goes outside the 32-bit integer range.
@@ -1540,8 +1540,8 @@ A stack is last in, first out (LIFO). Use `push` to add and `pop` to remove from
 const stack = [];
 stack.push(1);
 stack.push(2);
-stack.pop();      // 2
-stack.at(-1);     // 1, peek without removing
+stack.pop(); // 2
+stack.at(-1); // 1, peek without removing
 ```
 
 Stacks show up in undo history, matching brackets, the browser back button and turning recursion into a loop.
@@ -1577,7 +1577,7 @@ function isValid(str) {
 }
 
 isValid("{[()]}"); // true
-isValid("([)]");   // false
+isValid("([)]"); // false
 ```
 
 O(n) time and O(n) space. Don't forget the final check: `"(("` has no mismatch but is still not balanced.
@@ -1713,7 +1713,7 @@ For a binary search midpoint with non-negative indexes, both give the same resul
 In JavaScript, `%` is a remainder, not a true modulo. The result has the same sign as the left side.
 
 ```js
--7 % 3;  // -1, not 2
+-7 % 3; // -1, not 2
 ```
 
 If you need a value that is always between 0 and n − 1, for example when wrapping an index in a circular list, use `((x % n) + n) % n`.
@@ -1723,8 +1723,8 @@ If you need a value that is always between 0 and n − 1, for example when wrapp
 `charCodeAt(i)` returns the UTF-16 code unit at index i (0 to 65535). `codePointAt(i)` returns the full Unicode code point, which can be bigger for characters like emoji that use two code units.
 
 ```js
-"A".charCodeAt(0);   // 65
-"😀".charCodeAt(0);  // 55357 (half of a surrogate pair)
+"A".charCodeAt(0); // 65
+"😀".charCodeAt(0); // 55357 (half of a surrogate pair)
 "😀".codePointAt(0); // 128512
 ```
 
@@ -1747,8 +1747,8 @@ Keep this in mind when an algorithm says "in place" on a string. In JavaScript y
 `split("")` splits by UTF-16 code units. Characters outside the basic range, like emoji, are stored as two code units, so they get cut in half.
 
 ```js
-"a😀".split("");  // ["a", "\ud83d", "\ude00"]
-[..."a😀"];       // ["a", "😀"]
+"a😀".split(""); // ["a", "\ud83d", "\ude00"]
+[..."a😀"]; // ["a", "😀"]
 ```
 
 Spread and `for...of` split by code points. Even that is not perfect for combined emoji like 👨‍👩‍👧 or flags. For what users see as one character, use `Intl.Segmenter`.
@@ -1777,7 +1777,7 @@ function shallowEqual(a, b) {
   const keysB = Object.keys(b);
   if (keysA.length !== keysB.length) return false;
   return keysA.every(
-    (key) => Object.hasOwn(b, key) && Object.is(a[key], b[key])
+    (key) => Object.hasOwn(b, key) && Object.is(a[key], b[key]),
   );
 }
 ```
@@ -1789,8 +1789,12 @@ React uses this kind of check to decide whether props changed in `memo`. It is O
 `find` returns the first matching item, `findIndex` returns its index (or `-1`). `findLast` and `findLastIndex` (ES2023) search from the end.
 
 ```js
-const logs = [{ level: "error", id: 1 }, { level: "info", id: 2 }, { level: "error", id: 3 }];
-logs.findLast((l) => l.level === "error");      // { level: "error", id: 3 }
+const logs = [
+  { level: "error", id: 1 },
+  { level: "info", id: 2 },
+  { level: "error", id: 3 },
+];
+logs.findLast((l) => l.level === "error"); // { level: "error", id: 3 }
 logs.findLastIndex((l) => l.level === "error"); // 2
 ```
 
@@ -1882,9 +1886,9 @@ Looping to `str.length` (one past the end) flushes the last group, because `str[
 ## 129: How do you convert a number to binary and back?
 
 ```js
-(10).toString(2);      // "1010"
-parseInt("1010", 2);   // 10
-(255).toString(16);    // "ff"
+(10).toString(2); // "1010"
+parseInt("1010", 2); // 10
+(255).toString(16); // "ff"
 ```
 
 `toString(radix)` and `parseInt(str, radix)` work with bases 2 to 36. If you must do it by hand, keep dividing by 2 and collect the remainders in reverse order.
@@ -2041,8 +2045,8 @@ function diagonalSum(m) {
   const n = m.length;
   let sum = 0;
   for (let i = 0; i < n; i++) {
-    sum += m[i][i];              // main diagonal
-    sum += m[i][n - 1 - i];      // other diagonal
+    sum += m[i][i]; // main diagonal
+    sum += m[i][n - 1 - i]; // other diagonal
   }
   if (n % 2 === 1) sum -= m[(n - 1) / 2][(n - 1) / 2]; // center counted twice
   return sum;
@@ -2227,7 +2231,7 @@ people.sort(
   (a, b) =>
     a.lastName.localeCompare(b.lastName) ||
     a.firstName.localeCompare(b.firstName) ||
-    b.age - a.age // then age, oldest first
+    b.age - a.age, // then age, oldest first
 );
 ```
 
@@ -2670,7 +2674,11 @@ function mergeIntervals(intervals) {
   return result;
 }
 
-mergeIntervals([[1, 3], [8, 10], [2, 6]]); // [[1, 6], [8, 10]]
+mergeIntervals([
+  [1, 3],
+  [8, 10],
+  [2, 6],
+]); // [[1, 6], [8, 10]]
 ```
 
 O(n log n) because of the sort. `Math.max` handles intervals fully inside another one, like `[1, 10]` and `[2, 3]`. In front-end work this shows up in calendar views and highlighting text ranges.
@@ -2780,7 +2788,7 @@ function longestPalindrome(s) {
     }
   };
   for (let i = 0; i < s.length; i++) {
-    expand(i, i);     // odd length
+    expand(i, i); // odd length
     expand(i, i + 1); // even length
   }
   return s.slice(start, start + maxLen);
@@ -2811,8 +2819,14 @@ function isCleanPalindrome(s) {
   let i = 0;
   let j = s.length - 1;
   while (i < j) {
-    if (!isAlnum(s[i])) { i++; continue; }
-    if (!isAlnum(s[j])) { j--; continue; }
+    if (!isAlnum(s[i])) {
+      i++;
+      continue;
+    }
+    if (!isAlnum(s[j])) {
+      j--;
+      continue;
+    }
     if (s[i].toLowerCase() !== s[j].toLowerCase()) return false;
     i++;
     j--;
@@ -2832,9 +2846,19 @@ Use a list of values from largest to smallest, including the subtractive pairs, 
 ```js
 function intToRoman(num) {
   const table = [
-    [1000, "M"], [900, "CM"], [500, "D"], [400, "CD"],
-    [100, "C"], [90, "XC"], [50, "L"], [40, "XL"],
-    [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"],
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
   ];
   let result = "";
   for (const [value, symbol] of table) {
@@ -3209,8 +3233,9 @@ class RingBuffer {
   }
 
   toArray() {
-    return Array.from({ length: this.#size }, (_, i) =>
-      this.#data[(this.#start + i) % this.#data.length]
+    return Array.from(
+      { length: this.#size },
+      (_, i) => this.#data[(this.#start + i) % this.#data.length],
     );
   }
 }
@@ -3521,7 +3546,9 @@ This covers plain objects and arrays. A full version also needs to handle `Date`
 
 ```js
 function get(obj, path, fallback) {
-  const keys = Array.isArray(path) ? path : path.replace(/\[(\w+)\]/g, ".$1").split(".");
+  const keys = Array.isArray(path)
+    ? path
+    : path.replace(/\[(\w+)\]/g, ".$1").split(".");
   let cur = obj;
   for (const key of keys) {
     if (cur == null) return fallback;
@@ -3531,7 +3558,7 @@ function get(obj, path, fallback) {
 }
 
 get({ a: { b: [{ c: 5 }] } }, "a.b[0].c"); // 5
-get({ a: 1 }, "a.x.y", "none");          // "none"
+get({ a: 1 }, "a.x.y", "none"); // "none"
 ```
 
 The regex turns `b[0]` into `b.0`. In normal code, optional chaining (`obj?.a?.b?.[0]?.c`) does the same when the path is known ahead of time.
@@ -3786,7 +3813,12 @@ The early return when the color is already the new color prevents an infinite lo
 Use a directions array instead of writing four separate calls:
 
 ```js
-const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+const DIRS = [
+  [1, 0],
+  [-1, 0],
+  [0, 1],
+  [0, -1],
+];
 
 function neighbors(grid, r, c) {
   const result = [];
@@ -3952,8 +3984,10 @@ function exist(board, word) {
     const saved = board[r][c];
     board[r][c] = "#"; // mark as used
     const found =
-      dfs(r + 1, c, i + 1) || dfs(r - 1, c, i + 1) ||
-      dfs(r, c + 1, i + 1) || dfs(r, c - 1, i + 1);
+      dfs(r + 1, c, i + 1) ||
+      dfs(r - 1, c, i + 1) ||
+      dfs(r, c + 1, i + 1) ||
+      dfs(r, c - 1, i + 1);
     board[r][c] = saved; // undo
     return found;
   };
@@ -4057,7 +4091,7 @@ A subsequence keeps the order but can skip characters. `dp[i][j]` is the LCS len
 ```js
 function lcs(a, b) {
   const dp = Array.from({ length: a.length + 1 }, () =>
-    new Array(b.length + 1).fill(0)
+    new Array(b.length + 1).fill(0),
   );
   for (let i = 1; i <= a.length; i++) {
     for (let j = 1; j <= b.length; j++) {
@@ -4343,9 +4377,9 @@ O(N log k) where N is the total number of items. Merging the arrays two at a tim
 `&`, `|`, `^`, `~`, `<<`, `>>` and `>>>` convert numbers to 32-bit signed integers (except `>>>`, which gives an unsigned result), do the operation and convert back. So anything above 2³¹ − 1 or with decimals gets cut down:
 
 ```js
-2 ** 31 | 0;   // -2147483648
-5.7 | 0;       // 5
--1 >>> 0;      // 4294967295
+(2 ** 31) | 0; // -2147483648
+5.7 | 0; // 5
+-1 >>> 0; // 4294967295
 ```
 
 They are useful for flags, small sets and tricks like `x & 1`, but don't use them on large numbers or IDs. For bigger values, `BigInt` supports the same operators.
@@ -4384,14 +4418,14 @@ This loop runs once per set bit, not once per bit. A simpler way is `n.toString(
 Give each option its own bit and combine them with `|`:
 
 ```js
-const READ = 1 << 0;  // 1
+const READ = 1 << 0; // 1
 const WRITE = 1 << 1; // 2
 const ADMIN = 1 << 2; // 4
 
-let perms = READ | WRITE;        // 3
+let perms = READ | WRITE; // 3
 const canWrite = (perms & WRITE) !== 0; // true
-perms &= ~WRITE;                 // remove WRITE
-perms ^= ADMIN;                  // toggle ADMIN
+perms &= ~WRITE; // remove WRITE
+perms ^= ADMIN; // toggle ADMIN
 ```
 
 Checking, adding and removing are O(1), and the whole set fits in one number. React uses lanes and flags stored this way internally. You can also loop from 0 to 2ⁿ − 1 to go through every subset of n items.
@@ -4483,13 +4517,16 @@ async function runWithLimit(tasks, limit) {
     }
   }
   await Promise.all(
-    Array.from({ length: Math.min(limit, tasks.length) }, worker)
+    Array.from({ length: Math.min(limit, tasks.length) }, worker),
   );
   return results;
 }
 
 // tasks are functions that return promises
-await runWithLimit(urls.map((u) => () => fetch(u)), 3);
+await runWithLimit(
+  urls.map((u) => () => fetch(u)),
+  3,
+);
 ```
 
 `next++` is safe here because JavaScript runs one piece of code at a time. This is useful for uploads or API calls when you don't want to send 500 requests at once. If one task fails, this version rejects the whole thing. Use `Promise.allSettled`-style handling if you need all results.
@@ -4613,13 +4650,19 @@ add3(1, 2)(3); // 6
 ## 274: How do you implement compose and pipe?
 
 ```js
-const pipe = (...fns) => (x) => fns.reduce((acc, fn) => fn(acc), x);
-const compose = (...fns) => (x) => fns.reduceRight((acc, fn) => fn(acc), x);
+const pipe =
+  (...fns) =>
+  (x) =>
+    fns.reduce((acc, fn) => fn(acc), x);
+const compose =
+  (...fns) =>
+  (x) =>
+    fns.reduceRight((acc, fn) => fn(acc), x);
 
 const slugify = pipe(
   (s) => s.trim(),
   (s) => s.toLowerCase(),
-  (s) => s.replace(/\s+/g, "-")
+  (s) => s.replace(/\s+/g, "-"),
 );
 
 slugify("  Hello World "); // "hello-world"
@@ -4677,7 +4720,7 @@ function fuzzyScore(query, text) {
   for (let ti = 0; ti < text.length && qi < query.length; ti++) {
     if (text[ti] === query[qi]) {
       score += ti === lastMatch + 1 ? 3 : 1; // bonus for consecutive matches
-      if (ti === 0) score += 2;              // bonus for matching the start
+      if (ti === 0) score += 2; // bonus for matching the start
       lastMatch = ti;
       qi++;
     }
@@ -4706,7 +4749,10 @@ function highlightParts(text, query) {
   return text
     .split(re)
     .filter(Boolean)
-    .map((part) => ({ text: part, match: part.toLowerCase() === query.toLowerCase() }));
+    .map((part) => ({
+      text: part,
+      match: part.toLowerCase() === query.toLowerCase(),
+    }));
 }
 ```
 
@@ -4715,7 +4761,13 @@ Return parts and render them with your framework (for example `<mark>` for match
 ## 279: How do you calculate which rows to render in a virtual list with fixed row heights?
 
 ```js
-function visibleRange(scrollTop, viewportHeight, rowHeight, total, overscan = 5) {
+function visibleRange(
+  scrollTop,
+  viewportHeight,
+  rowHeight,
+  total,
+  overscan = 5,
+) {
   const first = Math.floor(scrollTop / rowHeight);
   const visibleCount = Math.ceil(viewportHeight / rowHeight);
   const start = Math.max(0, first - overscan);
@@ -4737,7 +4789,7 @@ function diffById(oldList, newList) {
   const added = newList.filter((x) => !oldMap.has(x.id));
   const removed = oldList.filter((x) => !newMap.has(x.id));
   const changed = newList.filter(
-    (x) => oldMap.has(x.id) && !shallowEqual(oldMap.get(x.id), x)
+    (x) => oldMap.has(x.id) && !shallowEqual(oldMap.get(x.id), x),
   );
   return { added, removed, changed };
 }
@@ -4761,7 +4813,10 @@ function rotate(matrix) {
   return matrix;
 }
 
-rotate([[1, 2], [3, 4]]); // [[3, 1], [4, 2]]
+rotate([
+  [1, 2],
+  [3, 4],
+]); // [[3, 1], [4, 2]]
 ```
 
 O(n²) time and O(1) extra space. For counter-clockwise, reverse each row first and then transpose (or transpose and reverse the order of rows).
@@ -4812,12 +4867,12 @@ function setZeroes(m) {
         rows.add(r);
         cols.add(c);
       }
-    })
+    }),
   );
   m.forEach((row, r) =>
     row.forEach((_, c) => {
       if (rows.has(r) || cols.has(c)) row[c] = 0;
-    })
+    }),
   );
   return m;
 }
@@ -4979,11 +5034,11 @@ ES2025 added set operations directly on `Set`:
 const a = new Set([1, 2, 3]);
 const b = new Set([2, 3, 4]);
 
-a.union(b);               // Set {1, 2, 3, 4}
-a.intersection(b);        // Set {2, 3}
-a.difference(b);          // Set {1}
+a.union(b); // Set {1, 2, 3, 4}
+a.intersection(b); // Set {2, 3}
+a.difference(b); // Set {1}
 a.symmetricDifference(b); // Set {1, 4}
-a.isSubsetOf(b);          // false
+a.isSubsetOf(b); // false
 a.isSupersetOf(new Set([1])); // true
 a.isDisjointFrom(new Set([9])); // true
 ```
@@ -5027,7 +5082,10 @@ A good comparator always returns negative, zero or positive, and gives the same 
 `a.localeCompare(b)` creates locale settings on every call, which is slow for thousands of items. Create one `Intl.Collator` and reuse its `compare` function:
 
 ```js
-const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+const collator = new Intl.Collator("en", {
+  numeric: true,
+  sensitivity: "base",
+});
 names.sort(collator.compare);
 ```
 
@@ -5045,7 +5103,8 @@ function balancedIgnoringStrings(code) {
   for (let i = 0; i < code.length; i++) {
     const ch = code[i];
     if (quote) {
-      if (ch === "\\") i++;          // skip escaped character
+      if (ch === "\\")
+        i++; // skip escaped character
       else if (ch === quote) quote = null;
     } else if (ch === '"' || ch === "'" || ch === "`") {
       quote = ch;
@@ -5599,7 +5658,7 @@ function findMedian(a, b) {
   let hi = a.length;
   while (lo <= hi) {
     const i = (lo + hi) >> 1; // items taken from a
-    const j = half - i;       // items taken from b
+    const j = half - i; // items taken from b
     const aLeft = i > 0 ? a[i - 1] : -Infinity;
     const aRight = i < a.length ? a[i] : Infinity;
     const bLeft = j > 0 ? b[j - 1] : -Infinity;
@@ -5623,7 +5682,7 @@ Use two heaps: a max-heap for the smaller half and a min-heap for the larger hal
 
 ```js
 class RunningMedian {
-  low = new MinHeap((a, b) => a > b);  // max-heap
+  low = new MinHeap((a, b) => a > b); // max-heap
   high = new MinHeap((a, b) => a < b); // min-heap
 
   add(x) {
@@ -5897,7 +5956,9 @@ Keep the full DP table, then walk back from the bottom-right corner. At each cel
 ```js
 function editScript(a, b) {
   const dp = Array.from({ length: a.length + 1 }, (_, i) =>
-    Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+    Array.from({ length: b.length + 1 }, (_, j) =>
+      i === 0 ? j : j === 0 ? i : 0,
+    ),
   );
   for (let i = 1; i <= a.length; i++) {
     for (let j = 1; j <= b.length; j++) {
@@ -5985,14 +6046,22 @@ function solveNQueens(n) {
   const queens = [];
   const place = (r) => {
     if (r === n) {
-      results.push(queens.map((c) => ".".repeat(c) + "Q" + ".".repeat(n - c - 1)));
+      results.push(
+        queens.map((c) => ".".repeat(c) + "Q" + ".".repeat(n - c - 1)),
+      );
       return;
     }
     for (let c = 0; c < n; c++) {
       if (cols.has(c) || diag1.has(r - c) || diag2.has(r + c)) continue;
-      cols.add(c); diag1.add(r - c); diag2.add(r + c); queens.push(c);
+      cols.add(c);
+      diag1.add(r - c);
+      diag2.add(r + c);
+      queens.push(c);
       place(r + 1);
-      cols.delete(c); diag1.delete(r - c); diag2.delete(r + c); queens.pop();
+      cols.delete(c);
+      diag1.delete(r - c);
+      diag2.delete(r + c);
+      queens.pop();
     }
   };
   place(0);
@@ -6058,7 +6127,11 @@ function minMeetingRooms(meetings) {
   return ends.size;
 }
 
-minMeetingRooms([[0, 30], [5, 10], [15, 20]]); // 2
+minMeetingRooms([
+  [0, 30],
+  [5, 10],
+  [15, 20],
+]); // 2
 ```
 
 O(n log n). Another way is to sort starts and ends separately and sweep with two pointers, counting how many meetings are active at once. The same idea lays out overlapping events side by side in a calendar view.
@@ -6106,7 +6179,10 @@ Keep a priority queue of waiting tasks and a counter of running ones. Whenever a
 
 ```js
 class Scheduler {
-  #queue = new MinHeap((a, b) => a.priority < b.priority || (a.priority === b.priority && a.seq < b.seq));
+  #queue = new MinHeap(
+    (a, b) =>
+      a.priority < b.priority || (a.priority === b.priority && a.seq < b.seq),
+  );
   #running = 0;
   #seq = 0;
 
@@ -6202,7 +6278,9 @@ When it takes more than a few dozen milliseconds and doesn't need the DOM: parsi
 
 ```js
 // main.js
-const worker = new Worker(new URL("./sort-worker.js", import.meta.url), { type: "module" });
+const worker = new Worker(new URL("./sort-worker.js", import.meta.url), {
+  type: "module",
+});
 worker.postMessage(bigArray);
 worker.onmessage = (e) => render(e.data);
 
@@ -6266,11 +6344,13 @@ Not always. V8 represents `a + b` as a rope (a "cons string" pointing to both pa
 A trampoline lets you write recursive code that doesn't grow the call stack. Instead of calling itself, the function returns a thunk (a function that does the next step), and a loop keeps calling thunks until it gets a real value:
 
 ```js
-const trampoline = (fn) => (...args) => {
-  let result = fn(...args);
-  while (typeof result === "function") result = result();
-  return result;
-};
+const trampoline =
+  (fn) =>
+  (...args) => {
+    let result = fn(...args);
+    while (typeof result === "function") result = result();
+    return result;
+  };
 
 const sumTo = trampoline(function step(n, acc = 0) {
   return n === 0 ? acc : () => step(n - 1, acc + n);
@@ -6309,7 +6389,10 @@ Never use `===` on results of float math. Compare with a tolerance that fits the
 
 ```js
 function nearlyEqual(a, b, relTol = 1e-9, absTol = 1e-12) {
-  return Math.abs(a - b) <= Math.max(relTol * Math.max(Math.abs(a), Math.abs(b)), absTol);
+  return (
+    Math.abs(a - b) <=
+    Math.max(relTol * Math.max(Math.abs(a), Math.abs(b)), absTol)
+  );
 }
 
 nearlyEqual(0.1 + 0.2, 0.3); // true
@@ -6396,7 +6479,10 @@ The sort itself is O(n log n). The bigger wins usually come from avoiding data c
 The easy and correct way is `Intl.Collator` with `numeric: true`:
 
 ```js
-const natural = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+const natural = new Intl.Collator(undefined, {
+  numeric: true,
+  sensitivity: "base",
+});
 ["file10.txt", "file2.txt", "File1.txt"].sort(natural.compare);
 // ["File1.txt", "file2.txt", "file10.txt"]
 ```
@@ -6547,8 +6633,10 @@ class QuadTree {
   query(range, found = []) {
     const b = this.bounds;
     const intersects =
-      range.x < b.x + b.w && range.x + range.w > b.x &&
-      range.y < b.y + b.h && range.y + range.h > b.y;
+      range.x < b.x + b.w &&
+      range.x + range.w > b.x &&
+      range.y < b.y + b.h &&
+      range.y + range.h > b.y;
     if (!intersects) return found;
     for (const p of this.points) if (this.contains(p, range)) found.push(p);
     this.children?.forEach((c) => c.query(range, found));
@@ -6593,7 +6681,8 @@ function simplify(points, epsilon) {
   let index = 0;
   for (let i = 1; i < points.length - 1; i++) {
     const [px, py] = points[i];
-    const d = Math.abs((by - ay) * px - (bx - ax) * py + bx * ay - by * ax) / len;
+    const d =
+      Math.abs((by - ay) * px - (bx - ax) * py + bx * ay - by * ax) / len;
     if (d > maxDist) {
       maxDist = d;
       index = i;
@@ -6655,11 +6744,14 @@ function diff(a, b, path = "") {
   for (const key of Object.keys(a)) {
     const p = `${path}/${key}`;
     if (!(key in b)) ops.push({ op: "remove", path: p });
-    else if (isObj(a[key]) && isObj(b[key])) ops.push(...diff(a[key], b[key], p));
-    else if (!Object.is(a[key], b[key])) ops.push({ op: "replace", path: p, value: b[key] });
+    else if (isObj(a[key]) && isObj(b[key]))
+      ops.push(...diff(a[key], b[key], p));
+    else if (!Object.is(a[key], b[key]))
+      ops.push({ op: "replace", path: p, value: b[key] });
   }
   for (const key of Object.keys(b)) {
-    if (!(key in a)) ops.push({ op: "add", path: `${path}/${key}`, value: b[key] });
+    if (!(key in a))
+      ops.push({ op: "add", path: `${path}/${key}`, value: b[key] });
   }
   return ops;
 }
@@ -6688,9 +6780,12 @@ function deepClone(value, seen = new WeakMap()) {
     for (const v of value) s.add(deepClone(v, seen));
     return s;
   }
-  const copy = Array.isArray(value) ? [] : Object.create(Object.getPrototypeOf(value));
+  const copy = Array.isArray(value)
+    ? []
+    : Object.create(Object.getPrototypeOf(value));
   seen.set(value, copy);
-  for (const key of Reflect.ownKeys(value)) copy[key] = deepClone(value[key], seen);
+  for (const key of Reflect.ownKeys(value))
+    copy[key] = deepClone(value[key], seen);
   return copy;
 }
 ```
@@ -6790,7 +6885,7 @@ function maxPathSum(root) {
   let best = -Infinity;
   const down = (node) => {
     if (!node) return 0;
-    const l = Math.max(0, down(node.left));  // ignore negative branches
+    const l = Math.max(0, down(node.left)); // ignore negative branches
     const r = Math.max(0, down(node.right));
     best = Math.max(best, node.value + l + r);
     return node.value + Math.max(l, r);
@@ -6808,7 +6903,9 @@ A nested loop that finds children for each item is O(n²). Instead, index all it
 
 ```js
 function buildTree(items) {
-  const byId = new Map(items.map((item) => [item.id, { ...item, children: [] }]));
+  const byId = new Map(
+    items.map((item) => [item.id, { ...item, children: [] }]),
+  );
   const roots = [];
   for (const node of byId.values()) {
     const parent = byId.get(node.parentId);
@@ -6971,11 +7068,23 @@ Use matrix exponentiation. The matrix `[[1, 1], [1, 0]]` raised to the power n c
 ```js
 function fibFast(n) {
   const mul = (A, B) => [
-    [A[0][0] * B[0][0] + A[0][1] * B[1][0], A[0][0] * B[0][1] + A[0][1] * B[1][1]],
-    [A[1][0] * B[0][0] + A[1][1] * B[1][0], A[1][0] * B[0][1] + A[1][1] * B[1][1]],
+    [
+      A[0][0] * B[0][0] + A[0][1] * B[1][0],
+      A[0][0] * B[0][1] + A[0][1] * B[1][1],
+    ],
+    [
+      A[1][0] * B[0][0] + A[1][1] * B[1][0],
+      A[1][0] * B[0][1] + A[1][1] * B[1][1],
+    ],
   ];
-  let result = [[1n, 0n], [0n, 1n]];
-  let base = [[1n, 1n], [1n, 0n]];
+  let result = [
+    [1n, 0n],
+    [0n, 1n],
+  ];
+  let base = [
+    [1n, 1n],
+    [1n, 0n],
+  ];
   let e = BigInt(n);
   while (e > 0n) {
     if (e & 1n) result = mul(result, base);
@@ -7054,7 +7163,10 @@ function countInversions(arr) {
       count += L.sorted.length - i;
     }
   }
-  return { sorted: [...sorted, ...L.sorted.slice(i), ...R.sorted.slice(j)], count };
+  return {
+    sorted: [...sorted, ...L.sorted.slice(i), ...R.sorted.slice(j)],
+    count,
+  };
 }
 ```
 
@@ -7079,8 +7191,8 @@ function maxProduct(nums) {
   return best;
 }
 
-maxProduct([2, 3, -2, 4]);   // 6
-maxProduct([-2, 3, -4]);     // 24
+maxProduct([2, 3, -2, 4]); // 6
+maxProduct([-2, 3, -4]); // 24
 ```
 
 O(n) time, O(1) space. Zeros reset both values naturally, because `Math.max(x, ...)` restarts from `x`.
@@ -7171,7 +7283,10 @@ function applyRangeAdds(n, updates) {
   return result;
 }
 
-applyRangeAdds(5, [[1, 3, 2], [2, 4, 3]]); // [0, 2, 5, 5, 3]
+applyRangeAdds(5, [
+  [1, 3, 2],
+  [2, 4, 3],
+]); // [0, 2, 5, 5, 3]
 ```
 
 O(n + number of updates). It's the trick behind "car pooling", "how many bookings overlap each day" and counting how many events are active at each minute in a calendar.
@@ -7280,14 +7395,14 @@ Mutating the accumulator is fine because it's a new object created by this `redu
 
 A rough rule: JavaScript can do about 10⁷ to 10⁸ simple operations per second. So:
 
-| n up to | expected complexity |
-| --- | --- |
-| 10–12 | O(n!) |
-| 20–25 | O(2ⁿ) |
-| 100–500 | O(n³) |
-| 1,000–10,000 | O(n²) |
-| 10⁵–10⁶ | O(n log n) or O(n) |
-| 10⁹ and more | O(log n) or O(1) |
+| n up to      | expected complexity |
+| ------------ | ------------------- |
+| 10–12        | O(n!)               |
+| 20–25        | O(2ⁿ)               |
+| 100–500      | O(n³)               |
+| 1,000–10,000 | O(n²)               |
+| 10⁵–10⁶      | O(n log n) or O(n)  |
+| 10⁹ and more | O(log n) or O(1)    |
 
 If the problem says n ≤ 10⁵, an O(n²) solution will be too slow, so look for sorting, hashing, two pointers or a heap. In a front-end context, also remember the budget is 16 ms per frame, not one second.
 
@@ -7314,7 +7429,7 @@ fc.assert(
     const sorted = mySort([...arr]);
     const expected = [...arr].sort((a, b) => a - b);
     return JSON.stringify(sorted) === JSON.stringify(expected);
-  })
+  }),
 );
 ```
 
@@ -7444,7 +7559,7 @@ The same visible text can have different code points. "é" can be one code point
 ```js
 const a = "café";
 const b = "café";
-a === b;                                   // false
+a === b; // false
 a.normalize("NFC") === b.normalize("NFC"); // true
 ```
 
@@ -7502,18 +7617,27 @@ Split both lines into words, compute the LCS table of the word arrays, then walk
 function wordDiff(a, b) {
   const x = a.split(/\s+/);
   const y = b.split(/\s+/);
-  const dp = Array.from({ length: x.length + 1 }, () => new Array(y.length + 1).fill(0));
+  const dp = Array.from({ length: x.length + 1 }, () =>
+    new Array(y.length + 1).fill(0),
+  );
   for (let i = x.length - 1; i >= 0; i--) {
     for (let j = y.length - 1; j >= 0; j--) {
-      dp[i][j] = x[i] === y[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+      dp[i][j] =
+        x[i] === y[j]
+          ? dp[i + 1][j + 1] + 1
+          : Math.max(dp[i + 1][j], dp[i][j + 1]);
     }
   }
   const out = [];
   let i = 0;
   let j = 0;
   while (i < x.length && j < y.length) {
-    if (x[i] === y[j]) { out.push({ type: "same", word: x[i] }); i++; j++; }
-    else if (dp[i + 1][j] >= dp[i][j + 1]) out.push({ type: "removed", word: x[i++] });
+    if (x[i] === y[j]) {
+      out.push({ type: "same", word: x[i] });
+      i++;
+      j++;
+    } else if (dp[i + 1][j] >= dp[i][j + 1])
+      out.push({ type: "removed", word: x[i++] });
     else out.push({ type: "added", word: y[j++] });
   }
   while (i < x.length) out.push({ type: "removed", word: x[i++] });

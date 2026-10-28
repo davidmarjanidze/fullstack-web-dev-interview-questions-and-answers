@@ -468,6 +468,7 @@ The questions cover routing (React Router, TanStack Router), state management (R
 - [448: What questions would you ask when reviewing a pull request that adds a new dependency?](#448-what-questions-would-you-ask-when-reviewing-a-pull-request-that-adds-a-new-dependency)
 - [449: How do you explain the overall React library ecosystem to a new developer joining the team?](#449-how-do-you-explain-the-overall-react-library-ecosystem-to-a-new-developer-joining-the-team)
 - [450: What does a healthy library strategy look like for a long-lived React project?](#450-what-does-a-healthy-library-strategy-look-like-for-a-long-lived-react-project)
+
 ---
 
 # Easy Questions (1-150)
@@ -507,24 +508,26 @@ It can be used in three ways: as a simple declarative router (`<BrowserRouter>` 
 You create a router with `createBrowserRouter` and render it with `RouterProvider`:
 
 ```tsx
-import { createBrowserRouter, RouterProvider } from 'react-router';
-import { createRoot } from 'react-dom/client';
-import Root from './Root';
-import Home from './Home';
-import About from './About';
+import { createBrowserRouter, RouterProvider } from "react-router";
+import { createRoot } from "react-dom/client";
+import Root from "./Root";
+import Home from "./Home";
+import About from "./About";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     Component: Root,
     children: [
       { index: true, Component: Home },
-      { path: 'about', Component: About },
+      { path: "about", Component: About },
     ],
   },
 ]);
 
-createRoot(document.getElementById('root')!).render(<RouterProvider router={router} />);
+createRoot(document.getElementById("root")!).render(
+  <RouterProvider router={router} />,
+);
 ```
 
 Since v7 everything is imported from `react-router`. The old `react-router-dom` package only re-exports it for backward compatibility.
@@ -534,9 +537,12 @@ Since v7 everything is imported from `react-router`. The old `react-router-dom` 
 Both render an `<a>` tag and navigate without a full page reload. `NavLink` also knows if its route is active, so you can style the current menu item:
 
 ```tsx
-import { NavLink } from 'react-router';
+import { NavLink } from "react-router";
 
-<NavLink to="/settings" className={({ isActive }) => (isActive ? 'active' : '')}>
+<NavLink
+  to="/settings"
+  className={({ isActive }) => (isActive ? "active" : "")}
+>
   Settings
 </NavLink>;
 ```
@@ -548,7 +554,7 @@ It also sets `aria-current="page"` on the active link by default. Use `Link` for
 You use the `useParams` hook. For a route like `users/:userId`:
 
 ```tsx
-import { useParams } from 'react-router';
+import { useParams } from "react-router";
 
 function UserPage() {
   const { userId } = useParams();
@@ -563,14 +569,14 @@ Params are always strings (or `undefined`), so convert them yourself if you need
 Use the `useNavigate` hook. It returns a function you can call after a form submit, a timeout and so on:
 
 ```tsx
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 
 function LoginForm() {
   const navigate = useNavigate();
 
   async function handleSubmit() {
     await login();
-    navigate('/dashboard', { replace: true });
+    navigate("/dashboard", { replace: true });
   }
 
   return <button onClick={handleSubmit}>Log in</button>;
@@ -584,7 +590,7 @@ function LoginForm() {
 Nested routes let a parent route render a shared layout, and child routes render inside it. The parent marks the spot where the child goes with `<Outlet />`:
 
 ```tsx
-import { Outlet, Link } from 'react-router';
+import { Outlet, Link } from "react-router";
 
 function DashboardLayout() {
   return (
@@ -606,7 +612,7 @@ When the URL is `/dashboard/stats`, the layout stays and only the part inside `O
 A loader is a function attached to a route that loads data before the route renders. The component then reads the data with `useLoaderData`:
 
 ```tsx
-import { useLoaderData } from 'react-router';
+import { useLoaderData } from "react-router";
 
 export async function loader({ params }: { params: { id?: string } }) {
   const res = await fetch(`/api/products/${params.id}`);
@@ -626,12 +632,12 @@ Loaders run in parallel for all matched routes, which avoids the "fetch in useEf
 An action handles data writes for a route, usually form submissions. When a `<Form method="post">` is submitted, React Router calls the route's action, and then reloads loader data so the page shows fresh data.
 
 ```tsx
-import { Form, redirect } from 'react-router';
+import { Form, redirect } from "react-router";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
-  await createTodo(String(formData.get('title')));
-  return redirect('/todos');
+  await createTodo(String(formData.get("title")));
+  return redirect("/todos");
 }
 
 export default function NewTodo() {
@@ -659,10 +665,14 @@ It also includes RTK Query, a data fetching and caching tool. The `react-redux` 
 ## 14: How do you create a simple Redux Toolkit store?
 
 ```ts
-import { configureStore, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 
 const counterSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState: { value: 0 },
   reducers: {
     increment: (state) => {
@@ -691,8 +701,8 @@ export type AppDispatch = typeof store.dispatch;
 With the `useSelector` and `useDispatch` hooks from `react-redux`:
 
 ```tsx
-import { useDispatch, useSelector } from 'react-redux';
-import { increment, type RootState } from './store';
+import { useDispatch, useSelector } from "react-redux";
+import { increment, type RootState } from "./store";
 
 function Counter() {
   const value = useSelector((state: RootState) => state.counter.value);
@@ -712,7 +722,7 @@ It became very popular because it is much simpler than Redux but still handles g
 ## 17: How do you create and use a Zustand store?
 
 ```tsx
-import { create } from 'zustand';
+import { create } from "zustand";
 
 type CartState = {
   items: string[];
@@ -743,7 +753,7 @@ It is good when you have many small, independent pieces of state, or state that 
 ## 19: How do you use an atom in Jotai?
 
 ```tsx
-import { atom, useAtom, useAtomValue } from 'jotai';
+import { atom, useAtom, useAtomValue } from "jotai";
 
 const countAtom = atom(0);
 const doubleAtom = atom((get) => get(countAtom) * 2);
@@ -778,7 +788,7 @@ You should not start a new project with it. Jotai is the usual replacement since
 Valtio is a proxy-based state library from the same group that made Zustand and Jotai (pmndrs). You create a state object with `proxy()` and change it directly. In components, `useSnapshot` returns an immutable snapshot and re-renders only when the parts you read change.
 
 ```tsx
-import { proxy, useSnapshot } from 'valtio';
+import { proxy, useSnapshot } from "valtio";
 
 const state = proxy({ count: 0 });
 
@@ -805,19 +815,29 @@ The main idea is that server data is different from client state. It lives on th
 ## 25: How do you fetch data with useQuery?
 
 ```tsx
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
 function Todos() {
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['todos'],
-    queryFn: () => fetch('/api/todos').then((res) => res.json()),
+    queryKey: ["todos"],
+    queryFn: () => fetch("/api/todos").then((res) => res.json()),
   });
 
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
-  return <ul>{data.map((t: { id: number; title: string }) => <li key={t.id}>{t.title}</li>)}</ul>;
+  return (
+    <ul>
+      {data.map((t: { id: number; title: string }) => (
+        <li key={t.id}>{t.title}</li>
+      ))}
+    </ul>
+  );
 }
 
 export default function App() {
@@ -840,22 +860,25 @@ Two components that use the same key share the same cache entry and the same req
 ## 27: How do you send data to the server with useMutation?
 
 ```tsx
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function AddTodo() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (title: string) =>
-      fetch('/api/todos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      fetch("/api/todos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title }),
       }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["todos"] }),
   });
 
   return (
-    <button disabled={mutation.isPending} onClick={() => mutation.mutate('New todo')}>
+    <button
+      disabled={mutation.isPending}
+      onClick={() => mutation.mutate("New todo")}
+    >
       Add
     </button>
   );
@@ -869,12 +892,12 @@ After a successful create, invalidating `['todos']` makes the list refetch.
 SWR is a data fetching library from Vercel, the company behind Next.js. The name comes from the HTTP cache strategy "stale-while-revalidate": show cached (stale) data right away, then fetch fresh data in the background and update.
 
 ```tsx
-import useSWR from 'swr';
+import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 function Profile() {
-  const { data, error, isLoading } = useSWR('/api/user', fetcher);
+  const { data, error, isLoading } = useSWR("/api/user", fetcher);
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Failed to load</p>;
   return <p>Hello {data.name}</p>;
@@ -888,9 +911,9 @@ It is smaller and simpler than TanStack Query, with fewer features around mutati
 Axios is an HTTP client for the browser and Node.js. It wraps requests in a promise-based API with some extras: it parses JSON automatically, rejects on non-2xx status codes, supports request and response interceptors, has a simple way to set a base URL and default headers, and supports upload progress.
 
 ```ts
-import axios from 'axios';
+import axios from "axios";
 
-const { data } = await axios.get('/api/users', { params: { page: 2 } });
+const { data } = await axios.get("/api/users", { params: { page: 2 } });
 ```
 
 ## 30: Should you use Axios or fetch in a React app?
@@ -904,10 +927,10 @@ Axios gives you interceptors, automatic JSON handling and error rejection out of
 `ky` is a small HTTP client built on top of `fetch`. It adds the things people usually write wrappers for: throwing on HTTP errors, JSON helpers, retries, timeouts, hooks (similar to interceptors) and a prefix URL.
 
 ```ts
-import ky from 'ky';
+import ky from "ky";
 
-const api = ky.create({ prefixUrl: '/api', timeout: 10000 });
-const user = await api.get('users/1').json<{ name: string }>();
+const api = ky.create({ prefixUrl: "/api", timeout: 10000 });
+const user = await api.get("users/1").json<{ name: string }>();
 ```
 
 It is much smaller than Axios because it uses the native `fetch`.
@@ -939,7 +962,7 @@ It handles values, validation, errors, dirty and touched state, and submit. It a
 ## 36: How do you build a simple form with React Hook Form?
 
 ```tsx
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
 type FormValues = { email: string; password: string };
 
@@ -956,9 +979,9 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register('email', { required: 'Email is required' })} />
+      <input {...register("email", { required: "Email is required" })} />
       {errors.email && <span>{errors.email.message}</span>}
-      <input type="password" {...register('password', { minLength: 8 })} />
+      <input type="password" {...register("password", { minLength: 8 })} />
       <button disabled={isSubmitting}>Log in</button>
     </form>
   );
@@ -982,7 +1005,7 @@ People use it to validate forms, API responses, environment variables, URL param
 ## 39: How do you define a schema and get a type from it in Zod?
 
 ```ts
-import { z } from 'zod';
+import { z } from "zod";
 
 const UserSchema = z.object({
   name: z.string().min(1),
@@ -992,7 +1015,7 @@ const UserSchema = z.object({
 
 type User = z.infer<typeof UserSchema>;
 
-const result = UserSchema.safeParse({ name: 'Ana', email: 'not-an-email' });
+const result = UserSchema.safeParse({ name: "Ana", email: "not-an-email" });
 if (!result.success) {
   console.log(result.error.issues);
 }
@@ -1011,7 +1034,7 @@ It has TypeScript support through `InferType`, but Zod was designed for TypeScri
 Valibot is a schema validation library similar to Zod, but built from small functions you combine with `pipe` instead of chained methods. Because every check is a separate function, bundlers can drop what you don't use, so the bundle is usually much smaller.
 
 ```ts
-import * as v from 'valibot';
+import * as v from "valibot";
 
 const LoginSchema = v.object({
   email: v.pipe(v.string(), v.email()),
@@ -1040,8 +1063,8 @@ npm install @mui/material @emotion/react @emotion/styled
 ```
 
 ```tsx
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 function SignUp() {
   return (
@@ -1108,8 +1131,8 @@ Version 6 came out at the end of 2025. It needs React 18 or later, uses CSS vari
 React Bootstrap rewrites Bootstrap's components as React components. It doesn't use Bootstrap's JavaScript or jQuery, but you still include Bootstrap's CSS.
 
 ```tsx
-import Button from 'react-bootstrap/Button';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from "react-bootstrap/Button";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 <Button variant="primary">Save</Button>;
 ```
@@ -1137,7 +1160,11 @@ Tailwind is a utility-first CSS framework. Instead of writing CSS files, you put
 
 ```tsx
 function Card({ title }: { title: string }) {
-  return <div className="rounded-lg border p-4 shadow-sm hover:shadow-md">{title}</div>;
+  return (
+    <div className="rounded-lg border p-4 shadow-sm hover:shadow-md">
+      {title}
+    </div>
+  );
 }
 ```
 
@@ -1148,9 +1175,15 @@ Tailwind scans your files and generates only the classes you use. In v4, the set
 `clsx` is a tiny helper for building `className` strings based on conditions:
 
 ```tsx
-import clsx from 'clsx';
+import clsx from "clsx";
 
-<button className={clsx('btn', { 'btn-active': isActive, 'btn-disabled': disabled }, size === 'lg' && 'btn-lg')} />;
+<button
+  className={clsx(
+    "btn",
+    { "btn-active": isActive, "btn-disabled": disabled },
+    size === "lg" && "btn-lg",
+  )}
+/>;
 ```
 
 It skips falsy values and joins the rest with spaces. `classnames` is an older package that does the same thing.
@@ -1162,8 +1195,8 @@ It skips falsy values and joins the rest with spaces. `classnames` is an older p
 Without it, passing `className="px-4"` to a component that already has `px-2` would leave both classes, and which one wins depends on the CSS order, not on the order in the string. shadcn/ui combines it with `clsx` in a helper usually called `cn`:
 
 ```ts
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -1175,17 +1208,20 @@ export function cn(...inputs: ClassValue[]) {
 `cva` helps you define component variants as class names. You list a base class string and the classes for each variant, and it returns a function that builds the right string:
 
 ```ts
-import { cva } from 'class-variance-authority';
+import { cva } from "class-variance-authority";
 
-const button = cva('rounded font-medium', {
+const button = cva("rounded font-medium", {
   variants: {
-    intent: { primary: 'bg-blue-600 text-white', secondary: 'bg-gray-100 text-gray-900' },
-    size: { sm: 'px-2 py-1 text-sm', md: 'px-4 py-2' },
+    intent: {
+      primary: "bg-blue-600 text-white",
+      secondary: "bg-gray-100 text-gray-900",
+    },
+    size: { sm: "px-2 py-1 text-sm", md: "px-4 py-2" },
   },
-  defaultVariants: { intent: 'primary', size: 'md' },
+  defaultVariants: { intent: "primary", size: "md" },
 });
 
-button({ intent: 'secondary', size: 'sm' });
+button({ intent: "secondary", size: "sm" });
 ```
 
 It is used a lot with Tailwind and shadcn/ui.
@@ -1195,11 +1231,11 @@ It is used a lot with Tailwind and shadcn/ui.
 styled-components is a CSS-in-JS library. You write real CSS inside tagged template literals, and it creates a React component with a generated, scoped class name:
 
 ```tsx
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Button = styled.button<{ $primary?: boolean }>`
   padding: 8px 16px;
-  background: ${(p) => (p.$primary ? 'royalblue' : 'white')};
+  background: ${(p) => (p.$primary ? "royalblue" : "white")};
 `;
 ```
 
@@ -1216,7 +1252,7 @@ Like styled-components, it generates styles at runtime, so it has some performan
 CSS Modules are normal CSS files where class names are scoped to the file by the build tool. You import the file and use the generated class names:
 
 ```tsx
-import styles from './Card.module.css';
+import styles from "./Card.module.css";
 
 function Card() {
   return <div className={styles.card}>Hello</div>;
@@ -1231,12 +1267,12 @@ vanilla-extract is a "zero-runtime" CSS-in-TypeScript library. You write styles 
 
 ```ts
 // button.css.ts
-import { style } from '@vanilla-extract/css';
+import { style } from "@vanilla-extract/css";
 
 export const button = style({
   padding: 8,
   borderRadius: 4,
-  ':hover': { opacity: 0.8 },
+  ":hover": { opacity: 0.8 },
 });
 ```
 
@@ -1247,15 +1283,17 @@ You get type-safe styles and themes with no runtime styling cost.
 StyleX is Meta's styling library, used on facebook.com and Instagram. You define styles with `stylex.create` and apply them with `stylex.props`. A compiler turns them into atomic CSS classes at build time.
 
 ```tsx
-import * as stylex from '@stylexjs/stylex';
+import * as stylex from "@stylexjs/stylex";
 
 const styles = stylex.create({
-  base: { padding: 8, color: 'black' },
-  active: { color: 'blue' },
+  base: { padding: 8, color: "black" },
+  active: { color: "blue" },
 });
 
 function Item({ active }: { active: boolean }) {
-  return <div {...stylex.props(styles.base, active && styles.active)}>Item</div>;
+  return (
+    <div {...stylex.props(styles.base, active && styles.active)}>Item</div>
+  );
 }
 ```
 
@@ -1276,7 +1314,7 @@ It gives you `motion.div` style components that animate with props, exit animati
 ## 66: How do you animate an element with Motion?
 
 ```tsx
-import { motion } from 'motion/react';
+import { motion } from "motion/react";
 
 function FadeIn() {
   return (
@@ -1298,7 +1336,7 @@ function FadeIn() {
 React Spring is an animation library based on spring physics instead of fixed durations and easing curves. You describe the target values and the spring settings (tension, friction), and the animation feels natural.
 
 ```tsx
-import { useSpring, animated } from '@react-spring/web';
+import { useSpring, animated } from "@react-spring/web";
 
 function Box() {
   const styles = useSpring({ from: { opacity: 0 }, to: { opacity: 1 } });
@@ -1313,11 +1351,17 @@ It also has packages for React Three Fiber and React Native.
 AutoAnimate (`@formkit/auto-animate`) adds simple animations when children are added, removed or moved inside a container, with one line:
 
 ```tsx
-import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 function List({ items }: { items: string[] }) {
   const [parent] = useAutoAnimate();
-  return <ul ref={parent}>{items.map((i) => <li key={i}>{i}</li>)}</ul>;
+  return (
+    <ul ref={parent}>
+      {items.map((i) => (
+        <li key={i}>{i}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -1332,12 +1376,20 @@ It is easy to start with and fits well with the React way of writing UI. Since i
 ## 70: How do you create a simple line chart with Recharts?
 
 ```tsx
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
 
 const data = [
-  { month: 'Jan', sales: 400 },
-  { month: 'Feb', sales: 300 },
-  { month: 'Mar', sales: 550 },
+  { month: "Jan", sales: 400 },
+  { month: "Feb", sales: 300 },
+  { month: "Mar", sales: 550 },
 ];
 
 function SalesChart() {
@@ -1374,12 +1426,20 @@ It is a good choice when you need custom charts and full control, and you are fi
 `react-chartjs-2` is a React wrapper for Chart.js, a popular Canvas-based chart library. You register the Chart.js parts you need and render components like `<Line>` or `<Bar>`:
 
 ```tsx
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-<Bar data={{ labels: ['A', 'B'], datasets: [{ label: 'Votes', data: [12, 19] }] }} />;
+<Bar
+  data={{ labels: ["A", "B"], datasets: [{ label: "Votes", data: [12, 19] }] }}
+/>;
 ```
 
 Canvas rendering handles more data points than SVG.
@@ -1423,9 +1483,13 @@ It works well when items have known sizes. For dynamic heights and more flexibil
 react-virtuoso is a virtualization library that handles items of unknown and changing size automatically. You don't need to measure anything. It also supports grouped lists with sticky headers, tables, grids, "load more" at the end, and chat-style lists that start at the bottom.
 
 ```tsx
-import { Virtuoso } from 'react-virtuoso';
+import { Virtuoso } from "react-virtuoso";
 
-<Virtuoso style={{ height: 400 }} data={messages} itemContent={(index, msg) => <div>{msg.text}</div>} />;
+<Virtuoso
+  style={{ height: 400 }}
+  data={messages}
+  itemContent={(index, msg) => <div>{msg.text}</div>}
+/>;
 ```
 
 ## 80: What is react-i18next?
@@ -1437,15 +1501,15 @@ import { Virtuoso } from 'react-virtuoso';
 First you initialize i18next once:
 
 ```ts
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
 
 i18n.use(initReactI18next).init({
-  lng: 'en',
-  fallbackLng: 'en',
+  lng: "en",
+  fallbackLng: "en",
   resources: {
-    en: { translation: { welcome: 'Welcome, {{name}}!' } },
-    de: { translation: { welcome: 'Willkommen, {{name}}!' } },
+    en: { translation: { welcome: "Welcome, {{name}}!" } },
+    de: { translation: { welcome: "Willkommen, {{name}}!" } },
   },
 });
 ```
@@ -1453,14 +1517,14 @@ i18n.use(initReactI18next).init({
 Then use the hook in components:
 
 ```tsx
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 function Header({ name }: { name: string }) {
   const { t, i18n } = useTranslation();
   return (
     <>
-      <h1>{t('welcome', { name })}</h1>
-      <button onClick={() => i18n.changeLanguage('de')}>DE</button>
+      <h1>{t("welcome", { name })}</h1>
+      <button onClick={() => i18n.changeLanguage("de")}>DE</button>
     </>
   );
 }
@@ -1471,9 +1535,13 @@ function Header({ name }: { name: string }) {
 `react-intl` is part of FormatJS. It is built around the ICU message format and the browser's `Intl` APIs. It gives you components like `FormattedMessage`, `FormattedNumber` and `FormattedDate`, and the `useIntl` hook.
 
 ```tsx
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from "react-intl";
 
-<FormattedMessage id="cart.items" defaultMessage="{count, plural, one {# item} other {# items}}" values={{ count: 3 }} />;
+<FormattedMessage
+  id="cart.items"
+  defaultMessage="{count, plural, one {# item} other {# items}}"
+  values={{ count: 3 }}
+/>;
 ```
 
 It is popular in larger companies and works well with translation management systems that support ICU.
@@ -1489,9 +1557,9 @@ It uses ICU message format and is known for small runtime size and good develope
 `date-fns` is a date utility library made of small, separate functions: `format`, `addDays`, `differenceInDays`, `isBefore`, `parseISO` and many more. It works with native `Date` objects and doesn't change them.
 
 ```ts
-import { format, addDays } from 'date-fns';
+import { format, addDays } from "date-fns";
 
-format(addDays(new Date(), 7), 'yyyy-MM-dd');
+format(addDays(new Date(), 7), "yyyy-MM-dd");
 ```
 
 Since each function is its own import, bundlers only include what you use. Version 4 added first-class time zone support through `@date-fns/tz`.
@@ -1501,9 +1569,9 @@ Since each function is its own import, bundlers only include what you use. Versi
 Day.js is a tiny (about 2 KB) date library with an API almost the same as Moment.js. It is popular as a drop-in replacement for Moment.
 
 ```ts
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
-dayjs().add(7, 'day').format('YYYY-MM-DD');
+dayjs().add(7, "day").format("YYYY-MM-DD");
 ```
 
 Extra features like relative time, time zones and custom parsing are added through plugins. Day.js objects are immutable, unlike Moment's.
@@ -1522,9 +1590,12 @@ Alternatives are date-fns, Day.js, Luxon, or the native `Intl` APIs and, where a
 Luxon is a date library made by one of the Moment.js maintainers. It has immutable `DateTime` objects and strong built-in support for time zones and locales through the `Intl` API.
 
 ```ts
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
-DateTime.now().setZone('Europe/Berlin').plus({ days: 1 }).toFormat('yyyy-MM-dd HH:mm');
+DateTime.now()
+  .setZone("Europe/Berlin")
+  .plus({ days: 1 })
+  .toFormat("yyyy-MM-dd HH:mm");
 ```
 
 It is a good fit when your app deals with many time zones.
@@ -1534,7 +1605,7 @@ It is a good fit when your app deals with many time zones.
 No. For many apps, the browser's `Intl.DateTimeFormat` and `Intl.RelativeTimeFormat` are enough to format dates and relative times in any locale:
 
 ```ts
-new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(new Date());
+new Intl.DateTimeFormat("de-DE", { dateStyle: "long" }).format(new Date());
 ```
 
 For date math and time zones, the new `Temporal` API is being added to JavaScript and is already available in some browsers. Until it is everywhere, libraries like date-fns or Day.js are still useful for date arithmetic and parsing.
@@ -1550,10 +1621,10 @@ Modern JavaScript covers a lot of what it used to be needed for (`Array.prototyp
 Immer lets you write immutable updates as if you were mutating the data. You get a "draft" object, change it, and Immer creates a new object with your changes and structural sharing for the parts you didn't touch.
 
 ```ts
-import { produce } from 'immer';
+import { produce } from "immer";
 
 const next = produce(state, (draft) => {
-  draft.user.address.city = 'Paris';
+  draft.user.address.city = "Paris";
   draft.todos.push({ id: 3, done: false });
 });
 ```
@@ -1581,18 +1652,18 @@ Options today:
 `react-dropzone` gives you a hook to create a drag-and-drop file upload area:
 
 ```tsx
-import { useDropzone } from 'react-dropzone';
+import { useDropzone } from "react-dropzone";
 
 function Uploader() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: { 'image/*': [] },
+    accept: { "image/*": [] },
     onDrop: (files) => console.log(files),
   });
 
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />
-      {isDragActive ? 'Drop here' : 'Drag files or click to choose'}
+      {isDragActive ? "Drop here" : "Drag files or click to choose"}
     </div>
   );
 }
@@ -1623,12 +1694,12 @@ shadcn/ui's Calendar component is built on it.
 `react-hot-toast` is a small library for toast notifications. You add a `<Toaster />` once and call `toast()` from anywhere:
 
 ```tsx
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
-      <button onClick={() => toast.success('Saved!')}>Save</button>
+      <button onClick={() => toast.success("Saved!")}>Save</button>
       <Toaster />
     </>
   );
@@ -1642,10 +1713,10 @@ It also has `toast.promise` to show loading, success and error states for a prom
 Sonner is a toast library made by Emil Kowalski with a nice stacked look and smooth animations. The API is similar to react-hot-toast:
 
 ```tsx
-import { Toaster, toast } from 'sonner';
+import { Toaster, toast } from "sonner";
 
 <Toaster richColors />;
-toast.success('Profile updated');
+toast.success("Profile updated");
 ```
 
 shadcn/ui uses Sonner as its toast component.
@@ -1655,9 +1726,15 @@ shadcn/ui uses Sonner as its toast component.
 React only supports error boundaries as class components. `react-error-boundary` gives you a ready `ErrorBoundary` component so you don't have to write a class:
 
 ```tsx
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary } from "react-error-boundary";
 
-function Fallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
+function Fallback({
+  error,
+  resetErrorBoundary,
+}: {
+  error: Error;
+  resetErrorBoundary: () => void;
+}) {
   return (
     <div role="alert">
       <p>Something went wrong: {error.message}</p>
@@ -1690,7 +1767,7 @@ The React package (`@floating-ui/react`) also has hooks for interactions (hover,
 `react-icons` bundles many popular icon sets (Font Awesome, Material Design, Heroicons, Feather, Bootstrap Icons and more) as React components:
 
 ```tsx
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub } from "react-icons/fa";
 
 <FaGithub size={24} />;
 ```
@@ -1702,7 +1779,7 @@ Icons are imported one by one from each set's folder, so only the icons you use 
 Lucide is an open source icon set that started as a fork of Feather Icons. `lucide-react` gives you each icon as a React component:
 
 ```tsx
-import { Camera } from 'lucide-react';
+import { Camera } from "lucide-react";
 
 <Camera size={20} strokeWidth={1.5} />;
 ```
@@ -1714,8 +1791,8 @@ It has over a thousand consistent, clean icons, is tree-shakable, and is the def
 `react-markdown` renders a Markdown string as React elements. It doesn't use `dangerouslySetInnerHTML`, so by default it is safe from XSS (raw HTML in the markdown is ignored unless you add a plugin for it).
 
 ```tsx
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>;
 ```
@@ -1733,11 +1810,14 @@ It handles the editor state as an immutable tree, supports collaboration through
 Tiptap is a headless rich text editor built on ProseMirror. It has a simple API and many extensions: bold, lists, tables, mentions, images, code blocks, placeholders and collaboration.
 
 ```tsx
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 function Editor() {
-  const editor = useEditor({ extensions: [StarterKit], content: '<p>Hello</p>' });
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: "<p>Hello</p>",
+  });
   return <EditorContent editor={editor} />;
 }
 ```
@@ -1755,7 +1835,7 @@ It is very flexible, but it is still in beta (0.x versions) and you need to writ
 React Three Fiber (`@react-three/fiber`) is a React renderer for Three.js. You describe a 3D scene with JSX, and it creates and updates Three.js objects:
 
 ```tsx
-import { Canvas } from '@react-three/fiber';
+import { Canvas } from "@react-three/fiber";
 
 function Scene() {
   return (
@@ -1784,11 +1864,11 @@ They are two different libraries with similar names:
 React Testing Library (`@testing-library/react`) is the standard way to test React components. It renders components into a DOM (usually jsdom) and lets you query them the way a user would: by role, label, text or placeholder.
 
 ```tsx
-import { render, screen } from '@testing-library/react';
+import { render, screen } from "@testing-library/react";
 
-test('shows the title', () => {
+test("shows the title", () => {
   render(<h1>Welcome</h1>);
-  expect(screen.getByRole('heading', { name: 'Welcome' })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Welcome" })).toBeInTheDocument();
 });
 ```
 
@@ -1811,13 +1891,13 @@ It is still widely used, especially in older projects and React Native. Its ESM 
 `@testing-library/user-event` simulates real user interactions in tests. `fireEvent.click` only dispatches one event, while `user.click` fires the full sequence a browser would (pointer down, mouse down, focus, pointer up, click). `user.type` types character by character with keydown, input and keyup events.
 
 ```tsx
-import userEvent from '@testing-library/user-event';
+import userEvent from "@testing-library/user-event";
 
-test('types into the input', async () => {
+test("types into the input", async () => {
   const user = userEvent.setup();
   render(<input aria-label="Name" />);
-  await user.type(screen.getByLabelText('Name'), 'Ana');
-  expect(screen.getByLabelText('Name')).toHaveValue('Ana');
+  await user.type(screen.getByLabelText("Name"), "Ana");
+  expect(screen.getByLabelText("Name")).toHaveValue("Ana");
 });
 ```
 
@@ -1832,14 +1912,14 @@ Because the same handlers work in tests, Storybook and local development, you do
 Playwright is an end-to-end testing tool from Microsoft. It runs tests in real Chromium, Firefox and WebKit browsers, waits for elements automatically, and can run tests in parallel.
 
 ```ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('user can log in', async ({ page }) => {
-  await page.goto('/login');
-  await page.getByLabel('Email').fill('ana@example.com');
-  await page.getByLabel('Password').fill('secret123');
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+test("user can log in", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByLabel("Email").fill("ana@example.com");
+  await page.getByLabel("Password").fill("secret123");
+  await page.getByRole("button", { name: "Log in" }).click();
+  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 });
 ```
 
@@ -1926,11 +2006,12 @@ It handles social login, multi-factor auth, sessions and organizations. It is qu
 `@auth0/auth0-react` is the official SDK for using Auth0 in a single page React app. You wrap the app in `Auth0Provider` and use the `useAuth0` hook:
 
 ```tsx
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from "@auth0/auth0-react";
 
 function LoginButton() {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
-  if (isAuthenticated) return <button onClick={() => logout()}>Log out {user?.name}</button>;
+  if (isAuthenticated)
+    return <button onClick={() => logout()}>Log out {user?.name}</button>;
   return <button onClick={() => loginWithRedirect()}>Log in</button>;
 }
 ```
@@ -1948,10 +2029,14 @@ It supports email and password, social login, sessions, two-factor auth, organiz
 Firebase is Google's backend-as-a-service. In React you use the modular JavaScript SDK (`firebase` package) for Authentication, Firestore, Realtime Database, Storage and more.
 
 ```ts
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
-const app = initializeApp({ apiKey: '...', authDomain: '...', projectId: '...' });
+const app = initializeApp({
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+});
 export const auth = getAuth(app);
 ```
 
@@ -1962,11 +2047,17 @@ The modular SDK is tree-shakable, so import only the functions you need. Some pr
 Supabase is an open source backend built on Postgres, with auth, storage, realtime updates and edge functions. In React you use `@supabase/supabase-js`:
 
 ```ts
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY,
+);
 
-const { data, error } = await supabase.from('todos').select('*').eq('done', false);
+const { data, error } = await supabase
+  .from("todos")
+  .select("*")
+  .eq("done", false);
 ```
 
 Access to data is protected with Postgres Row Level Security, so the public key can be used in the browser safely as long as your policies are correct.
@@ -1976,11 +2067,11 @@ Access to data is protected with Postgres Row Level Security, so the public key 
 `socket.io-client` connects a browser app to a Socket.IO server for real-time, two-way communication. It uses WebSocket when it can and falls back to HTTP long polling. It adds automatic reconnection, rooms and events with acknowledgements on top.
 
 ```ts
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
-const socket = io('https://api.example.com');
-socket.on('message', (msg) => console.log(msg));
-socket.emit('join', 'room-1');
+const socket = io("https://api.example.com");
+socket.on("message", (msg) => console.log(msg));
+socket.emit("join", "room-1");
 ```
 
 Note that a Socket.IO client can only talk to a Socket.IO server, not to a plain WebSocket server.
@@ -2008,10 +2099,10 @@ It is useful for finding avoidable re-renders. It only runs in development, and 
 `nuqs` is a library for storing state in the URL query string with a `useState`-like API. It supports Next.js, React Router, TanStack Router and plain React.
 
 ```tsx
-import { useQueryState, parseAsInteger } from 'nuqs';
+import { useQueryState, parseAsInteger } from "nuqs";
 
 function Pagination() {
-  const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   return <button onClick={() => setPage(page + 1)}>Next ({page})</button>;
 }
 ```
@@ -2043,7 +2134,7 @@ Never use random IDs as `key` values that change on every render.
 DOMPurify is a library that cleans HTML strings and removes anything that could run scripts (like `<script>` tags, `onerror` attributes and `javascript:` URLs). You use it before passing user-provided HTML to `dangerouslySetInnerHTML`:
 
 ```tsx
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 function Comment({ html }: { html: string }) {
   return <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }} />;
@@ -2057,9 +2148,9 @@ React escapes normal text, but `dangerouslySetInnerHTML` skips that, so sanitizi
 `@hookform/resolvers` connects React Hook Form to schema validation libraries like Zod, Yup, Valibot, Joi, ArkType and others. Instead of writing validation rules in each `register` call, you pass a resolver:
 
 ```tsx
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const schema = z.object({ email: z.email(), age: z.number().min(18) });
 
@@ -2085,14 +2176,17 @@ Redux DevTools is a browser extension for inspecting a Redux store. You can see 
 With the `useSearchParams` hook. It works like `useState`, but the state lives in the URL:
 
 ```tsx
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from "react-router";
 
 function ProductList() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const sort = searchParams.get('sort') ?? 'name';
+  const sort = searchParams.get("sort") ?? "name";
 
   return (
-    <select value={sort} onChange={(e) => setSearchParams({ sort: e.target.value })}>
+    <select
+      value={sort}
+      onChange={(e) => setSearchParams({ sort: e.target.value })}
+    >
       <option value="name">Name</option>
       <option value="price">Price</option>
     </select>
@@ -2107,7 +2201,7 @@ Setting new params adds a history entry, so the back button works. Pass `{ repla
 It is a small wrapper around the browser's `IntersectionObserver` API. The `useInView` hook tells you when an element enters or leaves the viewport:
 
 ```tsx
-import { useInView } from 'react-intersection-observer';
+import { useInView } from "react-intersection-observer";
 
 function LazySection() {
   const { ref, inView } = useInView({ triggerOnce: true });
@@ -2137,13 +2231,13 @@ Before adding a carousel, check if CSS scroll snap (`scroll-snap-type`) is enoug
 `cmdk` is a command menu component for React, the kind you open with Cmd+K in apps like Linear or Vercel. It handles filtering and sorting items as you type, keyboard navigation, groups and accessibility. You style it yourself.
 
 ```tsx
-import { Command } from 'cmdk';
+import { Command } from "cmdk";
 
 <Command label="Command menu">
   <Command.Input placeholder="Search..." />
   <Command.List>
     <Command.Empty>No results.</Command.Empty>
-    <Command.Item onSelect={() => navigate('/settings')}>Settings</Command.Item>
+    <Command.Item onSelect={() => navigate("/settings")}>Settings</Command.Item>
   </Command.List>
 </Command>;
 ```
@@ -2159,7 +2253,7 @@ It is often paired with sending services like Resend, SendGrid or Amazon SES.
 `react-player` is a component that plays media from many sources through one API: YouTube, Vimeo, Twitch, SoundCloud, Wistia, plain video and audio files and HLS or DASH streams.
 
 ```tsx
-import ReactPlayer from 'react-player';
+import ReactPlayer from "react-player";
 
 <ReactPlayer src="https://www.youtube.com/watch?v=dQw4w9WgXcQ" controls />;
 ```
@@ -2196,7 +2290,7 @@ Not every app needs all of these. Smaller apps can skip the state manager and ev
 In data mode, the cleanest way is to check auth in a loader (or middleware) and redirect before the page renders:
 
 ```tsx
-import { redirect, type LoaderFunctionArgs } from 'react-router';
+import { redirect, type LoaderFunctionArgs } from "react-router";
 
 export async function requireUser({ request }: LoaderFunctionArgs) {
   const user = await getCurrentUser();
@@ -2208,8 +2302,13 @@ export async function requireUser({ request }: LoaderFunctionArgs) {
 }
 
 const router = createBrowserRouter([
-  { path: '/login', Component: Login },
-  { path: '/app', loader: requireUser, Component: AppLayout, children: [/* ... */] },
+  { path: "/login", Component: Login },
+  {
+    path: "/app",
+    loader: requireUser,
+    Component: AppLayout,
+    children: [/* ... */],
+  },
 ]);
 ```
 
@@ -2220,14 +2319,14 @@ In declarative mode, people use a wrapper component that renders `<Navigate to="
 Use the `useNavigation` hook. Its `state` is `'idle'`, `'loading'` or `'submitting'`:
 
 ```tsx
-import { Outlet, useNavigation } from 'react-router';
+import { Outlet, useNavigation } from "react-router";
 
 function Layout() {
   const navigation = useNavigation();
   return (
     <>
-      {navigation.state === 'loading' && <div className="progress-bar" />}
-      <main style={{ opacity: navigation.state === 'loading' ? 0.6 : 1 }}>
+      {navigation.state === "loading" && <div className="progress-bar" />}
+      <main style={{ opacity: navigation.state === "loading" ? 0.6 : 1 }}>
         <Outlet />
       </main>
     </>
@@ -2242,16 +2341,18 @@ During loading, the old page stays on screen until the new loaders finish, so yo
 `useFetcher` lets you call a loader or action without navigating. It is good for things like a "like" button, inline edits, or a search box that loads suggestions, where the URL shouldn't change.
 
 ```tsx
-import { useFetcher } from 'react-router';
+import { useFetcher } from "react-router";
 
 function LikeButton({ postId, liked }: { postId: string; liked: boolean }) {
   const fetcher = useFetcher();
-  const optimisticLiked = fetcher.formData ? fetcher.formData.get('liked') === 'true' : liked;
+  const optimisticLiked = fetcher.formData
+    ? fetcher.formData.get("liked") === "true"
+    : liked;
 
   return (
     <fetcher.Form method="post" action={`/posts/${postId}/like`}>
       <input type="hidden" name="liked" value={String(!optimisticLiked)} />
-      <button>{optimisticLiked ? 'Unlike' : 'Like'}</button>
+      <button>{optimisticLiked ? "Unlike" : "Like"}</button>
     </fetcher.Form>
   );
 }
@@ -2264,12 +2365,16 @@ Each fetcher has its own state, so several can run at the same time. Reading `fe
 Each route can have an `ErrorBoundary` (or `errorElement`). If a loader, action or render throws, React Router renders the closest error boundary instead of the route component. Inside it, `useRouteError` gives you the error:
 
 ```tsx
-import { isRouteErrorResponse, useRouteError } from 'react-router';
+import { isRouteErrorResponse, useRouteError } from "react-router";
 
 export function ErrorBoundary() {
   const error = useRouteError();
   if (isRouteErrorResponse(error)) {
-    return <h1>{error.status} {error.statusText}</h1>;
+    return (
+      <h1>
+        {error.status} {error.statusText}
+      </h1>
+    );
   }
   return <h1>Something went wrong</h1>;
 }
@@ -2284,9 +2389,9 @@ In data mode, use the `lazy` property on a route. React Router loads the module 
 ```tsx
 const router = createBrowserRouter([
   {
-    path: '/reports',
+    path: "/reports",
     lazy: async () => {
-      const { loader, default: Component } = await import('./routes/reports');
+      const { loader, default: Component } = await import("./routes/reports");
       return { loader, Component };
     },
   },
@@ -2300,22 +2405,26 @@ In framework mode, every route module is code split automatically. In declarativ
 You add `validateSearch` to the route. It parses and validates the raw query string, and then `useSearch` and `Link` are fully typed:
 
 ```tsx
-import { createFileRoute } from '@tanstack/react-router';
-import { z } from 'zod';
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
 const productSearch = z.object({
   page: z.number().catch(1),
-  sort: z.enum(['name', 'price']).catch('name'),
+  sort: z.enum(["name", "price"]).catch("name"),
 });
 
-export const Route = createFileRoute('/products')({
+export const Route = createFileRoute("/products")({
   validateSearch: productSearch,
   component: Products,
 });
 
 function Products() {
   const { page, sort } = Route.useSearch();
-  return <p>Page {page}, sorted by {sort}</p>;
+  return (
+    <p>
+      Page {page}, sorted by {sort}
+    </p>
+  );
 }
 ```
 
@@ -2335,23 +2444,33 @@ Each file exports `Route = createFileRoute('/path')({...})`. You can also write 
 ## 158: How do you call an API with createAsyncThunk in Redux Toolkit?
 
 ```ts
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchUser = createAsyncThunk('user/fetch', async (id: string) => {
+export const fetchUser = createAsyncThunk("user/fetch", async (id: string) => {
   const res = await fetch(`/api/users/${id}`);
-  if (!res.ok) throw new Error('Failed to load user');
+  if (!res.ok) throw new Error("Failed to load user");
   return (await res.json()) as { id: string; name: string };
 });
 
 const userSlice = createSlice({
-  name: 'user',
-  initialState: { data: null as null | { id: string; name: string }, status: 'idle' as 'idle' | 'loading' | 'failed' },
+  name: "user",
+  initialState: {
+    data: null as null | { id: string; name: string },
+    status: "idle" as "idle" | "loading" | "failed",
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUser.pending, (state) => { state.status = 'loading'; })
-      .addCase(fetchUser.fulfilled, (state, action) => { state.status = 'idle'; state.data = action.payload; })
-      .addCase(fetchUser.rejected, (state) => { state.status = 'failed'; });
+      .addCase(fetchUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.data = action.payload;
+      })
+      .addCase(fetchUser.rejected, (state) => {
+        state.status = "failed";
+      });
   },
 });
 ```
@@ -2361,15 +2480,15 @@ const userSlice = createSlice({
 ## 159: How do you set up an API with RTK Query?
 
 ```ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 type Post = { id: number; title: string };
 
 export const api = createApi({
-  reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   endpoints: (build) => ({
-    getPosts: build.query<Post[], void>({ query: () => 'posts' }),
+    getPosts: build.query<Post[], void>({ query: () => "posts" }),
     getPost: build.query<Post, number>({ query: (id) => `posts/${id}` }),
   }),
 });
@@ -2385,17 +2504,22 @@ Queries "provide" tags and mutations "invalidate" them. When a mutation invalida
 
 ```ts
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Post'],
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  tagTypes: ["Post"],
   endpoints: (build) => ({
     getPosts: build.query<Post[], void>({
-      query: () => 'posts',
+      query: () => "posts",
       providesTags: (result) =>
-        result ? [...result.map(({ id }) => ({ type: 'Post' as const, id })), { type: 'Post', id: 'LIST' }] : [{ type: 'Post', id: 'LIST' }],
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Post" as const, id })),
+              { type: "Post", id: "LIST" },
+            ]
+          : [{ type: "Post", id: "LIST" }],
     }),
-    addPost: build.mutation<Post, Omit<Post, 'id'>>({
-      query: (body) => ({ url: 'posts', method: 'POST', body }),
-      invalidatesTags: [{ type: 'Post', id: 'LIST' }],
+    addPost: build.mutation<Post, Omit<Post, "id">>({
+      query: (body) => ({ url: "posts", method: "POST", body }),
+      invalidatesTags: [{ type: "Post", id: "LIST" }],
     }),
   }),
 });
@@ -2408,8 +2532,8 @@ Using ids in tags lets you refetch only what changed, for example invalidating `
 Create pre-typed hooks once with `withTypes` and use them everywhere instead of the plain ones:
 
 ```ts
-import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from './store';
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "./store";
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
@@ -2422,13 +2546,14 @@ This way you don't need to write `(state: RootState)` in every selector, and `di
 `createSelector` (from Reselect, re-exported by Redux Toolkit) creates memoized selectors. The result is recalculated only when the inputs change.
 
 ```ts
-import { createSelector } from '@reduxjs/toolkit';
+import { createSelector } from "@reduxjs/toolkit";
 
 const selectTodos = (state: RootState) => state.todos.items;
 const selectFilter = (state: RootState) => state.todos.filter;
 
-export const selectVisibleTodos = createSelector([selectTodos, selectFilter], (todos, filter) =>
-  todos.filter((t) => (filter === 'done' ? t.done : true)),
+export const selectVisibleTodos = createSelector(
+  [selectTodos, selectFilter],
+  (todos, filter) => todos.filter((t) => (filter === "done" ? t.done : true)),
 );
 ```
 
@@ -2439,18 +2564,25 @@ You need it when a selector returns a new array or object (like `.filter` or `.m
 `createEntityAdapter` helps you store collections in a normalized shape: `{ ids: [], entities: {} }`. It gives you ready reducers like `addOne`, `upsertMany`, `updateOne`, `removeOne` and selectors like `selectAll` and `selectById`.
 
 ```ts
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 type Book = { id: string; title: string };
-const booksAdapter = createEntityAdapter<Book>({ sortComparer: (a, b) => a.title.localeCompare(b.title) });
-
-const booksSlice = createSlice({
-  name: 'books',
-  initialState: booksAdapter.getInitialState(),
-  reducers: { bookAdded: booksAdapter.addOne, booksReceived: booksAdapter.setAll },
+const booksAdapter = createEntityAdapter<Book>({
+  sortComparer: (a, b) => a.title.localeCompare(b.title),
 });
 
-export const booksSelectors = booksAdapter.getSelectors((state: RootState) => state.books);
+const booksSlice = createSlice({
+  name: "books",
+  initialState: booksAdapter.getInitialState(),
+  reducers: {
+    bookAdded: booksAdapter.addOne,
+    booksReceived: booksAdapter.setAll,
+  },
+});
+
+export const booksSelectors = booksAdapter.getSelectors(
+  (state: RootState) => state.books,
+);
 ```
 
 Normalized data makes lookups by id fast and avoids duplicate copies of the same item.
@@ -2460,10 +2592,12 @@ Normalized data makes lookups by id fast and avoids duplicate copies of the same
 If your selector returns a new object or array, the component re-renders on every store change, because the reference is always new. Use `useShallow` to compare the result shallowly:
 
 ```tsx
-import { useShallow } from 'zustand/react/shallow';
+import { useShallow } from "zustand/react/shallow";
 
 function Toolbar() {
-  const { name, setName } = useUserStore(useShallow((s) => ({ name: s.name, setName: s.setName })));
+  const { name, setName } = useUserStore(
+    useShallow((s) => ({ name: s.name, setName: s.setName })),
+  );
   return <input value={name} onChange={(e) => setName(e.target.value)} />;
 }
 ```
@@ -2475,19 +2609,22 @@ Another simple option is to call the hook once per value: `const name = useUserS
 Use the `persist` middleware:
 
 ```ts
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-type Settings = { theme: 'light' | 'dark'; setTheme: (t: 'light' | 'dark') => void };
+type Settings = {
+  theme: "light" | "dark";
+  setTheme: (t: "light" | "dark") => void;
+};
 
 export const useSettings = create<Settings>()(
   persist(
     (set) => ({
-      theme: 'light',
+      theme: "light",
       setTheme: (theme) => set({ theme }),
     }),
     {
-      name: 'settings',
+      name: "settings",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ theme: state.theme }),
       version: 1,
@@ -2503,11 +2640,14 @@ export const useSettings = create<Settings>()(
 Zustand has middleware for both. You can combine them:
 
 ```ts
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
-type TodoState = { todos: { id: number; done: boolean }[]; toggle: (id: number) => void };
+type TodoState = {
+  todos: { id: number; done: boolean }[];
+  toggle: (id: number) => void;
+};
 
 export const useTodos = create<TodoState>()(
   devtools(
@@ -2519,7 +2659,7 @@ export const useTodos = create<TodoState>()(
           if (todo) todo.done = !todo.done;
         }),
     })),
-    { name: 'todos' },
+    { name: "todos" },
   ),
 );
 ```
@@ -2531,17 +2671,27 @@ The Immer middleware needs `immer` installed. `devtools` should usually be the o
 When a store gets big, you split it into "slice" functions, each creating part of the state, and combine them into one store:
 
 ```ts
-import { create, type StateCreator } from 'zustand';
+import { create, type StateCreator } from "zustand";
 
 type BearSlice = { bears: number; addBear: () => void };
 type FishSlice = { fishes: number; addFish: () => void };
 
-const createBearSlice: StateCreator<BearSlice & FishSlice, [], [], BearSlice> = (set) => ({
+const createBearSlice: StateCreator<
+  BearSlice & FishSlice,
+  [],
+  [],
+  BearSlice
+> = (set) => ({
   bears: 0,
   addBear: () => set((s) => ({ bears: s.bears + 1 })),
 });
 
-const createFishSlice: StateCreator<BearSlice & FishSlice, [], [], FishSlice> = (set) => ({
+const createFishSlice: StateCreator<
+  BearSlice & FishSlice,
+  [],
+  [],
+  FishSlice
+> = (set) => ({
   fishes: 0,
   addFish: () => set((s) => ({ fishes: s.fishes + 1 })),
 });
@@ -2563,7 +2713,7 @@ const token = useAuthStore.getState().token;
 useAuthStore.setState({ token: null });
 
 const unsubscribe = useAuthStore.subscribe((state, prev) => {
-  if (state.token !== prev.token) console.log('token changed');
+  if (state.token !== prev.token) console.log("token changed");
 });
 ```
 
@@ -2574,7 +2724,7 @@ This is handy in API clients (adding the auth token in an Axios interceptor), in
 An atom can have both a read function and a write function:
 
 ```ts
-import { atom } from 'jotai';
+import { atom } from "jotai";
 
 const celsiusAtom = atom(20);
 
@@ -2591,8 +2741,8 @@ You can also make write-only atoms (`atom(null, (get, set, arg) => ...)`) that a
 If an atom's read function returns a promise, components that read it suspend until it resolves:
 
 ```tsx
-import { atom, useAtomValue } from 'jotai';
-import { Suspense } from 'react';
+import { atom, useAtomValue } from "jotai";
+import { Suspense } from "react";
 
 const userIdAtom = atom(1);
 const userAtom = atom(async (get) => {
@@ -2617,9 +2767,9 @@ When `userIdAtom` changes, the async atom re-runs. Use `loadable` from `jotai/ut
 Use `atomWithStorage` from `jotai/utils`:
 
 ```ts
-import { atomWithStorage } from 'jotai/utils';
+import { atomWithStorage } from "jotai/utils";
 
-export const themeAtom = atomWithStorage<'light' | 'dark'>('theme', 'light');
+export const themeAtom = atomWithStorage<"light" | "dark">("theme", "light");
 ```
 
 It reads and writes `localStorage` by default, and you can pass a custom storage like `sessionStorage`. It also syncs between browser tabs through the `storage` event.
@@ -2629,8 +2779,8 @@ It reads and writes `localStorage` by default, and you can pass a custom storage
 You create a store class with `makeAutoObservable` and wrap components with `observer`:
 
 ```tsx
-import { makeAutoObservable } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { makeAutoObservable } from "mobx";
+import { observer } from "mobx-react-lite";
 
 class TimerStore {
   seconds = 0;
@@ -2659,23 +2809,23 @@ const TimerView = observer(() => (
 ## 173: How do you use an XState machine in a React component?
 
 ```tsx
-import { createMachine } from 'xstate';
-import { useMachine } from '@xstate/react';
+import { createMachine } from "xstate";
+import { useMachine } from "@xstate/react";
 
 const toggleMachine = createMachine({
-  id: 'toggle',
-  initial: 'inactive',
+  id: "toggle",
+  initial: "inactive",
   states: {
-    inactive: { on: { TOGGLE: 'active' } },
-    active: { on: { TOGGLE: 'inactive' } },
+    inactive: { on: { TOGGLE: "active" } },
+    active: { on: { TOGGLE: "inactive" } },
   },
 });
 
 function Toggle() {
   const [snapshot, send] = useMachine(toggleMachine);
   return (
-    <button onClick={() => send({ type: 'TOGGLE' })}>
-      {snapshot.matches('active') ? 'On' : 'Off'}
+    <button onClick={() => send({ type: "TOGGLE" })}>
+      {snapshot.matches("active") ? "On" : "Off"}
     </button>
   );
 }
@@ -2717,8 +2867,8 @@ const queryClient = useQueryClient();
 const updateTodo = useMutation({
   mutationFn: (todo: Todo) => api.updateTodo(todo),
   onSuccess: (updated) => {
-    queryClient.setQueryData(['todo', updated.id], updated);
-    return queryClient.invalidateQueries({ queryKey: ['todos'] });
+    queryClient.setQueryData(["todo", updated.id], updated);
+    return queryClient.invalidateQueries({ queryKey: ["todos"] });
   },
 });
 ```
@@ -2732,11 +2882,13 @@ The simplest way in v5 is to use the mutation's `variables` to show the pending 
 ```tsx
 const addTodo = useMutation({
   mutationFn: (text: string) => api.addTodo(text),
-  onSettled: () => queryClient.invalidateQueries({ queryKey: ['todos'] }),
+  onSettled: () => queryClient.invalidateQueries({ queryKey: ["todos"] }),
 });
 
 <ul>
-  {todos.map((t) => <li key={t.id}>{t.text}</li>)}
+  {todos.map((t) => (
+    <li key={t.id}>{t.text}</li>
+  ))}
   {addTodo.isPending && <li style={{ opacity: 0.5 }}>{addTodo.variables}</li>}
 </ul>;
 ```
@@ -2748,10 +2900,13 @@ The other way is to update the cache directly in `onMutate`: cancel running quer
 Use the `enabled` option. The query waits until it becomes `true`:
 
 ```ts
-const { data: user } = useQuery({ queryKey: ['user', email], queryFn: () => getUserByEmail(email) });
+const { data: user } = useQuery({
+  queryKey: ["user", email],
+  queryFn: () => getUserByEmail(email),
+});
 
 const { data: projects } = useQuery({
-  queryKey: ['projects', user?.id],
+  queryKey: ["projects", user?.id],
   queryFn: () => getProjects(user!.id),
   enabled: !!user?.id,
 });
@@ -2764,10 +2919,10 @@ These are called dependent queries. Note that they run one after another, so if 
 Set `placeholderData` to `keepPreviousData`:
 
 ```ts
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 const { data, isPlaceholderData } = useQuery({
-  queryKey: ['projects', page],
+  queryKey: ["projects", page],
   queryFn: () => fetchProjects(page),
   placeholderData: keepPreviousData,
 });
@@ -2780,16 +2935,21 @@ When `page` changes, the previous page stays on screen instead of a loading spin
 Use `useInfiniteQuery`:
 
 ```tsx
-const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-  queryKey: ['feed'],
-  queryFn: ({ pageParam }) => fetch(`/api/feed?cursor=${pageParam}`).then((r) => r.json()),
-  initialPageParam: 0,
-  getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-});
+const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  useInfiniteQuery({
+    queryKey: ["feed"],
+    queryFn: ({ pageParam }) =>
+      fetch(`/api/feed?cursor=${pageParam}`).then((r) => r.json()),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+  });
 
 const items = data?.pages.flatMap((p) => p.items) ?? [];
 
-<button onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
+<button
+  onClick={() => fetchNextPage()}
+  disabled={!hasNextPage || isFetchingNextPage}
+>
   Load more
 </button>;
 ```
@@ -2802,7 +2962,7 @@ Returning `undefined` from `getNextPageParam` means there are no more pages. Com
 
 ```tsx
 function Profile() {
-  const { data } = useSuspenseQuery({ queryKey: ['me'], queryFn: getMe });
+  const { data } = useSuspenseQuery({ queryKey: ["me"], queryFn: getMe });
   return <h1>{data.name}</h1>;
 }
 
@@ -2825,7 +2985,13 @@ function PostLink({ id }: { id: number }) {
   return (
     <Link
       to={`/posts/${id}`}
-      onMouseEnter={() => queryClient.prefetchQuery({ queryKey: ['post', id], queryFn: () => getPost(id), staleTime: 30_000 })}
+      onMouseEnter={() =>
+        queryClient.prefetchQuery({
+          queryKey: ["post", id],
+          queryFn: () => getPost(id),
+          staleTime: 30_000,
+        })
+      }
     >
       Open
     </Link>
@@ -2840,11 +3006,11 @@ When the post page mounts and calls `useQuery` with the same key, the data is al
 `queryOptions` lets you define a query's key and function together in one place and reuse them with full type safety:
 
 ```ts
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const postQuery = (id: number) =>
   queryOptions({
-    queryKey: ['post', id],
+    queryKey: ["post", id],
     queryFn: () => getPost(id),
     staleTime: 60_000,
   });
@@ -2861,7 +3027,7 @@ Because the key is "tagged" with the data type, `getQueryData` and `setQueryData
 Install `@tanstack/react-query-devtools` and render the component inside the provider:
 
 ```tsx
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 <QueryClientProvider client={queryClient}>
   <App />
@@ -2877,9 +3043,12 @@ By default, a failed query is retried 3 times with exponential backoff before go
 
 ```ts
 useQuery({
-  queryKey: ['report'],
+  queryKey: ["report"],
   queryFn: getReport,
-  retry: (failureCount, error) => (error instanceof HttpError && error.status === 404 ? false : failureCount < 2),
+  retry: (failureCount, error) =>
+    error instanceof HttpError && error.status === 404
+      ? false
+      : failureCount < 2,
 });
 ```
 
@@ -2890,10 +3059,10 @@ For global error handling, add an `onError` callback to the `QueryCache` or `Mut
 SWR gives you a `mutate` function to update the cache and revalidate:
 
 ```tsx
-import useSWR, { useSWRConfig } from 'swr';
+import useSWR, { useSWRConfig } from "swr";
 
 function Profile() {
-  const { data, mutate } = useSWR('/api/user', fetcher);
+  const { data, mutate } = useSWR("/api/user", fetcher);
 
   async function rename(name: string) {
     await mutate(updateUserName(name), {
@@ -2913,9 +3082,9 @@ The global `mutate` from `useSWRConfig` lets you update any key from anywhere. S
 Use a request interceptor on an Axios instance:
 
 ```ts
-import axios from 'axios';
+import axios from "axios";
 
-export const api = axios.create({ baseURL: '/api', timeout: 10_000 });
+export const api = axios.create({ baseURL: "/api", timeout: 10_000 });
 
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
@@ -2942,7 +3111,7 @@ Both support `AbortController`. Pass the signal to the request and abort it in t
 useEffect(() => {
   const controller = new AbortController();
   api
-    .get('/search', { params: { q: query }, signal: controller.signal })
+    .get("/search", { params: { q: query }, signal: controller.signal })
     .then((res) => setResults(res.data))
     .catch((err) => {
       if (!axios.isCancel(err)) setError(err);
@@ -2958,10 +3127,10 @@ This avoids race conditions where an old, slow response overwrites a newer one. 
 Apollo uses `InMemoryCache`, which normalizes query results. Each object with a `__typename` and `id` (or `_id`) is stored once under a key like `User:42`, and queries point to it.
 
 ```ts
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: '/graphql' }),
+  link: new HttpLink({ uri: "/graphql" }),
   cache: new InMemoryCache(),
 });
 ```
@@ -2993,12 +3162,12 @@ const [addTodo] = useMutation(ADD_TODO, {
 tRPC has an integration where the client gives you typed query and mutation options for TanStack Query:
 
 ```tsx
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { useTRPC } from './trpc';
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useTRPC } from "./trpc";
 
 function Greeting() {
   const trpc = useTRPC();
-  const hello = useQuery(trpc.greeting.queryOptions({ name: 'Ana' }));
+  const hello = useQuery(trpc.greeting.queryOptions({ name: "Ana" }));
   const create = useMutation(trpc.post.create.mutationOptions());
   return <p>{hello.data?.text}</p>;
 }
@@ -3011,28 +3180,35 @@ The input and output types come straight from the server router, so renaming a f
 Use `zodResolver` and infer the form type from the schema:
 
 ```tsx
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const schema = z
   .object({
-    email: z.email('Enter a valid email'),
-    password: z.string().min(8, 'At least 8 characters'),
+    email: z.email("Enter a valid email"),
+    password: z.string().min(8, "At least 8 characters"),
     confirm: z.string(),
   })
-  .refine((v) => v.password === v.confirm, { message: 'Passwords do not match', path: ['confirm'] });
+  .refine((v) => v.password === v.confirm, {
+    message: "Passwords do not match",
+    path: ["confirm"],
+  });
 
 type FormValues = z.infer<typeof schema>;
 
 function SignUp() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({ resolver: zodResolver(schema) });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({ resolver: zodResolver(schema) });
   return (
     <form onSubmit={handleSubmit((v) => console.log(v))}>
-      <input {...register('email')} />
+      <input {...register("email")} />
       <p>{errors.email?.message}</p>
-      <input type="password" {...register('password')} />
-      <input type="password" {...register('confirm')} />
+      <input type="password" {...register("password")} />
+      <input type="password" {...register("confirm")} />
       <p>{errors.confirm?.message}</p>
       <button>Sign up</button>
     </form>
@@ -3047,11 +3223,13 @@ You can reuse the same schema on the server to validate the request body.
 Use the `Controller` component (or the `useController` hook). It connects RHF to components that need `value` and `onChange` instead of a ref:
 
 ```tsx
-import { Controller, useForm } from 'react-hook-form';
-import { MenuItem, TextField } from '@mui/material';
+import { Controller, useForm } from "react-hook-form";
+import { MenuItem, TextField } from "@mui/material";
 
 function RoleForm() {
-  const { control, handleSubmit } = useForm({ defaultValues: { role: 'viewer' } });
+  const { control, handleSubmit } = useForm({
+    defaultValues: { role: "viewer" },
+  });
   return (
     <form onSubmit={handleSubmit(console.log)}>
       <Controller
@@ -3076,23 +3254,29 @@ Always set `defaultValues`, otherwise the controlled component starts as `undefi
 Use `useFieldArray`:
 
 ```tsx
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from "react-hook-form";
 
 type Values = { phones: { number: string }[] };
 
 function Phones() {
-  const { control, register } = useForm<Values>({ defaultValues: { phones: [{ number: '' }] } });
-  const { fields, append, remove } = useFieldArray({ control, name: 'phones' });
+  const { control, register } = useForm<Values>({
+    defaultValues: { phones: [{ number: "" }] },
+  });
+  const { fields, append, remove } = useFieldArray({ control, name: "phones" });
 
   return (
     <>
       {fields.map((field, index) => (
         <div key={field.id}>
           <input {...register(`phones.${index}.number`)} />
-          <button type="button" onClick={() => remove(index)}>Remove</button>
+          <button type="button" onClick={() => remove(index)}>
+            Remove
+          </button>
         </div>
       ))}
-      <button type="button" onClick={() => append({ number: '' })}>Add phone</button>
+      <button type="button" onClick={() => append({ number: "" })}>
+        Add phone
+      </button>
     </>
   );
 }
@@ -3114,16 +3298,24 @@ So for things like showing a live preview or a conditional field deep in the for
 Use `setError` after the submit fails:
 
 ```tsx
-const { register, handleSubmit, setError, formState: { errors } } = useForm<{ username: string }>();
+const {
+  register,
+  handleSubmit,
+  setError,
+  formState: { errors },
+} = useForm<{ username: string }>();
 
 const onSubmit = handleSubmit(async (values) => {
-  const res = await fetch('/api/register', { method: 'POST', body: JSON.stringify(values) });
+  const res = await fetch("/api/register", {
+    method: "POST",
+    body: JSON.stringify(values),
+  });
   if (res.status === 409) {
-    setError('username', { type: 'server', message: 'This username is taken' });
+    setError("username", { type: "server", message: "This username is taken" });
     return;
   }
   if (!res.ok) {
-    setError('root.server', { message: 'Something went wrong, try again' });
+    setError("root.server", { message: "Something went wrong, try again" });
   }
 });
 ```
@@ -3186,19 +3378,19 @@ For very simple forms, React 19's form actions with `useActionState` and native 
 Create a theme with `createTheme` and pass it to `ThemeProvider`:
 
 ```tsx
-import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
+import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#0f766e' },
-    secondary: { main: '#f59e0b' },
+    primary: { main: "#0f766e" },
+    secondary: { main: "#f59e0b" },
   },
-  typography: { fontFamily: 'Inter, sans-serif' },
+  typography: { fontFamily: "Inter, sans-serif" },
   shape: { borderRadius: 8 },
   components: {
     MuiButton: {
       defaultProps: { disableElevation: true },
-      styleOverrides: { root: { textTransform: 'none' } },
+      styleOverrides: { root: { textTransform: "none" } },
     },
   },
 });
@@ -3221,14 +3413,14 @@ export function App() {
 - `styled()` creates a reusable styled component, good when the same styles are used in many places.
 
 ```tsx
-import { Box, styled } from '@mui/material';
+import { Box, styled } from "@mui/material";
 
-const Card = styled('div')(({ theme }) => ({
+const Card = styled("div")(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
 }));
 
-<Box sx={{ p: 2, display: 'flex', gap: 1, bgcolor: 'background.paper' }} />;
+<Box sx={{ p: 2, display: "flex", gap: 1, bgcolor: "background.paper" }} />;
 ```
 
 Both run through Emotion at runtime. Avoid putting large `sx` objects on items in long lists because each one creates styles.
@@ -3238,16 +3430,24 @@ Both run through Emotion at runtime. Avoid putting large `sx` objects on items i
 Define both color schemes in the theme and turn on CSS variables:
 
 ```tsx
-import { createTheme, ThemeProvider, useColorScheme } from '@mui/material/styles';
+import {
+  createTheme,
+  ThemeProvider,
+  useColorScheme,
+} from "@mui/material/styles";
 
 const theme = createTheme({
-  cssVariables: { colorSchemeSelector: 'class' },
+  cssVariables: { colorSchemeSelector: "class" },
   colorSchemes: { light: true, dark: true },
 });
 
 function ModeToggle() {
   const { mode, setMode } = useColorScheme();
-  return <button onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>Toggle</button>;
+  return (
+    <button onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
+      Toggle
+    </button>
+  );
 }
 
 <ThemeProvider theme={theme}>
@@ -3295,7 +3495,7 @@ To change the brand, you edit these variables, and every component updates. Dark
 ## 206: How do you build a modal with Radix UI Dialog?
 
 ```tsx
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from "@radix-ui/react-dialog";
 
 function DeleteDialog({ onConfirm }: { onConfirm: () => void }) {
   return (
@@ -3337,12 +3537,17 @@ Without `asChild`, you'd get a `<button>` wrapping your `<a>`. The child must ac
 Chakra v3 uses a system created with `createSystem`, plus "recipes" for component variants:
 
 ```tsx
-import { ChakraProvider, createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
+import {
+  ChakraProvider,
+  createSystem,
+  defaultConfig,
+  defineConfig,
+} from "@chakra-ui/react";
 
 const config = defineConfig({
   theme: {
     tokens: {
-      colors: { brand: { 500: { value: '#0f766e' } } },
+      colors: { brand: { 500: { value: "#0f766e" } } },
     },
   },
 });
@@ -3359,19 +3564,23 @@ v3 also uses "snippets": you run `npx @chakra-ui/cli snippet add` to copy ready-
 Mantine has its own form library, `@mantine/form`:
 
 ```tsx
-import { useForm } from '@mantine/form';
-import { TextInput, Button } from '@mantine/core';
+import { useForm } from "@mantine/form";
+import { TextInput, Button } from "@mantine/core";
 
 function Signup() {
   const form = useForm({
-    mode: 'uncontrolled',
-    initialValues: { email: '' },
-    validate: { email: (v) => (/^\S+@\S+$/.test(v) ? null : 'Invalid email') },
+    mode: "uncontrolled",
+    initialValues: { email: "" },
+    validate: { email: (v) => (/^\S+@\S+$/.test(v) ? null : "Invalid email") },
   });
 
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>
-      <TextInput label="Email" key={form.key('email')} {...form.getInputProps('email')} />
+      <TextInput
+        label="Email"
+        key={form.key("email")}
+        {...form.getInputProps("email")}
+      />
       <Button type="submit">Submit</Button>
     </form>
   );
@@ -3385,12 +3594,12 @@ function Signup() {
 Use `ConfigProvider` with design tokens:
 
 ```tsx
-import { ConfigProvider, theme, Button } from 'antd';
+import { ConfigProvider, theme, Button } from "antd";
 
 <ConfigProvider
   theme={{
     algorithm: theme.darkAlgorithm,
-    token: { colorPrimary: '#0f766e', borderRadius: 6 },
+    token: { colorPrimary: "#0f766e", borderRadius: 6 },
     components: { Button: { controlHeight: 40 } },
   }}
 >
@@ -3414,9 +3623,9 @@ npm install tailwindcss @tailwindcss/vite
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -3438,21 +3647,24 @@ v4 finds your source files automatically, so you don't need the `content` array.
 ## 213: How do you build a reusable component with variants using cva and Tailwind?
 
 ```tsx
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
-const badge = cva('inline-flex items-center rounded-full px-2 text-xs font-medium', {
-  variants: {
-    tone: {
-      neutral: 'bg-gray-100 text-gray-800',
-      success: 'bg-green-100 text-green-800',
-      danger: 'bg-red-100 text-red-800',
+const badge = cva(
+  "inline-flex items-center rounded-full px-2 text-xs font-medium",
+  {
+    variants: {
+      tone: {
+        neutral: "bg-gray-100 text-gray-800",
+        success: "bg-green-100 text-green-800",
+        danger: "bg-red-100 text-red-800",
+      },
     },
+    defaultVariants: { tone: "neutral" },
   },
-  defaultVariants: { tone: 'neutral' },
-});
+);
 
-type BadgeProps = React.ComponentProps<'span'> & VariantProps<typeof badge>;
+type BadgeProps = React.ComponentProps<"span"> & VariantProps<typeof badge>;
 
 export function Badge({ className, tone, ...props }: BadgeProps) {
   return <span className={cn(badge({ tone }), className)} {...props} />;
@@ -3466,13 +3678,13 @@ export function Badge({ className, tone, ...props }: BadgeProps) {
 Wrap the app in `ThemeProvider` and read the theme in styles. Use `$`-prefixed "transient" props for values that should not be passed to the DOM:
 
 ```tsx
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from "styled-components";
 
-const theme = { colors: { primary: '#0f766e' } };
+const theme = { colors: { primary: "#0f766e" } };
 
 const Button = styled.button<{ $outline?: boolean }>`
-  color: ${({ theme, $outline }) => ($outline ? theme.colors.primary : 'white')};
-  background: ${({ theme, $outline }) => ($outline ? 'transparent' : theme.colors.primary)};
+  color: ${({ theme, $outline }) => ($outline ? theme.colors.primary : "white")};
+  background: ${({ theme, $outline }) => ($outline ? "transparent" : theme.colors.primary)};
 `;
 
 <ThemeProvider theme={theme}>
@@ -3490,9 +3702,19 @@ To share styles, use `composes`:
 
 ```css
 /* Button.module.css */
-.base { padding: 8px 16px; border-radius: 4px; }
-.primary { composes: base; background: teal; color: white; }
-.danger { composes: base from './shared.module.css'; background: crimson; }
+.base {
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+.primary {
+  composes: base;
+  background: teal;
+  color: white;
+}
+.danger {
+  composes: base from "./shared.module.css";
+  background: crimson;
+}
 ```
 
 `composes` adds both class names to the element, so the CSS isn't duplicated.
@@ -3510,7 +3732,7 @@ Plain CSS Modules and Tailwind are also zero-runtime and are the most common cho
 Wrap it in `AnimatePresence` and give the `motion` element an `exit` prop:
 
 ```tsx
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion } from "motion/react";
 
 function Toast({ show, message }: { show: boolean; message: string }) {
   return (
@@ -3537,7 +3759,11 @@ React normally removes elements right away. `AnimatePresence` keeps them in the 
 Adding the `layout` prop makes an element animate smoothly when its size or position changes because of a re-render, for example when a list is reordered or a card expands:
 
 ```tsx
-<motion.div layout onClick={() => setOpen(!open)} className={open ? 'card open' : 'card'} />
+<motion.div
+  layout
+  onClick={() => setOpen(!open)}
+  className={open ? "card open" : "card"}
+/>
 ```
 
 Motion measures the element before and after the change and animates the difference using transforms, which is fast. With `layoutId`, two different elements can animate from one to the other, like a thumbnail growing into a full-screen image.
@@ -3558,7 +3784,9 @@ const item = {
 
 <motion.ul variants={list} initial="hidden" animate="visible">
   {items.map((i) => (
-    <motion.li key={i.id} variants={item}>{i.name}</motion.li>
+    <motion.li key={i.id} variants={item}>
+      {i.name}
+    </motion.li>
   ))}
 </motion.ul>;
 ```
@@ -3570,7 +3798,7 @@ Children with variants inherit the parent's current state name, so you only set 
 Use the `useReducedMotion` hook, or set it globally with `MotionConfig`:
 
 ```tsx
-import { MotionConfig, useReducedMotion, motion } from 'motion/react';
+import { MotionConfig, useReducedMotion, motion } from "motion/react";
 
 <MotionConfig reducedMotion="user">
   <App />
@@ -3589,9 +3817,13 @@ With `reducedMotion="user"`, Motion turns off transform and layout animations fo
 Pass your own component to the `content` prop of `Tooltip`:
 
 ```tsx
-import { Tooltip, type TooltipProps } from 'recharts';
+import { Tooltip, type TooltipProps } from "recharts";
 
-function SalesTooltip({ active, payload, label }: TooltipProps<number, string>) {
+function SalesTooltip({
+  active,
+  payload,
+  label,
+}: TooltipProps<number, string>) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded border bg-white p-2 shadow">
@@ -3620,18 +3852,26 @@ Questions to ask:
 
 ```tsx
 import {
-  createColumnHelper, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel,
-  useReactTable, type SortingState,
-} from '@tanstack/react-table';
-import { useState } from 'react';
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type SortingState,
+} from "@tanstack/react-table";
+import { useState } from "react";
 
 type User = { name: string; age: number };
 const col = createColumnHelper<User>();
-const columns = [col.accessor('name', { header: 'Name' }), col.accessor('age', { header: 'Age' })];
+const columns = [
+  col.accessor("name", { header: "Name" }),
+  col.accessor("age", { header: "Age" }),
+];
 
 function UsersTable({ data }: { data: User[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const table = useReactTable({
     data,
@@ -3646,7 +3886,11 @@ function UsersTable({ data }: { data: User[] }) {
 
   return (
     <>
-      <input value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)} placeholder="Search" />
+      <input
+        value={globalFilter}
+        onChange={(e) => setGlobalFilter(e.target.value)}
+        placeholder="Search"
+      />
       <table>
         <thead>
           {table.getHeaderGroups().map((hg) => (
@@ -3663,7 +3907,9 @@ function UsersTable({ data }: { data: User[] }) {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
               ))}
             </tr>
           ))}
@@ -3684,7 +3930,7 @@ Tell the table that pagination is done outside by setting `manualPagination` and
 const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 });
 
 const { data } = useQuery({
-  queryKey: ['orders', pagination],
+  queryKey: ["orders", pagination],
   queryFn: () => fetchOrders(pagination.pageIndex, pagination.pageSize),
   placeholderData: keepPreviousData,
 });
@@ -3705,8 +3951,8 @@ const table = useReactTable({
 ## 225: How do you render a long list with TanStack Virtual?
 
 ```tsx
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { useRef } from 'react';
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useRef } from "react";
 
 function BigList({ items }: { items: string[] }) {
   const parentRef = useRef<HTMLDivElement>(null);
@@ -3718,12 +3964,19 @@ function BigList({ items }: { items: string[] }) {
   });
 
   return (
-    <div ref={parentRef} style={{ height: 400, overflow: 'auto' }}>
-      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
+    <div ref={parentRef} style={{ height: 400, overflow: "auto" }}>
+      <div style={{ height: virtualizer.getTotalSize(), position: "relative" }}>
         {virtualizer.getVirtualItems().map((v) => (
           <div
             key={v.key}
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translateY(${v.start}px)`, height: v.size }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transform: `translateY(${v.start}px)`,
+              height: v.size,
+            }}
           >
             {items[v.index]}
           </div>
@@ -3739,17 +3992,25 @@ For rows with different heights, add `ref={virtualizer.measureElement}` and `dat
 ## 226: How do you set up AG Grid in a React app?
 
 ```tsx
-import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry, type ColDef } from 'ag-grid-community';
+import { AgGridReact } from "ag-grid-react";
+import {
+  AllCommunityModule,
+  ModuleRegistry,
+  type ColDef,
+} from "ag-grid-community";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 type Car = { make: string; model: string; price: number };
 
 const columnDefs: ColDef<Car>[] = [
-  { field: 'make', filter: true },
-  { field: 'model' },
-  { field: 'price', sortable: true, valueFormatter: (p) => `$${p.value.toLocaleString()}` },
+  { field: "make", filter: true },
+  { field: "model" },
+  {
+    field: "price",
+    sortable: true,
+    valueFormatter: (p) => `$${p.value.toLocaleString()}`,
+  },
 ];
 
 function CarsGrid({ rows }: { rows: Car[] }) {
@@ -3768,20 +4029,20 @@ Since v33, AG Grid uses modules (register only what you use, to keep the bundle 
 Use a backend plugin like `i18next-http-backend` to load JSON files on demand, and split translations into namespaces:
 
 ```ts
-import i18n from 'i18next';
-import HttpBackend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
+import i18n from "i18next";
+import HttpBackend from "i18next-http-backend";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { initReactI18next } from "react-i18next";
 
 i18n
   .use(HttpBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
-    ns: ['common'],
-    defaultNS: 'common',
-    backend: { loadPath: '/locales/{{lng}}/{{ns}}.json' },
+    fallbackLng: "en",
+    ns: ["common"],
+    defaultNS: "common",
+    backend: { loadPath: "/locales/{{lng}}/{{ns}}.json" },
   });
 ```
 
@@ -3799,7 +4060,7 @@ Interpolation uses `{{name}}`. For plurals, you add keys with suffixes based on 
 ```
 
 ```tsx
-t('inbox', { count: 5 });
+t("inbox", { count: 5 });
 ```
 
 Languages like Polish or Arabic have more plural forms (`_few`, `_many` and so on), and i18next picks the right key automatically. Values are escaped by default to prevent XSS.
@@ -3809,7 +4070,7 @@ Languages like Polish or Arabic have more plural forms (`_few`, `_many` and so o
 `Trans` is for translations that contain JSX, like links or bold text, without splitting the sentence into pieces:
 
 ```tsx
-import { Trans } from 'react-i18next';
+import { Trans } from "react-i18next";
 
 // "agree": "I agree to the <link>terms of service</link>"
 <Trans i18nKey="agree" components={{ link: <a href="/terms" /> }} />;
@@ -3822,7 +4083,7 @@ Translators see the whole sentence and can move the link to where it makes sense
 Use the `useIntl` hook or the `Formatted*` components. They use the browser's `Intl` APIs with the current locale:
 
 ```tsx
-import { useIntl, FormattedNumber, FormattedDate } from 'react-intl';
+import { useIntl, FormattedNumber, FormattedDate } from "react-intl";
 
 function Price({ value, date }: { value: number; date: Date }) {
   const intl = useIntl();
@@ -3830,7 +4091,7 @@ function Price({ value, date }: { value: number; date: Date }) {
     <>
       <FormattedNumber value={value} style="currency" currency="EUR" />
       <FormattedDate value={date} dateStyle="medium" />
-      <span title={intl.formatRelativeTime(-2, 'day')} />
+      <span title={intl.formatRelativeTime(-2, "day")} />
     </>
   );
 }
@@ -3843,11 +4104,11 @@ The same number shows as `€1,234.50` in English and `1.234,50 €` in German w
 date-fns v4 has first-class time zone support through the `@date-fns/tz` package. You create a date in a specific zone with `TZDate`, and the date-fns functions respect it:
 
 ```ts
-import { TZDate } from '@date-fns/tz';
-import { addDays, format } from 'date-fns';
+import { TZDate } from "@date-fns/tz";
+import { addDays, format } from "date-fns";
 
-const meeting = new TZDate(2026, 2, 28, 9, 0, 'America/New_York');
-format(addDays(meeting, 1), 'yyyy-MM-dd HH:mm zzz');
+const meeting = new TZDate(2026, 2, 28, 9, 0, "America/New_York");
+format(addDays(meeting, 1), "yyyy-MM-dd HH:mm zzz");
 ```
 
 Many functions also take an `in` option to choose the time zone context. Before v4, people used the separate `date-fns-tz` package.
@@ -3857,18 +4118,18 @@ Many functions also take an `in` option to choose the time zone context. Before 
 Day.js keeps the core small and adds features through plugins you register once:
 
 ```ts
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import 'dayjs/locale/de';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import "dayjs/locale/de";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-dayjs().subtract(3, 'hour').fromNow();
-dayjs.tz('2026-03-28 09:00', 'Europe/Berlin').locale('de').format('LLLL');
+dayjs().subtract(3, "hour").fromNow();
+dayjs.tz("2026-03-28 09:00", "Europe/Berlin").locale("de").format("LLLL");
 ```
 
 Plugins change the global `dayjs`, so register them in one setup file that runs before the app.
@@ -3876,33 +4137,54 @@ Plugins change the global `dayjs`, so register them in one setup file that runs 
 ## 233: How do you build a sortable list with dnd-kit?
 
 ```tsx
-import { DndContext, closestCenter, type DragEndEvent } from '@dnd-kit/core';
-import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { useState } from 'react';
+import { DndContext, closestCenter, type DragEndEvent } from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useState } from "react";
 
 function Item({ id }: { id: string }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
   return (
-    <li ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }} {...attributes} {...listeners}>
+    <li
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      {...attributes}
+      {...listeners}
+    >
       {id}
     </li>
   );
 }
 
 function SortableList() {
-  const [items, setItems] = useState(['a', 'b', 'c']);
+  const [items, setItems] = useState(["a", "b", "c"]);
 
   function onDragEnd({ active, over }: DragEndEvent) {
     if (over && active.id !== over.id) {
-      setItems((prev) => arrayMove(prev, prev.indexOf(String(active.id)), prev.indexOf(String(over.id))));
+      setItems((prev) =>
+        arrayMove(
+          prev,
+          prev.indexOf(String(active.id)),
+          prev.indexOf(String(over.id)),
+        ),
+      );
     }
   }
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <ul>{items.map((id) => <Item key={id} id={id} />)}</ul>
+        <ul>
+          {items.map((id) => (
+            <Item key={id} id={id} />
+          ))}
+        </ul>
       </SortableContext>
     </DndContext>
   );
@@ -3917,10 +4199,13 @@ Use `accept`, `maxSize`, `maxFiles` and, if needed, a custom `validator`. Reject
 
 ```tsx
 const { getRootProps, getInputProps, fileRejections } = useDropzone({
-  accept: { 'image/png': ['.png'], 'image/jpeg': ['.jpg', '.jpeg'] },
+  accept: { "image/png": [".png"], "image/jpeg": [".jpg", ".jpeg"] },
   maxSize: 5 * 1024 * 1024,
   maxFiles: 3,
-  validator: (file) => (file.name.length > 100 ? { code: 'name-too-long', message: 'File name is too long' } : null),
+  validator: (file) =>
+    file.name.length > 100
+      ? { code: "name-too-long", message: "File name is too long" }
+      : null,
   onDropAccepted: (files) => upload(files),
 });
 ```
@@ -3932,7 +4217,7 @@ This only checks in the browser. The server must also check file type (by conten
 Use the `AsyncSelect` component with a `loadOptions` function that returns a promise:
 
 ```tsx
-import AsyncSelect from 'react-select/async';
+import AsyncSelect from "react-select/async";
 
 type Option = { value: string; label: string };
 
@@ -3952,15 +4237,15 @@ async function loadCities(input: string): Promise<Option[]> {
 `toast.promise` shows loading, success and error states for one promise:
 
 ```tsx
-import { toast } from 'sonner';
+import { toast } from "sonner";
 
 function SaveButton() {
   return (
     <button
       onClick={() =>
         toast.promise(saveSettings(), {
-          loading: 'Saving...',
-          success: 'Settings saved',
+          loading: "Saving...",
+          success: "Settings saved",
           error: (err) => `Could not save: ${err.message}`,
         })
       }
@@ -3978,7 +4263,7 @@ You can also use `toast.custom` for your own markup, `action` for an "Undo" butt
 Use `resetKeys` to reset automatically when some value changes, and `useErrorBoundary` to send errors from event handlers or promises to the boundary:
 
 ```tsx
-import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary, useErrorBoundary } from "react-error-boundary";
 
 function Report({ id }: { id: string }) {
   const { showBoundary } = useErrorBoundary();
@@ -3986,7 +4271,11 @@ function Report({ id }: { id: string }) {
   return <button onClick={exportCsv}>Export</button>;
 }
 
-<ErrorBoundary FallbackComponent={Fallback} resetKeys={[reportId]} onReset={() => queryClient.resetQueries()}>
+<ErrorBoundary
+  FallbackComponent={Fallback}
+  resetKeys={[reportId]}
+  onReset={() => queryClient.resetQueries()}
+>
   <Report id={reportId} />
 </ErrorBoundary>;
 ```
@@ -3998,14 +4287,16 @@ React error boundaries don't catch errors in event handlers or async code on the
 When queries throw to an error boundary (with `useSuspenseQuery` or `throwOnError`), you need to reset the failed queries when the user clicks "Try again". `QueryErrorResetBoundary` does that:
 
 ```tsx
-import { QueryErrorResetBoundary } from '@tanstack/react-query';
-import { ErrorBoundary } from 'react-error-boundary';
+import { QueryErrorResetBoundary } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
 
 <QueryErrorResetBoundary>
   {({ reset }) => (
     <ErrorBoundary
       onReset={reset}
-      fallbackRender={({ resetErrorBoundary }) => <button onClick={resetErrorBoundary}>Try again</button>}
+      fallbackRender={({ resetErrorBoundary }) => (
+        <button onClick={resetErrorBoundary}>Try again</button>
+      )}
     >
       <Suspense fallback={<Spinner />}>
         <Orders />
@@ -4022,7 +4313,11 @@ Without the reset, the query would stay in error state and the boundary would sh
 Render the tags directly in your component. React 19 hoists them to `<head>`:
 
 ```tsx
-function ProductPage({ product }: { product: { name: string; summary: string } }) {
+function ProductPage({
+  product,
+}: {
+  product: { name: string; summary: string };
+}) {
   return (
     <>
       <title>{`${product.name} | My Shop`}</title>
@@ -4039,15 +4334,29 @@ Pass the title as a single string (a template literal), not mixed text and expre
 ## 240: How do you position a tooltip with Floating UI?
 
 ```tsx
-import { useFloating, offset, flip, shift, autoUpdate, useHover, useInteractions } from '@floating-ui/react';
-import { useState } from 'react';
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  autoUpdate,
+  useHover,
+  useInteractions,
+} from "@floating-ui/react";
+import { useState } from "react";
 
-function Tooltip({ label, children }: { label: string; children: React.ReactNode }) {
+function Tooltip({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
     open,
     onOpenChange: setOpen,
-    placement: 'top',
+    placement: "top",
     middleware: [offset(8), flip(), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
   });
@@ -4056,9 +4365,16 @@ function Tooltip({ label, children }: { label: string; children: React.ReactNode
 
   return (
     <>
-      <span ref={refs.setReference} {...getReferenceProps()}>{children}</span>
+      <span ref={refs.setReference} {...getReferenceProps()}>
+        {children}
+      </span>
       {open && (
-        <div ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()} role="tooltip">
+        <div
+          ref={refs.setFloating}
+          style={floatingStyles}
+          {...getFloatingProps()}
+          role="tooltip"
+        >
           {label}
         </div>
       )}
@@ -4083,14 +4399,18 @@ Check the result with a bundle analyzer.
 Use `react-markdown` with plugins and keep raw HTML disabled unless you sanitize it:
 
 ```tsx
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 
 <Markdown
   remarkPlugins={[remarkGfm]}
   rehypePlugins={[rehypeHighlight]}
-  components={{ a: ({ node, ...props }) => <a {...props} target="_blank" rel="noopener noreferrer" /> }}
+  components={{
+    a: ({ node, ...props }) => (
+      <a {...props} target="_blank" rel="noopener noreferrer" />
+    ),
+  }}
 >
   {userContent}
 </Markdown>;
@@ -4101,10 +4421,16 @@ If you must allow HTML from users, add `rehype-raw` together with `rehype-saniti
 ## 243: How do you create a basic rich text editor with Tiptap and save its content?
 
 ```tsx
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
-function NoteEditor({ initial, onSave }: { initial: object; onSave: (json: object) => void }) {
+function NoteEditor({
+  initial,
+  onSave,
+}: {
+  initial: object;
+  onSave: (json: object) => void;
+}) {
   const editor = useEditor({
     extensions: [StarterKit],
     content: initial,
@@ -4116,7 +4442,9 @@ function NoteEditor({ initial, onSave }: { initial: object; onSave: (json: objec
 
   return (
     <>
-      <button onClick={() => editor.chain().focus().toggleBold().run()}>Bold</button>
+      <button onClick={() => editor.chain().focus().toggleBold().run()}>
+        Bold
+      </button>
       <EditorContent editor={editor} />
     </>
   );
@@ -4128,22 +4456,26 @@ Save the JSON (`getJSON()`) rather than HTML when you can, because it is easier 
 ## 244: How do you set up a basic Lexical editor in React?
 
 ```tsx
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 
 function Editor() {
   return (
-    <LexicalComposer initialConfig={{ namespace: 'notes', onError: console.error }}>
+    <LexicalComposer
+      initialConfig={{ namespace: "notes", onError: console.error }}
+    >
       <RichTextPlugin
         contentEditable={<ContentEditable className="editor" />}
         ErrorBoundary={LexicalErrorBoundary}
       />
       <HistoryPlugin />
-      <OnChangePlugin onChange={(state) => console.log(JSON.stringify(state.toJSON()))} />
+      <OnChangePlugin
+        onChange={(state) => console.log(JSON.stringify(state.toJSON()))}
+      />
     </LexicalComposer>
   );
 }
@@ -4156,9 +4488,9 @@ Features like lists, links and markdown shortcuts are added as more plugins and 
 Use the `useFrame` hook and change the Three.js object through a ref, not through React state:
 
 ```tsx
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
-import type { Mesh } from 'three';
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+import type { Mesh } from "three";
 
 function SpinningBox() {
   const ref = useRef<Mesh>(null);
@@ -4173,7 +4505,9 @@ function SpinningBox() {
   );
 }
 
-<Canvas><SpinningBox /></Canvas>;
+<Canvas>
+  <SpinningBox />
+</Canvas>;
 ```
 
 Calling `setState` 60 times per second would re-render React on every frame and be slow. Mutating the object directly skips React entirely.
@@ -4203,11 +4537,11 @@ Each has an `All` version (`getAllBy`, etc.) for multiple elements. `findBy` is 
 `userEvent.setup()` creates an instance that shares state between actions, such as which keys are pressed and where the pointer is. All its methods are async because they go through several events and microtasks, so you have to `await` them.
 
 ```tsx
-test('submits the form', async () => {
+test("submits the form", async () => {
   const user = userEvent.setup();
   render(<LoginForm onSubmit={onSubmit} />);
-  await user.type(screen.getByLabelText('Email'), 'a@b.com');
-  await user.click(screen.getByRole('button', { name: 'Log in' }));
+  await user.type(screen.getByLabelText("Email"), "a@b.com");
+  await user.click(screen.getByRole("button", { name: "Log in" }));
   expect(onSubmit).toHaveBeenCalled();
 });
 ```
@@ -4219,17 +4553,21 @@ Forgetting `await` leads to flaky tests and `act` warnings. If you use fake time
 Create a new `QueryClient` for each test with retries turned off, and mock the network (MSW is a good fit):
 
 ```tsx
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render, screen } from "@testing-library/react";
 
 function renderWithClient(ui: React.ReactElement) {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(<QueryClientProvider client={client}>{ui}</QueryClientProvider>);
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  return render(
+    <QueryClientProvider client={client}>{ui}</QueryClientProvider>,
+  );
 }
 
-test('shows todos', async () => {
+test("shows todos", async () => {
   renderWithClient(<Todos />);
-  expect(await screen.findByText('Buy milk')).toBeInTheDocument();
+  expect(await screen.findByText("Buy milk")).toBeInTheDocument();
 });
 ```
 
@@ -4240,12 +4578,15 @@ A new client per test stops cached data from leaking between tests. Without `ret
 Write a `renderWithProviders` helper that creates a real store for each test, optionally with preloaded state:
 
 ```tsx
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
-import { rootReducer, type RootState } from './store';
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import { render } from "@testing-library/react";
+import { rootReducer, type RootState } from "./store";
 
-export function renderWithProviders(ui: React.ReactElement, preloadedState?: Partial<RootState>) {
+export function renderWithProviders(
+  ui: React.ReactElement,
+  preloadedState?: Partial<RootState>,
+) {
   const store = configureStore({ reducer: rootReducer, preloadedState });
   return { store, ...render(<Provider store={store}>{ui}</Provider>) };
 }
@@ -4271,12 +4612,14 @@ beforeEach(() => useCartStore.setState(initial, true));
 MSW v2 uses the `http` namespace and the `HttpResponse` class:
 
 ```ts
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
+import { http, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
 
 export const handlers = [
-  http.get('/api/todos', () => HttpResponse.json([{ id: 1, title: 'Buy milk' }])),
-  http.post('/api/todos', async ({ request }) => {
+  http.get("/api/todos", () =>
+    HttpResponse.json([{ id: 1, title: "Buy milk" }]),
+  ),
+  http.post("/api/todos", async ({ request }) => {
     const body = (await request.json()) as { title: string };
     return HttpResponse.json({ id: 2, ...body }, { status: 201 });
   }),
@@ -4284,7 +4627,7 @@ export const handlers = [
 
 export const server = setupServer(...handlers);
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
@@ -4302,15 +4645,15 @@ npx msw init public --save
 ```tsx
 // main.tsx
 async function enableMocking() {
-  if (import.meta.env.DEV && import.meta.env.VITE_MOCK_API === 'true') {
-    const { setupWorker } = await import('msw/browser');
-    const { handlers } = await import('./mocks/handlers');
-    await setupWorker(...handlers).start({ onUnhandledRequest: 'bypass' });
+  if (import.meta.env.DEV && import.meta.env.VITE_MOCK_API === "true") {
+    const { setupWorker } = await import("msw/browser");
+    const { handlers } = await import("./mocks/handlers");
+    await setupWorker(...handlers).start({ onUnhandledRequest: "bypass" });
   }
 }
 
 enableMocking().then(() => {
-  createRoot(document.getElementById('root')!).render(<App />);
+  createRoot(document.getElementById("root")!).render(<App />);
 });
 ```
 
@@ -4320,24 +4663,24 @@ This lets frontend developers work before the backend is ready, and you reuse th
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
+    environment: "jsdom",
     globals: true,
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ["./src/test/setup.ts"],
   },
 });
 ```
 
 ```ts
 // src/test/setup.ts
-import '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
-import { afterEach } from 'vitest';
+import "@testing-library/jest-dom/vitest";
+import { cleanup } from "@testing-library/react";
+import { afterEach } from "vitest";
 
 afterEach(() => cleanup());
 ```
@@ -4349,8 +4692,8 @@ afterEach(() => cleanup());
 Playwright locators are lazy and auto-waiting. Every time you act on a locator, Playwright finds the element again and waits until it is visible, enabled, stable and able to receive events. Assertions like `toBeVisible()` and `toHaveText()` also retry until they pass or time out.
 
 ```ts
-await page.getByRole('button', { name: 'Submit' }).click();
-await expect(page.getByText('Saved')).toBeVisible();
+await page.getByRole("button", { name: "Submit" }).click();
+await expect(page.getByText("Saved")).toBeVisible();
 ```
 
 So you almost never need manual `waitForTimeout` sleeps. Prefer user-facing locators (`getByRole`, `getByLabel`, `getByText`) over CSS selectors, which break when markup changes.
@@ -4365,13 +4708,13 @@ Playwright component testing (still experimental) or Vitest Browser Mode render 
 
 ```tsx
 // Counter.cy.tsx
-import Counter from './Counter';
+import Counter from "./Counter";
 
-describe('<Counter />', () => {
-  it('increments', () => {
+describe("<Counter />", () => {
+  it("increments", () => {
     cy.mount(<Counter initial={1} />);
-    cy.contains('button', '1').click();
-    cy.contains('button', '2').should('be.visible');
+    cy.contains("button", "1").click();
+    cy.contains("button", "2").should("be.visible");
   });
 });
 ```
@@ -4383,18 +4726,18 @@ describe('<Counter />', () => {
 Stories use Component Story Format (CSF), an ES module with a default export (meta) and named exports (stories):
 
 ```tsx
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from './Button';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Button } from "./Button";
 
 const meta = {
   component: Button,
-  args: { children: 'Save' },
+  args: { children: "Save" },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = { args: { variant: 'primary' } };
+export const Primary: Story = { args: { variant: "primary" } };
 export const Disabled: Story = { args: { disabled: true } };
 ```
 
@@ -4405,14 +4748,14 @@ Args become editable controls in the Storybook UI. Storybook is also moving to a
 A play function runs after a story renders and interacts with it, like a small test:
 
 ```tsx
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from "storybook/test";
 
 export const FilledForm: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByLabelText('Email'), 'ana@example.com');
-    await userEvent.click(canvas.getByRole('button', { name: 'Sign up' }));
-    await expect(canvas.getByText('Thanks!')).toBeInTheDocument();
+    await userEvent.type(canvas.getByLabelText("Email"), "ana@example.com");
+    await userEvent.click(canvas.getByRole("button", { name: "Sign up" }));
+    await expect(canvas.getByText("Thanks!")).toBeInTheDocument();
   },
 };
 ```
@@ -4425,14 +4768,14 @@ The common approach is the `msw-storybook-addon`. You start MSW in the preview f
 
 ```tsx
 // .storybook/preview.ts
-import { initialize, mswLoader } from 'msw-storybook-addon';
+import { initialize, mswLoader } from "msw-storybook-addon";
 initialize();
 export default { loaders: [mswLoader] };
 
 // UserList.stories.tsx
 export const Empty: Story = {
   parameters: {
-    msw: { handlers: [http.get('/api/users', () => HttpResponse.json([]))] },
+    msw: { handlers: [http.get("/api/users", () => HttpResponse.json([]))] },
   },
 };
 ```
@@ -4445,9 +4788,9 @@ Use decorators. A decorator wraps every story (or just one component's stories) 
 
 ```tsx
 // .storybook/preview.tsx
-import type { Preview } from '@storybook/react-vite';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { MemoryRouter } from 'react-router';
+import type { Preview } from "@storybook/react-vite";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MemoryRouter } from "react-router";
 
 const preview: Preview = {
   decorators: [
@@ -4470,19 +4813,23 @@ You can also use `globalTypes` and toolbar items to switch themes or locales fro
 
 ```js
 // eslint.config.js
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import { defineConfig } from 'eslint/config';
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  { ignores: ['dist'] },
+  { ignores: ["dist"] },
   {
-    files: ['**/*.{ts,tsx}'],
-    extends: [js.configs.recommended, tseslint.configs.recommended, reactHooks.configs.flat.recommended],
-    plugins: { 'react-refresh': reactRefresh },
-    rules: { 'react-refresh/only-export-components': 'warn' },
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+    ],
+    plugins: { "react-refresh": reactRefresh },
+    rules: { "react-refresh/only-export-components": "warn" },
   },
 ]);
 ```
@@ -4499,13 +4846,13 @@ npm install -D babel-plugin-react-compiler
 
 ```ts
 // vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [
     react({
-      babel: { plugins: ['babel-plugin-react-compiler'] },
+      babel: { plugins: ["babel-plugin-react-compiler"] },
     }),
   ],
 });
@@ -4525,12 +4872,16 @@ Prefetch on the server in a Server Component, dehydrate the cache, and hydrate i
 
 ```tsx
 // app/posts/page.tsx (Server Component)
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import Posts from './posts';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import Posts from "./posts";
 
 export default async function PostsPage() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({ queryKey: ['posts'], queryFn: getPosts });
+  await queryClient.prefetchQuery({ queryKey: ["posts"], queryFn: getPosts });
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Posts />
@@ -4546,24 +4897,37 @@ export default async function PostsPage() {
 A global store created at module level is shared between all requests on the server, so one user's data could leak to another. The recommended pattern is to create the store per request and provide it through context:
 
 ```tsx
-'use client';
-import { createContext, useContext, useState } from 'react';
-import { createStore, useStore } from 'zustand';
+"use client";
+import { createContext, useContext, useState } from "react";
+import { createStore, useStore } from "zustand";
 
 type CounterState = { count: number; inc: () => void };
 const createCounterStore = (init = 0) =>
-  createStore<CounterState>()((set) => ({ count: init, inc: () => set((s) => ({ count: s.count + 1 })) }));
+  createStore<CounterState>()((set) => ({
+    count: init,
+    inc: () => set((s) => ({ count: s.count + 1 })),
+  }));
 
-const CounterContext = createContext<ReturnType<typeof createCounterStore> | null>(null);
+const CounterContext = createContext<ReturnType<
+  typeof createCounterStore
+> | null>(null);
 
-export function CounterProvider({ initial, children }: { initial: number; children: React.ReactNode }) {
+export function CounterProvider({
+  initial,
+  children,
+}: {
+  initial: number;
+  children: React.ReactNode;
+}) {
   const [store] = useState(() => createCounterStore(initial));
-  return <CounterContext.Provider value={store}>{children}</CounterContext.Provider>;
+  return (
+    <CounterContext.Provider value={store}>{children}</CounterContext.Provider>
+  );
 }
 
 export function useCounter<T>(selector: (s: CounterState) => T) {
   const store = useContext(CounterContext);
-  if (!store) throw new Error('Missing CounterProvider');
+  if (!store) throw new Error("Missing CounterProvider");
   return useStore(store, selector);
 }
 ```
@@ -4576,17 +4940,19 @@ After configuring Auth.js in `auth.ts`, you call `auth()` on the server and use 
 
 ```tsx
 // auth.ts
-import NextAuth from 'next-auth';
-import GitHub from 'next-auth/providers/github';
-export const { handlers, auth, signIn, signOut } = NextAuth({ providers: [GitHub] });
+import NextAuth from "next-auth";
+import GitHub from "next-auth/providers/github";
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  providers: [GitHub],
+});
 
 // app/dashboard/page.tsx
-import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
   const session = await auth();
-  if (!session) redirect('/login');
+  if (!session) redirect("/login");
   return <p>Hello {session.user?.name}</p>;
 }
 ```
@@ -4599,9 +4965,9 @@ In Next.js, add Clerk's middleware to protect routes, and use its components in 
 
 ```ts
 // middleware.ts
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-const isProtected = createRouteMatcher(['/dashboard(.*)']);
+const isProtected = createRouteMatcher(["/dashboard(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
   if (isProtected(req)) await auth.protect();
@@ -4622,16 +4988,18 @@ On the server, `auth()` gives you the `userId` and a way to get tokens for your 
 Use `getAccessTokenSilently` to get a token for your API audience, then send it as a Bearer token:
 
 ```tsx
-import { useAuth0 } from '@auth0/auth0-react';
-import { useQuery } from '@tanstack/react-query';
+import { useAuth0 } from "@auth0/auth0-react";
+import { useQuery } from "@tanstack/react-query";
 
 function Orders() {
   const { getAccessTokenSilently } = useAuth0();
   const { data } = useQuery({
-    queryKey: ['orders'],
+    queryKey: ["orders"],
     queryFn: async () => {
       const token = await getAccessTokenSilently();
-      const res = await fetch('/api/orders', { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch("/api/orders", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return res.json();
     },
   });
@@ -4644,15 +5012,17 @@ The `audience` is set in `Auth0Provider`'s `authorizationParams`. The SDK caches
 ## 270: How do you listen to auth state changes with Supabase in React?
 
 ```tsx
-import { useEffect, useState } from 'react';
-import type { Session } from '@supabase/supabase-js';
+import { useEffect, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 
 export function useSession() {
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
+    const { data } = supabase.auth.onAuthStateChange((_event, session) =>
+      setSession(session),
+    );
     return () => data.subscription.unsubscribe();
   }, []);
 
@@ -4665,9 +5035,9 @@ The listener fires on sign in, sign out and token refresh. For SSR frameworks, u
 ## 271: How do you write a hook for the current Firebase user?
 
 ```tsx
-import { onAuthStateChanged, type User } from 'firebase/auth';
-import { useEffect, useState } from 'react';
-import { auth } from './firebase';
+import { onAuthStateChanged, type User } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { auth } from "./firebase";
 
 export function useFirebaseUser() {
   const [user, setUser] = useState<User | null>(null);
@@ -4691,27 +5061,33 @@ export function useFirebaseUser() {
 Create the socket once (outside the component or in a context), and add and remove listeners in an effect:
 
 ```tsx
-import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
-const socket = io('https://chat.example.com', { autoConnect: false });
+const socket = io("https://chat.example.com", { autoConnect: false });
 
 function Chat({ room }: { room: string }) {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
     socket.connect();
-    socket.emit('join', room);
+    socket.emit("join", room);
     const onMessage = (msg: string) => setMessages((prev) => [...prev, msg]);
-    socket.on('message', onMessage);
+    socket.on("message", onMessage);
     return () => {
-      socket.off('message', onMessage);
-      socket.emit('leave', room);
+      socket.off("message", onMessage);
+      socket.emit("leave", room);
       socket.disconnect();
     };
   }, [room]);
 
-  return <ul>{messages.map((m, i) => <li key={i}>{m}</li>)}</ul>;
+  return (
+    <ul>
+      {messages.map((m, i) => (
+        <li key={i}>{m}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -4720,18 +5096,21 @@ Removing the exact listener in cleanup avoids duplicate messages, which you'd ot
 ## 273: How do you set up Sentry in a React app?
 
 ```tsx
-import * as Sentry from '@sentry/react';
+import * as Sentry from "@sentry/react";
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
   environment: import.meta.env.MODE,
-  integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration(),
+  ],
   tracesSampleRate: 0.1,
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 1.0,
 });
 
-createRoot(document.getElementById('root')!, {
+createRoot(document.getElementById("root")!, {
   onUncaughtError: Sentry.reactErrorHandler(),
   onCaughtError: Sentry.reactErrorHandler(),
 }).render(<App />);
@@ -4742,16 +5121,21 @@ React 19's root error hooks send errors to Sentry, including ones caught by erro
 ## 274: How do you sync filters with the URL using nuqs?
 
 ```tsx
-import { useQueryStates, parseAsString, parseAsInteger, parseAsArrayOf } from 'nuqs';
+import {
+  useQueryStates,
+  parseAsString,
+  parseAsInteger,
+  parseAsArrayOf,
+} from "nuqs";
 
 function Filters() {
   const [filters, setFilters] = useQueryStates(
     {
-      q: parseAsString.withDefault(''),
+      q: parseAsString.withDefault(""),
       page: parseAsInteger.withDefault(1),
       tags: parseAsArrayOf(parseAsString).withDefault([]),
     },
-    { history: 'replace' },
+    { history: "replace" },
   );
 
   return (
@@ -4770,7 +5154,7 @@ Setting a value to `null` removes it from the URL. `history: 'replace'` stops ev
 You can use a hook from a library (`use-debounce`, `usehooks-ts`), or write a small one:
 
 ```tsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function useDebouncedValue<T>(value: T, delay = 300) {
   const [debounced, setDebounced] = useState(value);
@@ -4782,9 +5166,13 @@ function useDebouncedValue<T>(value: T, delay = 300) {
 }
 
 function Search() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const query = useDebouncedValue(text);
-  const { data } = useQuery({ queryKey: ['search', query], queryFn: () => search(query), enabled: query.length > 1 });
+  const { data } = useQuery({
+    queryKey: ["search", query],
+    queryFn: () => search(query),
+    enabled: query.length > 1,
+  });
   return <input value={text} onChange={(e) => setText(e.target.value)} />;
 }
 ```
@@ -4796,12 +5184,13 @@ The input stays responsive because it uses the raw `text`, and only the request 
 Put a sentinel element at the end of the list and load the next page when it becomes visible:
 
 ```tsx
-import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 function Feed() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(feedQuery);
-  const { ref, inView } = useInView({ rootMargin: '200px' });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery(feedQuery);
+  const { ref, inView } = useInView({ rootMargin: "200px" });
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage();
@@ -4809,8 +5198,12 @@ function Feed() {
 
   return (
     <>
-      {data?.pages.flatMap((p) => p.items).map((item) => <Post key={item.id} post={item} />)}
-      <div ref={ref}>{isFetchingNextPage ? 'Loading...' : null}</div>
+      {data?.pages
+        .flatMap((p) => p.items)
+        .map((item) => (
+          <Post key={item.id} post={item} />
+        ))}
+      <div ref={ref}>{isFetchingNextPage ? "Loading..." : null}</div>
     </>
   );
 }
@@ -4823,11 +5216,11 @@ function Feed() {
 Sanitize it with DOMPurify before using `dangerouslySetInnerHTML`, and limit what is allowed:
 
 ```tsx
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 const clean = DOMPurify.sanitize(cmsHtml, {
-  ALLOWED_TAGS: ['p', 'a', 'strong', 'em', 'ul', 'ol', 'li', 'h2', 'h3', 'img'],
-  ALLOWED_ATTR: ['href', 'src', 'alt', 'title'],
+  ALLOWED_TAGS: ["p", "a", "strong", "em", "ul", "ol", "li", "h2", "h3", "img"],
+  ALLOWED_ATTR: ["href", "src", "alt", "title"],
 });
 
 <article dangerouslySetInnerHTML={{ __html: clean }} />;
@@ -4840,8 +5233,8 @@ On the server (SSR) DOMPurify needs a DOM, so use `isomorphic-dompurify` or sani
 `useEmblaCarousel` returns a ref and an API object:
 
 ```tsx
-import useEmblaCarousel from 'embla-carousel-react';
-import { useCallback } from 'react';
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback } from "react";
 
 function Gallery({ images }: { images: string[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
@@ -4853,7 +5246,12 @@ function Gallery({ images }: { images: string[] }) {
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {images.map((src) => (
-            <img key={src} src={src} className="min-w-0 flex-[0_0_100%]" alt="" />
+            <img
+              key={src}
+              src={src}
+              className="min-w-0 flex-[0_0_100%]"
+              alt=""
+            />
           ))}
         </div>
       </div>
@@ -4871,21 +5269,21 @@ The API also has events like `select` for building dot indicators, and plugins f
 `cmdk` has a `Command.Dialog` that uses Radix Dialog. Open it with a keyboard shortcut:
 
 ```tsx
-import { Command } from 'cmdk';
-import { useEffect, useState } from 'react';
+import { Command } from "cmdk";
+import { useEffect, useState } from "react";
 
 function CommandMenu() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((o) => !o);
       }
     };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, []);
 
   return (
@@ -4908,15 +5306,16 @@ For large result sets from an API, turn off the built-in filtering with `shouldF
 You can skip a form library for simple forms and validate in the action:
 
 ```tsx
-import { useActionState } from 'react';
-import { z } from 'zod';
+import { useActionState } from "react";
+import { z } from "zod";
 
 const schema = z.object({ email: z.email(), name: z.string().min(2) });
 type State = { errors?: Record<string, string[] | undefined>; ok?: boolean };
 
 async function subscribe(_prev: State, formData: FormData): Promise<State> {
   const parsed = schema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) return { errors: z.flattenError(parsed.error).fieldErrors };
+  if (!parsed.success)
+    return { errors: z.flattenError(parsed.error).fieldErrors };
   await api.subscribe(parsed.data);
   return { ok: true };
 }
@@ -4939,17 +5338,31 @@ In Next.js the action can be a server action, so the same Zod schema runs on the
 ## 281: How do you render an email template with React Email?
 
 ```tsx
-import { Html, Body, Container, Heading, Text, Button } from '@react-email/components';
-import { render } from '@react-email/render';
+import {
+  Html,
+  Body,
+  Container,
+  Heading,
+  Text,
+  Button,
+} from "@react-email/components";
+import { render } from "@react-email/render";
 
 function WelcomeEmail({ name }: { name: string }) {
   return (
     <Html>
-      <Body style={{ fontFamily: 'Arial, sans-serif' }}>
+      <Body style={{ fontFamily: "Arial, sans-serif" }}>
         <Container>
           <Heading>Welcome, {name}</Heading>
           <Text>Thanks for signing up.</Text>
-          <Button href="https://example.com/start" style={{ background: '#0f766e', color: '#fff', padding: '10px 16px' }}>
+          <Button
+            href="https://example.com/start"
+            style={{
+              background: "#0f766e",
+              color: "#fff",
+              padding: "10px 16px",
+            }}
+          >
             Get started
           </Button>
         </Container>
@@ -4996,10 +5409,10 @@ For example, `import _ from 'lodash'` pulls in the whole library, while `import 
 They need a date adapter and a `LocalizationProvider`:
 
 ```tsx
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { enGB } from 'date-fns/locale';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { enGB } from "date-fns/locale";
 
 <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
   <DatePicker label="Start date" value={start} onChange={setStart} />
@@ -5013,10 +5426,12 @@ Adapters exist for date-fns, Day.js, Luxon and Moment, so the picker works with 
 Use `use-immer`'s `useImmer` (or call `produce` in `setState`):
 
 ```tsx
-import { useImmer } from 'use-immer';
+import { useImmer } from "use-immer";
 
 function Kanban() {
-  const [board, updateBoard] = useImmer({ columns: { todo: ['a', 'b'], done: [] as string[] } });
+  const [board, updateBoard] = useImmer({
+    columns: { todo: ["a", "b"], done: [] as string[] },
+  });
 
   function moveToDone(id: string) {
     updateBoard((draft) => {
@@ -5035,7 +5450,7 @@ It makes nested updates much easier to read than spreading every level. Immer is
 It lets you run side effects in response to actions or state changes, as a lighter alternative to sagas and observables:
 
 ```ts
-import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 
 export const listener = createListenerMiddleware();
 
@@ -5044,7 +5459,7 @@ listener.startListening({
   effect: async (_action, api) => {
     api.cancelActiveListeners();
     await api.delay(500);
-    localStorage.setItem('todos', JSON.stringify(api.getState().todos));
+    localStorage.setItem("todos", JSON.stringify(api.getState().todos));
   },
 });
 
@@ -5068,13 +5483,13 @@ function useLiveOrders() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const ws = new WebSocket('wss://api.example.com/orders');
+    const ws = new WebSocket("wss://api.example.com/orders");
     ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data) as { type: 'updated'; order: Order };
-      queryClient.setQueryData<Order[]>(['orders'], (old) =>
+      const msg = JSON.parse(event.data) as { type: "updated"; order: Order };
+      queryClient.setQueryData<Order[]>(["orders"], (old) =>
         old?.map((o) => (o.id === msg.order.id ? msg.order : o)),
       );
-      queryClient.invalidateQueries({ queryKey: ['order-stats'] });
+      queryClient.invalidateQueries({ queryKey: ["order-stats"] });
     };
     return () => ws.close();
   }, [queryClient]);
@@ -5110,16 +5525,20 @@ Both are good. Pick React Router for a common, well-known choice, and TanStack R
 Use `ky.create` with `retry` options and `hooks`:
 
 ```ts
-import ky from 'ky';
+import ky from "ky";
 
 export const api = ky.create({
-  prefixUrl: '/api',
-  retry: { limit: 2, methods: ['get'], statusCodes: [408, 429, 500, 502, 503, 504] },
+  prefixUrl: "/api",
+  retry: {
+    limit: 2,
+    methods: ["get"],
+    statusCodes: [408, 429, 500, 502, 503, 504],
+  },
   hooks: {
     beforeRequest: [
       (request) => {
         const token = getToken();
-        if (token) request.headers.set('Authorization', `Bearer ${token}`);
+        if (token) request.headers.set("Authorization", `Bearer ${token}`);
       },
     ],
     afterResponse: [
@@ -5154,7 +5573,12 @@ Base UI's `render` can also be a function that receives props and state, so you 
 `@mantine/hooks` has no dependency on the Mantine components, so you can install it alone:
 
 ```tsx
-import { useDisclosure, useDebouncedValue, useLocalStorage, useClickOutside } from '@mantine/hooks';
+import {
+  useDisclosure,
+  useDebouncedValue,
+  useLocalStorage,
+  useClickOutside,
+} from "@mantine/hooks";
 
 function Dropdown() {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -5179,7 +5603,12 @@ Most Radix inputs (Select, Checkbox, Switch, RadioGroup) are controlled componen
   name="notifications"
   control={control}
   render={({ field }) => (
-    <Switch checked={field.value} onCheckedChange={field.onChange} onBlur={field.onBlur} ref={field.ref} />
+    <Switch
+      checked={field.value}
+      onCheckedChange={field.onChange}
+      onBlur={field.onBlur}
+      ref={field.ref}
+    />
   )}
 />
 ```
@@ -5192,8 +5621,8 @@ Install fonts as npm packages and import them once in your entry file:
 
 ```tsx
 // main.tsx
-import '@fontsource-variable/inter';
-import './index.css';
+import "@fontsource-variable/inter";
+import "./index.css";
 ```
 
 Self-hosting with Fontsource avoids a request to Google Fonts and works offline. Then set the font in your theme (`typography.fontFamily` in MUI) or in Tailwind's `@theme`. Import global CSS (resets, kit styles like `antd/dist/reset.css` or Mantine's `@mantine/core/styles.css`) in the entry file so the order is predictable.
@@ -5210,8 +5639,8 @@ The simplest way is to toggle a `dark` class on `<html>` and use `dark:` utiliti
 ```tsx
 function ThemeToggle() {
   const toggle = () => {
-    const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const isDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
   };
   return <button onClick={toggle}>Toggle theme</button>;
 }
@@ -5224,7 +5653,10 @@ Add a small inline script in `index.html` that sets the class before React loads
 The common pattern combines all three. The shadcn form components connect labels, descriptions and error messages to RHF:
 
 ```tsx
-const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), defaultValues: { username: '' } });
+const form = useForm<z.infer<typeof schema>>({
+  resolver: zodResolver(schema),
+  defaultValues: { username: "" },
+});
 
 <Form {...form}>
   <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -5300,7 +5732,10 @@ This matters because `React.memo`, `useMemo` and selectors compare by reference.
 - `select` transforms or picks part of the data. The component re-renders only when the selected result changes:
 
 ```ts
-const { data: count } = useQuery({ ...todosQuery, select: (todos) => todos.length });
+const { data: count } = useQuery({
+  ...todosQuery,
+  select: (todos) => todos.length,
+});
 ```
 
 - Tracked properties: TanStack Query watches which fields of the result you actually read (`data`, `isFetching`, `error` and so on). If you never read `isFetching`, a background refetch that only changes `isFetching` won't re-render your component.
@@ -5313,10 +5748,11 @@ Use a query key factory per feature, so keys are built in one place and follow a
 
 ```ts
 export const todoKeys = {
-  all: ['todos'] as const,
-  lists: () => [...todoKeys.all, 'list'] as const,
-  list: (filters: { status?: string; page?: number }) => [...todoKeys.lists(), filters] as const,
-  details: () => [...todoKeys.all, 'detail'] as const,
+  all: ["todos"] as const,
+  lists: () => [...todoKeys.all, "list"] as const,
+  list: (filters: { status?: string; page?: number }) =>
+    [...todoKeys.lists(), filters] as const,
+  details: () => [...todoKeys.all, "detail"] as const,
   detail: (id: number) => [...todoKeys.details(), id] as const,
 };
 
@@ -5353,8 +5789,9 @@ A race condition happens when an older, slower response arrives after a newer on
 
 ```ts
 useQuery({
-  queryKey: ['search', q],
-  queryFn: ({ signal }) => fetch(`/api/search?q=${q}`, { signal }).then((r) => r.json()),
+  queryKey: ["search", q],
+  queryFn: ({ signal }) =>
+    fetch(`/api/search?q=${q}`, { signal }).then((r) => r.json()),
 });
 ```
 
@@ -5387,7 +5824,9 @@ For real offline-first apps with sync and conflicts, a local database with sync 
 They use `useSyncExternalStore`, a React hook made for subscribing to stores that live outside React:
 
 ```ts
-const value = useSyncExternalStore(store.subscribe, () => selector(store.getState()));
+const value = useSyncExternalStore(store.subscribe, () =>
+  selector(store.getState()),
+);
 ```
 
 React calls `subscribe` to listen for changes, and calls the snapshot function during render. If the snapshot changed (by `Object.is`), the component re-renders. Zustand (`useStore`), react-redux (`useSelector`) and TanStack Query all build on this.
@@ -5407,11 +5846,16 @@ Libraries that store state in React itself (`useState`, context, Jotai with its 
 Zustand's vanilla core (`createStore`) is very small. It keeps state in a closure and a `Set` of listeners:
 
 ```ts
-function createStore<T>(init: (set: (p: Partial<T> | ((s: T) => Partial<T>)) => void, get: () => T) => T) {
+function createStore<T>(
+  init: (
+    set: (p: Partial<T> | ((s: T) => Partial<T>)) => void,
+    get: () => T,
+  ) => T,
+) {
   let state: T;
   const listeners = new Set<(s: T, prev: T) => void>();
   const setState = (partial: Partial<T> | ((s: T) => Partial<T>)) => {
-    const next = typeof partial === 'function' ? partial(state) : partial;
+    const next = typeof partial === "function" ? partial(state) : partial;
     if (!Object.is(next, state)) {
       const prev = state;
       state = Object.assign({}, state, next);
@@ -5419,7 +5863,10 @@ function createStore<T>(init: (set: (p: Partial<T> | ((s: T) => Partial<T>)) => 
     }
   };
   const getState = () => state;
-  const subscribe = (l: (s: T, prev: T) => void) => (listeners.add(l), () => listeners.delete(l));
+  const subscribe = (l: (s: T, prev: T) => void) => (
+    listeners.add(l),
+    () => listeners.delete(l)
+  );
   state = init(setState, getState);
   return { getState, setState, subscribe };
 }
@@ -5498,15 +5945,18 @@ Create one empty base API and inject endpoints from each feature with `injectEnd
 ```ts
 // api/base.ts
 export const baseApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['User', 'Order'],
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  tagTypes: ["User", "Order"],
   endpoints: () => ({}),
 });
 
 // features/orders/api.ts
 export const ordersApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getOrders: build.query<Order[], void>({ query: () => 'orders', providesTags: ['Order'] }),
+    getOrders: build.query<Order[], void>({
+      query: () => "orders",
+      providesTags: ["Order"],
+    }),
   }),
 });
 export const { useGetOrdersQuery } = ordersApi;
@@ -5526,18 +5976,21 @@ Normalized caches give consistent data automatically but need ids on everything,
 By default, `posts(offset: 0)` and `posts(offset: 10)` are stored as separate fields. To merge pages into one list, define a field policy:
 
 ```ts
-import { InMemoryCache } from '@apollo/client';
-import { offsetLimitPagination, relayStylePagination } from '@apollo/client/utilities';
+import { InMemoryCache } from "@apollo/client";
+import {
+  offsetLimitPagination,
+  relayStylePagination,
+} from "@apollo/client/utilities";
 
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        posts: offsetLimitPagination(['category']),
+        posts: offsetLimitPagination(["category"]),
         feed: relayStylePagination(),
       },
     },
-    Product: { keyFields: ['sku'] },
+    Product: { keyFields: ["sku"] },
   },
 });
 ```
@@ -5624,11 +6077,13 @@ Always validate on the server, even if the client already did. Client validation
 ## 328: What are the trade-offs of building a design system on a headless library versus a full UI kit?
 
 **On a full UI kit (MUI, Ant Design)**:
+
 - Fast start, lots of complex components ready (data grid, date picker).
 - Theming has limits. A very custom brand means fighting overrides and specificity.
 - Upgrades can break your overrides.
 
 **On headless primitives (Radix, Base UI, React Aria) plus your own styles**:
+
 - Full control of look and markup. Accessibility handled by the primitive.
 - You build and maintain every component, its styles, docs and tests.
 - Complex widgets (date range pickers, grids) still need other libraries.
@@ -5640,18 +6095,23 @@ A common middle path is shadcn/ui: start from copied components on top of headle
 A polymorphic component can render as different elements (`as="a"` or `as={Link}`) and should accept that element's props. One common typing:
 
 ```tsx
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
+import type { ComponentPropsWithoutRef, ElementType } from "react";
 
 type BoxProps<T extends ElementType> = {
   as?: T;
-} & Omit<ComponentPropsWithoutRef<T>, 'as'>;
+} & Omit<ComponentPropsWithoutRef<T>, "as">;
 
-export function Box<T extends ElementType = 'div'>({ as, ...props }: BoxProps<T>) {
-  const Component = as ?? 'div';
+export function Box<T extends ElementType = "div">({
+  as,
+  ...props
+}: BoxProps<T>) {
+  const Component = as ?? "div";
   return <Component {...props} />;
 }
 
-<Box as="a" href="/home">Home</Box>;
+<Box as="a" href="/home">
+  Home
+</Box>;
 ```
 
 The `as` pattern gets slow for TypeScript with complex components and has trouble with refs. That's one reason many libraries moved to `asChild` (Radix) or a `render` prop (Base UI), which avoid these generic types.
@@ -5669,17 +6129,25 @@ type SelectProps<T> = {
   getKey: (item: T) => string | number;
 };
 
-export function Select<T>({ items, value, onChange, getLabel, getKey }: SelectProps<T>) {
+export function Select<T>({
+  items,
+  value,
+  onChange,
+  getLabel,
+  getKey,
+}: SelectProps<T>) {
   return (
     <select
-      value={value ? String(getKey(value)) : ''}
+      value={value ? String(getKey(value)) : ""}
       onChange={(e) => {
         const found = items.find((i) => String(getKey(i)) === e.target.value);
         if (found) onChange(found);
       }}
     >
       {items.map((i) => (
-        <option key={getKey(i)} value={String(getKey(i))}>{getLabel(i)}</option>
+        <option key={getKey(i)} value={String(getKey(i))}>
+          {getLabel(i)}
+        </option>
       ))}
     </select>
   );
@@ -5777,7 +6245,11 @@ Use CSS variables as the single source of truth and map each library's theme to 
 
 ```ts
 // MUI
-createTheme({ cssVariables: true, palette: { primary: { main: '#0f766e' } }, shape: { borderRadius: 8 } });
+createTheme({
+  cssVariables: true,
+  palette: { primary: { main: "#0f766e" } },
+  shape: { borderRadius: 8 },
+});
 // Tailwind v4: @theme { --color-primary: var(--color-primary); }
 // Ant Design: ConfigProvider theme token colorPrimary
 ```
@@ -5799,7 +6271,7 @@ Check performance in the Chrome Performance panel. Long frames during animation 
 Use the `m` component with `LazyMotion` instead of `motion`. `motion` includes all features, while `m` starts small and features are loaded separately:
 
 ```tsx
-import { LazyMotion, domAnimation, m } from 'motion/react';
+import { LazyMotion, domAnimation, m } from "motion/react";
 
 <LazyMotion features={domAnimation}>
   <m.div animate={{ opacity: 1 }} />
@@ -5916,7 +6388,7 @@ Load something lazily if it's big and not needed for the first screen:
 - Code only for some users (admin tools) or some routes.
 
 ```tsx
-const ReportChart = lazy(() => import('./ReportChart'));
+const ReportChart = lazy(() => import("./ReportChart"));
 
 <Suspense fallback={<ChartSkeleton />}>
   <ReportChart data={data} />
@@ -5979,17 +6451,20 @@ Create a small client component file that imports the library and re-exports or 
 
 ```tsx
 // components/chart.tsx
-'use client';
-export { ResponsiveContainer, LineChart, Line, XAxis, YAxis } from 'recharts';
+"use client";
+export { ResponsiveContainer, LineChart, Line, XAxis, YAxis } from "recharts";
 ```
 
 If the library touches `window` or `document` at import time (common for maps and editors), load it only in the browser:
 
 ```tsx
-'use client';
-import dynamic from 'next/dynamic';
+"use client";
+import dynamic from "next/dynamic";
 
-const Map = dynamic(() => import('./LeafletMap'), { ssr: false, loading: () => <p>Loading map...</p> });
+const Map = dynamic(() => import("./LeafletMap"), {
+  ssr: false,
+  loading: () => <p>Loading map...</p>,
+});
 ```
 
 `ssr: false` must be used inside a client component. Keep the client boundary as low in the tree as possible, so the rest of the page stays as Server Components.
@@ -6120,27 +6595,35 @@ Choosing is often about your team's habits and the type of state: entity collect
 In XState v5 everything is an actor: machines, promises, callbacks and observables. A checkout machine can invoke actors for async work and spawn child machines:
 
 ```ts
-import { setup, fromPromise, assign } from 'xstate';
+import { setup, fromPromise, assign } from "xstate";
 
 export const checkoutMachine = setup({
   types: { context: {} as { orderId?: string; error?: string } },
   actors: {
-    submitOrder: fromPromise(async ({ input }: { input: { cartId: string } }) => api.submit(input.cartId)),
+    submitOrder: fromPromise(async ({ input }: { input: { cartId: string } }) =>
+      api.submit(input.cartId),
+    ),
   },
 }).createMachine({
-  initial: 'review',
+  initial: "review",
   context: {},
   states: {
-    review: { on: { CONFIRM: 'submitting' } },
+    review: { on: { CONFIRM: "submitting" } },
     submitting: {
       invoke: {
-        src: 'submitOrder',
-        input: { cartId: 'c1' },
-        onDone: { target: 'done', actions: assign({ orderId: ({ event }) => event.output.id }) },
-        onError: { target: 'review', actions: assign({ error: 'Payment failed' }) },
+        src: "submitOrder",
+        input: { cartId: "c1" },
+        onDone: {
+          target: "done",
+          actions: assign({ orderId: ({ event }) => event.output.id }),
+        },
+        onError: {
+          target: "review",
+          actions: assign({ error: "Payment failed" }),
+        },
       },
     },
-    done: { type: 'final' },
+    done: { type: "final" },
   },
 });
 ```
@@ -6240,15 +6723,15 @@ Log in once in a setup project, save the browser storage state, and reuse it in 
 
 ```ts
 // auth.setup.ts
-import { test as setup } from '@playwright/test';
+import { test as setup } from "@playwright/test";
 
-setup('authenticate', async ({ page }) => {
-  await page.goto('/login');
-  await page.getByLabel('Email').fill(process.env.E2E_USER!);
-  await page.getByLabel('Password').fill(process.env.E2E_PASS!);
-  await page.getByRole('button', { name: 'Log in' }).click();
-  await page.waitForURL('/dashboard');
-  await page.context().storageState({ path: 'playwright/.auth/user.json' });
+setup("authenticate", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByLabel("Email").fill(process.env.E2E_USER!);
+  await page.getByLabel("Password").fill(process.env.E2E_PASS!);
+  await page.getByRole("button", { name: "Log in" }).click();
+  await page.waitForURL("/dashboard");
+  await page.context().storageState({ path: "playwright/.auth/user.json" });
 });
 ```
 
@@ -6277,12 +6760,16 @@ Run the generator in CI and fail the build if the generated code is out of date.
 You write queries with the `graphql()` function that Codegen generates. It reads your schema and your queries and creates a `TypedDocumentNode` for each one:
 
 ```tsx
-import { graphql } from '@/gql';
-import { useQuery } from '@apollo/client';
+import { graphql } from "@/gql";
+import { useQuery } from "@apollo/client";
 
 const UserQuery = graphql(`
   query User($id: ID!) {
-    user(id: $id) { id name email }
+    user(id: $id) {
+      id
+      name
+      email
+    }
   }
 `);
 
@@ -6308,10 +6795,10 @@ function User({ id }: { id: string }) {
 Use the `web-vitals` library to collect Core Web Vitals from real users and send them to your analytics:
 
 ```ts
-import { onCLS, onINP, onLCP, onTTFB } from 'web-vitals';
+import { onCLS, onINP, onLCP, onTTFB } from "web-vitals";
 
 function send(metric: { name: string; value: number; id: string }) {
-  navigator.sendBeacon('/analytics', JSON.stringify(metric));
+  navigator.sendBeacon("/analytics", JSON.stringify(metric));
 }
 
 onLCP(send);
@@ -6491,9 +6978,17 @@ The upgrade touches almost every component usage. Teams often migrate page by pa
 Use a "controllable state" pattern: if the parent passes `value`, use it; otherwise keep internal state and start from `defaultValue`:
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
-function useControllableState<T>({ value, defaultValue, onChange }: { value?: T; defaultValue: T; onChange?: (v: T) => void }) {
+function useControllableState<T>({
+  value,
+  defaultValue,
+  onChange,
+}: {
+  value?: T;
+  defaultValue: T;
+  onChange?: (v: T) => void;
+}) {
   const [internal, setInternal] = useState(defaultValue);
   const isControlled = value !== undefined;
   const current = isControlled ? value : internal;
@@ -6506,13 +7001,21 @@ function useControllableState<T>({ value, defaultValue, onChange }: { value?: T;
   return [current, setValue] as const;
 }
 
-export function Toggle(props: { pressed?: boolean; defaultPressed?: boolean; onPressedChange?: (p: boolean) => void }) {
+export function Toggle(props: {
+  pressed?: boolean;
+  defaultPressed?: boolean;
+  onPressedChange?: (p: boolean) => void;
+}) {
   const [pressed, setPressed] = useControllableState({
     value: props.pressed,
     defaultValue: props.defaultPressed ?? false,
     onChange: props.onPressedChange,
   });
-  return <button aria-pressed={pressed} onClick={() => setPressed(!pressed)}>Toggle</button>;
+  return (
+    <button aria-pressed={pressed} onClick={() => setPressed(!pressed)}>
+      Toggle
+    </button>
+  );
 }
 ```
 
@@ -6525,7 +7028,7 @@ Before React 19, function components couldn't receive `ref` as a prop. Libraries
 In React 19 you can write:
 
 ```tsx
-function Input({ ref, ...props }: React.ComponentProps<'input'>) {
+function Input({ ref, ...props }: React.ComponentProps<"input">) {
   return <input ref={ref} {...props} />;
 }
 ```
@@ -6537,12 +7040,12 @@ Ref callbacks can also return a cleanup function. Libraries that support both Re
 Register your router's type once with module declaration merging:
 
 ```ts
-import { createRouter } from '@tanstack/react-router';
-import { routeTree } from './routeTree.gen';
+import { createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
 
-export const router = createRouter({ routeTree, defaultPreload: 'intent' });
+export const router = createRouter({ routeTree, defaultPreload: "intent" });
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
   }
@@ -6596,7 +7099,9 @@ export default function Product({ loaderData }: Route.ComponentProps) {
     <>
       <h1>{loaderData.product.name}</h1>
       <Suspense fallback={<p>Loading reviews...</p>}>
-        <Await resolve={loaderData.reviews}>{(reviews) => <Reviews items={reviews} />}</Await>
+        <Await resolve={loaderData.reviews}>
+          {(reviews) => <Reviews items={reviews} />}
+        </Await>
       </Suspense>
     </>
   );
@@ -6608,12 +7113,14 @@ The server sends the HTML with the product immediately, and the reviews arrive l
 ## 406: Should data loading happen in route loaders or in components?
 
 **Route loaders**:
+
 - Start fetching before the component code even loads, so there are fewer waterfalls.
 - Work well with SSR and preloading on hover.
 - Make data needs of a page visible in one place.
 - But loaders don't re-run when a component deep down needs different data.
 
 **Component-level fetching (TanStack Query hooks)**:
+
 - Each component declares its own data, which is easier to move and reuse.
 - Fine-grained caching, refetching and background updates.
 - Risk of waterfalls if nested.
@@ -6904,8 +7411,8 @@ async function logout() {
   queryClient.clear();
   useAppStore.setState(initialAppState, true);
   store.dispatch(api.util.resetApiState());
-  localStorage.removeItem('persisted-cache');
-  router.navigate('/login', { replace: true });
+  localStorage.removeItem("persisted-cache");
+  router.navigate("/login", { replace: true });
 }
 ```
 
@@ -7081,11 +7588,13 @@ Write the docs and examples while designing the API. If an example is hard to ex
 ## 447: How do you decide whether to use a framework (Next.js, React Router framework mode, TanStack Start) or a plain SPA with libraries?
 
 Use a **framework** when:
+
 - You need SEO, fast first loads on mobile, or social previews (SSR or static generation).
 - You want server code next to UI (server functions, Server Components, loaders and actions).
 - You want routing, code splitting, data loading and bundling decided for you.
 
 Use a **plain SPA** (Vite + router + data library) when:
+
 - It's an internal tool or a dashboard behind login where SEO doesn't matter.
 - You already have a separate backend and want a static deploy (CDN only, no Node server).
 - The team prefers fewer moving parts.
