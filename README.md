@@ -29,6 +29,7 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 - [Mongoose](back-end/mongoose.md)
 - [NestJS](back-end/nestjs.md)
 - [Node.js](back-end/nodejs.md)
+- [Node.js Event Loop](back-end/nodejs-event-loop.md)
 - [Node.js Microservices](back-end/nodejs-microservices.md)
 - [Prisma ORM](back-end/prisma-orm.md)
 - [RabbitMQ](back-end/rabbitmq.md)
@@ -40,6 +41,7 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 - [Angular](front-end/angular.md)
 - [Angular Micro Frontend](front-end/angular-microfrontend.md)
 - [Angular Popular Libs](front-end/angular-popular-libs.md)
+- [Browser Event Loop](front-end/browser-event-loop.md)
 - [CSS](front-end/css.md)
 - [Chrome DevTools](front-end/chrome-devtools.md)
 - [esbuild](front-end/esbuild.md)
@@ -57,19 +59,23 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 - [React Popular Libs](front-end/react-popular-libs.md)
 - [React Testing](front-end/react-testing.md)
 - [Redux Toolkit](front-end/redux-toolkit.md)
+- [Responsive UI](front-end/responsive-ui.md)
 - [Security](front-end/security.md)
 - [SEO (Search Engine Optimization)](front-end/seo.md)
 - [Storybook](front-end/storybook.md)
 - [Tailwind CSS](front-end/tailwindcss.md)
+- [Tailwind CSS Responsive UI](front-end/tailwindcss-responsive-ui.md)
 - [Three.js](front-end/three-js.md)
 - [TypeScript](front-end/typescript.md)
 - [Web Vitals](front-end/web-vitals.md)
 - [WebAssembly (WASM)](front-end/web-assembly.md)
+- [Webpack](front-end/webpack.md)
 - [Zustand](front-end/zustand.md)
 
 ### Mix
 
 - [Git](mix/git.md)
+- [HTTP Networking](mix/http-networking.md)
 
 ### Optimization
 
