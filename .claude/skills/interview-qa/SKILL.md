@@ -28,28 +28,35 @@ The file must follow this exact structure:
 
 1. `# <Technology> Interview Questions and Answers` as the H1 title.
 2. A short intro paragraph (2-4 sentences) stating the question count, the difficulty split, and which version of the technology the answers target.
-3. `## Table of Contents` with links to the three sections:
-   - `[Easy Questions (1-150)](#easy-questions-1-150)`
-   - `[Moderate Questions (151-300)](#moderate-questions-151-300)`
-   - `[Advanced Questions (301-450)](#advanced-questions-301-450)`
-4. Three main sections, in this order, each with a `###` header:
-   - `### Easy Questions (1-150)`
-   - `### Moderate Questions (151-300)`
-   - `### Advanced Questions (301-450)`
+3. `## Table of Contents` that lists every question, not just the sections:
+   - First, links to the three sections:
+     - `- [Easy Questions (1-150)](#easy-questions-1-150)`
+     - `- [Moderate Questions (151-300)](#moderate-questions-151-300)`
+     - `- [Advanced Questions (301-450)](#advanced-questions-301-450)`
+   - Then a `###` subheading per section (`### Easy Questions (1-150)` and so on), each followed by a bullet list linking to every question in that section, for example `- [1: What is Angular?](#1-what-is-angular)`. The link text is the question heading exactly as written.
+   - Then a `---` line to separate the table of contents from the questions.
+4. Three main sections, in this order, each with a `#` header:
+   - `# Easy Questions (1-150)`
+   - `# Moderate Questions (151-300)`
+   - `# Advanced Questions (301-450)`
+
+`front-end/angular.md` is the reference for this layout.
 
 ## Step 4: Question format
 
-Number questions continuously from 1 to 450 across the whole file. Do not restart numbering per section. Use this format:
+Number questions continuously from 1 to 450 across the whole file. Do not restart numbering per section. Each question is a `##` heading, so it gets an anchor the table of contents can link to:
 
 ```
-**1: What is <concept>?**
+## 1: What is <concept>?
 
 Answer text.
 
-**2: How do you <task>?**
+## 2: How do you <task>?
 
 Answer text, with a code example if useful.
 ```
+
+Table of contents anchors follow GitHub's heading slug rules: lowercase, drop every character that isn't a letter, number, underscore, hyphen or space, then turn each space into a hyphen. For example, `## 12: How does Object.groupBy work?` becomes `#12-how-does-objectgroupby-work`. Keep question headings free of backticks and markdown formatting so the link text and anchors stay clean.
 
 ## Step 5: Content rules
 
@@ -66,10 +73,11 @@ Answer text, with a code example if useful.
 
 450 Q&As is too large for a single write. Work in batches:
 
-1. Create the file with the title, intro, table of contents, and the three section headers.
+1. Create the file with the title, intro, and the section links of the table of contents.
 2. Append the questions in batches of about 25-50, in numerical order, so the numbering stays continuous.
-3. After finishing, verify the file: exactly 450 questions, numbered 1-450 with no gaps or duplicates, 150 per section, table of contents links matching the headers, and all code blocks closed properly.
-4. Report the file path and a one-line summary when done.
+3. Once all 450 questions are written, generate the per-question table of contents from the `##` question headings (a short script is the easiest way) and insert it between the section links and the first `#` section header, followed by `---`.
+4. Verify the file: exactly 450 questions, numbered 1-450 with no gaps or duplicates, 150 per section, 450 question links in the table of contents, every link pointing to an existing heading anchor, and all code blocks closed properly.
+5. Report the file path and a one-line summary when done.
 
 ## Step 7: Register the technology in README.md
 
