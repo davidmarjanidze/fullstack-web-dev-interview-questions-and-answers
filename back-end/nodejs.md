@@ -6,7 +6,11 @@ The answers are based on the current Node.js LTS releases (22 and 24) and mentio
 
 ## Table of Contents
 
-### [Easy Questions (1-150)](#easy-questions)
+- [Easy Questions (1-150)](#easy-questions)
+- [Moderate Questions (151-300)](#moderate-questions)
+- [Advanced Questions (301-450)](#advanced-questions)
+
+### Easy Questions (1-150)
 
 - [1: What is Node.js?](#1-what-is-nodejs)
 - [2: Is Node.js a programming language or a framework?](#2-is-nodejs-a-programming-language-or-a-framework)
@@ -34,7 +38,7 @@ The answers are based on the current Node.js LTS releases (22 and 24) and mentio
 - [24: How do import and export work in ES modules?](#24-how-do-import-and-export-work-in-es-modules)
 - [25: What are core modules in Node.js?](#25-what-are-core-modules-in-nodejs)
 - [26: Why should you use the node: prefix when importing core modules?](#26-why-should-you-use-the-node-prefix-when-importing-core-modules)
-- [27: What are **dirname and **filename? How do you get them in ES modules?](#27-what-are-__dirname-and-__filename-how-do-you-get-them-in-es-modules)
+- [27: What are `__dirname` and `__filename`? How do you get them in ES modules?](#27-what-are-__dirname-and-__filename-how-do-you-get-them-in-es-modules)
 - [28: What is the global object in Node.js?](#28-what-is-the-global-object-in-nodejs)
 - [29: What is the process object?](#29-what-is-the-process-object)
 - [30: What is process.argv?](#30-what-is-processargv)
@@ -159,7 +163,7 @@ The answers are based on the current Node.js LTS releases (22 and 24) and mentio
 - [149: What is node --run?](#149-what-is-node---run)
 - [150: What are the popular Node.js web frameworks?](#150-what-are-the-popular-nodejs-web-frameworks)
 
-### [Moderate Questions (151-300)](#moderate-questions)
+### Moderate Questions (151-300)
 
 - [151: What are the phases of the event loop?](#151-what-are-the-phases-of-the-event-loop)
 - [152: What is the difference between microtasks and macrotasks?](#152-what-is-the-difference-between-microtasks-and-macrotasks)
@@ -312,7 +316,7 @@ The answers are based on the current Node.js LTS releases (22 and 24) and mentio
 - [299: What is the difference between the beforeExit and exit events?](#299-what-is-the-difference-between-the-beforeexit-and-exit-events)
 - [300: How do you handle Ctrl+C correctly in a CLI tool?](#300-how-do-you-handle-ctrlc-correctly-in-a-cli-tool)
 
-### [Advanced Questions (301-450)](#advanced-questions)
+### Advanced Questions (301-450)
 
 - [301: How does the event loop work inside libuv?](#301-how-does-the-event-loop-work-inside-libuv)
 - [302: Why does network I/O scale well in Node, while file I/O goes to the thread pool?](#302-why-does-network-io-scale-well-in-node-while-file-io-goes-to-the-thread-pool)
@@ -464,6 +468,8 @@ The answers are based on the current Node.js LTS releases (22 and 24) and mentio
 - [448: Why should you always consume or cancel a fetch response body?](#448-why-should-you-always-consume-or-cancel-a-fetch-response-body)
 - [449: What is "releasing Zalgo", and how do you avoid it?](#449-what-is-releasing-zalgo-and-how-do-you-avoid-it)
 - [450: What are the most important changes in recent Node.js versions (22, 24 and newer)?](#450-what-are-the-most-important-changes-in-recent-nodejs-versions-22-24-and-newer)
+
+---
 
 ## Easy Questions
 
@@ -743,7 +749,7 @@ import { test } from "node:test"; // prefix required
 import fs from "node:fs"; // prefix recommended
 ```
 
-### 27: What are **dirname and **filename? How do you get them in ES modules?
+### 27: What are `__dirname` and `__filename`? How do you get them in ES modules?
 
 In CommonJS, `__dirname` is the folder of the current file and `__filename` is its full path. They don't exist in ES modules. Since Node 20.11 you can use `import.meta.dirname` and `import.meta.filename`.
 

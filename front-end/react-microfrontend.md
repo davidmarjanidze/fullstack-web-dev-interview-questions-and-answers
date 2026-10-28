@@ -321,7 +321,7 @@ The answers target React 19 with `createRoot`, React Router 7 and modern build t
 - [301: How does Module Federation work under the hood when a host imports a remote module?](#301-how-does-module-federation-work-under-the-hood-when-a-host-imports-a-remote-module)
 - [302: What do the container's init and get methods do?](#302-what-do-the-containers-init-and-get-methods-do)
 - [303: Why is the remote entry small even when the remote app is big?](#303-why-is-the-remote-entry-small-even-when-the-remote-app-is-big)
-- [304: What is the global **FEDERATION** object?](#304-what-is-the-global-__federation__-object)
+- [304: What is the global `__FEDERATION__` object?](#304-what-is-the-global-__federation__-object)
 - [305: How does the share scope handle two versions of a non-singleton package?](#305-how-does-the-share-scope-handle-two-versions-of-a-non-singleton-package)
 - [306: What are the risks of singleton sharing with loose version ranges?](#306-what-are-the-risks-of-singleton-sharing-with-loose-version-ranges)
 - [307: Which app's shared version wins when several provide the same singleton?](#307-which-apps-shared-version-wins-when-several-provide-the-same-singleton)
@@ -3431,7 +3431,7 @@ The remote entry only contains the container code, the map of exposed modules to
 
 This is why a host can know about many remotes without paying for their code until it needs them.
 
-## 304: What is the global **FEDERATION** object?
+## 304: What is the global `__FEDERATION__` object?
 
 In Module Federation 2.0 the runtime keeps its state in a global `__FEDERATION__` object: the runtime instances, loaded remotes, shared packages and their versions. It lets several builds in the same page work with one shared state.
 

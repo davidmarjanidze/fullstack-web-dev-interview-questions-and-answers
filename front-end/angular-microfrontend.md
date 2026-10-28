@@ -326,7 +326,7 @@ The answers target modern Angular (v21 and later) with standalone components, si
 - [306: What is es-module-shims?](#306-what-is-es-module-shims)
 - [307: How does Native Federation make a shared package available to a remote built separately?](#307-how-does-native-federation-make-a-shared-package-available-to-a-remote-built-separately)
 - [308: How does webpack Module Federation share dependencies internally?](#308-how-does-webpack-module-federation-share-dependencies-internally)
-- [309: What are **webpack_init_sharing** and **webpack_share_scopes**?](#309-what-are-__webpack_init_sharing__-and-__webpack_share_scopes__)
+- [309: What are `__webpack_init_sharing__` and `__webpack_share_scopes__`?](#309-what-are-__webpack_init_sharing__-and-__webpack_share_scopes__)
 - [310: How would you build a simplified loadRemoteModule for Native Federation by hand?](#310-how-would-you-build-a-simplified-loadremotemodule-for-native-federation-by-hand)
 - [311: Why does the remote's exposed code run against the host's import map instead of its own?](#311-why-does-the-remotes-exposed-code-run-against-the-hosts-import-map-instead-of-its-own)
 - [312: How does Angular's esbuild builder output affect micro frontends?](#312-how-does-angulars-esbuild-builder-output-affect-micro-frontends)
@@ -3523,7 +3523,7 @@ Each container (host or remote) registers its shared modules in a "share scope",
 
 This happens through webpack's own runtime functions (`__webpack_init_sharing__`, `container.init`, `container.get`), not through browser import maps.
 
-## 309: What are **webpack_init_sharing** and **webpack_share_scopes**?
+## 309: What are `__webpack_init_sharing__` and `__webpack_share_scopes__`?
 
 They are webpack Module Federation runtime internals. `__webpack_init_sharing__('default')` fills the default share scope with the host's shared modules, and `__webpack_share_scopes__.default` is the object that holds them. Loading a remote manually used to look like:
 

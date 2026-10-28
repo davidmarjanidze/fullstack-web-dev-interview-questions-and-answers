@@ -286,7 +286,7 @@ The answers target GitHub Actions as it works on GitHub.com in late 2026: Node 2
 - [269: How do you authenticate to a private npm registry in CI?](#269-how-do-you-authenticate-to-a-private-npm-registry-in-ci)
 - [270: How do you handle different settings for dev, staging and production?](#270-how-do-you-handle-different-settings-for-dev-staging-and-production)
 - [271: How do you chain a staging deploy and a production deploy with approval?](#271-how-do-you-chain-a-staging-deploy-and-a-production-deploy-with-approval)
-- [272: How do you use needs.<job>.result in conditions?](#272-how-do-you-use-needsjobresult-in-conditions)
+- [272: How do you use `needs.<job>.result` in conditions?](#272-how-do-you-use-needsjobresult-in-conditions)
 - [273: How do you make one required check that covers all jobs?](#273-how-do-you-make-one-required-check-that-covers-all-jobs)
 - [274: How do you trigger a workflow with a comment like /deploy?](#274-how-do-you-trigger-a-workflow-with-a-comment-like-deploy)
 - [275: How do you make sure only maintainers can run comment commands?](#275-how-do-you-make-sure-only-maintainers-can-run-comment-commands)
@@ -4616,7 +4616,7 @@ jobs:
 
 The run deploys to staging, then waits for approval before production. Both deploy the same `dist` artifact.
 
-## 272: How do you use needs.<job>.result in conditions?
+## 272: How do you use `needs.<job>.result` in conditions?
 
 `needs.<job>.result` is `success`, `failure`, `cancelled` or `skipped`. You can use it to react to how earlier jobs ended. You need a status function like `always()` or `!cancelled()`, otherwise the job is skipped when a needed job fails.
 

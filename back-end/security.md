@@ -249,7 +249,7 @@ The answers target current Node.js (24 LTS, 25 and 26) and Express 5, and they m
 - [232: What is server-side template injection?](#232-what-is-server-side-template-injection)
 - [233: Why can passing req.query into res.render be dangerous?](#233-why-can-passing-reqquery-into-resrender-be-dangerous)
 - [234: How do you prevent prototype pollution in your own code?](#234-how-do-you-prevent-prototype-pollution-in-your-own-code)
-- [235: Why does JSON.parse create a **proto** key that's dangerous later?](#235-why-does-jsonparse-create-a-__proto__-key-thats-dangerous-later)
+- [235: Why does JSON.parse create a `__proto__` key that's dangerous later?](#235-why-does-jsonparse-create-a-__proto__-key-thats-dangerous-later)
 - [236: How do you find vulnerable regular expressions in a codebase?](#236-how-do-you-find-vulnerable-regular-expressions-in-a-codebase)
 - [237: How do you make regex-based validation safe from ReDoS?](#237-how-do-you-make-regex-based-validation-safe-from-redos)
 - [238: How do you protect the event loop from expensive requests?](#238-how-do-you-protect-the-event-loop-from-expensive-requests)
@@ -2899,7 +2899,7 @@ function safeSet(obj, key, value) {
 }
 ```
 
-## 235: Why does JSON.parse create a **proto** key that's dangerous later?
+## 235: Why does JSON.parse create a `__proto__` key that's dangerous later?
 
 `JSON.parse('{"__proto__": {"x": 1}}')` creates an object with an own property named `__proto__`. That alone doesn't pollute anything. The problem comes when another function copies it with normal assignment, like `target[key] = source[key]`. When `key` is `"__proto__"`, the assignment changes the target's prototype instead of creating a property, and a recursive merge then writes into `Object.prototype`.
 
