@@ -1,5 +1,7 @@
 # Storybook Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 90 Storybook interview questions with answers, split into three levels: 30 easy, 30 moderate and 30 advanced.
 
 The answers target Storybook 10 (ESM-only, `storybook/test`, the Vitest addon, `sb.mock` module mocking and CSF Factories in preview). Code examples use React with Vite unless the question says otherwise, but most of the ideas work the same way in Vue, Angular and Svelte.

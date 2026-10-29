@@ -1,5 +1,7 @@
 # Full Stack Web App Optimization and Debugging Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 questions split into three levels: 150 easy, 150 moderate and 150 advanced. Each level covers the same ten subject areas, from the browser all the way down to the database, the operating system and the cloud.
 
 The answers target current versions of the platform: evergreen Chrome and Chrome DevTools, modern HTML, CSS, JavaScript and DOM APIs, and Node.js 22/24 LTS. Where a feature is recent or Chrome-only, the answer says so.

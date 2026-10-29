@@ -1,5 +1,7 @@
 # esbuild Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 120 esbuild interview questions with answers, split into three levels: 40 easy, 40 moderate and 40 advanced.
 
 The answers target esbuild 0.28. Since esbuild is still on 0.x versions, minor releases can contain breaking changes, so the notes mention the version where something changed when it matters (for example the dev server security changes in 0.25.0). Code examples use the JavaScript API unless the question says otherwise.

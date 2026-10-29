@@ -1,5 +1,7 @@
 # CI/CD Pipelines Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 CI/CD interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are not tied to one tool, but most examples use GitHub Actions, GitLab CI and Jenkins (declarative pipelines), since those are the ones you will meet most often. Examples use current action versions like `actions/checkout@v6` and `actions/setup-node@v6`, OIDC for cloud access instead of stored keys, and GitOps tools like Argo CD. Older ways of doing things (scripted Jenkins pipelines, long-lived cloud keys, `latest` image tags) are mentioned where they still matter, since you will still see them in real projects.

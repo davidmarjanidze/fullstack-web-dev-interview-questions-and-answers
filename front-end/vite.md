@@ -1,5 +1,7 @@
 # Vite Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Vite interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are for Vite 8 (8.x), which uses Rolldown as its bundler and Oxc for transforms and minification, for both dev and production. Older setups (esbuild for dev and Rollup for production, `build.rollupOptions`, the `esbuild` config option) are mentioned where they still matter, since many projects still run Vite 5, 6 or 7.

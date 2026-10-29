@@ -1,5 +1,7 @@
 # React Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 React interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced. The answers are based on React 19 (including the 19.1 and 19.2 releases), so they use the current APIs: `createRoot`, hooks, Actions, `use`, `ref` as a prop, Server Components, the React Compiler and so on. Code examples are included where they help.
 
 If you spot a mistake or something that is out of date, feel free to open an issue or a pull request.

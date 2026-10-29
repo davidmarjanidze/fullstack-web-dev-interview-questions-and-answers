@@ -1,5 +1,7 @@
 # React Testing Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about testing React apps, split into three levels: 150 easy, 150 moderate and 150 advanced. They cover unit tests, integration tests and end-to-end tests.
 
 The answers are based on the tools most teams use today: React 19, Vitest 4 and Jest 30 as test runners, React Testing Library 16 with user-event 14 and jest-dom, Mock Service Worker (MSW) 2 for API mocking, and Playwright and Cypress 15 for end-to-end tests. Older tools like Enzyme and react-test-renderer are mentioned where you may still see them in real projects.

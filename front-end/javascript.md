@@ -1,5 +1,7 @@
 # JavaScript Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 JavaScript interview questions with answers and code examples, split into three levels: 150 easy, 150 moderate and 150 advanced. The answers follow current JavaScript (ES2025 and newer), and mention when a feature is new or not supported everywhere yet.
 
 ## Table of Contents

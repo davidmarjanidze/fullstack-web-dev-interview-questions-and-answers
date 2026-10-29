@@ -1,5 +1,7 @@
 # HTTP Networking Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 120 HTTP and networking interview questions with answers, split into three levels: 40 easy, 40 moderate and 40 advanced.
 
 The answers follow the current HTTP specs: RFC 9110 (HTTP semantics), RFC 9111 (caching), RFC 9112 (HTTP/1.1), RFC 9113 (HTTP/2) and RFC 9114 (HTTP/3 over QUIC), plus TLS 1.3. Code examples use the Fetch API (in the browser or Node.js 18 and later), `curl` and Node.js where it makes sense.

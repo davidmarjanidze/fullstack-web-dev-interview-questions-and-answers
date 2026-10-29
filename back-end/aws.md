@@ -1,5 +1,7 @@
 # AWS Certified Developer - Associate Interview Questions and Answers
 
+_Last updated: October 24, 2026_
+
 Interview questions and answers based on the AWS Certified Developer - Associate (DVA-C02) exam guide. The questions are grouped by the four exam domains, with 50 questions in each:
 
 | Domain                           | Weight in exam | Questions |

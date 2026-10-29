@@ -1,5 +1,7 @@
 # JavaScript Data Structures Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions about data structures in JavaScript, split into three levels: 150 easy, 150 moderate and 150 advanced. The answers use modern JavaScript up to ES2025 (`Map`, `Set` and its new methods, `WeakMap`, `WeakRef`, typed arrays, iterator helpers, `Object.groupBy`, `toSorted()` and friends), plus a few newer features that already work in current browsers. Classic structures like stacks, queues, linked lists, trees, heaps, tries and graphs are written by hand, because JavaScript doesn't ship them. Algorithm questions (sorting, searching, dynamic programming) live in a separate file, so this one sticks to how data is stored and why.
 
 ## Table of Contents

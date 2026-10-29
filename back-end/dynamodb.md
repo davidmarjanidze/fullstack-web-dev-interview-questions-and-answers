@@ -1,5 +1,7 @@
 # DynamoDB Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Amazon DynamoDB interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target DynamoDB as it works in 2026: on-demand and provisioned capacity, transactions, Streams, global tables (including multi-Region strong consistency), multi-attribute keys in global secondary indexes, and the AWS SDK for JavaScript v3. Code examples use Node.js with the v3 SDK, plus a few AWS CLI and Python (boto3) examples.

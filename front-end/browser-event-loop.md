@@ -1,5 +1,7 @@
 # Browser Event Loop Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions about the JavaScript event loop in the browser, with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 This file is only about the browser (the event loop described in the HTML Standard and used by Chrome, Firefox and Safari). The Node.js event loop works differently and has its own file. Newer scheduling APIs such as `scheduler.postTask()` and `scheduler.yield()` are covered too, with notes on browser support where it is still uneven.

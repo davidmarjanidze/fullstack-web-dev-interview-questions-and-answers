@@ -1,5 +1,7 @@
 # Fastify Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Fastify interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Fastify v5 (5.12 at the time of writing), which needs Node.js 20 or newer. Changes from v4 are pointed out where they matter, since a lot of projects still run v4 or are in the middle of upgrading. Fastify v6 is in alpha and is not covered here.

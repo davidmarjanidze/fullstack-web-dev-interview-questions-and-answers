@@ -1,5 +1,7 @@
 # Redux Toolkit Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 questions split into three levels: easy, moderate and advanced. The answers follow Redux Toolkit 2.x (with React-Redux 9, Reselect 5 and Immer 10), including RTK Query.
 
 ## Table of Contents

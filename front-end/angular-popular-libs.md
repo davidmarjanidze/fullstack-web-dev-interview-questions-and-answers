@@ -1,5 +1,7 @@
 # Angular Popular Libraries Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about the libraries people use most with Angular, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The questions cover UI kits (Angular Material, CDK, PrimeNG, NG-ZORRO, ng-bootstrap, Taiga UI, Spartan, Ionic), state management (NgRx, NGXS, Elf, TanStack Query), i18n (ngx-translate, Transloco, `@angular/localize`), forms, tables, charts, auth, testing (Spectator, ng-mocks, Angular Testing Library, Jest, Vitest, Cypress, Playwright), tooling (Nx, angular-eslint, Storybook, Native Federation) and small utility libraries. The examples use modern Angular (v20 and later): standalone components, signals, `inject()` and `provideXxx()` functions. Old setups based on NgModules are mentioned where you will still see them in real projects.

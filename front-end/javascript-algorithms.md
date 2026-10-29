@@ -1,5 +1,7 @@
 # JavaScript Algorithms Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions about algorithms in JavaScript, split into three levels: 150 easy, 150 moderate and 150 advanced. The code uses modern JavaScript (ES2023 and newer), including `Map`, `Set`, `toSorted()`, `findLast()`, `Object.groupBy()`, the new `Set` methods and iterator helpers. Most questions are the kind you get in coding rounds, but there are also questions about how algorithms show up in real front-end work: lists, search, DOM trees, async tasks and keeping the UI fast.
 
 ## Table of Contents

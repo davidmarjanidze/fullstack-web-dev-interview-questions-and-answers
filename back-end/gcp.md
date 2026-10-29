@@ -1,5 +1,7 @@
 # Google Cloud (GCP) Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Google Cloud interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers reflect Google Cloud as of late 2026: Cloud Run (services, jobs, functions and worker pools), GKE Autopilot, Artifact Registry, Workload Identity Federation, Cloud SQL Enterprise Plus, Firestore, BigQuery editions and Gemini Enterprise Agent Platform (formerly Vertex AI). Code examples use the gcloud CLI, Terraform and the Node.js client libraries (`@google-cloud/storage`, `@google-cloud/pubsub` and so on). Older services such as Container Registry, Deployment Manager and Cloud Functions 1st gen are mentioned where you will still meet them in real projects.

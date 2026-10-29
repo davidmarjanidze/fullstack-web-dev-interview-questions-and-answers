@@ -1,5 +1,7 @@
 # HTML Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 HTML interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers follow the current HTML Living Standard maintained by the WHATWG, as supported by current versions of Chrome, Edge, Firefox and Safari. Newer features (like popovers, invoker commands and the customizable `<select>`) are marked when they don't work in every browser yet, and older approaches are mentioned where you will still see them in real projects.

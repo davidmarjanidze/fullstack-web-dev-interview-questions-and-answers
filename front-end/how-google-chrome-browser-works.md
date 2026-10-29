@@ -1,5 +1,7 @@
 # How Google Chrome Browser Works Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about how Google Chrome works under the hood, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers describe Chrome as of late 2026 (around Chrome 155), now on a two-week release cycle. They cover the multi-process architecture, navigation and networking, the rendering pipeline (RenderingNG, LayoutNG, the compositor and Viz), V8 (Ignition, Sparkplug, Maglev, TurboFan) and garbage collection, the page lifecycle, performance tooling, and security (the sandbox and Site Isolation). Older behavior is mentioned where you will still run into it.

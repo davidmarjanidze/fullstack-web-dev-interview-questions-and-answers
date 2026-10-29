@@ -1,5 +1,7 @@
 # NestJS Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 NestJS interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are written for **NestJS 12** (released in August 2026). Most of them also apply to NestJS 10 and 11. When something works differently in a recent version, the answer says so.

@@ -1,5 +1,7 @@
 # Web Vitals Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 90 Web Vitals interview questions with answers, split into three levels: 30 easy, 30 moderate and 30 advanced.
 
 The answers follow the Core Web Vitals as they are in 2026: LCP, INP and CLS, plus the supporting metrics FCP and TTFB. Code examples use the `web-vitals` library v6 and the browser Performance APIs. FID, which INP replaced in March 2024, is mentioned only as legacy.

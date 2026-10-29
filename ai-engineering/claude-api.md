@@ -1,5 +1,7 @@
 # Claude API Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about the Claude API, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 They cover the Messages API, the SDKs, streaming, tool use, structured outputs, adaptive thinking and effort, prompt caching, Message Batches, the Files API, vision and PDFs, server tools (web search, web fetch, code execution), MCP, Agent Skills, Managed Agents, rate limits and errors, cost, security, evals and production design. The answers are based on the Claude API as of October 2026: API version `2026-10-21` (with notes on the older `2023-06-01`), and models like Claude Opus 5.5, Sonnet 5.5, Haiku 5.5 and Fable 5.1. Beta features and prices change often, so check the official docs before relying on a detail.

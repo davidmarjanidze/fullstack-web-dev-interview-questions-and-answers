@@ -1,5 +1,7 @@
 # Angular Micro Frontend Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about building micro frontends with Angular, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target modern Angular (v21 and later) with standalone components, signals and the esbuild-based application builder. Most examples use Native Federation (`@angular-architects/native-federation`), which is the usual choice for new Angular projects. Webpack Module Federation, Module Federation 2.0, Angular Elements, single-spa and iframes are also covered, since you will still meet them in real projects.

@@ -1,5 +1,7 @@
 # WebMCP Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 120 WebMCP interview questions with answers, split into three levels: 40 easy, 40 moderate and 40 advanced.
 
 The answers follow the WebMCP draft spec from the W3C Web Machine Learning Community Group (October 2026) and Chrome's implementation, which is in an origin trial starting in Chrome 149. They use `document.modelContext`, `registerTool()` with an `AbortSignal` for removal, tool annotations and the declarative form attributes. Older APIs (`navigator.modelContext`, `provideContext()`, `clearContext()`) are mentioned where you might still see them. WebMCP is still a draft, so check the Chrome docs before relying on a detail.

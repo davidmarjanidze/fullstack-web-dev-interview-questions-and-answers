@@ -1,5 +1,7 @@
 # React Popular Libraries Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about the libraries people use most with React, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The questions cover routing (React Router, TanStack Router), state management (Redux Toolkit, Zustand, Jotai, MobX, XState), data fetching (TanStack Query, SWR, RTK Query, Apollo, tRPC), forms and validation (React Hook Form, Zod), UI kits (MUI, shadcn/ui, Radix, Base UI, Chakra, Mantine, Ant Design, React Aria), styling, animation, tables, charts, i18n, dates, testing (React Testing Library, Vitest, MSW, Playwright, Storybook) and a set of smaller utility libraries. The examples use React 19, React Router v7/v8, TanStack Query v5, Redux Toolkit 2, Zustand 5, Tailwind CSS v4 and Zod 4. Older libraries and APIs are mentioned where you will still see them in real projects.

@@ -1,5 +1,7 @@
 # React Optimization Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 questions about making React apps fast, split into three levels: 150 easy, 150 moderate and 150 advanced. Each level covers the same ten areas, from how rendering works to profiling, server rendering and bundle size.
 
 The answers target React 19.2 and React Compiler 1.0. Older patterns like class components, `PureComponent` and `shouldComponentUpdate` are mentioned where you will still see them in real code, and they are marked as legacy.

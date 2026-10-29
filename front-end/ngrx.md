@@ -1,5 +1,7 @@
 # NgRx Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 NgRx interview questions with answers, split into easy, moderate and advanced. The examples use the current NgRx APIs: standalone providers (`provideStore`, `provideState`, `provideEffects`), functional effects, `createActionGroup`, `createFeature`, `selectSignal`, and `@ngrx/signals` (SignalStore, entities, `rxMethod`, `signalMethod` and the events plugin), together with modern Angular (signals, `inject()`, `input()`, built-in control flow).
 
 ## Table of Contents

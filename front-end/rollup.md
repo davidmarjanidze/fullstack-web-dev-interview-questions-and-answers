@@ -1,5 +1,7 @@
 # Rollup Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 120 Rollup interview questions with answers, split into three levels: 40 easy, 40 moderate and 40 advanced.
 
 The answers target Rollup 4 (4.66 at the time of writing), which uses a native SWC-based parser and needs Node.js 18 or newer. Plugin examples use the official `@rollup/plugin-*` packages where they exist. Older habits that you will still see in real projects, like `onwarn` or configs written as CommonJS, are mentioned where they matter.

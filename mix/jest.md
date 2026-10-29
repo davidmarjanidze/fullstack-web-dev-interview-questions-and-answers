@@ -1,5 +1,7 @@
 # Jest Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Jest interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Jest 30 (the current major version). Things that changed in Jest 30, like the removed matcher aliases, `--testPathPatterns`, `defineConfig` and the `using` support for spies, are pointed out where they matter. Older patterns are mentioned when you will still see them in real projects.

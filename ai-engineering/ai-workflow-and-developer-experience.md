@@ -1,5 +1,7 @@
 # AI Workflow and Developer Experience Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about using AI in your daily work as a developer, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 They cover prompt engineering, context management, Spec-Driven Development (GitHub Spec Kit, Kiro), subagents in Claude Code and GitHub Copilot, Agent Skills (`SKILL.md`), instructions files (`AGENTS.md`, `CLAUDE.md`, Copilot instructions), MCP servers, hooks, AI code review, security, cost and team workflows. Tool details are based on the state of Claude Code, GitHub Copilot, Codex, Cursor, Gemini CLI and Kiro in October 2026. These tools change often, so check the official docs for exact commands and settings.

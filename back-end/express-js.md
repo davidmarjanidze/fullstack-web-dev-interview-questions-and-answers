@@ -1,5 +1,7 @@
 # Express.js Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Express.js interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are written for **Express 5** (5.x), which needs Node.js 18 or newer. A lot of projects still run Express 4, so when something works differently there (async errors, route path syntax, removed methods), the answer says so.

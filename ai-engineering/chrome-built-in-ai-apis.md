@@ -1,5 +1,7 @@
 # Chrome Built-in AI APIs Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 90 interview questions with answers about Chrome's built-in AI APIs, split into three levels: 30 easy, 30 moderate and 30 advanced.
 
 They cover the Translator, Language Detector, Summarizer, Writer, Rewriter, Prompt and Proofreader APIs. The answers are based on the Chrome docs and the W3C Web Machine Learning Community Group specs as of October 2026: Translator, Language Detector and Summarizer are stable since Chrome 138, the Prompt API is available in extensions since Chrome 138 and on the web since Chrome 148, and Writer, Rewriter and Proofreader are still in developer trials. These APIs change often, so check the Chrome docs before you rely on a detail.

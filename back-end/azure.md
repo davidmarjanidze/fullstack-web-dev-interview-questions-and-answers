@@ -1,5 +1,7 @@
 # Microsoft Azure Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Microsoft Azure interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers reflect Azure as of late 2026: Microsoft Entra ID (formerly Azure AD), Bicep, the Azure Developer CLI, Azure Functions with the Flex Consumption plan and the Node.js v4 programming model, Azure Container Apps, AKS and Microsoft Foundry (formerly Azure AI Foundry). Code examples use the Azure CLI, Bicep and the current Azure SDK for JavaScript (`@azure/identity`, `@azure/storage-blob` and so on). Older services and names are mentioned where you will still meet them in real projects.

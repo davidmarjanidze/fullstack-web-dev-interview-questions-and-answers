@@ -1,5 +1,7 @@
 # Prisma ORM Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Prisma ORM interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Prisma ORM 7 (the current stable major version), with the `prisma-client` generator, driver adapters and `prisma.config.ts`. Older things like the `prisma-client-js` generator, the Rust query engine and `url` in the datasource block are mentioned where they still matter, since you will still see them in real projects. MongoDB is still on Prisma 6, and Prisma 8 is only a release candidate at the time of writing.

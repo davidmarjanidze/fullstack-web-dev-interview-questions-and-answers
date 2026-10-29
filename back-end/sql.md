@@ -1,5 +1,7 @@
 # SQL Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 SQL interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced. Most answers include a short code example.
 
 The examples follow standard SQL where possible. The current standard is SQL:2023 (ISO/IEC 9075:2023). When something works differently in PostgreSQL, MySQL, SQL Server, Oracle or SQLite, the answer points that out. Version notes refer to PostgreSQL 18, MySQL 8.4 / 9.x, SQL Server 2022 / 2025, Oracle 23ai and SQLite 3.4x.

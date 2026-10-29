@@ -1,5 +1,7 @@
 # Playwright Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Playwright interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Playwright 1.6x with the Playwright Test runner (`@playwright/test`) and TypeScript. The focus is on the current way of writing tests: role-based locators, web-first assertions, fixtures, projects and the trace viewer. Older patterns like `ElementHandle`, `page.waitForSelector()` and `page.$()` are mentioned where you will still see them in real projects.

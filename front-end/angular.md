@@ -1,5 +1,7 @@
 # Angular Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Angular interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers use modern Angular (v20, v21 and later): standalone components, signals, the built-in control flow (`@if`, `@for`, `@switch`, `@defer`), `inject()`, zoneless change detection, `httpResource`, the new SSR APIs and signal forms. Older APIs (NgModules, `@Input()`, `*ngIf`, Zone.js) are mentioned where they still matter, since you will still see them in real projects.

@@ -1,5 +1,7 @@
 # MongoDB Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 This is a list of 450 MongoDB interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced. The answers are based on MongoDB 8.x (with notes where a feature appeared in a specific version), `mongosh`, and the current official drivers.
 
 Code examples use `mongosh` syntax unless they say otherwise. Examples for drivers use the Node.js driver v6 and PyMongo.

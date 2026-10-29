@@ -1,5 +1,7 @@
 # CSS Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 There are 450 questions here: 150 easy, 150 moderate and 150 advanced. They cover modern CSS as it works in current browsers (late 2026). This includes newer features like nesting, cascade layers, container queries, `:has()`, anchor positioning and view transitions. If a feature only works in some browsers, the answer says so. Check MDN or caniuse before you use it in production.
 
 ## Table of Contents

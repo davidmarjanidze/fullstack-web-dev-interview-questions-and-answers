@@ -1,5 +1,7 @@
 # Angular Optimization Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about making Angular apps fast, split into three levels: 150 easy, 150 moderate and 150 advanced. They cover load performance (bundles, lazy loading, `@defer`, images, SSR and hydration, caching) and runtime performance (change detection, signals, lists, memory, profiling).
 
 The answers target Angular v22: OnPush by default, zoneless change detection (default for new apps since v21), signals and resources, incremental hydration on by default, the fetch-based `HttpClient`, `injectAsync()` and the esbuild-based build system. Older approaches (Zone.js, `*ngFor` with `trackBy`, `@angular/animations`) are mentioned where you will still meet them in real projects.

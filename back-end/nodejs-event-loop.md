@@ -1,5 +1,7 @@
 # Node.js Event Loop Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about the Node.js event loop, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 This file is about the event loop in Node.js (libuv, its phases, `process.nextTick`, `setImmediate`, the thread pool and so on), not the browser event loop. The answers are based on the current Node.js LTS lines (24 and 26). Where behavior changed between versions (for example in Node 11 and Node 20), the version is mentioned. Unless a question says otherwise, code examples are CommonJS scripts run with `node file.js`, because ES modules change the order of some callbacks (this is covered in its own question).

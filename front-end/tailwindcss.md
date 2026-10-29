@@ -1,5 +1,7 @@
 # Tailwind CSS Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 These questions cover Tailwind CSS v4 (the current major version, up to v4.3). Where something changed from v3, the answer says so, since many interviewers still ask about the differences.
 
 ## Table of Contents

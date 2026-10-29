@@ -1,5 +1,7 @@
 # WebAssembly (WASM) Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 60 WebAssembly interview questions with answers, split into three levels: 20 easy, 20 moderate and 20 advanced.
 
 The answers target WebAssembly 3.0 (finalized in September 2025) and WASI 0.3 (released in June 2026). Examples use the browser `WebAssembly` JavaScript API, Emscripten for C/C++ and wasm-bindgen for Rust. Older approaches you will still see in existing projects, like Asyncify or WASI Preview 1, are mentioned where it makes sense.

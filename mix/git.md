@@ -1,5 +1,7 @@
 # Git Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Git interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target current Git (2.5x releases). They use the modern commands like `git switch` and `git restore`, the `ort` merge strategy, SSH commit signing, partial clone and sparse checkout. Older commands like `git checkout` for files and `git filter-branch` are mentioned where they still matter, since you will still see them in real projects. Changes planned for Git 3.0 (SHA-256, `main` as the default branch, reftable) are mentioned where relevant.

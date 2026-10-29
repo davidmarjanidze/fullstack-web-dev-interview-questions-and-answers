@@ -1,5 +1,7 @@
 # Three.js Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 90 Three.js interview questions with answers, split into three levels: 30 easy, 30 moderate and 30 advanced.
 
 The answers target recent Three.js releases (r186 at the time of writing). They cover the classic `WebGLRenderer` that most projects still use, plus the newer `WebGPURenderer` and TSL. Older APIs that you will still see in tutorials and existing code (like `Clock`, `RGBELoader` or legacy lighting) are mentioned where it makes sense.

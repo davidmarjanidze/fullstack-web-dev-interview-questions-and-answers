@@ -1,5 +1,7 @@
 # Front-End Security Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 front-end security interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced. The questions are about security in the browser itself (plain HTML, JavaScript, HTTP headers and browser APIs), without Angular, React or Vue. They follow current browser behavior as of 2026 and say when a feature is new or not supported in every browser yet.
 
 ## Table of Contents

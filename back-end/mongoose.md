@@ -1,5 +1,7 @@
 # Mongoose Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Mongoose interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are written for **Mongoose 9** (the latest release at the time of writing is 9.11), which uses the MongoDB Node.js driver 7 and needs Node.js 20.19 or newer. Most answers also apply to Mongoose 8. When something works differently in a recent version, the answer says so.

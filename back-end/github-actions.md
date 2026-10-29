@@ -1,5 +1,7 @@
 # GitHub Actions Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 GitHub Actions interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target GitHub Actions as it works on GitHub.com in late 2026: Node 24 based actions, current runner images, reusable workflows, OIDC and the current security features. Examples use recent major versions of the official actions (like `actions/checkout@v6`). Newer majors come out often, so check the Marketplace or let Dependabot keep them up to date.

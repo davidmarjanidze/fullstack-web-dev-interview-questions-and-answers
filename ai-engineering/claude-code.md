@@ -1,5 +1,7 @@
 # Claude Code Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about Claude Code, Anthropic's coding agent, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 They cover the CLI and IDE extensions, `CLAUDE.md` and memory, permissions and permission modes, plan mode and auto mode, subagents, skills, hooks, MCP servers, plugins, context management, checkpoints, worktrees, headless mode and CI, cloud sessions, the Agent SDK, security and team setup. Answers are based on Claude Code v2.1.x (around v2.1.310) as of October 2026. Claude Code changes very often, so check the official docs for exact commands and settings.

@@ -1,5 +1,7 @@
 # Linux Bash Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Linux and Bash interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Bash 5.x (5.3 is the latest release) on a modern Linux distribution with GNU coreutils and systemd. Where macOS or POSIX `sh` behave differently, the answer says so, since you will run into both in real projects.

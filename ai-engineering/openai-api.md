@@ -1,5 +1,7 @@
 # OpenAI API Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about the OpenAI API, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 They cover the Responses API, Chat Completions, the SDKs, streaming, function calling, Structured Outputs, reasoning effort and verbosity, built-in tools (web search, file search, code interpreter, shell, computer use, image generation, MCP), conversation state and compaction, prompt caching, the Batch API, service tiers, embeddings, moderation, images, audio and voice (Realtime API, GPT-Live), the Agents SDK, the Agents API, the Decisions API, rate limits and errors, security, data controls, cost and production design. The answers are based on the OpenAI API as of October 2026, with the GPT-6 model family (`gpt-6-astra`, `gpt-6.1-sol`, `gpt-6-luna`). Models, prices and deprecation dates change often, so check the official docs before relying on a detail.

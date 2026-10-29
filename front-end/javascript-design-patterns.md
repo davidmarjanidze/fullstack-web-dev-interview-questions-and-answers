@@ -1,5 +1,7 @@
 # JavaScript Design Patterns Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions about design patterns in JavaScript, split into three levels: 150 easy, 150 moderate and 150 advanced. The answers use modern JavaScript (ES2022 and newer): classes with private fields, ES modules, `Proxy`, `Reflect`, `WeakMap`, generators and async/await. Older styles like IIFE modules and constructor functions are covered too, since you will still see them in real code.
 
 ## Table of Contents

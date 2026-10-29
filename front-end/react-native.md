@@ -1,5 +1,7 @@
 # React Native Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 React Native interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced. The answers are based on React Native 0.88 (October 2026) with React 19 and the New Architecture, and on Expo SDK 58. They use the current APIs: Fabric, Turbo Modules, Hermes V1, React Native DevTools, Expo Router and the Strict TypeScript API. Older APIs like the bridge, the Touchable components and `SafeAreaView` from core are mentioned where you will still meet them in real projects.
 
 If you spot a mistake or something that is out of date, feel free to open an issue or a pull request.

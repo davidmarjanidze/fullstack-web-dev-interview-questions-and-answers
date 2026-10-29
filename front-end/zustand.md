@@ -1,5 +1,7 @@
 # Zustand Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Zustand interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are written for Zustand v5 (5.0.x) with React 18 and later. Things that changed from v4, like `useShallow`, `zustand/traditional` and the new `persist` behavior, are pointed out where they matter, since you will still see v4 code in real projects.

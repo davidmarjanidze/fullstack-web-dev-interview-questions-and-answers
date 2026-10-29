@@ -1,5 +1,7 @@
 # React Micro Frontend Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about building micro frontends with React, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target React 19 with `createRoot`, React Router 7 and modern build tools. Most examples use Module Federation, either the classic webpack 5 plugin or Module Federation 2.0 (`@module-federation/enhanced`) with webpack, Rspack or Vite (`@module-federation/vite`). single-spa, web components, iframes, build-time packages and Next.js Multi-Zones are also covered, since you will still meet them in real projects.

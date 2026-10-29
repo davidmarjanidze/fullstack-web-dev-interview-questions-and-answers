@@ -1,5 +1,7 @@
 # Chrome DevTools Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Chrome DevTools interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are written for current Chrome (version 147 and later). They cover the main panels (Elements, Console, Sources, Network, Performance, Memory, Application, Lighthouse, Recorder), debugging and performance work, the Chrome DevTools Protocol, and newer features like the Performance panel insights, AI assistance and the DevTools MCP server. DevTools changes often, so some menu names and locations may be a bit different in your version.

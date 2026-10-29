@@ -1,5 +1,7 @@
 # TailwindCSS Responsive UI Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 interview questions with answers about building responsive UIs with Tailwind CSS, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Tailwind CSS v4 (v4.3 at the time of writing): CSS-first config with `@theme`, `rem`-based breakpoints, `max-*` variants, built-in container queries and `@custom-variant`. Tailwind v3 things like `tailwind.config.js` and `screens` are mentioned where they still matter, because a lot of existing projects still use them.

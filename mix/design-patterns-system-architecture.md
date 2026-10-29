@@ -1,5 +1,7 @@
 # Design Patterns and System Architecture Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 interview questions with answers about design patterns and system architecture, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The questions go from classic design patterns and SOLID, through architecture styles (monolith, microservices, event-driven, hexagonal, DDD), to system design topics like caching, databases, messaging, scaling, reliability and real interview scenarios. Code examples use TypeScript and Node.js, and the answers reflect how systems are commonly built in 2026.

@@ -1,5 +1,7 @@
 # Node.js Microservices Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Node.js microservices interview questions with answers and code examples, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Node.js 24 (Active LTS) and Node.js 26 (LTS from October 2026), with current versions of the common tools: Express 5, Fastify 5, NestJS, `@grpc/grpc-js`, `amqplib` with RabbitMQ 4.x, `kafkajs` and Confluent's client with Kafka 4.x, BullMQ, OpenTelemetry JS SDK 2.x, Docker and Kubernetes. Code examples use ES modules. Older approaches are mentioned where you will still meet them in real projects.

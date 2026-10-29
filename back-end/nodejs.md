@@ -1,5 +1,7 @@
 # Node.js Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Node.js interview questions with answers and code examples, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers are based on the current Node.js LTS releases (22 and 24) and mention newer versions where it matters. When an API was added in a specific version, the version is noted, so you can tell what works on the Node version you use. Code examples use ES modules unless the question is about CommonJS.

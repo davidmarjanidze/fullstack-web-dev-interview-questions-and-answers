@@ -1,5 +1,7 @@
 # RabbitMQ Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 RabbitMQ interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target current RabbitMQ: the 4.x series up to RabbitMQ 4.4 (released in October 2026), with quorum queues, streams, Khepri as the metadata store and native AMQP 1.0. Code examples use Node.js with amqplib. Older things like classic mirrored queues, lazy queues, Mnesia and the partition handling strategies are mentioned where they still matter, since you will still see them in real projects and in interviews.

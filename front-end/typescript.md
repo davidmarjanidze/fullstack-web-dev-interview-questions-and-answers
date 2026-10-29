@@ -1,5 +1,7 @@
 # TypeScript Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 A list of 450 TypeScript interview questions with answers and code examples, split into three levels: easy, moderate and advanced.
 
 ## Table of Contents

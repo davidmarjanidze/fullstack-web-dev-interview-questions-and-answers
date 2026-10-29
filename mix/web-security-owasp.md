@@ -1,5 +1,7 @@
 # Web Security (OWASP) Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 web security interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers follow the OWASP Top 10:2025 list (released in November 2025) and current OWASP projects like ASVS 5.0, the Cheat Sheet Series and the Web Security Testing Guide. Where the 2021 list is different, it is mentioned, since many teams and job descriptions still refer to it. Code examples use JavaScript and Node.js unless stated otherwise.

@@ -1,5 +1,7 @@
 # Docker Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Docker interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target current Docker: Docker Engine 29, Docker Compose v2 and later (the `docker compose` plugin, current releases are v5), BuildKit and Buildx, and Docker Desktop. Older things like Compose v1 (`docker-compose`), the `version` key in Compose files and the legacy builder are mentioned where they still matter, since you will still see them in real projects.

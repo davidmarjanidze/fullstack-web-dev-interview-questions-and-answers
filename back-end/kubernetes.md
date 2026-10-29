@@ -1,5 +1,7 @@
 # Kubernetes Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Kubernetes interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target current Kubernetes (1.37, released in August 2026) and the tools around it, like kubectl, Helm, Kustomize and the Gateway API. Older things like Ingress, ingress-nginx, PodSecurityPolicy and the IPVS proxy mode are mentioned where they still matter, since you will still see them in real projects.

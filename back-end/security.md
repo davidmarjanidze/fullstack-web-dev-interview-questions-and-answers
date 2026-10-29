@@ -1,5 +1,7 @@
 # Node.js Security Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Node.js security interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced. The questions are about securing back-end code that runs on Node.js: authentication, authorization, input handling, injection, secrets, crypto, HTTP, dependencies and the npm supply chain, deployment and incident response.
 
 The answers target current Node.js (24 LTS, 25 and 26) and Express 5, and they mention the version when a feature is new, like `crypto.argon2()` or the `--allow-net` permission flag. Code examples use ES modules.

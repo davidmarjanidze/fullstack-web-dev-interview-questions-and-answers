@@ -1,5 +1,7 @@
 # Cypress Interview Questions and Answers
 
+_Last updated: October 29, 2026_
+
 450 Cypress interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers target Cypress 16 (16.2 at the time of writing). They use the current APIs: `cy.env()` and `Cypress.expose()` instead of the removed `Cypress.env()`, `cy.task()` instead of the removed `cy.exec()`, `cy.session()`, `cy.origin()`, `cy.press()`, `cy.getByRole()` and the newer AI features like `cy.prompt()`. Older APIs are mentioned where they still matter, since you will still see them in real projects.

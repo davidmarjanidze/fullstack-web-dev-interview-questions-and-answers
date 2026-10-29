@@ -1,5 +1,7 @@
 # Responsive UI Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Responsive UI interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The questions cover the HTML and CSS you use to build pages that work on any screen: the viewport meta tag, media queries, Flexbox, Grid, container queries, responsive images, fluid typography, viewport units, touch input, accessibility and testing. The answers are written against what current browsers support in 2026. Features that don't work in every major browser yet are marked as such.

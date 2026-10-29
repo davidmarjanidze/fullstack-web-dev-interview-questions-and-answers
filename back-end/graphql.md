@@ -1,5 +1,7 @@
 # GraphQL Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 GraphQL interview questions with answers, split into three levels: 150 easy, 150 moderate and 150 advanced.
 
 The answers follow the September 2025 edition of the GraphQL spec and current JavaScript tools: graphql-js 16 and 17, Apollo Server 5, Apollo Client 4, GraphQL Yoga 5, graphql-ws and Apollo Federation 2. Older things like Apollo Server 4, Apollo Client 3 and `subscriptions-transport-ws` are pointed out where they matter, since you will still see them in real projects.

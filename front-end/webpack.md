@@ -1,5 +1,7 @@
 # Webpack Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 120 webpack interview questions with answers, split into three levels: 40 easy, 40 moderate and 40 advanced.
 
 The answers target webpack 5 (the 5.10x releases), which is still the current major version. webpack 6 is on the roadmap but not released yet. Code examples use CommonJS `webpack.config.js` files since that's what you'll see in most projects.

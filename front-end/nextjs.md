@@ -1,5 +1,7 @@
 # Next.js Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 450 Next.js interview questions with answers, split into three levels: easy, moderate and advanced. The answers are written for Next.js 16 and the App Router, with notes on the Pages Router where it still matters.
 
 ## Table of Contents

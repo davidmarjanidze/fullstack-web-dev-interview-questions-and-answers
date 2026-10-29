@@ -1,5 +1,7 @@
 # SEO (Search Engine Optimization) Interview Questions and Answers
 
+_Last updated: October 28, 2026_
+
 90 SEO interview questions with answers, split into three levels: 30 easy, 30 moderate and 30 advanced.
 
 The answers follow how Google Search works today: mobile-first indexing, Core Web Vitals with INP, JavaScript rendering, structured data in JSON-LD, Google's current spam policies and AI features like AI Overviews. Most questions are written from a web developer's point of view, so the focus is on technical SEO and on-page work rather than marketing.
