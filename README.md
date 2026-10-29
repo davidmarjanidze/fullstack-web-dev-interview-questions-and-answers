@@ -1,5 +1,7 @@
 # Full Stack Web Dev Interview Questions and Answers
 
+_Last updated: October 2026_
+
 A collection of interview questions and answers for full stack web developers. Each file covers one technology or topic and has questions split into three levels: easy, moderate and advanced.
 
 You can use it to prepare for interviews, to check what you know, or as a quick reference.
