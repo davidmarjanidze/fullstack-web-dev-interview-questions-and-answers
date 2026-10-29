@@ -20,8 +20,12 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 ### Back End
 
 - [AWS](back-end/aws.md)
+- [Azure](back-end/azure.md)
 - [Docker](back-end/docker.md)
+- [DynamoDB](back-end/dynamodb.md)
 - [Express.js](back-end/express-js.md)
+- [Fastify](back-end/fastify.md)
+- [GCP (Google Cloud)](back-end/gcp.md)
 - [GitHub Actions](back-end/github-actions.md)
 - [GraphQL](back-end/graphql.md)
 - [Kubernetes](back-end/kubernetes.md)
@@ -60,6 +64,7 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 - [React Testing](front-end/react-testing.md)
 - [Redux Toolkit](front-end/redux-toolkit.md)
 - [Responsive UI](front-end/responsive-ui.md)
+- [Rollup](front-end/rollup.md)
 - [Security](front-end/security.md)
 - [SEO (Search Engine Optimization)](front-end/seo.md)
 - [Storybook](front-end/storybook.md)
@@ -74,8 +79,13 @@ You can use it to prepare for interviews, to check what you know, or as a quick 
 
 ### Mix
 
+- [CI/CD Pipelines](mix/ci-cd-pipelines.md)
+- [Cypress](mix/cypress.md)
+- [Design Patterns and System Architecture](mix/design-patterns-system-architecture.md)
 - [Git](mix/git.md)
 - [HTTP Networking](mix/http-networking.md)
+- [Linux Bash](mix/linux-bash.md)
+- [Web Security (OWASP)](mix/web-security-owasp.md)
 
 ### Optimization
 

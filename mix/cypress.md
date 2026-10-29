@@ -10,6 +10,467 @@ The answers target Cypress 16 (16.2 at the time of writing). They use the curren
 - [Moderate Questions (151-300)](#moderate-questions-151-300)
 - [Advanced Questions (301-450)](#advanced-questions-301-450)
 
+### Easy Questions (1-150)
+
+- [1: What is Cypress?](#1-what-is-cypress)
+- [2: What types of tests can you write with Cypress?](#2-what-types-of-tests-can-you-write-with-cypress)
+- [3: How is Cypress different from Selenium?](#3-how-is-cypress-different-from-selenium)
+- [4: How does Cypress run your tests?](#4-how-does-cypress-run-your-tests)
+- [5: Which browsers does Cypress support?](#5-which-browsers-does-cypress-support)
+- [6: How do you install Cypress?](#6-how-do-you-install-cypress)
+- [7: How do you open Cypress for the first time?](#7-how-do-you-open-cypress-for-the-first-time)
+- [8: What is the difference between cypress open and cypress run?](#8-what-is-the-difference-between-cypress-open-and-cypress-run)
+- [9: What is the default folder structure of a Cypress project?](#9-what-is-the-default-folder-structure-of-a-cypress-project)
+- [10: What is cypress.config.js?](#10-what-is-cypressconfigjs)
+- [11: Why do you use defineConfig?](#11-why-do-you-use-defineconfig)
+- [12: What is the difference between the e2e and component sections in the config?](#12-what-is-the-difference-between-the-e2e-and-component-sections-in-the-config)
+- [13: What is a spec file?](#13-what-is-a-spec-file)
+- [14: What is the default naming pattern for spec files?](#14-what-is-the-default-naming-pattern-for-spec-files)
+- [15: What libraries does Cypress use for writing tests?](#15-what-libraries-does-cypress-use-for-writing-tests)
+- [16: What are describe and it?](#16-what-are-describe-and-it)
+- [17: What are context and specify?](#17-what-are-context-and-specify)
+- [18: What hooks are available in Cypress tests?](#18-what-hooks-are-available-in-cypress-tests)
+- [19: How do you run only one test or skip a test?](#19-how-do-you-run-only-one-test-or-skip-a-test)
+- [20: What is the Command Log?](#20-what-is-the-command-log)
+- [21: What is the cy object?](#21-what-is-the-cy-object)
+- [22: How do you open a page with cy.visit?](#22-how-do-you-open-a-page-with-cyvisit)
+- [23: What is baseUrl and why should you set it?](#23-what-is-baseurl-and-why-should-you-set-it)
+- [24: What does cy.get do?](#24-what-does-cyget-do)
+- [25: What does cy.contains do?](#25-what-does-cycontains-do)
+- [26: What is the recommended way to select elements?](#26-what-is-the-recommended-way-to-select-elements)
+- [27: What is the difference between cy.get and .find?](#27-what-is-the-difference-between-cyget-and-find)
+- [28: What does .within do?](#28-what-does-within-do)
+- [29: How do you click an element?](#29-how-do-you-click-an-element)
+- [30: How do you type into an input?](#30-how-do-you-type-into-an-input)
+- [31: How do you type special keys like Enter or Escape?](#31-how-do-you-type-special-keys-like-enter-or-escape)
+- [32: What is cy.press?](#32-what-is-cypress)
+- [33: How do you clear an input?](#33-how-do-you-clear-an-input)
+- [34: How do you check and uncheck checkboxes and radio buttons?](#34-how-do-you-check-and-uncheck-checkboxes-and-radio-buttons)
+- [35: How do you choose an option in a select element?](#35-how-do-you-choose-an-option-in-a-select-element)
+- [36: How do you upload a file?](#36-how-do-you-upload-a-file)
+- [37: How do you double-click or right-click?](#37-how-do-you-double-click-or-right-click)
+- [38: What does .trigger do?](#38-what-does-trigger-do)
+- [39: How do you focus or blur an element?](#39-how-do-you-focus-or-blur-an-element)
+- [40: How do you scroll in Cypress?](#40-how-do-you-scroll-in-cypress)
+- [41: What does .should do?](#41-what-does-should-do)
+- [42: What is .and used for?](#42-what-is-and-used-for)
+- [43: What are some common assertions you use?](#43-what-are-some-common-assertions-you-use)
+- [44: How do you write a negative assertion?](#44-how-do-you-write-a-negative-assertion)
+- [45: What is the difference between should and expect?](#45-what-is-the-difference-between-should-and-expect)
+- [46: What assertion libraries are available in Cypress?](#46-what-assertion-libraries-are-available-in-cypress)
+- [47: What is the default timeout for commands?](#47-what-is-the-default-timeout-for-commands)
+- [48: What is retry-ability in Cypress?](#48-what-is-retry-ability-in-cypress)
+- [49: Are Cypress commands synchronous?](#49-are-cypress-commands-synchronous)
+- [50: Why can't you store the result of cy.get in a variable?](#50-why-cant-you-store-the-result-of-cyget-in-a-variable)
+- [51: What does .then do?](#51-what-does-then-do)
+- [52: What does cy.wrap do?](#52-what-does-cywrap-do)
+- [53: What are aliases in Cypress?](#53-what-are-aliases-in-cypress)
+- [54: How do you use an alias for an element?](#54-how-do-you-use-an-alias-for-an-element)
+- [55: Why should you avoid cy.wait with a fixed number?](#55-why-should-you-avoid-cywait-with-a-fixed-number)
+- [56: How do you wait for a network request to finish?](#56-how-do-you-wait-for-a-network-request-to-finish)
+- [57: How do you check the current URL?](#57-how-do-you-check-the-current-url)
+- [58: How do you check the page title?](#58-how-do-you-check-the-page-title)
+- [59: How do you go back, go forward or reload the page?](#59-how-do-you-go-back-go-forward-or-reload-the-page)
+- [60: How do you change the viewport size?](#60-how-do-you-change-the-viewport-size)
+- [61: What are fixtures?](#61-what-are-fixtures)
+- [62: How do you load a fixture?](#62-how-do-you-load-a-fixture)
+- [63: What is cy.request?](#63-what-is-cyrequest)
+- [64: What is cy.intercept?](#64-what-is-cyintercept)
+- [65: How do you stub a response with a fixture file?](#65-how-do-you-stub-a-response-with-a-fixture-file)
+- [66: What does .its do?](#66-what-does-its-do)
+- [67: What does .invoke do?](#67-what-does-invoke-do)
+- [68: How do you pick a specific element from a list?](#68-how-do-you-pick-a-specific-element-from-a-list)
+- [69: How do you move up and down the DOM tree?](#69-how-do-you-move-up-and-down-the-dom-tree)
+- [70: What do .filter and .not do?](#70-what-do-filter-and-not-do)
+- [71: How do you loop over elements?](#71-how-do-you-loop-over-elements)
+- [72: How do you print a message in the Command Log?](#72-how-do-you-print-a-message-in-the-command-log)
+- [73: How do you pause or debug a test?](#73-how-do-you-pause-or-debug-a-test)
+- [74: What is time travel in Cypress?](#74-what-is-time-travel-in-cypress)
+- [75: How do screenshots work in Cypress?](#75-how-do-screenshots-work-in-cypress)
+- [76: Does Cypress record videos?](#76-does-cypress-record-videos)
+- [77: How do you run tests headed or headless?](#77-how-do-you-run-tests-headed-or-headless)
+- [78: How do you run tests in a specific browser?](#78-how-do-you-run-tests-in-a-specific-browser)
+- [79: How do you run only some spec files from the command line?](#79-how-do-you-run-only-some-spec-files-from-the-command-line)
+- [80: How do you run a single spec in open mode?](#80-how-do-you-run-a-single-spec-in-open-mode)
+- [81: What is the support file?](#81-what-is-the-support-file)
+- [82: How do you create a custom command?](#82-how-do-you-create-a-custom-command)
+- [83: Where should you put custom commands?](#83-where-should-you-put-custom-commands)
+- [84: Can you write Cypress tests in TypeScript?](#84-can-you-write-cypress-tests-in-typescript)
+- [85: How do you set up tsconfig for Cypress?](#85-how-do-you-set-up-tsconfig-for-cypress)
+- [86: How do you work with cookies in Cypress?](#86-how-do-you-work-with-cookies-in-cypress)
+- [87: How do you read or set localStorage in a test?](#87-how-do-you-read-or-set-localstorage-in-a-test)
+- [88: What is test isolation?](#88-what-is-test-isolation)
+- [89: How do you access the window and document objects?](#89-how-do-you-access-the-window-and-document-objects)
+- [90: How do you read and write files in a test?](#90-how-do-you-read-and-write-files-in-a-test)
+- [91: What is cy.task?](#91-what-is-cytask)
+- [92: What is setupNodeEvents?](#92-what-is-setupnodeevents)
+- [93: How do you read environment variables in a test?](#93-how-do-you-read-environment-variables-in-a-test)
+- [94: What is Cypress.expose?](#94-what-is-cypressexpose)
+- [95: What happened to Cypress.env?](#95-what-happened-to-cypressenv)
+- [96: How do you pass environment variables from the system or CI?](#96-how-do-you-pass-environment-variables-from-the-system-or-ci)
+- [97: How do you override config values from the command line?](#97-how-do-you-override-config-values-from-the-command-line)
+- [98: How do you change the timeout of a single command?](#98-how-do-you-change-the-timeout-of-a-single-command)
+- [99: What is pageLoadTimeout?](#99-what-is-pageloadtimeout)
+- [100: What is actionability?](#100-what-is-actionability)
+- [101: What does force: true do?](#101-what-does-force-true-do)
+- [102: What does the error "element is not visible" mean?](#102-what-does-the-error-element-is-not-visible-mean)
+- [103: What does cy.focused return?](#103-what-does-cyfocused-return)
+- [104: How do you check the value of an input?](#104-how-do-you-check-the-value-of-an-input)
+- [105: What is the difference between have.text, contain and cy.contains?](#105-what-is-the-difference-between-havetext-contain-and-cycontains)
+- [106: How do you check how many elements are on the page?](#106-how-do-you-check-how-many-elements-are-on-the-page)
+- [107: What is the difference between not.exist and not.be.visible?](#107-what-is-the-difference-between-notexist-and-notbevisible)
+- [108: What is Cypress Cloud?](#108-what-is-cypress-cloud)
+- [109: What is Cypress Studio?](#109-what-is-cypress-studio)
+- [110: What is cy.prompt?](#110-what-is-cyprompt)
+- [111: What is cy.getByRole?](#111-what-is-cygetbyrole)
+- [112: What is component testing in Cypress?](#112-what-is-component-testing-in-cypress)
+- [113: What is cy.mount?](#113-what-is-cymount)
+- [114: Which frameworks does Cypress component testing support?](#114-which-frameworks-does-cypress-component-testing-support)
+- [115: What reporter does Cypress use by default?](#115-what-reporter-does-cypress-use-by-default)
+- [116: Can Cypress test multiple browser tabs?](#116-can-cypress-test-multiple-browser-tabs)
+- [117: Can Cypress control two browsers at the same time?](#117-can-cypress-control-two-browsers-at-the-same-time)
+- [118: What are the main limitations of Cypress?](#118-what-are-the-main-limitations-of-cypress)
+- [119: How does Cypress compare to Playwright?](#119-how-does-cypress-compare-to-playwright)
+- [120: How is Cypress different from Jest?](#120-how-is-cypress-different-from-jest)
+- [121: How do you turn on test retries?](#121-how-do-you-turn-on-test-retries)
+- [122: What exit code does cypress run return?](#122-what-exit-code-does-cypress-run-return)
+- [123: How do you add Cypress scripts to package.json?](#123-how-do-you-add-cypress-scripts-to-packagejson)
+- [124: How do you check if Cypress is installed correctly?](#124-how-do-you-check-if-cypress-is-installed-correctly)
+- [125: What is the Cypress binary cache?](#125-what-is-the-cypress-binary-cache)
+- [126: How can you skip downloading the Cypress binary?](#126-how-can-you-skip-downloading-the-cypress-binary)
+- [127: What system requirements does Cypress have?](#127-what-system-requirements-does-cypress-have)
+- [128: What are the official Cypress Docker images?](#128-what-are-the-official-cypress-docker-images)
+- [129: What is eslint-plugin-cypress?](#129-what-is-eslint-plugin-cypress)
+- [130: What is Cypress._?](#130-what-is-cypress_)
+- [131: What is Cypress.$?](#131-what-is-cypress)
+- [132: How do you check which browser or OS the test runs on?](#132-how-do-you-check-which-browser-or-os-the-test-runs-on)
+- [133: How do you get information about the current spec or test?](#133-how-do-you-get-information-about-the-current-spec-or-test)
+- [134: What are cy.clock and cy.tick?](#134-what-are-cyclock-and-cytick)
+- [135: What is cy.stub?](#135-what-is-cystub)
+- [136: What is cy.spy?](#136-what-is-cyspy)
+- [137: What is the difference between a stub and a spy?](#137-what-is-the-difference-between-a-stub-and-a-spy)
+- [138: How do you use a callback function in should?](#138-how-do-you-use-a-callback-function-in-should)
+- [139: What types of Cypress commands are there?](#139-what-types-of-cypress-commands-are-there)
+- [140: What is a query command?](#140-what-is-a-query-command)
+- [141: What happens when a test fails in Cypress?](#141-what-happens-when-a-test-fails-in-cypress)
+- [142: Can you write a simple first test?](#142-can-you-write-a-simple-first-test)
+- [143: How should you name and organize spec files?](#143-how-should-you-name-and-organize-spec-files)
+- [144: How do you test a hover effect?](#144-how-do-you-test-a-hover-effect)
+- [145: How do you check that an element has a CSS property?](#145-how-do-you-check-that-an-element-has-a-css-property)
+- [146: How do you check an attribute value?](#146-how-do-you-check-an-attribute-value)
+- [147: How do you check that a button is disabled or enabled?](#147-how-do-you-check-that-a-button-is-disabled-or-enabled)
+- [148: How do you assert on a value you got from a command?](#148-how-do-you-assert-on-a-value-you-got-from-a-command)
+- [149: What is the ElementSelector (Selector Playground)?](#149-what-is-the-elementselector-selector-playground)
+- [150: What are the main benefits of Cypress?](#150-what-are-the-main-benefits-of-cypress)
+
+### Moderate Questions (151-300)
+
+- [151: How exactly does retry work for a chain of commands?](#151-how-exactly-does-retry-work-for-a-chain-of-commands)
+- [152: Why shouldn't you chain more commands after an action?](#152-why-shouldnt-you-chain-more-commands-after-an-action)
+- [153: How do you create a custom command that works on a subject?](#153-how-do-you-create-a-custom-command-that-works-on-a-subject)
+- [154: What is Cypress.Commands.addQuery?](#154-what-is-cypresscommandsaddquery)
+- [155: How do you overwrite an existing command?](#155-how-do-you-overwrite-an-existing-command)
+- [156: How do you add TypeScript types for custom commands?](#156-how-do-you-add-typescript-types-for-custom-commands)
+- [157: How do you log in without using the UI in every test?](#157-how-do-you-log-in-without-using-the-ui-in-every-test)
+- [158: What is cy.session?](#158-what-is-cysession)
+- [159: What is the validate option of cy.session?](#159-what-is-the-validate-option-of-cysession)
+- [160: What does cacheAcrossSpecs do in cy.session?](#160-what-does-cacheacrossspecs-do-in-cysession)
+- [161: What happens when you set testIsolation to false?](#161-what-happens-when-you-set-testisolation-to-false)
+- [162: How do you match requests in cy.intercept?](#162-how-do-you-match-requests-in-cyintercept)
+- [163: How do you change request headers with cy.intercept?](#163-how-do-you-change-request-headers-with-cyintercept)
+- [164: How do you send a dynamic response from an intercept?](#164-how-do-you-send-a-dynamic-response-from-an-intercept)
+- [165: How do you change a real response from the server?](#165-how-do-you-change-a-real-response-from-the-server)
+- [166: How do you simulate a network error?](#166-how-do-you-simulate-a-network-error)
+- [167: How do you simulate a slow network response?](#167-how-do-you-simulate-a-slow-network-response)
+- [168: How do you check what the app sent in a request?](#168-how-do-you-check-what-the-app-sent-in-a-request)
+- [169: How do you wait for the same request several times?](#169-how-do-you-wait-for-the-same-request-several-times)
+- [170: How do you make an intercept match only a limited number of times?](#170-how-do-you-make-an-intercept-match-only-a-limited-number-of-times)
+- [171: How do you intercept GraphQL requests?](#171-how-do-you-intercept-graphql-requests)
+- [172: In what order are intercepts matched?](#172-in-what-order-are-intercepts-matched)
+- [173: What is the difference between requestTimeout and responseTimeout in cy.wait?](#173-what-is-the-difference-between-requesttimeout-and-responsetimeout-in-cywait)
+- [174: Should you stub every network request?](#174-should-you-stub-every-network-request)
+- [175: How do you use fixtures with this context in hooks?](#175-how-do-you-use-fixtures-with-this-context-in-hooks)
+- [176: How do aliases work with the this context?](#176-how-do-aliases-work-with-the-this-context)
+- [177: What is the difference between query aliases and static aliases?](#177-what-is-the-difference-between-query-aliases-and-static-aliases)
+- [178: Should tests share data with each other?](#178-should-tests-share-data-with-each-other)
+- [179: How do you seed the database before a test?](#179-how-do-you-seed-the-database-before-a-test)
+- [180: Why should you clean state before tests and not after?](#180-why-should-you-clean-state-before-tests-and-not-after)
+- [181: What options does cy.request support?](#181-what-options-does-cyrequest-support)
+- [182: How do you test an API with Cypress?](#182-how-do-you-test-an-api-with-cypress)
+- [183: Does cy.request use the browser's cookies?](#183-does-cyrequest-use-the-browsers-cookies)
+- [184: What is cy.origin?](#184-what-is-cyorigin)
+- [185: How do you pass values into cy.origin?](#185-how-do-you-pass-values-into-cyorigin)
+- [186: What is injectDocumentDomain?](#186-what-is-injectdocumentdomain)
+- [187: What does chromeWebSecurity: false do?](#187-what-does-chromewebsecurity-false-do)
+- [188: How do you work with iframes?](#188-how-do-you-work-with-iframes)
+- [189: How do you work with Shadow DOM?](#189-how-do-you-work-with-shadow-dom)
+- [190: How do you test a file download?](#190-how-do-you-test-a-file-download)
+- [191: What options does selectFile have?](#191-what-options-does-selectfile-have)
+- [192: How do you test code that opens a new window with window.open?](#192-how-do-you-test-code-that-opens-a-new-window-with-windowopen)
+- [193: How do you handle alert and confirm dialogs?](#193-how-do-you-handle-alert-and-confirm-dialogs)
+- [194: How do you handle uncaught exceptions from the app?](#194-how-do-you-handle-uncaught-exceptions-from-the-app)
+- [195: What is the difference between cy.on and Cypress.on?](#195-what-is-the-difference-between-cyon-and-cypresson)
+- [196: What Cypress events can you listen to in the browser?](#196-what-cypress-events-can-you-listen-to-in-the-browser)
+- [197: How do you change things in the app before it loads?](#197-how-do-you-change-things-in-the-app-before-it-loads)
+- [198: How do you control dates with cy.clock?](#198-how-do-you-control-dates-with-cyclock)
+- [199: How do you check stub calls with arguments?](#199-how-do-you-check-stub-calls-with-arguments)
+- [200: How do you stub a method on an object the app uses?](#200-how-do-you-stub-a-method-on-an-object-the-app-uses)
+- [201: How do you spy on console errors during a test?](#201-how-do-you-spy-on-console-errors-during-a-test)
+- [202: How do test retries work in detail?](#202-how-do-test-retries-work-in-detail)
+- [203: What are the common causes of flaky Cypress tests?](#203-what-are-the-common-causes-of-flaky-cypress-tests)
+- [204: How do you fix a flaky test?](#204-how-do-you-fix-a-flaky-test)
+- [205: What is conditional testing and why is it a problem?](#205-what-is-conditional-testing-and-why-is-it-a-problem)
+- [206: When is conditional testing acceptable, and how do you do it safely?](#206-when-is-conditional-testing-acceptable-and-how-do-you-do-it-safely)
+- [207: What does the "detached from the DOM" error mean?](#207-what-does-the-detached-from-the-dom-error-mean)
+- [208: What does the error "element is being covered by another element" mean?](#208-what-does-the-error-element-is-being-covered-by-another-element-mean)
+- [209: How does Cypress handle animations?](#209-how-does-cypress-handle-animations)
+- [210: What is scrollBehavior?](#210-what-is-scrollbehavior)
+- [211: How do you test a responsive design on several screen sizes?](#211-how-do-you-test-a-responsive-design-on-several-screen-sizes)
+- [212: How do you write data-driven tests?](#212-how-do-you-write-data-driven-tests)
+- [213: How do you use the Page Object Model in Cypress?](#213-how-do-you-use-the-page-object-model-in-cypress)
+- [214: What are app actions and how do they compare to page objects?](#214-what-are-app-actions-and-how-do-they-compare-to-page-objects)
+- [215: When should you use a custom command and when a plain function?](#215-when-should-you-use-a-custom-command-and-when-a-plain-function)
+- [216: How do you run tests against different environments?](#216-how-do-you-run-tests-against-different-environments)
+- [217: Can you have more than one config file?](#217-can-you-have-more-than-one-config-file)
+- [218: How do you change the config inside setupNodeEvents?](#218-how-do-you-change-the-config-inside-setupnodeevents)
+- [219: How do you change config for one test or one suite?](#219-how-do-you-change-config-for-one-test-or-one-suite)
+- [220: Can you change config while a test runs?](#220-can-you-change-config-while-a-test-runs)
+- [221: How do you use a .env file with Cypress?](#221-how-do-you-use-a-env-file-with-cypress)
+- [222: Why is cy.env asynchronous and what does that change?](#222-why-is-cyenv-asynchronous-and-what-does-that-change)
+- [223: What Node events can you listen to in setupNodeEvents?](#223-what-node-events-can-you-listen-to-in-setupnodeevents)
+- [224: How do you change browser launch options?](#224-how-do-you-change-browser-launch-options)
+- [225: What is a preprocessor in Cypress?](#225-what-is-a-preprocessor-in-cypress)
+- [226: How do you collect code coverage from Cypress tests?](#226-how-do-you-collect-code-coverage-from-cypress-tests)
+- [227: How do you generate HTML or JUnit reports?](#227-how-do-you-generate-html-or-junit-reports)
+- [228: How do you use more than one reporter at once?](#228-how-do-you-use-more-than-one-reporter-at-once)
+- [229: How do you run Cypress in CI?](#229-how-do-you-run-cypress-in-ci)
+- [230: How do you run Cypress with GitHub Actions?](#230-how-do-you-run-cypress-with-github-actions)
+- [231: Why and how do you cache the Cypress binary in CI?](#231-why-and-how-do-you-cache-the-cypress-binary-in-ci)
+- [232: How do you run tests in parallel with Cypress Cloud?](#232-how-do-you-run-tests-in-parallel-with-cypress-cloud)
+- [233: How can you run tests in parallel without Cypress Cloud?](#233-how-can-you-run-tests-in-parallel-without-cypress-cloud)
+- [234: What are --group and --tag used for?](#234-what-are---group-and---tag-used-for)
+- [235: What features does Cypress Cloud offer?](#235-what-features-does-cypress-cloud-offer)
+- [236: What is Test Replay?](#236-what-is-test-replay)
+- [237: How do you run only tests with a certain tag?](#237-how-do-you-run-only-tests-with-a-certain-tag)
+- [238: How do you configure screenshots?](#238-how-do-you-configure-screenshots)
+- [239: How do you configure video recording?](#239-how-do-you-configure-video-recording)
+- [240: How do you do visual regression testing with Cypress?](#240-how-do-you-do-visual-regression-testing-with-cypress)
+- [241: How do you check accessibility with Cypress?](#241-how-do-you-check-accessibility-with-cypress)
+- [242: How do you set up component testing?](#242-how-do-you-set-up-component-testing)
+- [243: How do you pass props and test events in a React component test?](#243-how-do-you-pass-props-and-test-events-in-a-react-component-test)
+- [244: How do you mount a component that needs providers?](#244-how-do-you-mount-a-component-that-needs-providers)
+- [245: How do you write a Vue component test?](#245-how-do-you-write-a-vue-component-test)
+- [246: How do you write an Angular component test?](#246-how-do-you-write-an-angular-component-test)
+- [247: Can you use cy.intercept in component tests?](#247-can-you-use-cyintercept-in-component-tests)
+- [248: When should you use component tests and when E2E tests?](#248-when-should-you-use-component-tests-and-when-e2e-tests)
+- [249: How do Cypress component tests compare to Jest with Testing Library?](#249-how-do-cypress-component-tests-compare-to-jest-with-testing-library)
+- [250: How do you load global styles in component tests?](#250-how-do-you-load-global-styles-in-component-tests)
+- [251: How do you debug a failing test in the Cypress app?](#251-how-do-you-debug-a-failing-test-in-the-cypress-app)
+- [252: How do you use debugger in a Cypress test?](#252-how-do-you-use-debugger-in-a-cypress-test)
+- [253: How do you see Cypress's own debug logs?](#253-how-do-you-see-cypresss-own-debug-logs)
+- [254: How do you control typing speed?](#254-how-do-you-control-typing-speed)
+- [255: How do you type text that contains curly braces?](#255-how-do-you-type-text-that-contains-curly-braces)
+- [256: How do you type into a contenteditable element?](#256-how-do-you-type-into-a-contenteditable-element)
+- [257: What options does .click accept?](#257-what-options-does-click-accept)
+- [258: How do you test drag and drop?](#258-how-do-you-test-drag-and-drop)
+- [259: How do you test a hover menu that opens with JavaScript?](#259-how-do-you-test-a-hover-menu-that-opens-with-javascript)
+- [260: How do you test a specific cell in a table?](#260-how-do-you-test-a-specific-cell-in-a-table)
+- [261: How do you compare a value before and after an action?](#261-how-do-you-compare-a-value-before-and-after-an-action)
+- [262: How do you check that a list is sorted?](#262-how-do-you-check-that-a-list-is-sorted)
+- [263: What is the difference between should(callback) and then(callback)?](#263-what-is-the-difference-between-shouldcallback-and-thencallback)
+- [264: How do you add custom Chai assertions?](#264-how-do-you-add-custom-chai-assertions)
+- [265: Can you write the Cypress config as an ES module or in TypeScript?](#265-can-you-write-the-cypress-config-as-an-es-module-or-in-typescript)
+- [266: How do you run Cypress in a monorepo?](#266-how-do-you-run-cypress-in-a-monorepo)
+- [267: How do you test login with a third-party provider like Google or Auth0?](#267-how-do-you-test-login-with-a-third-party-provider-like-google-or-auth0)
+- [268: How do you test an email flow, like a password reset?](#268-how-do-you-test-an-email-flow-like-a-password-reset)
+- [269: How do you wait for a loading spinner to go away?](#269-how-do-you-wait-for-a-loading-spinner-to-go-away)
+- [270: How do you know the page is ready before testing it?](#270-how-do-you-know-the-page-is-ready-before-testing-it)
+- [271: How do you clear all browser state manually?](#271-how-do-you-clear-all-browser-state-manually)
+- [272: What changed for cookie commands in Cypress 16?](#272-what-changed-for-cookie-commands-in-cypress-16)
+- [273: How do you run a shell command now that cy.exec is removed?](#273-how-do-you-run-a-shell-command-now-that-cyexec-is-removed)
+- [274: Can you import Node modules like fs in a spec file?](#274-can-you-import-node-modules-like-fs-in-a-spec-file)
+- [275: How do you generate random test data?](#275-how-do-you-generate-random-test-data)
+- [276: What are some popular Cypress plugins?](#276-what-are-some-popular-cypress-plugins)
+- [277: How do you test time zones and locales?](#277-how-do-you-test-time-zones-and-locales)
+- [278: How do you fake the user's location?](#278-how-do-you-fake-the-users-location)
+- [279: Should you stub window.fetch or use cy.intercept?](#279-should-you-stub-windowfetch-or-use-cyintercept)
+- [280: How do you test WebSockets in Cypress?](#280-how-do-you-test-websockets-in-cypress)
+- [281: How do you test a redirect?](#281-how-do-you-test-a-redirect)
+- [282: How do you visit a page protected with basic auth?](#282-how-do-you-visit-a-page-protected-with-basic-auth)
+- [283: How do you visit a page that returns an error status?](#283-how-do-you-visit-a-page-that-returns-an-error-status)
+- [284: How do you test how the UI handles different server responses?](#284-how-do-you-test-how-the-ui-handles-different-server-responses)
+- [285: Should you use cy.getByRole, data-cy attributes or Testing Library?](#285-should-you-use-cygetbyrole-data-cy-attributes-or-testing-library)
+- [286: How do you use Testing Library with Cypress?](#286-how-do-you-use-testing-library-with-cypress)
+- [287: How do you use Cypress Studio in practice?](#287-how-do-you-use-cypress-studio-in-practice)
+- [288: How does cy.prompt handle sensitive data and changes in the app?](#288-how-does-cyprompt-handle-sensitive-data-and-changes-in-the-app)
+- [289: How do you exclude some files from running as specs?](#289-how-do-you-exclude-some-files-from-running-as-specs)
+- [290: What do watchForFileChanges and numTestsKeptInMemory do?](#290-what-do-watchforfilechanges-and-numtestskeptinmemory-do)
+- [291: How do you run all specs at once in open mode?](#291-how-do-you-run-all-specs-at-once-in-open-mode)
+- [292: How do you test a form validation message from the browser?](#292-how-do-you-test-a-form-validation-message-from-the-browser)
+- [293: How do you test a page that polls the server?](#293-how-do-you-test-a-page-that-polls-the-server)
+- [294: How do you test infinite scroll?](#294-how-do-you-test-infinite-scroll)
+- [295: How do you check that something was copied to the clipboard?](#295-how-do-you-check-that-something-was-copied-to-the-clipboard)
+- [296: How do you test print or other browser features that open native dialogs?](#296-how-do-you-test-print-or-other-browser-features-that-open-native-dialogs)
+- [297: How do you check that no request was made?](#297-how-do-you-check-that-no-request-was-made)
+- [298: How do you count how many times a request was made?](#298-how-do-you-count-how-many-times-a-request-was-made)
+- [299: How do you block third-party scripts during tests?](#299-how-do-you-block-third-party-scripts-during-tests)
+- [300: How do you test a feature behind a feature flag?](#300-how-do-you-test-a-feature-behind-a-feature-flag)
+
+### Advanced Questions (301-450)
+
+- [301: What is the architecture of Cypress?](#301-what-is-the-architecture-of-cypress)
+- [302: Why does Cypress run the app inside an iframe?](#302-why-does-cypress-run-the-app-inside-an-iframe)
+- [303: How does Cypress intercept network traffic?](#303-how-does-cypress-intercept-network-traffic)
+- [304: How does the command queue work internally?](#304-how-does-the-command-queue-work-internally)
+- [305: Why does mixing async/await with Cypress commands not work?](#305-why-does-mixing-asyncawait-with-cypress-commands-not-work)
+- [306: Can you return a promise from .then()?](#306-can-you-return-a-promise-from-then)
+- [307: How does Cypress know when a command is done?](#307-how-does-cypress-know-when-a-command-is-done)
+- [308: What makes an assertion able to retry the chain before it?](#308-what-makes-an-assertion-able-to-retry-the-chain-before-it)
+- [309: How do you write a custom query that retries correctly?](#309-how-do-you-write-a-custom-query-that-retries-correctly)
+- [310: What exactly does Cypress check before an action?](#310-what-exactly-does-cypress-check-before-an-action)
+- [311: How does Cypress decide if an element is visible?](#311-how-does-cypress-decide-if-an-element-is-visible)
+- [312: Are Cypress events the same as real user events?](#312-are-cypress-events-the-same-as-real-user-events)
+- [313: How does cy.type work internally?](#313-how-does-cytype-work-internally)
+- [314: Why does cy.origin need serializable arguments?](#314-why-does-cyorigin-need-serializable-arguments)
+- [315: What are the risks of setting chromeWebSecurity to false?](#315-what-are-the-risks-of-setting-chromewebsecurity-to-false)
+- [316: What does modifyObstructiveCode do?](#316-what-does-modifyobstructivecode-do)
+- [317: What is removeSRIAttributes?](#317-what-is-removesriattributes)
+- [318: How does Cypress manage browser memory during long runs?](#318-how-does-cypress-manage-browser-memory-during-long-runs)
+- [319: What do you do when the browser crashes during a run in CI?](#319-what-do-you-do-when-the-browser-crashes-during-a-run-in-ci)
+- [320: How do you add Chromium flags in Docker to avoid shared memory problems?](#320-how-do-you-add-chromium-flags-in-docker-to-avoid-shared-memory-problems)
+- [321: How big should a spec file be?](#321-how-big-should-a-spec-file-be)
+- [322: How does Cypress Cloud decide which spec runs on which machine?](#322-how-does-cypress-cloud-decide-which-spec-runs-on-which-machine)
+- [323: Are there alternatives to Cypress Cloud for recording and parallel runs?](#323-are-there-alternatives-to-cypress-cloud-for-recording-and-parallel-runs)
+- [324: What exactly happens between tests when testIsolation is on?](#324-what-exactly-happens-between-tests-when-testisolation-is-on)
+- [325: How does cy.session cache and restore state?](#325-how-does-cysession-cache-and-restore-state)
+- [326: How do you use cy.session with logins across several origins?](#326-how-do-you-use-cysession-with-logins-across-several-origins)
+- [327: How do you design test data so tests can run in parallel?](#327-how-do-you-design-test-data-so-tests-can-run-in-parallel)
+- [328: How do you test against a shared environment like staging?](#328-how-do-you-test-against-a-shared-environment-like-staging)
+- [329: What is a good strategy for mixing stubbed and real network tests?](#329-what-is-a-good-strategy-for-mixing-stubbed-and-real-network-tests)
+- [330: How do you keep fixtures in sync with the real API?](#330-how-do-you-keep-fixtures-in-sync-with-the-real-api)
+- [331: What request and response events can you use inside cy.intercept?](#331-what-request-and-response-events-can-you-use-inside-cyintercept)
+- [332: How do you add a header to every request in all tests?](#332-how-do-you-add-a-header-to-every-request-in-all-tests)
+- [333: Do intercepts carry over between tests?](#333-do-intercepts-carry-over-between-tests)
+- [334: How do you match requests by query parameters correctly?](#334-how-do-you-match-requests-by-query-parameters-correctly)
+- [335: What are common mistakes with URL patterns in cy.intercept?](#335-what-are-common-mistakes-with-url-patterns-in-cyintercept)
+- [336: Can cy.wait('@alias') catch a request that happened before the wait?](#336-can-cywaitalias-catch-a-request-that-happened-before-the-wait)
+- [337: How do you test a race condition, like two responses arriving in the wrong order?](#337-how-do-you-test-a-race-condition-like-two-responses-arriving-in-the-wrong-order)
+- [338: How do cy.clock and network requests interact?](#338-how-do-cyclock-and-network-requests-interact)
+- [339: What are the limits of cy.clock?](#339-what-are-the-limits-of-cyclock)
+- [340: How do you stub something the app uses as soon as it starts?](#340-how-do-you-stub-something-the-app-uses-as-soon-as-it-starts)
+- [341: How do you stop third-party scripts from affecting your tests?](#341-how-do-you-stop-third-party-scripts-from-affecting-your-tests)
+- [342: How do you test a feature flag service that uses streaming?](#342-how-do-you-test-a-feature-flag-service-that-uses-streaming)
+- [343: How do you test OAuth or OIDC login flows?](#343-how-do-you-test-oauth-or-oidc-login-flows)
+- [344: How do you test two-factor authentication with one-time codes?](#344-how-do-you-test-two-factor-authentication-with-one-time-codes)
+- [345: How do you deal with CAPTCHA in tests?](#345-how-do-you-deal-with-captcha-in-tests)
+- [346: How do you test a payment form that lives in a cross-origin iframe?](#346-how-do-you-test-a-payment-form-that-lives-in-a-cross-origin-iframe)
+- [347: How do you run tests across several browsers in CI?](#347-how-do-you-run-tests-across-several-browsers-in-ci)
+- [348: What is the experimental WebKit support?](#348-what-is-the-experimental-webkit-support)
+- [349: What does the deprecation of Electron as a test browser mean for you?](#349-what-does-the-deprecation-of-electron-as-a-test-browser-mean-for-you)
+- [350: What are the differences between headed and headless runs?](#350-what-are-the-differences-between-headed-and-headless-runs)
+- [351: How do you run Cypress from a Node script?](#351-how-do-you-run-cypress-from-a-node-script)
+- [352: When would you use the Module API instead of the CLI?](#352-when-would-you-use-the-module-api-instead-of-the-cli)
+- [353: How do you write a custom reporter?](#353-how-do-you-write-a-custom-reporter)
+- [354: What happens if two plugins register the same Node event?](#354-what-happens-if-two-plugins-register-the-same-node-event)
+- [355: How do you build a reusable Cypress plugin for your company?](#355-how-do-you-build-a-reusable-cypress-plugin-for-your-company)
+- [356: What are good rules for designing custom commands?](#356-what-are-good-rules-for-designing-custom-commands)
+- [357: How do you write a custom command with a good Command Log entry?](#357-how-do-you-write-a-custom-command-with-a-good-command-log-entry)
+- [358: How do you hide passwords and tokens from the Command Log?](#358-how-do-you-hide-passwords-and-tokens-from-the-command-log)
+- [359: How do you handle secrets in Cypress tests in CI?](#359-how-do-you-handle-secrets-in-cypress-tests-in-ci)
+- [360: Why was Cypress.env removed in Cypress 16?](#360-why-was-cypressenv-removed-in-cypress-16)
+- [361: How do you migrate a project from Cypress.env to the new APIs?](#361-how-do-you-migrate-a-project-from-cypressenv-to-the-new-apis)
+- [362: What is your checklist for upgrading to Cypress 16?](#362-what-is-your-checklist-for-upgrading-to-cypress-16)
+- [363: What were the main breaking changes in Cypress 14 and 15?](#363-what-were-the-main-breaking-changes-in-cypress-14-and-15)
+- [364: How do you plan the upgrade of a big Cypress suite?](#364-how-do-you-plan-the-upgrade-of-a-big-cypress-suite)
+- [365: How would you move a test suite from Selenium to Cypress?](#365-how-would-you-move-a-test-suite-from-selenium-to-cypress)
+- [366: When would you pick Playwright over Cypress?](#366-when-would-you-pick-playwright-over-cypress)
+- [367: Which metrics do you track for a Cypress suite?](#367-which-metrics-do-you-track-for-a-cypress-suite)
+- [368: How do you handle flaky tests across a team?](#368-how-do-you-handle-flaky-tests-across-a-team)
+- [369: How do you make a slow Cypress suite faster?](#369-how-do-you-make-a-slow-cypress-suite-faster)
+- [370: Why shouldn't tests depend on the order they run in?](#370-why-shouldnt-tests-depend-on-the-order-they-run-in)
+- [371: What should you know about hooks in the support file?](#371-what-should-you-know-about-hooks-in-the-support-file)
+- [372: How do you run setup only once for the whole run?](#372-how-do-you-run-setup-only-once-for-the-whole-run)
+- [373: How do hooks behave when a test is retried?](#373-how-do-hooks-behave-when-a-test-is-retried)
+- [374: How do you use Cypress.currentRetry?](#374-how-do-you-use-cypresscurrentretry)
+- [375: How do you debug tests that fail only in CI?](#375-how-do-you-debug-tests-that-fail-only-in-ci)
+- [376: What is the difference between Test Replay, videos and screenshots for debugging?](#376-what-is-the-difference-between-test-replay-videos-and-screenshots-for-debugging)
+- [377: How do you test an app in several languages?](#377-how-do-you-test-an-app-in-several-languages)
+- [378: Can you measure performance with Cypress?](#378-can-you-measure-performance-with-cypress)
+- [379: Can Cypress be used for load testing?](#379-can-cypress-be-used-for-load-testing)
+- [380: How do you test code that runs in a web worker?](#380-how-do-you-test-code-that-runs-in-a-web-worker)
+- [381: How do you test a canvas or WebGL app?](#381-how-do-you-test-a-canvas-or-webgl-app)
+- [382: How do you test virtualized lists?](#382-how-do-you-test-virtualized-lists)
+- [383: How do you wait for a condition that no query can check, like a background job?](#383-how-do-you-wait-for-a-condition-that-no-query-can-check-like-a-background-job)
+- [384: How do you make tests with CSS animations stable?](#384-how-do-you-make-tests-with-css-animations-stable)
+- [385: What should you know about Shadow DOM when testing web components?](#385-what-should-you-know-about-shadow-dom-when-testing-web-components)
+- [386: How do you test a micro frontend application?](#386-how-do-you-test-a-micro-frontend-application)
+- [387: What should you watch out for when testing server-rendered apps like Next.js?](#387-what-should-you-watch-out-for-when-testing-server-rendered-apps-like-nextjs)
+- [388: What are the limits of component testing with Next.js?](#388-what-are-the-limits-of-component-testing-with-nextjs)
+- [389: What changed for Angular component testing in Cypress 16?](#389-what-changed-for-angular-component-testing-in-cypress-16)
+- [390: How do you customize the dev server for component tests?](#390-how-do-you-customize-the-dev-server-for-component-tests)
+- [391: How does component testing work under the hood?](#391-how-does-component-testing-work-under-the-hood)
+- [392: How do you provide a store like Redux or Pinia in component tests?](#392-how-do-you-provide-a-store-like-redux-or-pinia-in-component-tests)
+- [393: How do you test routing in a component test?](#393-how-do-you-test-routing-in-a-component-test)
+- [394: How do you test a custom React hook or Vue composable with Cypress?](#394-how-do-you-test-a-custom-react-hook-or-vue-composable-with-cypress)
+- [395: How do you combine coverage from E2E, component and unit tests?](#395-how-do-you-combine-coverage-from-e2e-component-and-unit-tests)
+- [396: How do you instrument a Vite app for Cypress coverage?](#396-how-do-you-instrument-a-vite-app-for-cypress-coverage)
+- [397: What are the limits of code coverage from E2E tests?](#397-what-are-the-limits-of-code-coverage-from-e2e-tests)
+- [398: Can Cypress be used for security testing?](#398-can-cypress-be-used-for-security-testing)
+- [399: How do you test for Content Security Policy violations?](#399-how-do-you-test-for-content-security-policy-violations)
+- [400: How do you test an app that uses a self-signed certificate or client certificates?](#400-how-do-you-test-an-app-that-uses-a-self-signed-certificate-or-client-certificates)
+- [401: How do you run Cypress behind a corporate proxy?](#401-how-do-you-run-cypress-behind-a-corporate-proxy)
+- [402: What is the hosts option used for?](#402-what-is-the-hosts-option-used-for)
+- [403: Can Cypress test mobile behavior?](#403-can-cypress-test-mobile-behavior)
+- [404: How do you test touch gestures like swipe?](#404-how-do-you-test-touch-gestures-like-swipe)
+- [405: How do you test what the app does when the user goes offline?](#405-how-do-you-test-what-the-app-does-when-the-user-goes-offline)
+- [406: How do you use the Chrome DevTools Protocol from a Cypress test?](#406-how-do-you-use-the-chrome-devtools-protocol-from-a-cypress-test)
+- [407: What is cypress-real-events and when do you need it?](#407-what-is-cypress-real-events-and-when-do-you-need-it)
+- [408: How does Cypress fit into a test pyramid?](#408-how-does-cypress-fit-into-a-test-pyramid)
+- [409: How do you decide if a check belongs in a unit, component or E2E test?](#409-how-do-you-decide-if-a-check-belongs-in-a-unit-component-or-e2e-test)
+- [410: How do you test keyboard navigation and focus order?](#410-how-do-you-test-keyboard-navigation-and-focus-order)
+- [411: How do you test focus handling in a modal dialog?](#411-how-do-you-test-focus-handling-in-a-modal-dialog)
+- [412: How would you structure a large Cypress project?](#412-how-would-you-structure-a-large-cypress-project)
+- [413: What is a test data factory and why use one?](#413-what-is-a-test-data-factory-and-why-use-one)
+- [414: How do you clean up data created by tests?](#414-how-do-you-clean-up-data-created-by-tests)
+- [415: How do you run only the specs affected by a pull request?](#415-how-do-you-run-only-the-specs-affected-by-a-pull-request)
+- [416: How do you run E2E tests against preview deployments for each pull request?](#416-how-do-you-run-e2e-tests-against-preview-deployments-for-each-pull-request)
+- [417: What is the difference between a smoke suite and a regression suite?](#417-what-is-the-difference-between-a-smoke-suite-and-a-regression-suite)
+- [418: How do you check that a new test is not flaky before merging?](#418-how-do-you-check-that-a-new-test-is-not-flaky-before-merging)
+- [419: How do you share Cypress setup across many projects?](#419-how-do-you-share-cypress-setup-across-many-projects)
+- [420: Does cy.session with cacheAcrossSpecs share sessions between parallel machines?](#420-does-cysession-with-cacheacrossspecs-share-sessions-between-parallel-machines)
+- [421: How do you add extra information to failure messages?](#421-how-do-you-add-extra-information-to-failure-messages)
+- [422: How do you test your own custom commands?](#422-how-do-you-test-your-own-custom-commands)
+- [423: Scenario: your E2E suite takes two hours. What do you do?](#423-scenario-your-e2e-suite-takes-two-hours-what-do-you-do)
+- [424: Scenario: tests pass in Chrome but fail in Firefox. How do you approach it?](#424-scenario-tests-pass-in-chrome-but-fail-in-firefox-how-do-you-approach-it)
+- [425: Scenario: after a framework upgrade, many tests fail with detached element errors. What do you do?](#425-scenario-after-a-framework-upgrade-many-tests-fail-with-detached-element-errors-what-do-you-do)
+- [426: Scenario: logging in takes 10 seconds and every test logs in. How do you fix it?](#426-scenario-logging-in-takes-10-seconds-and-every-test-logs-in-how-do-you-fix-it)
+- [427: Scenario: checkout redirects to a third-party domain and back. How do you test it?](#427-scenario-checkout-redirects-to-a-third-party-domain-and-back-how-do-you-test-it)
+- [428: Scenario: the frontend calls ten microservices. How do you stub them in a clean way?](#428-scenario-the-frontend-calls-ten-microservices-how-do-you-stub-them-in-a-clean-way)
+- [429: Scenario: you need to check the content of an exported Excel or PDF file. How?](#429-scenario-you-need-to-check-the-content-of-an-exported-excel-or-pdf-file-how)
+- [430: Scenario: your test needs data from a service owned by another team. What do you do?](#430-scenario-your-test-needs-data-from-a-service-owned-by-another-team-what-do-you-do)
+- [431: Scenario: the team uses cy.wait(5000) everywhere. How do you fix it?](#431-scenario-the-team-uses-cywait5000-everywhere-how-do-you-fix-it)
+- [432: Scenario: a promo banner appears only for some users and blocks clicks. How do you handle it?](#432-scenario-a-promo-banner-appears-only-for-some-users-and-blocks-clicks-how-do-you-handle-it)
+- [433: Scenario: CI runs crash with out of memory errors in one big spec. How do you fix it?](#433-scenario-ci-runs-crash-with-out-of-memory-errors-in-one-big-spec-how-do-you-fix-it)
+- [434: Scenario: you must test sign-up with email confirmation from start to end. How?](#434-scenario-you-must-test-sign-up-with-email-confirmation-from-start-to-end-how)
+- [435: Scenario: selectors break with every UI redesign. What do you change?](#435-scenario-selectors-break-with-every-ui-redesign-what-do-you-change)
+- [436: Scenario: the team starts using cy.prompt and Studio to write tests. What do you watch for?](#436-scenario-the-team-starts-using-cyprompt-and-studio-to-write-tests-what-do-you-watch-for)
+- [437: Scenario: you want to upgrade to Cypress 16, but a plugin you need doesn't support it yet. What do you do?](#437-scenario-you-want-to-upgrade-to-cypress-16-but-a-plugin-you-need-doesnt-support-it-yet-what-do-you-do)
+- [438: Scenario: after upgrading to Cypress 16, some intercept tests fail in Chrome. Why could that be?](#438-scenario-after-upgrading-to-cypress-16-some-intercept-tests-fail-in-chrome-why-could-that-be)
+- [439: Scenario: cy.wait('@alias') sometimes times out with "no request ever occurred". What do you check?](#439-scenario-cywaitalias-sometimes-times-out-with-no-request-ever-occurred-what-do-you-check)
+- [440: Scenario: a feature behaves differently around midnight. How do you test it?](#440-scenario-a-feature-behaves-differently-around-midnight-how-do-you-test-it)
+- [441: Scenario: tests pass on developers' laptops but fail in CI because CI runs in UTC. What do you do?](#441-scenario-tests-pass-on-developers-laptops-but-fail-in-ci-because-ci-runs-in-utc-what-do-you-do)
+- [442: Scenario: a spec passes alone but fails when the whole suite runs. Why?](#442-scenario-a-spec-passes-alone-but-fails-when-the-whole-suite-runs-why)
+- [443: Scenario: parallel CI machines overwrite each other's data. How do you fix it?](#443-scenario-parallel-ci-machines-overwrite-each-others-data-how-do-you-fix-it)
+- [444: Scenario: Cypress Cloud costs are growing too fast. What can you do?](#444-scenario-cypress-cloud-costs-are-growing-too-fast-what-can-you-do)
+- [445: Scenario: you want every test to fail on any console error or 5xx response. How do you set it up?](#445-scenario-you-want-every-test-to-fail-on-any-console-error-or-5xx-response-how-do-you-set-it-up)
+- [446: Scenario: you need to test a flow with two users, like an approval process. How?](#446-scenario-you-need-to-test-a-flow-with-two-users-like-an-approval-process-how)
+- [447: Scenario: a new team member writes tests that check implementation details. How do you guide them?](#447-scenario-a-new-team-member-writes-tests-that-check-implementation-details-how-do-you-guide-them)
+- [448: What makes a good Cypress test?](#448-what-makes-a-good-cypress-test)
+- [449: How do you decide what to stub in an E2E test?](#449-how-do-you-decide-what-to-stub-in-an-e2e-test)
+- [450: What do you check when reviewing a pull request with Cypress tests?](#450-what-do-you-check-when-reviewing-a-pull-request-with-cypress-tests)
+
+---
+
 # Easy Questions (1-150)
 
 ## 1: What is Cypress?
@@ -4242,9 +4703,9 @@ Cypress commands are not promises. They return chainers, and they run later from
 
 ```js
 // doesn't work as expected
-it('test', async () => {
-  const el = await cy.get('h1') // not the element
-})
+it("test", async () => {
+  const el = await cy.get("h1"); // not the element
+});
 ```
 
 Write tests in the chained style, and use `.then()` when you need a value. Inside a `.then()`, you can still use normal `async` functions that don't call Cypress commands.
@@ -4254,9 +4715,11 @@ Write tests in the chained style, and use `.then()` when you need a value. Insid
 Yes. If a `.then()` callback returns a promise, Cypress waits for it to resolve and uses the result as the new subject.
 
 ```js
-cy.wrap(null).then(() => {
-  return fetch('/api/health').then((res) => res.json())
-}).should('have.property', 'ok', true)
+cy.wrap(null)
+  .then(() => {
+    return fetch("/api/health").then((res) => res.json());
+  })
+  .should("have.property", "ok", true);
 ```
 
 But you can't mix the two: if a `.then()` callback both calls Cypress commands and returns a different promise, Cypress throws an error. Either queue commands or return a promise.
@@ -4284,17 +4747,17 @@ Non-query commands (`.then()`, `.click()`, `cy.request()`) break the chain. Asse
 The outer function runs once when the command is added, so it does setup like logging and timeout. The returned inner function runs on every retry and must only read state.
 
 ```js
-Cypress.Commands.addQuery('getStoreValue', function (path, options = {}) {
-  this.set('timeout', options.timeout)
-  Cypress.log({ name: 'getStoreValue', message: path })
+Cypress.Commands.addQuery("getStoreValue", function (path, options = {}) {
+  this.set("timeout", options.timeout);
+  Cypress.log({ name: "getStoreValue", message: path });
 
   return () => {
-    const store = cy.state('window').appStore
-    return Cypress._.get(store.getState(), path)
-  }
-})
+    const store = cy.state("window").appStore;
+    return Cypress._.get(store.getState(), path);
+  };
+});
 
-cy.getStoreValue('cart.items.length').should('eq', 2)
+cy.getStoreValue("cart.items.length").should("eq", 2);
 ```
 
 Don't call other Cypress commands inside the inner function, and don't change anything there. `cy.state('window')` is an internal API used here to get the app's window, so check it against your Cypress version.
@@ -4348,12 +4811,12 @@ That means:
 - Values you want back must be yielded from the callback
 
 ```js
-cy.origin('https://auth.example.com', { args: { user: 'ana' } }, ({ user }) => {
-  cy.get('#user').type(user)
-  return cy.get('#welcome').invoke('text')
+cy.origin("https://auth.example.com", { args: { user: "ana" } }, ({ user }) => {
+  cy.get("#user").type(user);
+  return cy.get("#welcome").invoke("text");
 }).then((text) => {
   // text from the other origin
-})
+});
 ```
 
 ## 315: What are the risks of setting chromeWebSecurity to false?
@@ -4373,7 +4836,7 @@ Some apps have code that tries to detect if they are framed or automated, like `
 ```js
 module.exports = defineConfig({
   modifyObstructiveCode: true, // default
-})
+});
 ```
 
 If the rewriting causes problems (rare), you can turn it off, but then framebusting code in your app or a third party may break the test runner.
@@ -4411,12 +4874,12 @@ In most cases, Cypress fails the spec that crashed and moves on to the next spec
 ## 320: How do you add Chromium flags in Docker to avoid shared memory problems?
 
 ```js
-on('before:browser:launch', (browser, launchOptions) => {
-  if (browser.family === 'chromium' && browser.name !== 'electron') {
-    launchOptions.args.push('--disable-dev-shm-usage')
+on("before:browser:launch", (browser, launchOptions) => {
+  if (browser.family === "chromium" && browser.name !== "electron") {
+    launchOptions.args.push("--disable-dev-shm-usage");
   }
-  return launchOptions
-})
+  return launchOptions;
+});
 ```
 
 By default Docker gives containers only 64 MB of `/dev/shm`, which Chrome uses heavily. This flag makes Chrome use `/tmp` instead. Running the container with a bigger `--shm-size` also works.
@@ -4472,20 +4935,28 @@ The page is left blank after `cy.session()` in both cases, so you need `cy.visit
 `cy.session()` stores cookies and storage for all domains, so a login that went through another origin is restored too.
 
 ```js
-cy.session(['sso', username], () => {
-  cy.visit('/login')
-  cy.get('[data-cy=sso-login]').click()
-  cy.origin('https://sso.example.com', { args: { username } }, ({ username }) => {
-    cy.get('#username').type(username)
-    cy.get('#password').type('secret')
-    cy.get('button[type=submit]').click()
-  })
-  cy.location('pathname').should('eq', '/home')
-}, {
-  validate() {
-    cy.request('/api/me').its('status').should('eq', 200)
+cy.session(
+  ["sso", username],
+  () => {
+    cy.visit("/login");
+    cy.get("[data-cy=sso-login]").click();
+    cy.origin(
+      "https://sso.example.com",
+      { args: { username } },
+      ({ username }) => {
+        cy.get("#username").type(username);
+        cy.get("#password").type("secret");
+        cy.get("button[type=submit]").click();
+      },
+    );
+    cy.location("pathname").should("eq", "/home");
   },
-})
+  {
+    validate() {
+      cy.request("/api/me").its("status").should("eq", 200);
+    },
+  },
+);
 ```
 
 ## 327: How do you design test data so tests can run in parallel?
@@ -4532,22 +5003,22 @@ The goal is that a change in the API breaks something before users see the bug.
 Inside a handler, `req.on()` lets you hook into the response:
 
 ```js
-cy.intercept('/api/**', (req) => {
-  req.on('before:response', (res) => {
+cy.intercept("/api/**", (req) => {
+  req.on("before:response", (res) => {
     // runs before the response goes to the browser, even if the request was stubbed
-    res.headers['cache-control'] = 'no-store'
-  })
+    res.headers["cache-control"] = "no-store";
+  });
 
-  req.on('response', (res) => {
+  req.on("response", (res) => {
     // runs when the real response arrives, you can change it
-    res.setDelay(500)
-  })
+    res.setDelay(500);
+  });
 
-  req.on('after:response', (res) => {
+  req.on("after:response", (res) => {
     // runs after the response was sent to the browser, read only
-    console.log(res.statusCode)
-  })
-})
+    console.log(res.statusCode);
+  });
+});
 ```
 
 `req.continue(callback)` is a shortcut for the `response` event that also ends the handler chain.
@@ -4559,10 +5030,10 @@ Use a middleware intercept in the support file:
 ```js
 // cypress/support/e2e.js
 beforeEach(() => {
-  cy.intercept({ url: '/api/**', middleware: true }, (req) => {
-    req.headers['x-test-run-id'] = Cypress.expose('runId') ?? 'local'
-  })
-})
+  cy.intercept({ url: "/api/**", middleware: true }, (req) => {
+    req.headers["x-test-run-id"] = Cypress.expose("runId") ?? "local";
+  });
+});
 ```
 
 Middleware intercepts run before normal ones and don't stop the request from reaching other handlers. So tests can still define their own stubs on the same URLs.
@@ -4579,10 +5050,10 @@ Match with `pathname` and `query` instead of the full URL string:
 
 ```js
 cy.intercept({
-  method: 'GET',
-  pathname: '/api/products',
-  query: { category: 'shoes', page: '2' },
-}).as('shoesPage2')
+  method: "GET",
+  pathname: "/api/products",
+  query: { category: "shoes", page: "2" },
+}).as("shoesPage2");
 ```
 
 Query values are compared as strings. Extra query parameters in the real request don't stop the match. This is more reliable than globs, where the order of parameters matters.
@@ -4604,9 +5075,9 @@ Yes. An intercept records every matching request from the moment it is defined. 
 So this is fine:
 
 ```js
-cy.intercept('GET', '/api/user').as('user')
-cy.visit('/') // request happens here
-cy.wait('@user') // still resolves
+cy.intercept("GET", "/api/user").as("user");
+cy.visit("/"); // request happens here
+cy.wait("@user"); // still resolves
 ```
 
 What matters is that the intercept was defined before the request was sent.
@@ -4616,19 +5087,25 @@ What matters is that the intercept was defined before the request was sent.
 Delay responses differently so the slow one arrives last:
 
 ```js
-cy.intercept({ method: 'GET', url: '/api/search?q=lap*', times: 1 }, {
-  body: { results: ['old result'] },
-  delay: 1500,
-}).as('slow')
-cy.intercept({ method: 'GET', url: '/api/search?q=laptop*', times: 1 }, {
-  body: { results: ['laptop'] },
-}).as('fast')
+cy.intercept(
+  { method: "GET", url: "/api/search?q=lap*", times: 1 },
+  {
+    body: { results: ["old result"] },
+    delay: 1500,
+  },
+).as("slow");
+cy.intercept(
+  { method: "GET", url: "/api/search?q=laptop*", times: 1 },
+  {
+    body: { results: ["laptop"] },
+  },
+).as("fast");
 
-cy.visit('/search')
-cy.get('[data-cy=search]').type('lap')
-cy.get('[data-cy=search]').type('top')
-cy.wait(['@fast', '@slow'])
-cy.get('[data-cy=result]').should('have.length', 1).and('have.text', 'laptop')
+cy.visit("/search");
+cy.get("[data-cy=search]").type("lap");
+cy.get("[data-cy=search]").type("top");
+cy.wait(["@fast", "@slow"]);
+cy.get("[data-cy=result]").should("have.length", 1).and("have.text", "laptop");
 ```
 
 If the app shows "old result", it doesn't cancel or ignore outdated requests.
@@ -4640,11 +5117,11 @@ If the app shows "old result", it doesn't cancel or ignore outdated requests.
 So if the app uses `setTimeout` to schedule a fetch, you need `cy.tick()` to start it. Then the response arrives at real speed. A common pattern:
 
 ```js
-cy.clock()
-cy.intercept('GET', '/api/notifications').as('poll')
-cy.visit('/')
-cy.tick(30000) // the app's 30 second polling timer fires
-cy.wait('@poll')
+cy.clock();
+cy.intercept("GET", "/api/notifications").as("poll");
+cy.visit("/");
+cy.tick(30000); // the app's 30 second polling timer fires
+cy.wait("@poll");
 ```
 
 ## 339: What are the limits of cy.clock?
@@ -4660,13 +5137,13 @@ cy.wait('@poll')
 Use the `window:before:load` event or `onBeforeLoad`, which run after the window is created but before the app's scripts run:
 
 ```js
-Cypress.on('window:before:load', (win) => {
-  win.__APP_CONFIG__ = { apiUrl: '/api', featureX: true }
-  cy.stub(win, 'IntersectionObserver').callsFake(function (cb) {
-    this.observe = () => cb([{ isIntersecting: true }])
-    this.disconnect = () => {}
-  })
-})
+Cypress.on("window:before:load", (win) => {
+  win.__APP_CONFIG__ = { apiUrl: "/api", featureX: true };
+  cy.stub(win, "IntersectionObserver").callsFake(function (cb) {
+    this.observe = () => cb([{ isIntersecting: true }]);
+    this.disconnect = () => {};
+  });
+});
 ```
 
 If you use `Cypress.on` in the support file, it applies to every page load in every test.
@@ -4706,21 +5183,21 @@ Generate the code in a task from the user's shared secret:
 
 ```js
 // cypress.config.js
-const { authenticator } = require('otplib')
+const { authenticator } = require("otplib");
 
-on('task', {
+on("task", {
   generateOtp(secret) {
-    return authenticator.generate(secret)
+    return authenticator.generate(secret);
   },
-})
+});
 ```
 
 ```js
-cy.env(['OTP_SECRET']).then(({ OTP_SECRET }) => {
-  cy.task('generateOtp', OTP_SECRET).then((code) => {
-    cy.get('[data-cy=otp]').type(code)
-  })
-})
+cy.env(["OTP_SECRET"]).then(({ OTP_SECRET }) => {
+  cy.task("generateOtp", OTP_SECRET).then((code) => {
+    cy.get("[data-cy=otp]").type(code);
+  });
+});
 ```
 
 For SMS codes, use a test phone number service with an API, or a backend switch that accepts a fixed code for test users only.
@@ -4756,7 +5233,7 @@ steps:
     with:
       browser: ${{ matrix.browser }}
       start: npm start
-      wait-on: 'http://localhost:3000'
+      wait-on: "http://localhost:3000"
 ```
 
 Running everything in every browser is expensive. A common choice: the full suite in Chrome, and a smaller smoke set in Firefox and others, maybe nightly. Note that Cypress 15 and later drive Firefox only through WebDriver BiDi, so you need a recent Firefox version.
@@ -4768,7 +5245,7 @@ Cypress can run tests in WebKit, the engine behind Safari, using Playwright's We
 ```js
 module.exports = defineConfig({
   experimentalWebKitSupport: true,
-})
+});
 ```
 
 ```bash
@@ -4807,25 +5284,25 @@ Use the Module API:
 
 ```js
 // scripts/run-e2e.js
-const cypress = require('cypress')
+const cypress = require("cypress");
 
 async function main() {
   const results = await cypress.run({
-    browser: 'chrome',
-    spec: 'cypress/e2e/smoke/**/*.cy.js',
+    browser: "chrome",
+    spec: "cypress/e2e/smoke/**/*.cy.js",
     config: { baseUrl: process.env.APP_URL },
-  })
+  });
 
-  if (results.status === 'failed') {
-    console.error('Cypress could not run:', results.message)
-    process.exit(1)
+  if (results.status === "failed") {
+    console.error("Cypress could not run:", results.message);
+    process.exit(1);
   }
 
-  console.log(`Passed: ${results.totalPassed}, failed: ${results.totalFailed}`)
-  process.exit(results.totalFailed > 0 ? 1 : 0)
+  console.log(`Passed: ${results.totalPassed}, failed: ${results.totalFailed}`);
+  process.exit(results.totalFailed > 0 ? 1 : 0);
 }
 
-main()
+main();
 ```
 
 `cypress.run()` takes the same options as the CLI and returns the results as an object. There is also `cypress.open()`.
@@ -4845,22 +5322,23 @@ Cypress uses Mocha reporters, so a custom reporter is a Mocha reporter class:
 
 ```js
 // reporters/simple.js
-const Mocha = require('mocha')
-const { EVENT_TEST_PASS, EVENT_TEST_FAIL, EVENT_RUN_END } = Mocha.Runner.constants
+const Mocha = require("mocha");
+const { EVENT_TEST_PASS, EVENT_TEST_FAIL, EVENT_RUN_END } =
+  Mocha.Runner.constants;
 
 class SimpleReporter {
   constructor(runner) {
-    const stats = { passed: 0, failed: 0 }
-    runner.on(EVENT_TEST_PASS, () => stats.passed++)
+    const stats = { passed: 0, failed: 0 };
+    runner.on(EVENT_TEST_PASS, () => stats.passed++);
     runner.on(EVENT_TEST_FAIL, (test, err) => {
-      stats.failed++
-      console.log(`FAIL: ${test.fullTitle()} - ${err.message}`)
-    })
-    runner.on(EVENT_RUN_END, () => console.log(stats))
+      stats.failed++;
+      console.log(`FAIL: ${test.fullTitle()} - ${err.message}`);
+    });
+    runner.on(EVENT_RUN_END, () => console.log(stats));
   }
 }
 
-module.exports = SimpleReporter
+module.exports = SimpleReporter;
 ```
 
 ```js
@@ -4887,18 +5365,18 @@ A plugin is usually an npm package with two entry points:
 ```js
 // my-plugin/node.js - used in setupNodeEvents
 module.exports = function registerMyPlugin(on, config) {
-  on('task', {
-    'myPlugin:seed'(data) {
-      return seed(data)
+  on("task", {
+    "myPlugin:seed"(data) {
+      return seed(data);
     },
-  })
-  return config
-}
+  });
+  return config;
+};
 ```
 
 ```js
 // my-plugin/support.js - imported in the support file
-Cypress.Commands.add('seed', (data) => cy.task('myPlugin:seed', data))
+Cypress.Commands.add("seed", (data) => cy.task("myPlugin:seed", data));
 ```
 
 Also ship TypeScript declarations for the commands, prefix task and command names to avoid clashes, list `cypress` as a peer dependency, and test the plugin against the Cypress versions you support.
@@ -4918,22 +5396,22 @@ Also ship TypeScript declarations for the commands, prefix task and command name
 Turn off the logs of inner commands and create your own log:
 
 ```js
-Cypress.Commands.add('createUser', (user) => {
+Cypress.Commands.add("createUser", (user) => {
   const log = Cypress.log({
-    name: 'createUser',
+    name: "createUser",
     message: user.email,
     autoEnd: false,
     consoleProps: () => ({ user }),
-  })
+  });
 
-  cy.request({ method: 'POST', url: '/api/users', body: user, log: false })
-    .its('body', { log: false })
+  cy.request({ method: "POST", url: "/api/users", body: user, log: false })
+    .its("body", { log: false })
     .then((created) => {
-      log.set('consoleProps', () => ({ user, created }))
-      log.end()
-      return created
-    })
-})
+      log.set("consoleProps", () => ({ user, created }));
+      log.end();
+      return created;
+    });
+});
 ```
 
 The Command Log then shows one clean `createUser` line, and clicking it prints both the input and the result to the console.
@@ -4943,22 +5421,30 @@ The Command Log then shows one clean `createUser` line, and clicking it prints b
 Pass `{ log: false }` to the commands that would show them:
 
 ```js
-cy.get('[data-cy=password]').type(password, { log: false })
-cy.request({ url: '/api/admin', headers: { Authorization: `Bearer ${token}` }, log: false })
+cy.get("[data-cy=password]").type(password, { log: false });
+cy.request({
+  url: "/api/admin",
+  headers: { Authorization: `Bearer ${token}` },
+  log: false,
+});
 ```
 
 You can also overwrite `type` to hide the value for sensitive fields:
 
 ```js
-Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
+Cypress.Commands.overwrite("type", (originalFn, element, text, options) => {
   if (options?.sensitive) {
-    options.log = false
-    Cypress.log({ $el: element, name: 'type', message: '*'.repeat(text.length) })
+    options.log = false;
+    Cypress.log({
+      $el: element,
+      name: "type",
+      message: "*".repeat(text.length),
+    });
   }
-  return originalFn(element, text, options)
-})
+  return originalFn(element, text, options);
+});
 
-cy.get('[data-cy=password]').type('secret', { sensitive: true })
+cy.get("[data-cy=password]").type("secret", { sensitive: true });
 ```
 
 Remember screenshots, videos and Test Replay can still show the page, so blackout or mask sensitive UI where needed.
@@ -5106,8 +5592,11 @@ Hooks at the top level of the support file are root-level hooks. They run for ev
 ```js
 // cypress/support/e2e.js
 beforeEach(() => {
-  cy.intercept({ url: '**/analytics/**', middleware: true }, { statusCode: 204 })
-})
+  cy.intercept(
+    { url: "**/analytics/**", middleware: true },
+    { statusCode: 204 },
+  );
+});
 ```
 
 A root-level `before` runs once per spec file, not once per run, because each spec is loaded on its own with the support file. For something that should run once per whole run, use the `before:run` Node event.
@@ -5140,10 +5629,10 @@ With test isolation on, the page and storage are cleared before the retry. So if
 ```js
 beforeEach(() => {
   if (Cypress.currentRetry > 0) {
-    cy.log(`Retry number ${Cypress.currentRetry}`)
-    cy.task('logServerState')
+    cy.log(`Retry number ${Cypress.currentRetry}`);
+    cy.task("logServerState");
   }
-})
+});
 ```
 
 Don't use it to change what the test does on a retry, like skipping a step. That would hide the bug instead of finding it.
@@ -5173,12 +5662,12 @@ For CI failures, Test Replay usually finds the problem fastest. Without Cloud, a
 - Load expected texts from the app's translation files, so tests don't drift from the app
 
 ```js
-import de from '../../src/locales/de.json'
+import de from "../../src/locales/de.json";
 
-it('shows the German title', () => {
-  cy.visit('/?lang=de')
-  cy.get('h1').should('have.text', de.home.title)
-})
+it("shows the German title", () => {
+  cy.visit("/?lang=de");
+  cy.get("h1").should("have.text", de.home.title);
+});
 ```
 
 Also check things that break in other languages: long words that overflow, right-to-left layout and date and number formats.
@@ -5188,11 +5677,11 @@ Also check things that break in other languages: long words that overflow, right
 You can collect some numbers, but Cypress is not a performance tool. The test runner itself adds load, so results are rough.
 
 ```js
-cy.visit('/')
+cy.visit("/");
 cy.window().then((win) => {
-  const [nav] = win.performance.getEntriesByType('navigation')
-  expect(nav.domContentLoadedEventEnd).to.be.lessThan(3000)
-})
+  const [nav] = win.performance.getEntriesByType("navigation");
+  expect(nav.domContentLoadedEventEnd).to.be.lessThan(3000);
+});
 ```
 
 Plugins like `cypress-audit` run Lighthouse checks from Cypress. For real performance tests, use Lighthouse CI, WebPageTest, or real user monitoring, and use Cypress at most for simple regressions, like a page that suddenly makes 50 requests.
@@ -5223,11 +5712,11 @@ The DOM doesn't show what is drawn on a canvas, so normal queries don't help muc
 - Read pixel data from the canvas in a `.then()` for simple checks
 
 ```js
-cy.get('canvas').then(($canvas) => {
-  const ctx = $canvas[0].getContext('2d')
-  const [r, g, b] = ctx.getImageData(10, 10, 1, 1).data
-  expect([r, g, b]).to.deep.equal([255, 0, 0])
-})
+cy.get("canvas").then(($canvas) => {
+  const ctx = $canvas[0].getContext("2d");
+  const [r, g, b] = ctx.getImageData(10, 10, 1, 1).data;
+  expect([r, g, b]).to.deep.equal([255, 0, 0]);
+});
 ```
 
 ## 382: How do you test virtualized lists?
@@ -5239,8 +5728,8 @@ Virtualized lists only render the rows on screen, so the DOM doesn't have all it
 - Check the data instead, for example through the request that loaded it
 
 ```js
-cy.get('[data-cy=virtual-list]').scrollTo('bottom')
-cy.contains('[data-cy=row]', 'Item 999').should('be.visible')
+cy.get("[data-cy=virtual-list]").scrollTo("bottom");
+cy.contains("[data-cy=row]", "Item 999").should("be.visible");
 ```
 
 Cypress only sees what is rendered, the same as a user.
@@ -5252,17 +5741,17 @@ Write a recursive function that checks, waits and tries again a limited number o
 ```js
 function waitForJob(id, attempts = 20) {
   if (attempts === 0) {
-    throw new Error(`Job ${id} did not finish`)
+    throw new Error(`Job ${id} did not finish`);
   }
   cy.request(`/api/jobs/${id}`).then(({ body }) => {
-    if (body.status !== 'done') {
-      cy.wait(1000)
-      waitForJob(id, attempts - 1)
+    if (body.status !== "done") {
+      cy.wait(1000);
+      waitForJob(id, attempts - 1);
     }
-  })
+  });
 }
 
-waitForJob(42)
+waitForJob(42);
 ```
 
 `cy.wait(1000)` is fine here because it is a polling interval, not a guess about when the job is done. The `cypress-recurse` plugin gives a ready-made `recurse()` function for this.
@@ -5283,7 +5772,7 @@ Turning animations off also makes the suite faster and screenshots consistent.
 - Some events need `composed: true` to cross the shadow boundary, which matters when you `.trigger()` custom events
 
 ```js
-cy.get('my-select').shadow().find('[part=option]').contains('Blue').click()
+cy.get("my-select").shadow().find("[part=option]").contains("Blue").click();
 ```
 
 ## 386: How do you test a micro frontend application?
@@ -5324,21 +5813,21 @@ If a component depends on Zone.js to trigger change detection, the test may need
 Pass your own Vite or webpack config:
 
 ```js
-import { defineConfig } from 'cypress'
-import viteConfig from './vite.config'
+import { defineConfig } from "cypress";
+import viteConfig from "./vite.config";
 
 export default defineConfig({
   component: {
     devServer: {
-      framework: 'react',
-      bundler: 'vite',
+      framework: "react",
+      bundler: "vite",
       viteConfig: {
         ...viteConfig,
         server: { port: 5174 },
       },
     },
   },
-})
+});
 ```
 
 For webpack, use `webpackConfig`. You can also pass a function that returns the config. By default Cypress finds your project's config file, so you only need this when the test build must differ, like adding instrumentation for coverage.
@@ -5354,22 +5843,27 @@ Cypress starts your project's dev server (Vite or webpack) with a special entry.
 Create a fresh store for every mount and allow tests to pass initial state:
 
 ```jsx
-import { mount } from 'cypress/react'
-import { Provider } from 'react-redux'
-import { makeStore } from '../../src/store'
+import { mount } from "cypress/react";
+import { Provider } from "react-redux";
+import { makeStore } from "../../src/store";
 
-Cypress.Commands.add('mount', (component, { preloadedState, ...options } = {}) => {
-  const store = makeStore(preloadedState)
-  return mount(<Provider store={store}>{component}</Provider>, options).then((result) => ({
-    ...result,
-    store,
-  }))
-})
+Cypress.Commands.add(
+  "mount",
+  (component, { preloadedState, ...options } = {}) => {
+    const store = makeStore(preloadedState);
+    return mount(<Provider store={store}>{component}</Provider>, options).then(
+      (result) => ({
+        ...result,
+        store,
+      }),
+    );
+  },
+);
 ```
 
 ```jsx
-cy.mount(<CartBadge />, { preloadedState: { cart: { items: [{ id: 1 }] } } })
-cy.get('[data-cy=badge]').should('have.text', '1')
+cy.mount(<CartBadge />, { preloadedState: { cart: { items: [{ id: 1 }] } } });
+cy.get("[data-cy=badge]").should("have.text", "1");
 ```
 
 Returning the store lets tests dispatch actions or read state.
@@ -5379,20 +5873,20 @@ Returning the store lets tests dispatch actions or read state.
 Wrap the component in a memory router and set the start URL:
 
 ```jsx
-import { MemoryRouter, Routes, Route } from 'react-router-dom'
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 
-it('goes to the details page', () => {
+it("goes to the details page", () => {
   cy.mount(
-    <MemoryRouter initialEntries={['/products']}>
+    <MemoryRouter initialEntries={["/products"]}>
       <Routes>
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:id" element={<h1>Details</h1>} />
       </Routes>
     </MemoryRouter>,
-  )
-  cy.contains('a', 'Laptop').click()
-  cy.contains('h1', 'Details').should('be.visible')
-})
+  );
+  cy.contains("a", "Laptop").click();
+  cy.contains("h1", "Details").should("be.visible");
+});
 ```
 
 For Vue and Angular, use their router testing setups in the mount options.
@@ -5402,21 +5896,21 @@ For Vue and Angular, use their router testing setups in the mount options.
 Mount a small test component that uses it and renders the result:
 
 ```jsx
-import { useCounter } from './useCounter'
+import { useCounter } from "./useCounter";
 
 function HookHost() {
-  const { count, increment } = useCounter(2)
+  const { count, increment } = useCounter(2);
   return (
     <button data-cy="btn" onClick={increment}>
       {count}
     </button>
-  )
+  );
 }
 
-it('increments', () => {
-  cy.mount(<HookHost />)
-  cy.get('[data-cy=btn]').click().should('have.text', '3')
-})
+it("increments", () => {
+  cy.mount(<HookHost />);
+  cy.get("[data-cy=btn]").click().should("have.text", "3");
+});
 ```
 
 For pure logic hooks, a unit test runner is often simpler. Cypress is useful when the hook depends on browser behavior like resize, scroll or focus.
@@ -5440,20 +5934,20 @@ Use `vite-plugin-istanbul` only when a test flag is set:
 
 ```js
 // vite.config.js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import istanbul from 'vite-plugin-istanbul'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import istanbul from "vite-plugin-istanbul";
 
 export default defineConfig({
   plugins: [
     react(),
     istanbul({
-      include: 'src/*',
-      exclude: ['node_modules', 'cypress'],
+      include: "src/*",
+      exclude: ["node_modules", "cypress"],
       requireEnv: true, // only when VITE_COVERAGE=true
     }),
   ],
-})
+});
 ```
 
 Then start the app with `VITE_COVERAGE=true` for E2E runs. The instrumented code puts data on `window.__coverage__`, which `@cypress/code-coverage` collects after each test.
@@ -5483,16 +5977,16 @@ It is not a security scanner. Use tools like OWASP ZAP, Burp or dependency scann
 Listen for the `securitypolicyviolation` event in the app window:
 
 ```js
-cy.visit('/', {
+cy.visit("/", {
   onBeforeLoad(win) {
-    win.__cspViolations = []
-    win.document.addEventListener('securitypolicyviolation', (e) => {
-      win.__cspViolations.push(e.violatedDirective + ' ' + e.blockedURI)
-    })
+    win.__cspViolations = [];
+    win.document.addEventListener("securitypolicyviolation", (e) => {
+      win.__cspViolations.push(e.violatedDirective + " " + e.blockedURI);
+    });
   },
-})
-cy.get('[data-cy=app]').should('be.visible')
-cy.window().its('__cspViolations').should('have.length', 0)
+});
+cy.get("[data-cy=app]").should("be.visible");
+cy.window().its("__cspViolations").should("have.length", 0);
 ```
 
 Make sure stubs and Cypress itself don't change the CSP headers in a way that hides problems. Cypress may need to relax the CSP to inject its own scripts.
@@ -5507,11 +6001,741 @@ For servers that require a client certificate (mutual TLS), use `clientCertifica
 module.exports = defineConfig({
   clientCertificates: [
     {
-      url: 'https://api.internal.example.com/**',
-      certs: [{ cert: 'certs/client.crt', key: 'certs/client.key' }],
+      url: "https://api.internal.example.com/**",
+      certs: [{ cert: "certs/client.crt", key: "certs/client.key" }],
     },
   ],
-})
+});
 ```
 
 Keep the key files out of the repo and load them from CI secrets.
+
+## 401: How do you run Cypress behind a corporate proxy?
+
+Cypress reads the standard proxy environment variables, for downloading the binary and for traffic from the browser and `cy.request()`:
+
+```bash
+export HTTP_PROXY=http://proxy.company.local:8080
+export HTTPS_PROXY=http://proxy.company.local:8080
+export NO_PROXY=localhost,127.0.0.1,.company.local
+npx cypress run
+```
+
+Put your app's host in `NO_PROXY` if it runs locally, or every request to it goes through the proxy. If the proxy uses its own certificate, you may also need to set `NODE_EXTRA_CA_CERTS` for the Node side.
+
+## 402: What is the hosts option used for?
+
+`hosts` maps host names to IP addresses for the browser, like an `/etc/hosts` file, but only during the test run:
+
+```js
+module.exports = defineConfig({
+  hosts: {
+    "app.local.test": "127.0.0.1",
+    "*.tenant.local.test": "127.0.0.1",
+  },
+});
+```
+
+It is useful for multi-tenant apps that use subdomains, or for testing with production-like domains against a local server, without changing the machine's settings.
+
+## 403: Can Cypress test mobile behavior?
+
+Only partly. You can:
+
+- Change the viewport size with `cy.viewport()`
+- Set a mobile user agent with the `userAgent` config option or in `cy.visit()` headers
+- Fire touch events with `.trigger()`
+
+But it still runs a desktop browser. There is no real touch input, mobile browser engine, device sensors or native app. For mobile web, test real devices with services like BrowserStack or Sauce Labs. For native mobile apps, use tools like Appium, Detox or Maestro.
+
+## 404: How do you test touch gestures like swipe?
+
+Fire touch events with coordinates:
+
+```js
+cy.get("[data-cy=carousel]")
+  .trigger("touchstart", { touches: [{ clientX: 300, clientY: 100 }] })
+  .trigger("touchmove", { touches: [{ clientX: 50, clientY: 100 }] })
+  .trigger("touchend", { changedTouches: [{ clientX: 50, clientY: 100 }] });
+
+cy.get("[data-cy=slide-2]").should("be.visible");
+```
+
+If the app uses pointer events, trigger `pointerdown`, `pointermove` and `pointerup` with `pointerType: 'touch'`. `cypress-real-events` also has `.realTouch()` and `.realSwipe()` in Chromium.
+
+## 405: How do you test what the app does when the user goes offline?
+
+`cy.intercept()` with `forceNetworkError` is enough to test failed requests. To make the browser itself go offline (so `navigator.onLine` is `false` and the `offline` event fires), Chromium users often use the DevTools Protocol:
+
+```js
+const goOffline = () =>
+  cy.wrap(
+    Cypress.automation("remote:debugger:protocol", {
+      command: "Network.emulateNetworkConditions",
+      params: {
+        offline: true,
+        latency: 0,
+        downloadThroughput: 0,
+        uploadThroughput: 0,
+      },
+    }),
+  );
+
+cy.visit("/");
+cy.wrap(
+  Cypress.automation("remote:debugger:protocol", { command: "Network.enable" }),
+);
+goOffline();
+cy.contains("You are offline").should("be.visible");
+```
+
+`Cypress.automation` is not an official documented API and only works in Chromium, so keep it in one helper and check it after upgrades.
+
+## 406: How do you use the Chrome DevTools Protocol from a Cypress test?
+
+There are two ways:
+
+- From the browser side, through `Cypress.automation('remote:debugger:protocol', { command, params })`, which plugins like `cypress-real-events` use. It is not officially documented.
+- From the Node side, by connecting to the browser's debugging port in `before:browser:launch` with a CDP client library and exposing tasks.
+
+With CDP you can emulate network conditions, CPU slowdown, geolocation, media features like dark mode, and send real input events. It only works in Chromium browsers, so tests that depend on it can't run in Firefox.
+
+## 407: What is cypress-real-events and when do you need it?
+
+`cypress-real-events` sends input through the DevTools Protocol, so the browser treats it as real user input (`isTrusted: true`). It adds commands like:
+
+```js
+import "cypress-real-events"; // in the support file
+
+cy.get("[data-cy=menu]").realHover();
+cy.get("[data-cy=input]").realClick();
+cy.realPress("Tab");
+cy.realPress(["Shift", "Tab"]);
+cy.get("[data-cy=card]").realTouch();
+```
+
+You need it for CSS `:hover` styles, features that check `isTrusted`, and some keyboard or clipboard behavior. Since Cypress 14.3, `cy.press()` covers simple key presses like Tab without the plugin. It only works in Chromium browsers.
+
+## 408: How does Cypress fit into a test pyramid?
+
+A common setup for a web app:
+
+- **Many unit tests** (Jest or Vitest) for functions, hooks, reducers and utilities
+- **A good number of component tests** (Cypress or another tool) for UI components and their states
+- **Fewer E2E tests** (Cypress) for the main flows across pages, with a real or stubbed backend
+- **A small smoke suite** run against staging or production after deploys
+
+E2E tests give the most confidence but are the slowest and hardest to keep stable, so you want them on the flows that matter most, not on every edge case.
+
+## 409: How do you decide if a check belongs in a unit, component or E2E test?
+
+Ask: what is the smallest test that can catch this bug?
+
+- A calculation or a formatter: unit test
+- How a component looks and behaves in its different states: component test
+- That the login page sends the right request and goes to the dashboard: E2E with a stubbed API
+- That a user can really buy something with the real backend and payment test mode: full E2E
+
+If a bug in one layer can only be seen when layers work together, it needs a higher-level test.
+
+## 410: How do you test keyboard navigation and focus order?
+
+Use `cy.press()` to move focus and check where it lands:
+
+```js
+cy.visit("/signup");
+cy.get("[data-cy=name]").focus();
+cy.press(Cypress.Keyboard.Keys.TAB);
+cy.focused().should("have.attr", "data-cy", "email");
+cy.press(Cypress.Keyboard.Keys.TAB);
+cy.focused().should("have.attr", "data-cy", "password");
+```
+
+For Shift+Tab and other key combinations, use `cypress-real-events` with `cy.realPress(['Shift', 'Tab'])`. Also check that focus is visible, for example with a `have.css` check on the outline.
+
+## 411: How do you test focus handling in a modal dialog?
+
+Check that focus moves into the dialog, stays there, and goes back when it closes:
+
+```js
+cy.get("[data-cy=open-dialog]").click();
+cy.getByRole("dialog").should("be.visible");
+cy.focused().should("have.attr", "data-cy", "dialog-title-input");
+
+cy.press(Cypress.Keyboard.Keys.ESC);
+cy.getByRole("dialog").should("not.exist");
+cy.focused().should("have.attr", "data-cy", "open-dialog");
+```
+
+To test the focus trap, press Tab from the last element in the dialog and check that focus goes to the first one, not to the page behind.
+
+## 412: How would you structure a large Cypress project?
+
+```
+cypress/
+  e2e/
+    auth/
+    checkout/
+    admin/
+  component/          # or next to components in src/
+  fixtures/
+    api/              # stubbed API responses
+  support/
+    e2e.ts
+    component.tsx
+    commands/
+      auth.ts
+      data.ts
+    index.d.ts
+  pages/              # page objects or selector maps
+  factories/          # test data builders
+  tasks/              # Node tasks used in setupNodeEvents
+cypress.config.ts
+```
+
+Keep Node code (tasks) apart from browser code, keep selectors in one place per page, and agree on naming. Write a short guide for the team so new tests follow the same style.
+
+## 413: What is a test data factory and why use one?
+
+A factory is a function that builds valid test data with defaults, so each test only states what matters to it:
+
+```ts
+import { faker } from "@faker-js/faker";
+
+export const buildUser = (overrides: Partial<User> = {}): User => ({
+  id: faker.string.uuid(),
+  name: faker.person.fullName(),
+  email: faker.internet.email(),
+  role: "member",
+  ...overrides,
+});
+```
+
+```ts
+const admin = buildUser({ role: "admin" });
+cy.intercept("GET", "/api/me", { body: admin });
+```
+
+When the data model changes, you update one function instead of dozens of fixtures.
+
+## 414: How do you clean up data created by tests?
+
+- Tag all created records with a run ID (for example in the name or a metadata field), passed through `expose`
+- Delete them in bulk by that run ID in an `after:run` handler, or a separate cleanup job
+- Also clean old leftovers from failed runs, for example records older than one day with the test prefix
+- Don't depend on cleanup for correctness: tests should still create their own data first
+
+```js
+on("after:run", async () => {
+  await api.delete(`/test-data?runId=${process.env.RUN_ID}`);
+});
+```
+
+## 415: How do you run only the specs affected by a pull request?
+
+Pick specs from the changed files, then pass them to `--spec`:
+
+```bash
+CHANGED=$(git diff --name-only origin/main...HEAD | grep '\.cy\.ts$' | paste -sd, -)
+if [ -n "$CHANGED" ]; then
+  npx cypress run --spec "$CHANGED"
+fi
+```
+
+This only catches changed spec files. To also map app code to specs, you need a mapping file, tags per feature, or tools like Nx that know the dependency graph. Always run the full suite on the main branch to catch what the selection missed.
+
+## 416: How do you run E2E tests against preview deployments for each pull request?
+
+1. Deploy each pull request to a preview URL (Vercel, Netlify, a review app).
+2. Wait for the deployment to be ready in CI.
+3. Run Cypress with that URL:
+
+```bash
+npx cypress run --config baseUrl=$PREVIEW_URL
+```
+
+Things to handle: the preview may need auth (basic auth or a bypass token), the backend for previews may be shared, so create unique data, and the deployment URL often arrives through a webhook or a CI event, not at a fixed time.
+
+## 417: What is the difference between a smoke suite and a regression suite?
+
+- A **smoke suite** is a small set of fast tests for the most important paths: the app loads, login works, the main action works. It runs after every deploy, even to production, and should finish in a few minutes.
+- A **regression suite** is the full set of tests. It runs on pull requests or the main branch, or nightly if it is long.
+
+Tag smoke tests (for example with `@cypress/grep`) so you can run them alone.
+
+## 418: How do you check that a new test is not flaky before merging?
+
+Run it many times in a row. One way is to repeat the test in a loop:
+
+```js
+Cypress._.times(20, (i) => {
+  it(`creates an order (run ${i + 1})`, () => {
+    // test body
+  });
+});
+```
+
+Some teams have a CI job that finds new or changed specs in the pull request and runs them several times, often called burn-in. Cypress Cloud's flake detection helps after the test is merged.
+
+## 419: How do you share Cypress setup across many projects?
+
+Make an internal npm package with:
+
+- A base config function that projects extend
+- Shared custom commands and their types
+- Shared tasks and plugin setup
+- Lint rules for Cypress code
+
+```js
+// cypress.config.js in a project
+const { defineConfig } = require("cypress");
+const { withCompanyDefaults } = require("@company/cypress-preset");
+
+module.exports = defineConfig(
+  withCompanyDefaults({
+    e2e: { baseUrl: "http://localhost:3000" },
+  }),
+);
+```
+
+Version it carefully, since a change in the preset affects every project's tests.
+
+## 420: Does cy.session with cacheAcrossSpecs share sessions between parallel machines?
+
+No. Sessions are cached in the memory of one Cypress run on one machine. Each parallel machine creates its own sessions the first time they are needed.
+
+This is fine in most cases, but if logins are limited (for example, a provider that rate-limits logins or allows only one active session per user), use different test users per machine or space out the logins.
+
+## 421: How do you add extra information to failure messages?
+
+Use the `fail` event. Change the error and throw it again:
+
+```js
+Cypress.on("fail", (err, runnable) => {
+  err.message += `\n\nTest: ${runnable.fullTitle()}\nURL: ${window.location.href}`;
+  throw err;
+});
+```
+
+You must throw the error again, otherwise the test passes. You can also collect app logs through `cy.task()` in an `afterEach` when `this.currentTest.state === 'failed'`.
+
+## 422: How do you test your own custom commands?
+
+Write specs for them like for any code, often against a small HTML page or a component:
+
+```js
+describe("cy.getByTestId", () => {
+  beforeEach(() => {
+    cy.visit("cypress/fixtures/test-page.html");
+  });
+
+  it("finds an element added later", () => {
+    cy.window().then((win) => {
+      setTimeout(() => {
+        win.document.body.insertAdjacentHTML(
+          "beforeend",
+          '<p data-testid="late">ok</p>',
+        );
+      }, 500);
+    });
+    cy.getByTestId("late").should("have.text", "ok");
+  });
+});
+```
+
+To check that a command fails in the right way, listen to `fail` with `cy.on('fail', ...)` and assert on the error message.
+
+## 423: Scenario: your E2E suite takes two hours. What do you do?
+
+1. Measure first: find the slowest specs and the most common slow steps (often UI logins and UI data setup).
+2. Replace UI logins with `cy.session()` and API logins.
+3. Create data through APIs or tasks.
+4. Remove fixed waits and stub slow third-party calls.
+5. Move edge case tests to component tests.
+6. Split huge specs and run them in parallel across machines.
+7. Run a fast subset on pull requests and the full suite on main or nightly.
+
+Each step can be measured, so you can show the time going down.
+
+## 424: Scenario: tests pass in Chrome but fail in Firefox. How do you approach it?
+
+- Check if the failure is a real app bug in Firefox. Try the flow manually in Firefox.
+- Look for Chromium-only things in the tests: `chromeWebSecurity: false`, CDP-based plugins like `cypress-real-events`, `Cypress.automation` calls.
+- Check differences in how Firefox handles focus, scrolling, dates, fonts and file downloads.
+- Make sure the Firefox version is recent, since Cypress drives it through WebDriver BiDi.
+
+If a test can't work in Firefox by design, limit it with `{ browser: 'chromium' }` and note why.
+
+## 425: Scenario: after a framework upgrade, many tests fail with detached element errors. What do you do?
+
+The new version probably re-renders more often or at different times. Steps:
+
+- Look for chains that continue after an action, and split them so the next command starts with a fresh query
+- Look for elements saved in `.then()` and used later with `cy.wrap()`, and query them again instead
+- Wait for the data load (request alias or a ready element) before acting, so the re-render happens first
+- Check that the app doesn't unmount and remount large parts of the page without reason, which can also be a performance bug
+
+## 426: Scenario: logging in takes 10 seconds and every test logs in. How do you fix it?
+
+Wrap the login in `cy.session()` so it runs once per user per spec, or once per run with `cacheAcrossSpecs: true`. Switch from UI login to `cy.request()` login where possible.
+
+```js
+Cypress.Commands.add("login", (role = "member") => {
+  cy.session(
+    [role],
+    () => {
+      cy.env([`${role}Password`]).then((env) => {
+        cy.request("POST", "/api/login", {
+          username: role,
+          password: env[`${role}Password`],
+        });
+      });
+    },
+    {
+      validate: () => cy.request("/api/me").its("status").should("eq", 200),
+      cacheAcrossSpecs: true,
+    },
+  );
+});
+```
+
+Keep one test that logs in through the UI, so the login page itself is still tested.
+
+## 427: Scenario: checkout redirects to a third-party domain and back. How do you test it?
+
+Decide what you need to prove:
+
+- To test your app's handling of success and failure, stub the redirect: intercept the call that starts the redirect, and visit your return URL directly with the parameters the provider would send.
+- To test the full flow once, use the provider's test mode and `cy.origin()` for the provider's page:
+
+```js
+cy.get("[data-cy=pay]").click();
+cy.origin("https://checkout.provider.test", () => {
+  cy.get("[data-cy=card-number]").type("4242424242424242");
+  cy.get("[data-cy=submit]").click();
+});
+cy.location("pathname").should("eq", "/order/confirmation");
+```
+
+Keep the full flow test small, since it depends on an outside service you don't control.
+
+## 428: Scenario: the frontend calls ten microservices. How do you stub them in a clean way?
+
+- Create one fixture set per service, with a default "happy" response for each endpoint
+- Put default intercepts in a custom command, like `cy.stubDefaultApis()`, used in `beforeEach`
+- Let each test override only the endpoints it cares about, since later intercepts win
+- Build responses with factories instead of huge static JSON files
+- Keep a few E2E tests that don't stub, to check the real services work together
+
+```js
+beforeEach(() => {
+  cy.stubDefaultApis();
+});
+
+it("shows an error when pricing is down", () => {
+  cy.intercept("GET", "/pricing/api/**", { statusCode: 503 });
+  cy.visit("/product/1");
+  cy.contains("Prices are not available").should("be.visible");
+});
+```
+
+## 429: Scenario: you need to check the content of an exported Excel or PDF file. How?
+
+Download the file, then parse it in Node with a task:
+
+```js
+// cypress.config.js
+const XLSX = require("xlsx");
+const { PDFParse } = require("pdf-parse");
+const fs = require("node:fs");
+
+on("task", {
+  readExcel(path) {
+    const workbook = XLSX.readFile(path);
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    return XLSX.utils.sheet_to_json(sheet);
+  },
+  async readPdf(path) {
+    const parser = new PDFParse({ data: fs.readFileSync(path) });
+    const result = await parser.getText();
+    return result.text;
+  },
+});
+```
+
+```js
+cy.get("[data-cy=export-xlsx]").click();
+cy.readFile(`${Cypress.config("downloadsFolder")}/report.xlsx`, null).should(
+  "exist",
+);
+cy.task("readExcel", `${Cypress.config("downloadsFolder")}/report.xlsx`).should(
+  "have.length",
+  10,
+);
+```
+
+Check the API of the parsing libraries for the version you install, as they change between major versions.
+
+## 430: Scenario: your test needs data from a service owned by another team. What do you do?
+
+- Don't depend on whatever data happens to be in their test environment
+- Ask for a test API or seed script you can call from `cy.task()` or `cy.request()`
+- If that is not possible, stub their service in most tests and keep a small number of real integration tests that create their own data
+- Agree on a contract (OpenAPI or contract tests) so you know when their API changes
+- Make failures clear: a `before` check that their service is reachable, with a clear error, saves debugging time
+
+## 431: Scenario: the team uses cy.wait(5000) everywhere. How do you fix it?
+
+1. Turn on the `cypress/no-unnecessary-waiting` lint rule so no new ones are added.
+2. For each wait, find what it is waiting for: a request, an element, an animation, a redirect.
+3. Replace it with the right wait: `cy.wait('@alias')`, `.should('be.visible')`, `cy.location().should(...)`.
+4. Remove waits that wait for nothing (many are left over from debugging).
+5. Measure the suite time before and after to show the gain.
+
+Explain why in a short team guide, since the habit usually comes from tools without automatic waiting.
+
+## 432: Scenario: a promo banner appears only for some users and blocks clicks. How do you handle it?
+
+Don't write `if banner exists, close it`. Control the condition instead:
+
+- Set the cookie or localStorage key that marks the banner as dismissed, in `onBeforeLoad` or with `cy.setCookie()` before the visit
+- Stub the request that decides whether to show the banner
+- Use a test user who is not in the promo group
+
+Then write one separate test for the banner itself with the condition turned on.
+
+## 433: Scenario: CI runs crash with out of memory errors in one big spec. How do you fix it?
+
+- Check that `manageBrowserMemory` is on (default in Cypress 16)
+- Split the spec into smaller ones
+- In Docker, raise shared memory (`--shm-size`) or add `--disable-dev-shm-usage`
+- Turn off video if it's not needed
+- Look for app memory leaks: heap snapshots in DevTools while running the spec in open mode can show growing listeners or detached DOM
+- Avoid keeping huge objects in aliases or closures across many tests
+
+## 434: Scenario: you must test sign-up with email confirmation from start to end. How?
+
+```js
+it("signs up and confirms the email", () => {
+  const email = `signup+${Date.now()}@test.local`;
+
+  cy.visit("/signup");
+  cy.get("[data-cy=email]").type(email);
+  cy.get("[data-cy=password]").type("Str0ngPass!", { log: false });
+  cy.get("[data-cy=submit]").click();
+  cy.contains("Check your email").should("be.visible");
+
+  cy.task("waitForEmail", { to: email, subject: "Confirm your account" }).then(
+    (mail) => {
+      const link = mail.html.match(/href="([^"]+confirm[^"]+)"/)[1];
+      cy.visit(link);
+    },
+  );
+
+  cy.contains("Your email is confirmed").should("be.visible");
+});
+```
+
+`waitForEmail` is a task that polls a test mail server (like Mailpit) until the email arrives or a timeout passes. Unique emails let this run in parallel.
+
+## 435: Scenario: selectors break with every UI redesign. What do you change?
+
+- Add `data-cy` attributes to important elements and agree that changing them is a breaking change for tests
+- Use `cy.getByRole()` with accessible names for buttons, links and fields, which change less than CSS
+- Keep selectors in one place (page objects or selector maps), so one change fixes many tests
+- Don't use selectors based on layout, like `div > div:nth-child(2)`
+- Add a lint rule or review checklist against class-based selectors
+
+## 436: Scenario: the team starts using cy.prompt and Studio to write tests. What do you watch for?
+
+- Review generated tests like any code: clear names, good selectors, real assertions, no extra steps
+- Make sure each test checks the outcome, not only that steps ran without errors
+- Keep secrets out of prompts with placeholders, and don't put real user data in prompts
+- Decide when to keep `cy.prompt()` steps and when to export them as normal Cypress code (code is easier to review and doesn't need Cloud or AI calls)
+- Watch CI time and cost, since AI generation adds time the first time and after cache misses
+- Remember it works only for E2E tests in Chromium browsers
+
+## 437: Scenario: you want to upgrade to Cypress 16, but a plugin you need doesn't support it yet. What do you do?
+
+- Check the plugin's issues and pull requests, often a fix is waiting
+- Test it anyway: many plugins work fine if they don't use removed APIs like `Cypress.env()` or `cy.exec()`
+- If it breaks on a small thing, use `patch-package` to fix it locally and send the fix upstream
+- Look for a maintained fork or an alternative
+- If none of that works, stay on the last 15.x version for now, and plan the upgrade with a date
+
+Don't hold the whole project on an old Cypress version for months because of one plugin.
+
+## 438: Scenario: after upgrading to Cypress 16, some intercept tests fail in Chrome. Why could that be?
+
+Cypress 16 moved Chromium network interception to the browser's own network layer. Tests may fail if they:
+
+- Read `req.httpVersion`, which is no longer reported
+- Check compression headers like `content-encoding` on intercepted responses
+- Depended on HTTP/1.1 behavior, while the browser now uses HTTP/2 where the server supports it
+
+Fix the tests to not depend on those details. `forceHttp1` can bring back the old behavior for a while, but it is deprecated, so use it only to unblock the upgrade.
+
+## 439: Scenario: cy.wait('@alias') sometimes times out with "no request ever occurred". What do you check?
+
+- The intercept is defined after the action that sends the request. Move it before `cy.visit()` or the click.
+- The URL pattern doesn't match every time, for example because of a query string, a trailing slash, or a different host.
+- The app sometimes uses cached data and skips the request. Check service workers, HTTP caching and app caches like React Query.
+- An earlier `cy.wait('@alias')` already used the request, and the app only makes it once.
+- The method is different (a `POST` where you intercept `GET`).
+
+Open the run in Test Replay or open mode and look at the network list and the "Routes" table in the Command Log.
+
+## 440: Scenario: a feature behaves differently around midnight. How do you test it?
+
+Freeze time with `cy.clock()` close to the boundary, then move it forward:
+
+```js
+const justBeforeMidnight = new Date(2026, 2, 31, 23, 59, 50).getTime();
+cy.clock(justBeforeMidnight, ["Date", "setTimeout", "setInterval"]);
+cy.visit("/daily-deals");
+cy.contains("Deals for March 31").should("be.visible");
+
+cy.tick(15 * 1000);
+cy.contains("Deals for April 1").should("be.visible");
+```
+
+If the server also uses the date, you need a way to control server time in test environments too, or stub the API response for both days.
+
+## 441: Scenario: tests pass on developers' laptops but fail in CI because CI runs in UTC. What do you do?
+
+Make time zone part of the test setup instead of the machine:
+
+- Run CI and local tests in the same time zone with `TZ=...`, or better, run both in UTC
+- Freeze `Date` with `cy.clock()` in tests that show dates
+- Build expected values with the same formatting library and time zone the app uses, not with hard-coded strings
+- Add a few tests that set a specific time zone on purpose, to check that conversion works
+
+## 442: Scenario: a spec passes alone but fails when the whole suite runs. Why?
+
+Common reasons:
+
+- Data left by another spec: a shared user changed by another test, a record with the same unique name
+- Server or database state that isn't reset between specs
+- Sessions with `cacheAcrossSpecs` that are invalid in this spec
+- Memory or resource exhaustion late in the run
+- Root hooks in the support file that behave differently based on what ran before
+
+Run the spec together with the one before it to reproduce, then remove the shared state.
+
+## 443: Scenario: parallel CI machines overwrite each other's data. How do you fix it?
+
+- Create unique data per test (random IDs, emails with timestamps)
+- Use different test accounts per machine, picked from an index like `SPLIT_INDEX` or the CI node number passed through `expose`
+- Don't reset the whole database in `before:run` when machines share it. Reset only the data one machine owns, or give each machine its own database or tenant
+- Avoid tests that change global settings, or run them in a separate serial job
+
+## 444: Scenario: Cypress Cloud costs are growing too fast. What can you do?
+
+Cloud is usually billed by recorded test results. Options:
+
+- Record only the runs you need history for (main branch, release branches), and run pull request jobs without `--record` or with a smaller set
+- Remove duplicate tests that cover the same thing
+- Move edge cases to component or unit tests
+- Use auto cancellation so runs with many failures stop early
+- Run the full matrix of browsers less often
+
+Compare the cost with what it saves: faster debugging with Test Replay and shorter CI times from load balancing.
+
+## 445: Scenario: you want every test to fail on any console error or 5xx response. How do you set it up?
+
+In the support file:
+
+```js
+beforeEach(() => {
+  cy.intercept({ url: "/api/**", middleware: true }, (req) => {
+    req.on("response", (res) => {
+      if (res.statusCode >= 500) {
+        throw new Error(
+          `Server error ${res.statusCode} on ${req.method} ${req.url}`,
+        );
+      }
+    });
+  });
+});
+
+Cypress.on("window:before:load", (win) => {
+  cy.spy(win.console, "error").as("consoleError");
+});
+
+afterEach(() => {
+  cy.get("@consoleError").should("not.have.been.called");
+});
+```
+
+Tests that expect errors on purpose need a way to opt out, for example a test config value read with `Cypress.expose()` or a tag. Throwing inside the response handler fails the test at that point. Check how this behaves in your Cypress version and adjust if you want a softer failure.
+
+## 446: Scenario: you need to test a flow with two users, like an approval process. How?
+
+Cypress controls one browser, so act as one user in the UI and as the other through the API:
+
+```js
+it("manager approves a request", () => {
+  cy.login("employee");
+  cy.visit("/requests/new");
+  cy.get("[data-cy=amount]").type("500");
+  cy.get("[data-cy=submit]").click();
+  cy.get("[data-cy=request-id]")
+    .invoke("text")
+    .then((id) => {
+      // manager approves through the API
+      cy.loginByApi("manager");
+      cy.request("POST", `/api/requests/${id}/approve`);
+
+      // back to the employee in the UI
+      cy.login("employee");
+      cy.visit(`/requests/${id}`);
+      cy.contains("Approved").should("be.visible");
+    });
+});
+```
+
+Also write a separate test for the manager's UI, starting from a request created through the API.
+
+## 447: Scenario: a new team member writes tests that check implementation details. How do you guide them?
+
+Explain that a test should check what a user sees and can do, so it survives refactors. Examples:
+
+- Instead of checking a component's internal state, check the text or element it renders
+- Instead of selecting by CSS class, select by role, text or `data-cy`
+- Instead of asserting the exact order of internal API calls, assert the final result on the page and only the requests that matter to the user (like the order being created)
+
+Pair on a couple of tests and add the rules to the team's test guide and review checklist.
+
+## 448: What makes a good Cypress test?
+
+- It tests one behavior and has a clear name that says what is expected
+- It sets up its own state and passes when run alone
+- It waits on real signals, never on fixed times
+- It uses stable selectors: roles, text or `data-cy`
+- It uses the UI only for what it tests, and APIs for setup
+- It has clear assertions on the outcome, not only steps
+- It runs fast and gives the same result every time
+- When it fails, the error tells you what went wrong
+
+## 449: How do you decide what to stub in an E2E test?
+
+Stub what you don't control or don't want to test right now:
+
+- Third-party services: payments, analytics, maps, chat widgets
+- Slow or flaky dependencies
+- States that are hard to produce for real: errors, empty lists, timeouts, rare data
+
+Don't stub what the test is meant to prove. If a test is called "user can create an order", at least one version of it should hit the real order API. The more you stub, the more your tests check the frontend alone, which is fine if you know that's what you are doing.
+
+## 450: What do you check when reviewing a pull request with Cypress tests?
+
+- Do the tests check the behavior the pull request changes?
+- Can each test run alone, and in any order?
+- No `cy.wait(ms)`, no `.only`, no `force: true` without a reason
+- Selectors use `data-cy`, roles or text, not CSS classes
+- Intercepts are defined before the actions that trigger them
+- Setup uses APIs, tasks or `cy.session()`, not long UI flows
+- No secrets in code, and sensitive values have `{ log: false }`
+- Assertions check outcomes, and negative assertions come after a positive one
+- New custom commands are needed, typed and named clearly
+- The new specs passed several times in CI, not just once
